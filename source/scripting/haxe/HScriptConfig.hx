@@ -209,7 +209,9 @@ class HScriptConfig
 
 		var presetVariables:StringMap<Dynamic> = [
 			'Json' => utils.ALEJson,
-            'debugTrace' => debugTrace
+            'debugTrace' => debugTrace,
+            'Function_Stop' => CoolVars.Function_Stop,
+            'Function_Continue' => CoolVars.Function_Continue
 		];
 
 		for (preVar in presetVariables.keys())

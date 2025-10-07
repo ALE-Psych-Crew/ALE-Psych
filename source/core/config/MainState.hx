@@ -18,7 +18,7 @@ class MainState extends MusicBeatState
 	public static var debugCounter:DebugCounter;
 	
     #if mobile
-    @:unreflective private static var showedModMenu:Bool = false;
+    @:unreflective private static var showedModMenu:Bool = Sys.getEnv('UNIQUE_MOD') != null && Sys.getEnv('UNIQUE_MOD') != '';
     #end
 
 	override function create()

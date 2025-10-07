@@ -6,10 +6,13 @@ import sys.FileSystem;
 
 class Mods
 {
-	static public var folder:String = '';
+	static public var folder:String = Sys.getEnv('UNIQUE_MOD') ?? '';
 
     public static function init()
     {
+        if (Sys.getEnv('UNIQUE_MOD') != null && Sys.getEnv('UNIQUE_MOD') != '')
+            return;
+
 		var save:FlxSave = new FlxSave();
 
 		save.bind('ALEEngineData', CoolUtil.getSavePath(false));

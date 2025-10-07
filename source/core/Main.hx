@@ -329,7 +329,7 @@ class Main extends Sprite
 		var key = correctKey(event);
 
 		if (event.ctrlKey && event.shiftKey)
-			if (ClientPrefs.controls.engine.switch_mod.contains(key))
+			if (ClientPrefs.controls.engine.switch_mod.contains(key) && (Sys.getEnv('UNIQUE_MOD') == null || Sys.getEnv('UNIQUE_MOD') == ''))
 				if (!Std.isOfType(FlxG.state, funkin.states.PlayState))
 				{
 					if (FlxG.state.subState != null)
