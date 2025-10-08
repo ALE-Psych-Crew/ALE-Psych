@@ -14,7 +14,7 @@
 	
 	<!-- _____________________________ ALE Defines _______________________________ -->
 
-	<setenv name="UNIQUE_MOD" value="Laumber"/>
+	<setenv name="UNIQUE_MOD" value=""/>
 
 	<define name="MODS_ALLOWED" if="cpp"/>
 
