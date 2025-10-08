@@ -6,11 +6,13 @@ import sys.FileSystem;
 
 class Mods
 {
-	static public var folder:String = Sys.getEnv('UNIQUE_MOD') ?? '';
+    @:unreflective public static final UNIQUE_MOD:Null<String> = null;
+
+	static public var folder:String = UNIQUE_MOD ?? '';
 
     public static function init()
     {
-        if (Sys.getEnv('UNIQUE_MOD') != null && Sys.getEnv('UNIQUE_MOD') != '')
+        if (UNIQUE_MOD != null)
             return;
 
 		var save:FlxSave = new FlxSave();

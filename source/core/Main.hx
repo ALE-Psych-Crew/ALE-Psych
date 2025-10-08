@@ -329,14 +329,19 @@ class Main extends Sprite
 		var key = correctKey(event);
 
 		if (event.ctrlKey && event.shiftKey)
-			if (ClientPrefs.controls.engine.switch_mod.contains(key) && (Sys.getEnv('UNIQUE_MOD') == null || Sys.getEnv('UNIQUE_MOD') == ''))
-				if (!Std.isOfType(FlxG.state, funkin.states.PlayState))
-				{
-					if (FlxG.state.subState != null)
-						FlxG.state.subState.close();
+		{
+			if (Mods.UNIQUE_MOD == null)
+			{
+				if (ClientPrefs.controls.engine.switch_mod.contains(key))
+					if (!Std.isOfType(FlxG.state, funkin.states.PlayState))
+					{
+						if (FlxG.state.subState != null)
+							FlxG.state.subState.close();
 
-					CoolUtil.openSubState(new funkin.substates.ModsMenuSubState());
-				}
+						CoolUtil.openSubState(new funkin.substates.ModsMenuSubState());
+					}
+			}
+		}
 
 		if (ClientPrefs.controls.engine.fps_counter.contains(key))
 			if (MainState.debugCounter != null)

@@ -14,8 +14,6 @@
 	
 	<!-- _____________________________ ALE Defines _______________________________ -->
 
-	<setenv name="UNIQUE_MOD" value=""/>
-
 	<define name="MODS_ALLOWED" if="cpp"/>
 
 	<define name="HSCRIPT_ALLOWED" if="cpp"/>
@@ -44,8 +42,6 @@
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
-	<set name="HAS_UNIQUE_MOD" if="UNIQUE_MOD" value="true"/>
-
 	<set name="BUILD_DIR" value="export/debug" if="debug"/>
 	<set name="BUILD_DIR" value="export/release" unless="debug"/>
 	<set name="BUILD_DIR" value="export/32bit" if="32bits"/>
@@ -54,7 +50,7 @@
 
 	<assets path="assets"/>
 
-	<assets path="mods" embed="${HAS_UNIQUE_MOD}" if="!mobile || HAS_UNIQUE_MOD"/>
+	<assets path="mods" embed="false" unless="mobile"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
