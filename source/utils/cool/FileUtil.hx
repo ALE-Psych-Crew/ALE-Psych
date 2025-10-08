@@ -34,7 +34,7 @@ class FileUtil
             if (result == null)
             {
                 if (missingPrint ?? true)
-                    debugTrace(parent + (parent.length > 0 ? '/' : '') + part, 'missing_file');
+                    debugTrace(parent + (parent.length > 0 ? '/' : '') + part, MISSING_FILE);
 
                 return null;
             }
@@ -73,7 +73,6 @@ class FileUtil
 			var command:String = 'explorer.exe';
 			#end
 			Sys.command(command, [folder]);
-			trace('$command $folder');
 		#else
 			FlxG.error("Platform is not supported for CoolUtil.openFolder");
 		#end
