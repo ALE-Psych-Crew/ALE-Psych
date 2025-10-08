@@ -1,0 +1,33 @@
+name: iOS Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: iOS Build
+    permissions: write-all
+    runs-on: macos-15
+
+    steps:
+      - name: Pull the New Commit
+        uses: actions/checkout@v2
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Libraries
+        run: sh ./setup/install-haxelibs.sh
+        
+      - name: Build for iOS
+        run: haxelib run lime build ios -nosign
+
+      - name: Upload Game
+        uses: actions/upload-artifact@v4
+        with:
+          name: iOS Build
+          path: export/release/ios/build/Release-iphoneos/*.ipa
+          if-no-files-found: error
