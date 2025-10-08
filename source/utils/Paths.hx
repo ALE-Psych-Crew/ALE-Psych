@@ -40,7 +40,7 @@ class Paths
 
     // UTILS
 
-    public static inline function getPath(file:String, missingPrint:Bool = true):String
+    public static inline function getPath(file:String, missingPrint:Bool = true, ?pos:haxe.PosInfos):String
     {
         #if MODS_ALLOWED
         if (exists(file, MODS))
@@ -51,7 +51,11 @@ class Paths
             return 'assets/' + file;
 
         if (missingPrint)
+        {
+            trace(pos.fileName + pos.lineNumber);
+
             debugTrace(file, MISSING_FILE);
+        }
 
         return null;
     }

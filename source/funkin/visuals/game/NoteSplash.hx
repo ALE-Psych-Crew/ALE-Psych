@@ -21,7 +21,7 @@ class NoteSplash extends FlxSprite
 	private var _textureLoaded:String = null;
 	private var _configLoaded:String = null;
 
-	public static var defaultNoteSplash(default, never):String = 'noteSplashes/noteSplashes';
+	public static var defaultNoteSplash(default, never):String = 'noteSplashes';
 	public static var configs:Map<String, NoteSplashConfig> = new Map<String, NoteSplashConfig>();
 
 	public function new(x:Float = 0, y:Float = 0) {
@@ -122,16 +122,16 @@ class NoteSplash extends FlxSprite
 
 	function loadAnims(skin:String, ?animName:String = null):NoteSplashConfig {
 		maxAnims = 0;
-		frames = Paths.getSparrowAtlas(skin);
+		frames = Paths.getSparrowAtlas('noteSplashes/' + skin);
 		var config:NoteSplashConfig = null;
 		if(frames == null)
 		{
 			skin = defaultNoteSplash + getSplashSkinPostfix();
-			frames = Paths.getSparrowAtlas(skin);
+			frames = Paths.getSparrowAtlas('noteSplashes/' + skin);
 			if(frames == null) //if you really need this, you really fucked something up
 			{
 				skin = defaultNoteSplash;
-				frames = Paths.getSparrowAtlas(skin);
+				frames = Paths.getSparrowAtlas('noteSplashes/' + skin);
 			}
 		}
 		config = precacheConfig(skin);
@@ -157,7 +157,7 @@ class NoteSplash extends FlxSprite
 	{
 		if(configs.exists(skin)) return configs.get(skin);
 
-		var path:String = Paths.getPath('images/$skin.txt');
+		var path:String = Paths.getPath('images/noteSplashes/$skin.txt');
 		var configFile:Array<String> = CoolUtil.coolTextFile(path);
 		if(configFile.length < 1) return null;
 		

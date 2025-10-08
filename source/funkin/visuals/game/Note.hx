@@ -161,7 +161,7 @@ class Note extends FlxSprite
 	}
 
 	private function set_noteType(value:String):String {
-		noteSplashData.texture = PlayState.SONG == null ? (PlayState.SONG.splashSkin == null ? 'noteSplashes/noteSplashes' : PlayState.SONG.splashSkin) : 'noteSplashes/noteSplashes';
+		noteSplashData.texture = PlayState.SONG == null ? (PlayState.SONG.splashSkin == null ? 'noteSplashes' : PlayState.SONG.splashSkin) : 'noteSplashes';
 
 		defaultRGB();
 
@@ -181,7 +181,7 @@ class Note extends FlxSprite
 					// splash data and colors
 					noteSplashData.r = 0xFFFF0000;
 					noteSplashData.g = 0xFF101010;
-					noteSplashData.texture = 'noteSplashes/noteSplashes-electric';
+					noteSplashData.texture = 'noteSplashes-electric';
 
 					// gameplay data
 					lowPriority = true;
