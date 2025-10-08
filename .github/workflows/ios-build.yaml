@@ -12,12 +12,16 @@ jobs:
 
     steps:
       - name: Pull the New Commit
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1
+        uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
+
+      - name: Set XCode app
+        if: inputs.os == 'macos-15'
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app
 
       - name: Install Libraries
         run: sh ./setup/install-haxelibs.sh
@@ -26,7 +30,7 @@ jobs:
         run: haxelib run lime build ios -nosign
 
       - name: Upload Game
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: iOS Build
           path: export/release/ios/build/Release-iphoneos/*.ipa

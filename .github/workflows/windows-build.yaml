@@ -12,10 +12,10 @@ jobs:
 
     steps:
       - name: Pull the New Commit
-        uses: actions/checkout@v2
+        uses: actions/checkout@main
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1
+        uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.6
 
@@ -26,7 +26,7 @@ jobs:
         run: haxelib run lime build windows
 
       - name: Upload Game
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@main
         with:
           name: Windows Build
           path: export/release/windows/bin
