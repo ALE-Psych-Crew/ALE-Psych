@@ -8,12 +8,14 @@ import rulescript.scriptedClass.RuleScriptedClass;
 import rulescript.types.ScriptedTypeUtil;
 import rulescript.types.ScriptedAbstract;
 import rulescript.interps.RuleScriptInterp;
+import rulescript.types.ScriptedModule;
 import rulescript.types.Abstracts;
 
 import hscript.Expr;
 
 using rulescript.Tools;
 
+@:access(rulescript.types.ScriptedTypeUtil)
 class HScriptConfig
 {
 	public static function config()
@@ -52,7 +54,7 @@ class HScriptConfig
 
 			script.superInstance = superInstance;
 
-			cast(script.interp, RuleScriptInterp).skipNextRestore = true;
+			script.getInterp(RuleScriptInterp).skipNextRestore = true;
 
 			if (type.isExpr)
 			{
@@ -70,66 +72,24 @@ class HScriptConfig
 
         ScriptedTypeUtil.resolveScript = function (name:String):Dynamic
         {
-            final path:Array<String> = name.split('.');
+            /*
+            final cl = RuleScriptedClassUtil.getClass(name);
+            
+            if (cl != null)
+                return cl;
+            */
 
-            final pack:Array<String> = [];
+            var path = Tools.parseTypePath(name);
 
-            while (Tools.startsWithLowerCase(path[0]))
-                pack.push(path.shift());
-
-            var moduleName:String = null;
-
-            if (path.length > 1)
-                moduleName = path.shift();
-
-            final module = ScriptedTypeUtil.resolveModule((pack.length >= 1 ? pack.join('.') + '.' + (moduleName ?? path[0]) : path[0]));
+            final module:Array<ModuleDecl> = ScriptedTypeUtil.resolveModule(path.modulePath());
 
             if (module == null)
                 return null;
 
-            final typeName = path[0];
-
-            final newModule:Array<ModuleDecl> = [];
-
-            var typeDecl:Null<ModuleDecl> = null;
-
-            for (decl in module)
-            {
-                switch (decl)
-                {
-                    case DPackage(_), DUsing(_), DImport(_):
-                        newModule.push(decl);
-                    case DClass(c) if (c.name == typeName):
-                        typeDecl = decl;
-                    case DAbstract(c) if (c.name == typeName):
-                        typeDecl = decl;
-                    default:
-                }
-            }
-
-            newModule.push(typeDecl);
-
-            return switch (typeDecl)
-            {
-                case DClass(classImpl):
-                    final scriptedClass = new ScriptedClass({
-                        name: moduleName ?? path[0],
-                        path: pack.join('.'),
-                        decl: newModule
-                    }, classImpl?.name);
-
-                    RuleScriptedClassUtil.registerRuleScriptedClass(scriptedClass.toString(), scriptedClass);
-
-                    scriptedClass;
-                case DAbstract(abstractImpl):
-                    new ScriptedAbstract({
-                        name: moduleName ?? path[0],
-                        path: pack.join('.'),
-                        decl: newModule
-                    }, abstractImpl?.name);
-                default: null;
-            }
+            return new ScriptedModule(path.name, module, ScriptedTypeUtil._currentContext).types[path.typeName];
         };
+
+        // Imports
 		
         final curPackage:Map<String, Dynamic> = RuleScript.defaultImports[''];
 
