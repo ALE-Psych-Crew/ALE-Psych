@@ -33,7 +33,7 @@
 - For testing or experimenting, use the GitHub Actions builds above.  
 
 See the [Getting Started Guide](https://github.com/ALE-Psych-Crew/ALE-Psych/wiki) for setup instructions.  
--  Look at Our Unique [Lua API documentation](docs/lua/Home.md) for scripting reference.
+-  Look at Our Unique [Lua API documentation](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md) for scripting reference.
 
 **For players:** press **Ctrl + Shift + M** to open the Mods menu.  
 
