@@ -10,6 +10,8 @@ class VideoSprite extends FlxVideoSprite
     public var errorCallback:String -> Void;
     public var loadCallback:Void -> Void;
 
+    public var loaded:Bool = false;
+
     override public function new(?x:Float = 0, ?y:Float = 0, path:String, playOnLoad:Bool = true, loop:Bool = false, ?loadCallback:Void -> Void, ?finishCallback:Void -> Void, ?errorCallback:String -> Void)
     {
         super(x, y);
@@ -61,6 +63,8 @@ class VideoSprite extends FlxVideoSprite
                             setGraphicSize(bitmap.bitmapData.width * scale, bitmap.bitmapData.height * scale);
                             
                             updateHitbox();
+
+                            loaded = true;
 
                             loadCallback();
                         }
