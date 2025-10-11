@@ -21,7 +21,7 @@ class ALESave
     public function new()
     {
         preferences = new FlxSave();
-		preferences.bind('preferences', FileUtil.getSavePath(false));
+		preferences.bind('preferences', FileUtil.getSavePath());
 
         score = new FlxSave();
         score.bind('score', FileUtil.getSavePath());
@@ -30,7 +30,7 @@ class ALESave
         custom.bind('custom', FileUtil.getSavePath());
 
         controls = new FlxSave();
-        controls.bind('controls', FileUtil.getSavePath(false));
+        controls.bind('controls', FileUtil.getSavePath());
     }
 
     public function loadPreferences()
