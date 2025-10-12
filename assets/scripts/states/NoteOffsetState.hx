@@ -99,13 +99,38 @@ function onUpdate(elapsed:Float)
     text.text = '< Offset: ${ClientPrefs.data.noteOffset} ms >';
 }
 
+var mobileCamera:FlxCamera;
+
 function postCreate()
 {
     Conductor.bpm = 128;
+    
+    if (CoolVars.mobileControls)
+    {
+        mobileCamera = new FlxCamera();
+        mobileCamera.bgColor = FlxColor.TRANSPARENT;
+        FlxG.cameras.add(mobileCamera, false);
+
+        var buttonMap:Array<Dynamic> = [
+            [50, 550, ClientPrefs.controls.ui.left, '< normal'],
+            [FlxG.width - 175, 550, ClientPrefs.controls.ui.right, '> normal'],
+        ];
+
+        for (button in buttonMap)
+        {
+            var obj:MobileButton = new MobileButton(button[0], button[1], button[2], button[3]);
+            add(obj);
+            obj.label.angle = button[4] ?? 0;
+            obj.cameras = [mobileCamera];
+        }
+    }
 }
 
 function onDestroy()
 {
+    if (CoolVars.mobileControls)
+        FlxG.cameras.remove(mobileCamera);
+
     CoolUtil.save.savePreferences();
 
     FlxG.sound.playMusic(Paths.music('freakyMenu'));
