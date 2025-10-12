@@ -25,7 +25,7 @@ class OptionsState extends MusicBeatState
     
     var canSelect:Dynamic = {menus: true, options: true};
     
-    var selInt:SelInt = {menus: 0, options: 0};
+    static var selInt:SelInt = {menus: 0, options: 0};
     
     var categories:Array<OptionsCategory>;
     
@@ -341,10 +341,10 @@ class OptionsState extends MusicBeatState
             },
             #end
             {
-                name: 'Delay and Combo',
+                name: 'Note Offset',
                 stateData: {
-                    script: false,
-                    state: 'game.states.NoteOffsetState'
+                    script: true,
+                    state: 'NoteOffsetState'
                 }
             },
             {
