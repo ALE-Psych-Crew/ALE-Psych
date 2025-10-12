@@ -1031,7 +1031,8 @@ class CharacterEditorState extends MusicBeatState
 			FlxG.mouse.visible = false;
 			if(!_goToPlayState)
 			{
-				CoolUtil.switchState(new funkin.editors.MasterEditorMenu());
+				CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
+				
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 			else CoolUtil.switchState(new PlayState());

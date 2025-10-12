@@ -334,7 +334,7 @@ class DialogueEditorState extends MusicBeatState
 				reloadText(false);
 			}
 			if(FlxG.keys.justPressed.ESCAPE) {
-				CoolUtil.switchState(new funkin.editors.MasterEditorMenu());
+				CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 1);
 				transitioning = true;
 			}

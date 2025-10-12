@@ -283,6 +283,15 @@ class Controls
         #if !mobile return FlxG.keys.anyJustPressed(ClientPrefs.controls.engine.character); #end
     }
 
+    public static var ENGINE_MASTER_EDITOR(get, never):Bool;
+    static function get_ENGINE_MASTER_EDITOR():Bool
+    {
+        #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+            return MobileControls.anyJustPressed(ClientPrefs.controls.engine.master_menu);
+
+        #if !mobile return FlxG.keys.anyJustPressed(ClientPrefs.controls.engine.master_menu); #end
+    }
+
     public static var MOUSE_WHEEL(get, never):Bool;
     static function get_MOUSE_WHEEL():Bool
         return FlxG.mouse.wheel != 0;

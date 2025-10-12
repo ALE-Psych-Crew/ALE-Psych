@@ -265,7 +265,7 @@ class MenuCharacterEditorState extends MusicBeatState
 		if(!blockInput) {
 			CoolUtil.toggleVolumeKeys(true);
 			if(FlxG.keys.justPressed.ESCAPE) {
-				CoolUtil.switchState(new funkin.editors.MasterEditorMenu());
+				CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 

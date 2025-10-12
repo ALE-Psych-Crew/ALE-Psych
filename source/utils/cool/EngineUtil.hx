@@ -67,7 +67,7 @@ class EngineUtil
 			initialState: 'TitleState',
 			freeplayState: 'FreeplayState',
 			storyMenuState: 'StoryMenuState',
-			masterEditorMenu: 'MasterEditorMenu',
+			masterEditorState: 'MasterEditorState',
 			mainMenuState: 'MainMenuState',
 
 			loadDefaultWeeks: true,

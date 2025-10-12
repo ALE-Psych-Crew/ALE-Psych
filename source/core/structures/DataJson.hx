@@ -9,7 +9,7 @@ typedef DataJson =
     var initialState:String;
     var freeplayState:String;
     var storyMenuState:String;
-    var masterEditorMenu:String;
+    var masterEditorState:String;
     var mainMenuState:String;
 
     var pauseSubState:String;

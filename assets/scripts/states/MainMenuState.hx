@@ -1,4 +1,3 @@
-import funkin.editors.MasterEditorMenu;
 import funkin.states.OptionsState;
 
 import flixel.text.FlxTextBorderStyle;
@@ -131,11 +130,11 @@ function onUpdate(elapsed:Float)
             CoolUtil.switchState(new CustomState(CoolVars.data.initialState));
         }
 
-        if (Controls.ENGINE_CHART)
+        if (Controls.ENGINE_MASTER_EDITOR && CoolVars.data.developerMode)
         {
             canSelect = false;
 
-            CoolUtil.switchState(new MasterEditorMenu());
+            CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
         }
     }
 }

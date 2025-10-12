@@ -1854,7 +1854,7 @@ class ChartingState extends MusicBeatState
 				// Protect against lost data when quickly leaving the chart editor.
 				autosaveSong();
 				PlayState.chartingMode = false;
-				CoolUtil.switchState(new funkin.editors.MasterEditorMenu());
+				CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				FlxG.mouse.visible = false;
 				return;

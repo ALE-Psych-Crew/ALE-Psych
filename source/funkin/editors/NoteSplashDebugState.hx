@@ -194,7 +194,7 @@ class NoteSplashDebugState extends MusicBeatState
 		var notTyping:Bool = !nameInputText.hasFocus && !imageInputText.hasFocus;
 		if(Controls.BACK && notTyping)
 		{
-			CoolUtil.switchState(new MasterEditorMenu());
+			CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			FlxG.mouse.visible = false;
 		}

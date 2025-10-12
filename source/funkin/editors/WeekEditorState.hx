@@ -23,8 +23,6 @@ import funkin.visuals.objects.HealthIcon;
 import funkin.visuals.objects.MenuCharacter;
 import funkin.visuals.objects.MenuItem;
 
-import funkin.editors.MasterEditorMenu;
-
 import sys.io.File;
 
 typedef WeekFile =
@@ -461,7 +459,7 @@ class WeekEditorState extends MusicBeatState
 		if(!blockInput) {
 			CoolUtil.toggleVolumeKeys(true);
 			if(FlxG.keys.justPressed.ESCAPE) {
-				CoolUtil.switchState(new MasterEditorMenu());
+				CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 		}
@@ -831,7 +829,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 		} else {
 			CoolUtil.toggleVolumeKeys(true);
 			if(FlxG.keys.justPressed.ESCAPE) {
-				CoolUtil.switchState(new MasterEditorMenu());
+				CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 
