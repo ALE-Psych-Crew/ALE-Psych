@@ -75,77 +75,69 @@ class MobileButton extends FlxSpriteGroup
     public var justReleased:Bool = false;
     public var releaseCallback:Void -> Void;
 
-    #if mobile
-    public var curTouch:Null<FlxTouch>;
-    public var touchID:Int = -1;
-
-    function getTouch():Null<FlxTouch>
-    {
-        if (touchID != -1)
-        {
-            var t = FlxG.touches.getByID(touchID);
-
-            if (t != null)
-                return t;
-        }
-
-        for (touch in FlxG.touches.list)
-            if (touch.overlaps(bg, cameras[0]) && touch.pressed)
-            {
-                touchID = touch.touchPointID;
-                
-                return touch;
-            }
-
-        return null;
-    }
-    #end
+    var pressDetect:Bool = true;
 
     override function update(elapsed:Float)
     {
         super.update(elapsed);
 
-        #if mobile
-        curTouch = getTouch();
-        var overlaped:Bool = curTouch == null ? false : curTouch.overlaps(bg, cameras[0]);
-        var mouseP:Bool = curTouch == null ? false : curTouch.justPressed;
-        var mouseR:Bool = curTouch == null ? false : curTouch.justReleased;
-        #else
-        var overlaped:Bool = FlxG.mouse.overlaps(bg, cameras[0]);
-        var mouseP:Bool = Controls.MOUSE_P;
-        var mouseR:Bool = Controls.MOUSE_R;
-        #end
-
         justPressed = false;
-
-        if (mouseP && overlaped)
-        {
-            pressed = true;
-
-            justPressed = true;
-
-            if (callback != null)
-                callback();
-
-            label.alpha = pressAlpha;
-        }
-
         justReleased = false;
 
-        if (mouseR && pressed)
+        var devPressed:Bool = false;
+        var devReleased:Bool = false;
+
+        var isOverlaped:Bool = false;
+
+        #if mobile
+        for (touch in FlxG.touches.list)
         {
-            pressed = false;
+            if (touch.overlaps(bg, cameras[0]) && touch.pressed)
+            {
+                devPressed = isOverlaped = true;
+                
+                break;
+            }
+        }
+        #else
+        devPressed = Controls.MOUSE;
+        devReleased = Controls.MOUSE_R;
+        
+        isOverlaped = FlxG.mouse.overlaps(bg, cameras[0]);
+        #end
 
-            justReleased = true;
+        if (isOverlaped)
+        {
+            if (devPressed && pressDetect)
+            {
+                pressDetect = false;
 
-            #if mobile
-            touchID = -1;
-            #end
+                justPressed = true;
 
-            if (releaseCallback != null)
-                releaseCallback();
+                pressed = true;
 
-            label.alpha = releaseAlpha;
+                if (callback != null)
+                    callback();
+                    
+                label.alpha = pressAlpha;
+            }
+        }
+
+        if (!pressDetect)
+        {
+            if (devReleased || !isOverlaped)
+            {
+                pressed = false;
+
+                pressDetect = true;
+
+                justReleased = true;
+
+                if (releaseCallback != null)
+                    releaseCallback();
+
+                label.alpha = releaseAlpha;
+            }
         }
     }
 
