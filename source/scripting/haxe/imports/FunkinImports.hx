@@ -12,6 +12,7 @@ import funkin.substates.CustomSubState;
 
 import funkin.visuals.objects.MenuCharacter;
 import funkin.visuals.objects.VideoSprite;
+import funkin.visuals.objects.Visualizer;
 
 import funkin.editors.ChartingState;
 import funkin.editors.CharacterEditorState;

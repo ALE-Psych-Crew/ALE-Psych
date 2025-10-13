@@ -81,6 +81,10 @@
 	
 	<haxelib name="flixel-away3d"/>
 
+	<haxelib name="funkin.vis" />
+
+	<haxelib name="grig.audio" />
+
 	<!-- ______________________________ Haxe Defines _____________________________ -->
 
 	<haxedef name='lime_disable_assets_version'/>	
