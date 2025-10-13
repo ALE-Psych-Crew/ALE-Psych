@@ -103,11 +103,10 @@ We welcome contributions:
 ---
 
 ## Credits
-- **AlejoGDOfficial** — Director and Lead Programmer  
-- **Kriptel** — RuleScript integration  
-- **ManuArtz** — Art  
-- **Malloy** — Rewrote README + Made Wiki  
-- **Psych Engine Team** — Original base project  
+- **Alejo GD Official** — Director | Lead Programmer  
+- **THE VOID** — RuleScript integration
+- **Malloy** — GitHub Maintainer | Managed Repositories and Wiki
+- **ManuArtz** — Artist
 - And [all contributors](https://github.com/ALE-Psych-Crew/ALE-Psych/graphs/contributors)  
 
 ---
