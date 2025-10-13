@@ -4,8 +4,6 @@ import scripting.lua.LuaPresetBase;
 
 import scripting.lua.LuaPresetUtils;
 
-import funkin.visuals.cutscenes.DialogueBoxPsych;
-
 import sys.FileSystem;
 
 class LuaPlayState extends LuaPresetBase
@@ -183,25 +181,6 @@ class LuaPlayState extends LuaPresetBase
                         game.gf.dance();
 				default:
                     game.boyfriend.dance();
-			}
-        });
-        
-        /**
-         * Starts the song dialogue
-         * 
-         * @param dialogueFile File that contains the dialogue
-         * @param music Path of the audio that will play as music
-         */
-        set('startDialogue', function(dialogueFile:String, ?music:String)
-        {
-            var path:String = CoolUtil.searchComplexFile(PlayState.songRoute + '/' + dialogueFile);
-
-			if (FileSystem.exists(path))
-			{
-				var shit:DialogueFile = DialogueBoxPsych.parseDialogue(path);
-
-				if (shit.dialogue.length > 0)
-					game.startDialogue(shit, music);
 			}
         });
 

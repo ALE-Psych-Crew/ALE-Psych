@@ -24,9 +24,6 @@ import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import openfl.events.KeyboardEvent;
 
-import funkin.visuals.cutscenes.CutsceneHandler;
-import funkin.visuals.cutscenes.DialogueBoxPsych;
-
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
@@ -595,37 +592,6 @@ class PlayState extends ScriptState
 			startCountdown();
 	}
 
-	var dialogueCount:Int = 0;
-	public var psychDialogue:DialogueBoxPsych;
-	
-	public function startDialogue(dialogueFile:DialogueFile, ?song:String = null):Void
-	{
-		if(psychDialogue != null) return;
-
-		if(dialogueFile.dialogue.length > 0) {
-			inCutscene = true;
-			psychDialogue = new DialogueBoxPsych(dialogueFile, song);
-			psychDialogue.scrollFactor.set();
-			if(endingSong) {
-				psychDialogue.finishThing = function() {
-					psychDialogue = null;
-					endSong();
-				}
-			} else {
-				psychDialogue.finishThing = function() {
-					psychDialogue = null;
-					startCountdown();
-				}
-			}
-			psychDialogue.nextDialogueThing = startNextDialogue;
-			psychDialogue.skipDialogueThing = skipDialogue;
-			psychDialogue.cameras = [camHUD];
-			add(psychDialogue);
-		} else {
-			startAndEnd();
-		}
-	}
-
 	var startTimer:FlxTimer;
 	var finishTimer:FlxTimer = null;
 
@@ -891,16 +857,7 @@ class PlayState extends ScriptState
 		opponentVocals.play();
 		Conductor.songPosition = time;
 	}
-
-	public function startNextDialogue() {
-		dialogueCount++;
-		callOnScripts('onNextDialogue', [dialogueCount]);
-	}
-
-	public function skipDialogue() {
-		callOnScripts('onSkipDialogue', [dialogueCount]);
-	}
-
+	
 	function startSong():Void
 	{
 		startingSong = false;

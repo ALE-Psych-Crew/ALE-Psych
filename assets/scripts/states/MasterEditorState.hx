@@ -2,8 +2,10 @@ import funkin.editors.ChartingState;
 import funkin.editors.CharacterEditorState;
 import funkin.editors.WeekEditorState;
 import funkin.editors.MenuCharacterEditorState;
+/*
 import funkin.editors.DialogueEditorState;
 import funkin.editors.DialogueCharacterEditorState;
+*/
 import funkin.editors.NoteSplashDebugState;
 
 import funkin.visuals.objects.Alphabet;
@@ -15,7 +17,7 @@ bg.scrollFactor.set();
 bg.color = FlxColor.fromRGB(50, 50, 50);
 bg.scale.x = bg.scale.y = 1.125;
 
-var options:Array<String> = ['Chart', 'Character', 'Week', 'Menu Character', 'Dialogue', 'Dialogue Portrait', 'Note Splash'];
+var options:Array<String> = ['Chart', 'Character', 'Week', 'Menu Character', /*'Dialogue', 'Dialogue Portrait',*/ 'Note Splash'];
 
 var toSelect:Array<Alphabet> = [];
 
@@ -72,10 +74,12 @@ function onUpdate(elapsed:Float)
 					CoolUtil.switchState(new WeekEditorState());
 				case 'Menu Character':
 					CoolUtil.switchState(new MenuCharacterEditorState());
+                /*
 				case 'Dialogue':
 					CoolUtil.switchState(new DialogueEditorState());
 				case 'Dialogue Portrait':
 					CoolUtil.switchState(new DialogueCharacterEditorState());
+                */
 				case 'Note Splash':
 					CoolUtil.switchState(new NoteSplashDebugState());
             }
