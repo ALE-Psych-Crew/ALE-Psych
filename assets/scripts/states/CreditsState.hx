@@ -63,7 +63,7 @@ function onCreate()
                 let.colorTransform.blueOffset = 255;
             }
 
-            var icon:FlxSprite = new FlxSprite().loadGraphic(Paths.image('credits/' + dev.icon));
+            var icon:FlxSprite = new FlxSprite().loadGraphic(Paths.image('credits/' + dev.icon, false) ?? Paths.image('credits/placeholder'));
             icons.add(icon);
             icon.scale.x = icon.scale.y = 0.8;
             icon.updateHitbox();
@@ -82,7 +82,7 @@ function onCreate()
         catOffset += 75;
     }
     
-    if (selInt >= developers.length - 1)
+    if (selInt >= developers.length)
         selInt = 0;
 
     descBG = new FlxSprite().makeGraphic(FlxG.width, 1, FlxColor.BLACK); 

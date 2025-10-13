@@ -4,178 +4,58 @@
             "name": "ALE Psych Crew",
             "developers": [
                 {
-                    "name": "AlejoGDOfficial",
+                    "name": "Alejo GD Official",
                     "icon": "alejo",
                     "link": "https://www.youtube.com/@alejogdofficial",
-                    "description": "Director and Lead Programmer",
-                    "color": "5457B0"
+                    "description": "Director\nLead Programmer",
+                    "color": "32335E"
                 },
                 {
-                    "name": "Kriptel",
-                    "icon": "kriptel",
-                    "link": "https://www.youtube.com/@kriptel_pro",
-                    "description": "Collaborated on the Implementation of RuleScript\nProgrammed some Macros",
-                    "color": "731D1D"
-                },
-                {
-                    "name": "ManuArtz",
-                    "icon": "manu",
-                    "link": "https://www.youtube.com/@MArtz_06",
-                    "description": "Main Artist",
-                    "color": "43406E"
+                    "name": "THE VOID",
+                    "icon": "void",
+                    "link": "https://www.youtube.com/@THEE_VOIDDD",
+                    "description": "Co-Founder\nVoice Actress",
+                    "color": "830607"
                 },
                 {
                     "name": "Malloy",
                     "icon": "malloyboi",
                     "link": "https://x.com/ArtByHenry2010",
-                    "description": "Collaborated as GitHub maintainer. Managed repositories and Wiki",
-                    "color": "e8812f"
+                    "description": "GitHub Maintainer\nManaged Repositories and Wiki",
+                    "color": "814B1F"
+                },
+                {
+                    "name": "ManuArtz",
+                    "icon": "manu",
+                    "link": "https://www.youtube.com/@MArtz_06",
+                    "description": "Artist",
+                    "color": "43406E"
                 }
             ]
         },
         {
-            "name": "Psych Engine Team",
+            "name": "Contributions",
             "developers": [
                 {
-                    "name": "Shadow Mario",
-                    "icon": "shadowmario",
-                    "link": "https://ko-fi.com/shadowmario",
-                    "description": "Main Programmer and Head of Psych Engine",
-                    "color": "444444"
+                    "name": "Kriptel",
+                    "icon": "kriptel",
+                    "link": "https://www.youtube.com/@kriptel_pro",
+                    "description": "RuleScript Implementation\nCoolMacro Coder",
+                    "color": "731D1D"
                 },
                 {
-                    "name": "Riveren",
-                    "icon": "riveren",
-                    "link": "https://twitter.com/riverennn",
-                    "description": "Main Artist/Animator of Psych Engine",
-                    "color": "14967B"
-                }
-            ]
-        },
-        {
-            "name": "Former Psych Engine Members",
-            "developers": [
-                {
-                    "name": "bb-panzu",
-                    "icon": "bb",
-                    "link": "https://twitter.com/bbsub3",
-                    "description": "Ex-Programmer of Psych Engine",
-                    "color": "3E813A"
+                    "name": "Slushi",
+                    "icon": "slushi",
+                    "link": "https://github.com/Slushi-Github",
+                    "description": "SL Windows API Creator",
+                    "color": "285C58"
                 },
                 {
-                    "name": "shubs",
-                    "icon": "face",
-                    "link": "",
-                    "description": "Ex-Programmer of Psych Engine\nI don't support them.",
-                    "color": "A1A1A1"
-                }
-            ]
-        },
-        {
-            "name": "Psych Engine Contributors",
-            "developers": [
-                {
-                    "name": "CrowPlexus",
-                    "icon": "crowplexus",
-                    "link": "https://twitter.com/crowplexus",
-                    "description": "Input System v3, Major Help and Other PRs",
-                    "color": "A1A1A1"
-                },
-                {
-                    "name": "Keoiki",
-                    "icon": "keoiki",
-                    "link": "https://twitter.com/Keoiki_",
-                    "description": "Note Splash Animations and Latin Alphabet",
-                    "color": "D2D2D2"
-                },
-                {
-                    "name": "SqirraRNG",
-                    "icon": "sqirra",
-                    "link": "https://twitter.com/gedehari",
-                    "description": "Crash Handler and Base code for\nChart Editor's Waveform",
-                    "color": "E1843A"
-                },
-                {
-                    "name": "EliteMasterEric",
-                    "icon": "mastereric",
-                    "link": "https://twitter.com/EliteMasterEric",
-                    "description": "Runtime Shaders support",
-                    "color": "FFBD40"
-                },
-                {
-                    "name": "PolybiusProxy",
-                    "icon": "proxy",
-                    "link": "https://twitter.com/polybiusproxy",
-                    "description": ".MP4 Video Loader Library (hxCodec)",
-                    "color": "DCD294"
-                },
-                {
-                    "name": "Tahir",
-                    "icon": "tahir",
-                    "link": "https://twitter.com/tahirk618",
-                    "description": "Implementing & Maintaining SScript and Other PRs",
-                    "color": "A04397"
-                },
-                {
-                    "name": "iFlicky",
-                    "icon": "flicky",
-                    "link": "https://twitter.com/flicky_i",
-                    "description": "Composer of Psync and Tea Time\nMade the Dialogue Sounds",
-                    "color": "9E29CF"
-                },
-                {
-                    "name": "KadeDev",
-                    "icon": "kade",
-                    "link": "https://twitter.com/kade0912",
-                    "description": "Fixed some issues on Chart Editor and Other PRs",
-                    "color": "64A250"
-                },
-                {
-                    "name": "superpowers04",
-                    "icon": "superpowers04",
-                    "link": "https://twitter.com/superpowers04",
-                    "description": "LUA JIT Fork",
-                    "color": "B957ED"
-                },
-                {
-                    "name": "CheemsAndFriends",
-                    "icon": "face",
-                    "link": "https://twitter.com/CheemsnFriendos",
-                    "description": "Creator of FlxAnimate\n(Icon will be added later, merry christmas!)",
-                    "color": "A1A1A1"
-                }
-            ]
-        },
-        {
-            "name": "Funkin' Crew",
-            "developers": [
-                {
-                    "name": "ninjamuffin99",
-                    "icon": "ninjamuffin99",
-                    "link": "https://twitter.com/ninja_muffin99",
-                    "description": "Programmer of Friday Night Funkin'",
-                    "color": "CF2D2D"
-                },
-                {
-                    "name": "PhantomArcade",
-                    "icon": "phantomarcade",
-                    "link": "https://twitter.com/PhantomArcade3K",
-                    "description": "Animator of Friday Night Funkin'",
-                    "color": "FADC45"
-                },
-                {
-                    "name": "evilsk8r",
-                    "icon": "evilsk8r",
-                    "link": "https://twitter.com/evilsk8r",
-                    "description": "Artist of Friday Night Funkin'",
-                    "color": "5ABD4B"
-                },
-                {
-                    "name": "kawaisprite",
-                    "icon": "kawaisprite",
-                    "link": "https://twitter.com/kawaisprite",
-                    "description": "Composer of Friday Night Funkin'",
-                    "color": "378FC7"
+                    "name": "Ina the Cat",
+                    "icon": "ina",
+                    "link": "https://github.com/InaTheCat",
+                    "description": "Improved Video Support",
+                    "color": "4D3C64"
                 }
             ]
         }
