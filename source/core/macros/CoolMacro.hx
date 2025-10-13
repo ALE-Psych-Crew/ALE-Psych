@@ -1,7 +1,5 @@
 package core.macros;
 
-// Author: Kriptel
-
 import haxe.macro.Context;
 import haxe.macro.Expr.Access;
 import haxe.macro.Expr.Field;

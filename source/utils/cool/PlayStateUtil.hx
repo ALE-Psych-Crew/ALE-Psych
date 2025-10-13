@@ -86,4 +86,35 @@ class PlayStateUtil
 		if (goToPlayState)
 			loadSong(PlayState.playlist[0], difficulty);
 	}
+	
+    public static function exitSong()
+    {
+        PlayState.instance.vocals.volume = 0;
+
+        PlayState.deathCounter = 0;
+        PlayState.seenCutscene = false;
+
+        PlayState.changedDifficulty = false;
+        PlayState.chartingMode = false;
+
+        FlxG.camera.followLerp = 0;
+        
+        PlayState.instance.paused = true;
+
+        FlxG.sound.playMusic(Paths.music('freakyMenu'));
+
+        StateUtil.switchState(new CustomState(PlayState.isStoryMode ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
+    }
+
+    public static function resetSong()
+    {
+        PlayState.instance.paused = true;
+        PlayState.instance.vocals.volume = 0;
+
+        MusicBeatState.instance.shouldClearMemory = false;
+
+        FlxG.sound.music.volume = 0;
+        
+        StateUtil.resetState();
+    }
 }

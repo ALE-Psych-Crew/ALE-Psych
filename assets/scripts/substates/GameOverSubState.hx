@@ -5,6 +5,8 @@ import flixel.util.FlxColor;
 import flixel.sound.FlxSound;
 import flixel.FlxObject;
 
+import utils.cool.PlayStateUtil;
+
 var deathMusic:FlxSound;
 var deathStart:FlxSound;
 
@@ -77,23 +79,9 @@ function onUpdate()
 
         if (Controls.BACK)
 		{
-			PlayState.instance.vocals.volume = 0;
+            CoolVars.skipTransIn = true;
 
-			PlayState.deathCounter = 0;
-			PlayState.seenCutscene = false;
-
-			PlayState.changedDifficulty = false;
-			PlayState.chartingMode = false;
-			
-			PlayState.instance.paused = true;
-
-			CoolVars.skipTransIn = true;
-
-			FlxG.camera.followLerp = 0;
-
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
-			CoolUtil.switchState(new CustomState(PlayState.isStoryMode ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
+            PlayStateUtil.exitSong();
             
             close();
         }

@@ -4,6 +4,8 @@ import flixel.util.FlxColor;
 
 import funkin.visuals.objects.Alphabet;
 
+import utils.cool.PlayStateUtil;
+
 var subCamera:FlxCamera;
 
 var sprites:FlxTypedGroup<Alphabet>;
@@ -151,7 +153,7 @@ function onUpdate(elapsed:Float)
 			case 'resume':
 				close();
 			case 'restart song':
-				resetSong();
+				PlayStateUtil.resetSong();
 			case 'skip time':
 				var timeSecond:Float = Math.floor(theTime / 1000) * 1000;
 
@@ -179,23 +181,9 @@ function onUpdate(elapsed:Float)
 				
 				resetSong();
 			case 'exit to menu':
-				PlayState.instance.vocals.volume = 0;
-
-				PlayState.deathCounter = 0;
-				PlayState.seenCutscene = false;
-
-				PlayState.changedDifficulty = false;
-				PlayState.chartingMode = false;
-
-				FlxG.camera.followLerp = 0;
-				
-				PlayState.instance.paused = true;
-
 				CoolVars.skipTransIn = true;
 
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
-				CoolUtil.switchState(new CustomState(PlayState.isStoryMode ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
+				PlayStateUtil.exitSong();
 		}
 	}
 
@@ -215,18 +203,6 @@ function updateTime()
 
 	if (timeText != null)
 		timeText.text = FlxStringUtil.formatTime(theTime / 1000) + ' / ' + FlxStringUtil.formatTime(FlxG.sound.music.length / 1000);
-}
-
-function resetSong()
-{
-	PlayState.instance.paused = true;
-	PlayState.instance.vocals.volume = 0;
-
-	MusicBeatState.instance.shouldClearMemory = false;
-
-	FlxG.sound.music.volume = 0;
-	
-	CoolUtil.resetState();
 }
 
 function changeShit()
