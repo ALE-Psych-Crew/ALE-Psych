@@ -56,7 +56,7 @@ class MobileButton extends FlxSpriteGroup
         }
 
         for (key in keys)
-            if (key != null)
+            if (key != null || key != 0)
             {
                 if (MobileControls._controlsMap.exists(key))
                     replacedMap.set(key, MobileControls._controlsMap.get(key));
@@ -152,7 +152,7 @@ class MobileButton extends FlxSpriteGroup
     override public function destroy()
     {
         for (key in keys)
-            if (key != null)
+            if (key != null || key != 0)
                 if (replacedMap.exists(key))
                     MobileControls._controlsMap.set(key, replacedMap.get(key));
                 else

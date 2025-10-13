@@ -130,7 +130,7 @@ function onUpdate(elapsed:Float)
             CoolUtil.switchState(new CustomState(CoolVars.data.initialState));
         }
 
-        if (Controls.ENGINE_MASTER_EDITOR && CoolVars.data.developerMode)
+        if (!CoolVars.mobileControls && Controls.ENGINE_MASTER_EDITOR && CoolVars.data.developerMode)
         {
             canSelect = false;
 

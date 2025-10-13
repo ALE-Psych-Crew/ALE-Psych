@@ -112,8 +112,9 @@ function postCreate()
         FlxG.cameras.add(mobileCamera, false);
 
         var buttonMap:Array<Dynamic> = [
-            [50, 550, ClientPrefs.controls.ui.left, '< normal'],
-            [FlxG.width - 175, 550, ClientPrefs.controls.ui.right, '> normal'],
+            [50, 485, ClientPrefs.controls.ui.left, '< normal'],
+            [200, 485, ClientPrefs.controls.ui.right, '> normal'],
+            [FlxG.width - 175, 485, ClientPrefs.controls.ui.back, 'b uppercase'],
         ];
 
         for (button in buttonMap)
