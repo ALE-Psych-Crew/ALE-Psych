@@ -66,7 +66,7 @@ class MainState extends MusicBeatState
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
         #if mobile
-        if (showedModMenu)
+        if (showedModMenu || Mods.UNIQUE_MOD != null)
         {
         	CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true);
         } else {
