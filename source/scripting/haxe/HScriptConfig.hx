@@ -86,7 +86,7 @@ class HScriptConfig
             if (module == null)
                 return null;
 
-            return new ScriptedModule(path.name, module, ScriptedTypeUtil._currentContext).types[path.typeName];
+            return new ScriptedModule(path.modulePath(), module, ScriptedTypeUtil._currentContext).types[path.typeName];
         };
 
         // Imports
