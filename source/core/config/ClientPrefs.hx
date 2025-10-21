@@ -31,7 +31,7 @@ class ClientPrefs
 			reset_game: [FlxKey.N, null],
 			master_menu: [FlxKey.SEVEN, null],
 			fps_counter: [FlxKey.F3, null],
-			update_engine: [FlxKey.F4, null]
+			//update_engine: [FlxKey.F4, null]
 		}
 	};
 

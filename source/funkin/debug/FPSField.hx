@@ -37,7 +37,7 @@ class FPSField extends DebugField
                     lines: [
                         {
                             type: TEXT,
-                            value: (Mods.folder.trim() != '' && Mods.folder.trim() != null ? Mods.folder : 'ALE Psych ' + CoolVars.engineVersion) + (CoolVars.data.developerMode ? ' - Developer Mode' : '')
+                            value: 'ALE Psych ' + CoolVars.engineVersion + (Mods.folder.trim() != '' && Mods.folder.trim() != null ? '\n' + Mods.folder : '') + (CoolVars.data.developerMode ? ' - Developer Mode' : '')
                         }
                     ],
                     size: 10,

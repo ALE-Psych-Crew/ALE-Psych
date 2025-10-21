@@ -95,7 +95,9 @@ class ALESave
     public function loadControls()
     {
         if (controls.data.settings != null)
-            ClientPrefs.controls = cast controls.data.settings;
+			for (field in Reflect.fields(controls.data.settings))
+				if (Reflect.field(ClientPrefs.controls, field) != null)
+					Reflect.setField(ClientPrefs.controls, field, Reflect.field(controls.data.settings, field));
     }
 
     public function savePreferences()
@@ -146,6 +148,10 @@ class ALESave
 
     public function destroy()
     {
+        ClientPrefs.data = {};
+        
+        ClientPrefs.custom = {};
+
         preferences.destroy();
         preferences = null;
 

@@ -4,6 +4,10 @@ import openfl.display.Sprite;
 
 import core.structures.DebugFieldText;
 
+import openfl.events.KeyboardEvent;
+
+import utils.cool.KeyUtil;
+
 class DebugCounter extends Sprite
 {
     var fpsCounter:DebugField;
@@ -15,6 +19,8 @@ class DebugCounter extends Sprite
     public function new(data:Array<Array<DebugFieldText>>)
     {
         super();
+		
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
 
         FlxG.stage.addEventListener('activate', onFocus);
         FlxG.stage.addEventListener('deactivate', onUnFocus);
@@ -77,6 +83,8 @@ class DebugCounter extends Sprite
 
     public function destroy()
     {
+		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
+
         FlxG.stage.removeEventListener('activate', onFocus);
         FlxG.stage.removeEventListener('deactivate', onUnFocus);
         
@@ -139,5 +147,13 @@ class DebugCounter extends Sprite
 
                 fpsCounter.visible = false;
         }
+    }
+    
+    function onKeyPressed(event:KeyboardEvent)
+    {
+		var key = KeyUtil.openFLToFlixelKey(event);
+
+		if (ClientPrefs.controls.engine.fps_counter.contains(key))
+            switchMode();
     }
 }

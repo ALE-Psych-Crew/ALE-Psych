@@ -14,17 +14,11 @@ import flixel.input.keyboard.FlxKey;
 		'utils.cool.StateUtil',
 		'utils.cool.StringUtil',
 		'utils.cool.SystemUtil',
+		'utils.cool.KeyUtil',
 		'flixel.away3d.Flx3DUtil'
 	]
 ))
 class CoolUtil
 {
 	public static var save:ALESave;
-
-	public static function toggleVolumeKeys(?turnOn:Bool = true)
-	{
-		FlxG.sound.muteKeys = turnOn ? [FlxKey.M] : [];
-		FlxG.sound.volumeDownKeys = turnOn ? [FlxKey.MINUS, FlxKey.NUMPADMINUS] : [];
-		FlxG.sound.volumeUpKeys = turnOn ? [FlxKey.PLUS, FlxKey.NUMPADPLUS] : [];
-	}
 }

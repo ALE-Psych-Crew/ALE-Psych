@@ -1,5 +1,6 @@
 import funkin.states.OptionsState;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxTextBorderStyle;
 import flixel.effects.FlxFlicker;
 
@@ -20,11 +21,11 @@ magentaBg.scale.set(1.25, 1.25);
 magentaBg.screenCenter('x');
 magentaBg.visible = false;
 
-var version = new FlxText(10, 0, 0, 'ALE Psych ' + CoolVars.engineVersion + '\n\nFriday Night Funkin\' v0.2.8');
-version.setFormat(Paths.font('vcr.ttf'), 17, FlxColor.WHITE, 'left', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-add(version);
+var version = new FlxText(10, 0, 0, 'ALE Psych ' + CoolVars.engineVersion + '\nPress [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu\nFriday Night Funkin\' v0.2.8');
+version.setFormat(Paths.font('vcr.ttf'), 17.5, FlxColor.WHITE, 'left', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 version.scrollFactor.set();
 version.y = FlxG.height - version.height - 10;
+version.borderSize = 1.125;
 
 var sprites:Array<FlxSprite> = [];
 
@@ -46,6 +47,8 @@ for (index => option in options)
 
     sprites.push(img);
 }
+
+add(version);
 
 var selInt:Int = CoolUtil.save.custom.data.mainMenu ?? 0;
 

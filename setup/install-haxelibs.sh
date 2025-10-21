@@ -8,7 +8,7 @@ echo "Installing dependencies..."
 
 haxelib git lime https://github.com/AlejoGDOfficial/Lime
 haxelib install openfl 9.4.1
-haxelib install flixel 6.1.0 --skip-dependencies
+haxelib install flixel 6.1.1 --skip-dependencies
 haxelib install flixel-addons 3.3.2
 haxelib install flixel-ui 2.6.4
 haxelib install flixel-tools 1.5.1
@@ -20,7 +20,7 @@ haxelib install hxluajit 1.0.5 --skip-dependencies
 haxelib install hxluajit-wrapper 1.0.0 --skip-dependencies
 haxelib install hxdiscord_rpc 1.3.0 --skip-dependencies
 haxelib install hxvlc 2.2.2 --skip-dependencies
-haxelib git rulescript https://github.com/Kriptel/RuleScript 76832009d88a5f5db2181b18ad297405513179ab --skip-dependencies
+haxelib git rulescript https://github.com/Kriptel/RuleScript 5aa294af9e2305760272236174e0f22ad045a1db --skip-dependencies
 haxelib git hscript https://github.com/HaxeFoundation/hscript 92ffe9c519bbccf783df0b3400698c5b3cc645ef
 haxelib git ale-ui https://github.com/ALE-Psych-Crew/ALE-UI --skip-dependencies
 haxelib git flixel-away3d https://github.com/ALE-Psych-Crew/Flixel-Away-3D --skip-dependencies
