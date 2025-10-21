@@ -20,22 +20,44 @@
 - [Credits](#credits)
 - [License](#license)
 
----
-
 ## Downloads
 
 <p align="center">
-  <a href="https://github.com/ALE-Psych-Crew/ALE-Psych/actions?query=branch%3Amain+is%3Asuccess"><img alt="Latest successful run" src="https://img.shields.io/badge/Latest%20successful%20run-view-0366d6.svg"></a>
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/windows-build.yaml/main/Windows%20Build.zip">
+    <img alt="Windows x64 Actions Build"
+      src="https://img.shields.io/badge/Windows%20x64-Actions%20Build-0078D6?logo=windows&logoColor=white&style=for-the-badge">
+  </a>
+
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/windows-build-32.yaml/main/Windows%20Build%20%2832%20Bits%29.zip">
+    <img alt="Windows x32 Actions Build"
+      src="https://img.shields.io/badge/Windows%20x32-Actions%20Build-00A4EF?logo=windows&logoColor=white&style=for-the-badge">
+  </a>
+
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/android-build.yaml/main/Android%20Build.zip">
+    <img alt="Android Actions Build"
+      src="https://img.shields.io/badge/Android-Actions%20Build-3DDC84?logo=android&logoColor=white&style=for-the-badge">
+  </a>
+
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/ios-build.yaml/main/iOS%20Build.zip">
+    <img alt="iOS Actions Build"
+      src="https://img.shields.io/badge/iOS-Actions%20Build-000000?logo=apple&logoColor=white&style=for-the-badge">
+  </a>
 </p>
 
-- Official tagged releases are **not available yet**.  
-- For stability, wait for tagged releases.  
-- For testing or experimenting, use the GitHub Actions builds above.  
+### Build Notes
 
-See the [Getting Started Guide](https://github.com/ALE-Psych-Crew/ALE-Psych/wiki) for setup instructions.  
--  Look at Our Unique [Lua API documentation](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md) for scripting reference.
+- **Tagged releases are not yet available.**  
+- For a more stable experience, consider waiting for official releases.  
+- For testing and development, use the builds provided above via GitHub Actions.  
 
-**For players:** press **Ctrl + Shift + M** to open the Mods menu.  
+### Additional Resources
+
+- [Getting Started Guide](https://github.com/ALE-Psych-Crew/ALE-Psych/wiki) – Installation and setup instructions  
+- [Lua API Documentation](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md) – In-depth scripting reference
+
+### Quick Tip for Players
+
+To open the Mods menu in-game, press **Ctrl + Shift + M**.
 
 ---
 
