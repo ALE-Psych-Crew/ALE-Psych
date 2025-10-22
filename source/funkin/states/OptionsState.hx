@@ -499,8 +499,14 @@ class OptionsState extends MusicBeatState
                         }
 
                         if (i >= 0)
-                            for (option in cast(cat.options, Array<Dynamic>))
-                                categories[i].options.push(option);
+                            if (categories[i].stateData != null)
+                            {
+                                categories[i].options = cat.options;
+                                categories[i].stateData = null;
+                            }
+                            else
+                                for (option in cast(cat.options, Array<Dynamic>))
+                                    categories[i].options.push(option);
                         else
                             categories.push(cast cat);
                     }
