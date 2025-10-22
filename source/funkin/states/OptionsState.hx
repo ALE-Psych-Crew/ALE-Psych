@@ -468,18 +468,48 @@ class OptionsState extends MusicBeatState
 
         if (Paths.exists('options.json'))
         {
-            var jsonData:Dynamic = Paths.json('options.json');
+            var jsonData:Dynamic = Paths.json('options');
 
             if (jsonData.categories is Array)
                 for (cat in cast(jsonData.categories, Array<Dynamic>))
                 {
-                    for (option in cast(cat.options, Array<Dynamic>))
+                    var i:Int = -1;
+                    for (index => category in categories)
                     {
-                        if (Reflect.fields(ClientPrefs.custom).contains(option.variable))
-                            Reflect.setField(option, 'initialValue', Reflect.field(ClientPrefs.custom, option.variable));
+                        if (category.name == cast(cat.name, String))
+                        {
+                            i = index;
+                            break;
+                        }
                     }
 
-                    categories.push(cast cat);
+                    if (cat.stateData != null)
+                    {
+                        if (i >= 0)
+                            categories[i].stateData = cat.stateData;
+                        else
+                            categories.push(cast cat);
+                    }
+                    else
+                    {
+                        for (option in cast(cat.options, Array<Dynamic>))
+                        {
+                            if (Reflect.fields(ClientPrefs.custom).contains(option.variable))
+                                Reflect.setField(option, 'initialValue', Reflect.field(ClientPrefs.custom, option.variable));
+                        }
+
+                        if (i >= 0)
+                            if (categories[i].stateData != null)
+                            {
+                                categories[i].options = cat.options;
+                                categories[i].stateData = null;
+                            }
+                            else
+                                for (option in cast(cat.options, Array<Dynamic>))
+                                    categories[i].options.push(option);
+                        else
+                            categories.push(cast cat);
+                    }
                 }
         }
 
