@@ -5,7 +5,7 @@ import haxe.macro.Expr.Access;
 import haxe.macro.Expr.Field;
 import haxe.macro.Type;
 
-class CoolMacro
+class FunctionsMergeMacro
 {
 	public static function build(utils:Array<String>):Array<Field>
 	{

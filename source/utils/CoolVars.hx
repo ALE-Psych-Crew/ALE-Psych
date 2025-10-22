@@ -4,6 +4,7 @@ import openfl.Lib;
 
 import core.structures.DataJson;
 
+@:build(core.macros.CoolVarsMacro.build())
 class CoolVars
 {
 	public static var data:DataJson = null;

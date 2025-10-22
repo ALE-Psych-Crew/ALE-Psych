@@ -2,7 +2,7 @@ package utils;
 
 import flixel.input.keyboard.FlxKey;
 
-@:build(core.macros.CoolMacro.build(
+@:build(core.macros.FunctionsMergeMacro.build(
 	[
 		'utils.cool.ColorUtil',
 		'utils.cool.EngineUtil',
