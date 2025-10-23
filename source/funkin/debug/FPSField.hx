@@ -37,7 +37,7 @@ class FPSField extends DebugField
                     lines: [
                         {
                             type: TEXT,
-                            value: 'ALE Psych ' + CoolVars.engineVersion + ' (Commit ' + CoolVars.GITHUB_COMMIT + ')' + (Mods.folder.trim() != '' && Mods.folder.trim() != null ? '\n' + Mods.folder : '') + (CoolVars.data.developerMode ? ' - Developer Mode' : '')
+                            value: 'ALE Psych ' + CoolVars.engineVersion + (CoolVars.GITHUB_COMMIT == null ? '' : ' (Commit ' + CoolVars.GITHUB_COMMIT + ')') + (Mods.folder.trim() != '' && Mods.folder.trim() != null ? '\n' + Mods.folder : '') + (CoolVars.data.developerMode ? ' - Developer Mode' : '')
                         }
                     ],
                     size: 10,

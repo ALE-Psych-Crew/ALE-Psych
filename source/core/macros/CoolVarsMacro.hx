@@ -10,15 +10,24 @@ class CoolVarsMacro
 	public static function build():Array<Field>
 	{
 		var fields:Array<Field> = Context.getBuildFields();
-		
-        fields.push(
-            {
-                name: 'GITHUB_COMMIT',
-                access: [APublic, AStatic, AFinal],
-                kind: FVar(macro:String, macro new sys.io.Process('git', ['log', "--pretty=format:%h", '-n', '1']).stdout.readLine()),
-                pos: Context.currentPos()
-            }
-        );
+
+		var shaExpr:Expr = macro null;
+
+        try
+        {
+            var proc = new sys.io.Process('git', ['log', "--pretty=format:%h", '-n', '1']);
+            var sha = proc.stdout.readLine();
+            proc.close();
+            shaExpr = macro $v{sha};
+        } catch (e:Dynamic) {}
+
+        fields.push({
+            name: 'GITHUB_COMMIT',
+            access: [APublic, AStatic, AFinal],
+            kind: FVar(macro:String, shaExpr),
+            pos: Context.currentPos()
+        });
+
 
 		return fields;
 	}
