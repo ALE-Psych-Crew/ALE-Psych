@@ -21,7 +21,7 @@ haxelib install hxluajit 1.0.5 --skip-dependencies
 haxelib install hxluajit-wrapper 1.0.0 --skip-dependencies
 haxelib install hxdiscord_rpc 1.3.0 --skip-dependencies
 haxelib install hxvlc 2.2.2 --skip-dependencies
-haxelib git rulescript https://github.com/Kriptel/RuleScript 5aa294af9e2305760272236174e0f22ad045a1db --skip-dependencies
+haxelib git rulescript https://github.com/Kriptel/RuleScript 83f20681e15e18277661dab68cb9796a43c06878 --skip-dependencies
 haxelib git hscript https://github.com/HaxeFoundation/hscript 92ffe9c519bbccf783df0b3400698c5b3cc645ef
 haxelib git ale-ui https://github.com/ALE-Psych-Crew/ALE-UI --skip-dependencies
 haxelib git flixel-away3d https://github.com/ALE-Psych-Crew/Flixel-Away-3D --skip-dependencies
