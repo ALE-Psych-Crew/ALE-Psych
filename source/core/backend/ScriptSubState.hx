@@ -2,6 +2,8 @@ package core.backend;
 
 #if HSCRIPT_ALLOWED
 import scripting.haxe.HScript;
+
+import rulescript.Context;
 #end
 
 #if LUA_ALLOWED
@@ -10,12 +12,16 @@ import scripting.lua.LuaScript;
 
 import haxe.Exception;
 
+import core.interfaces.IScriptState;
+
 class ScriptSubState extends MusicBeatSubState
 {
     public static var instance:ScriptSubState;
 
     #if HSCRIPT_ALLOWED
     public var hScripts:Array<HScript> = [];
+
+    public var hScriptsContext:Context;
     #end
 
     #if LUA_ALLOWED
@@ -23,6 +29,15 @@ class ScriptSubState extends MusicBeatSubState
     #end
 
     public var camGame:FlxCamera;
+
+    public function new()
+    {
+        #if HSCRIPT_ALLOWED
+        hScriptsContext = new Context();
+        #end
+
+        super();
+    }
 
     override public function create()
     {
@@ -76,7 +91,7 @@ class ScriptSubState extends MusicBeatSubState
 
         if (Paths.exists(newPath + '.hx'))
         {
-            var script:HScript = new HScript(Paths.getPath(newPath + '.hx'), SUBSTATE, path);
+            var script:HScript = new HScript(Paths.getPath(newPath + '.hx'), hScriptsContext, SUBSTATE, path);
 
             if (!script.failedParsing)
             {

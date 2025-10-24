@@ -13,15 +13,17 @@ import sys.io.File;
 
 import scripting.haxe.HScriptImports;
 
+import rulescript.Context;
+
 class HScript extends ALERuleScript
 {
 	public final type:ScriptType;
 
-	override public function new(filePath:String, type:ScriptType, scriptName:String)
+	override public function new(filePath:String, context:Context, type:ScriptType, scriptName:String)
 	{
 		this.type = type;
 
-		super(scriptName);
+		super(scriptName, context);
 
 		preset();
 

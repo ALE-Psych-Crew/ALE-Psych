@@ -10,15 +10,15 @@ import scripting.haxe.ALEParser;
 import haxe.ds.StringMap;
 import haxe.Exception;
 
-using StringTools;
+import rulescript.Context;
 
 class ALERuleScript extends RuleScript
 {
 	public var failedParsing:Bool = false;
 
-	override public function new(scriptName:String)
+	override public function new(scriptName:String, ?context:Context)
 	{
-		super(new ALEParser(scriptName));
+		super(null, new ALEParser(scriptName), context);
 
 		getParser(HxParser).allowAll();
 

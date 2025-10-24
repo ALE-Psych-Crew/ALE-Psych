@@ -2708,7 +2708,7 @@ class PlayState extends ScriptState
         #if HSCRIPT_ALLOWED
         if (Paths.exists(path + '.hx'))
         {
-            var script:HScript = new HScript(Paths.getPath(path + '.hx'), STATE, path);
+            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, STATE, path);
 
 			new scripting.haxe.HScriptPlayState(script);
 
