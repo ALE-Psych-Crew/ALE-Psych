@@ -18,3 +18,9 @@
 
 #### `RETURN`: Obtained color 
 
+---
+
+### > `getColorFromRGB(r:Int, g:Int, b:Int):Int`
+
+#### 
+

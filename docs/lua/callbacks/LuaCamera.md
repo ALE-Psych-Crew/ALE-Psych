@@ -16,3 +16,39 @@
 
 - `axes`: Defines the axes in which the camera will shake. Can be `0x00`, `0x01`, `0x11` or `0x10` 
 
+---
+
+### > `cameraFlash(camera:String, tag:String, ?color:FlxColor, ?duration:Float, ?force:Bool)`
+
+#### 
+
+---
+
+### > `cameraFade(camera:String, tag:String, ?color:FlxColor, ?duration:Float, ?fadeIn:Bool, ?force:Bool)`
+
+#### 
+
+---
+
+### > `stopCameraFX(camera:String)`
+
+#### 
+
+---
+
+### > `stopCameraFade(camera:String)`
+
+#### 
+
+---
+
+### > `stopCameraFlash(camera:String)`
+
+#### 
+
+---
+
+### > `stopCameraShake(camera:String)`
+
+#### 
+

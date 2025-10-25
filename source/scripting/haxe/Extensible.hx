@@ -57,4 +57,6 @@ class ScriptCamera extends FlxCamera implements RuleScriptedClass {}
 
 // ALE Psych
 
+#if LUA_ALLOWED
 class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
+#end

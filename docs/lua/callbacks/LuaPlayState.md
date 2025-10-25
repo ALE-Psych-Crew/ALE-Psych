@@ -46,16 +46,6 @@
 
 ---
 
-### > `startDialogue(dialogueFile:String, ?music:String)`
-
-#### Starts the song dialogue 
-
-- `dialogueFile`: File that contains the dialogue 
-
-- `music`: Path of the audio that will play as music 
-
----
-
 ### > `noteTween(tag:String, note:Int, props:Dynamic, ?time:Float, ?options:Dynamic)`
 
 #### Performs a tween on a note 

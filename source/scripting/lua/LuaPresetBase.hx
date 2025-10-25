@@ -1,3 +1,4 @@
+#if LUA_ALLOWED
 package scripting.lua;
 
 import haxe.ds.StringMap;
@@ -86,3 +87,4 @@ class LuaPresetBase
         return result;
     }
 }
+#end

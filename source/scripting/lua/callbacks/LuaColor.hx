@@ -67,5 +67,13 @@ class LuaColor extends LuaPresetBase
         {
             return FlxColor.fromString(str);
         });
+
+        /**
+         * 
+         */
+        set('getColorFromRGB', function(r:Int, g:Int, b:Int):Int
+        {
+            return FlxColor.fromRGB(r, g, b);
+        });
     }
 }

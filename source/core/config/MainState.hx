@@ -9,7 +9,9 @@ import openfl.display.StageScaleMode;
 
 import ale.ui.ALEUIUtils;
 
+#if LUA_ALLOWED
 import hxluajit.wrapper.LuaError;
+#end
 
 import funkin.debug.DebugCounter;
 
@@ -23,9 +25,11 @@ class MainState extends MusicBeatState
 
 	override function create()
 	{
+		#if LUA_ALLOWED
 		LuaError.errorHandler = (e:String) -> {
 			debugTrace(e, ERROR);
 		};
+		#end
 
 		ALEUIUtils.color = FlxColor.fromRGB(50, 70, 100);
 		ALEUIUtils.outlineColor = FlxColor.WHITE;

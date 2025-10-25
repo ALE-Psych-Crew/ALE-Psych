@@ -16,7 +16,7 @@
 
 	<define name="MODS_ALLOWED" if="cpp"/>
 
-	<define name="HSCRIPT_ALLOWED" if="cpp"/>
+	<define name="HSCRIPT_ALLOWED"/>
 
 	<define name="LUA_ALLOWED" if="cpp"/>
 
@@ -71,8 +71,6 @@
 	
 	<haxelib name="tjson"/>
 
-	<haxelib name="hxcpp-debug-server" if="debug"/>
-
 	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
 
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
@@ -91,7 +89,7 @@
 
 	<haxedef name='lime_disable_assets_version'/>	
 
-	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc"/>
+	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="DISCORD_ALLOWED"/>
 	<haxedef name="NO_PRECOMPILED_HEADERS" if="android"/>
 
 	<haxedef name="HXC_LIBVLC_LOGGING" if="VIDEOS_ALLOWED debug"/>

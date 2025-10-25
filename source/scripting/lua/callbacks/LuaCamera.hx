@@ -27,5 +27,59 @@ class LuaCamera extends LuaPresetBase
             if (tagIs(camera, FlxCamera))
                 getTag(camera).shake(intensity, duration, () -> { lua.call('onCameraShakeComplete', [tag]); }, force, axes);
         });
+
+        /**
+         * 
+         */
+        set('cameraFlash', function(camera:String, tag:String, ?color:FlxColor, ?duration:Float, ?force:Bool)
+        {
+            if (tagIs(camera, FlxCamera))
+                getTag(camera).flash(color, duration, () -> { lua.call('onCameraFlashComplete', [tag]); }, force);
+        });
+
+        /**
+         * 
+         */
+        set('cameraFade', function(camera:String, tag:String, ?color:FlxColor, ?duration:Float, ?fadeIn:Bool, ?force:Bool)
+        {
+            if (tagIs(camera, FlxCamera))
+                getTag(camera).fade(color, duration, fadeIn, () -> { lua.call('onCameraFadeComplete', [tag]); }, force);
+        });
+
+        /**
+         * 
+         */
+        set('stopCameraFX', function(camera:String)
+        {
+            if (tagIs(camera, FlxCamera))
+                getTag(camera).stopFX();
+        });
+
+        /**
+         * 
+         */
+        set('stopCameraFade', function(camera:String)
+        {
+            if (tagIs(camera, FlxCamera))
+                getTag(camera).stopFade();
+        });
+
+        /**
+         * 
+         */
+        set('stopCameraFlash', function(camera:String)
+        {
+            if (tagIs(camera, FlxCamera))
+                getTag(camera).stopFlash();
+        });
+
+        /**
+         * 
+         */
+        set('stopCameraShake', function(camera:String)
+        {
+            if (tagIs(camera, FlxCamera))
+                getTag(camera).stopShake();
+        });
     }
 }
