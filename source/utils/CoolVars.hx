@@ -9,6 +9,10 @@ import core.structures.DataJson;
 #end
 class CoolVars
 {
+	#if ios
+	public static final GITHUB_COMMIT:String = null;
+	#end
+
 	public static var data:DataJson = null;
 
     public static var skipTransIn:Bool = false;
