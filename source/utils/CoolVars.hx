@@ -1,28 +1,22 @@
 package utils;
 
 import openfl.Lib;
-
 import core.structures.DataJson;
 
-#if !ios
 @:build(core.macros.CoolVarsMacro.build())
-#end
-class CoolVars
-{
-	#if ios
-	public static final GITHUB_COMMIT:String = null;
-	#end
-
+class CoolVars {
 	public static var data:DataJson = null;
 
-    public static var skipTransIn:Bool = false;
-    public static var skipTransOut:Bool = false;
+	public static var skipTransIn:Bool = false;
+	public static var skipTransOut:Bool = false;
 
 	public static var mobileControls(get, never):Bool;
+
 	public static function get_mobileControls():Bool
 		return #if mobile true #else CoolVars.data.developerMode && CoolVars.data.mobileDebug #end;
-	
+
 	public static var engineVersion(get, never):String;
+
 	public static function get_engineVersion():String
 		return Lib.application?.meta?.get('version') ?? '';
 

@@ -57,7 +57,7 @@ for (group in options)
 
 FlxG.camera.bgColor = FlxColor.WHITE;
 
-var subCamera:FlxCamera = new FlxCamera();
+var subCamera:FlxCamera = new ALECamera();
 subCamera.bgColor = FlxColor.TRANSPARENT;
 
 FlxG.cameras.add(subCamera, false);

@@ -27,8 +27,8 @@ function onCreate()
 		}
 	];
 
-	subCamera = new FlxCamera();
-    subCamera.bgColor = FlxColor.TRANSPARENT;
+	subCamera = new ALECamera();
+	
     FlxG.cameras.add(subCamera, false);
 
 	var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -101,8 +101,8 @@ function postCreate()
 {
     if (CoolVars.mobileControls)
     {
-        mobileCamera = new FlxCamera();
-        mobileCamera.bgColor = FlxColor.TRANSPARENT;
+        mobileCamera = new ALECamera();
+		
         FlxG.cameras.add(mobileCamera, false);
 
         var buttonMap:Array<Dynamic> = [

@@ -2,7 +2,6 @@ package core.backend;
 
 import flixel.addons.ui.FlxUIState;
 import flixel.FlxState;
-import funkin.visuals.PsychCamera;
 
 #if cpp
 import cpp.vm.Gc;
@@ -105,9 +104,9 @@ class MusicBeatState extends FlxUIState
         FlxG.bitmap.clearCache();
     }
 
-	public function initPsychCamera():PsychCamera
+	public function initPsychCamera():ALECamera
 	{
-		var camera = new PsychCamera();
+		var camera = new ALECamera();
 		FlxG.cameras.reset(camera);
 		FlxG.cameras.setDefaultDrawTarget(camera, true);
 		_psychCameraInitialized = true;

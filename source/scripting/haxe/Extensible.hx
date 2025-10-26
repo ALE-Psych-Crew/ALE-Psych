@@ -49,6 +49,8 @@ class ScriptTextFormat extends FlxTextFormat implements RuleScriptedClass {}
 
 class ScriptCamera extends FlxCamera implements RuleScriptedClass {}
 
+class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
+
 // OpenFL
 
 @:forceOverride class ScriptOpenFLSprite extends Sprite implements RuleScriptedClass {}

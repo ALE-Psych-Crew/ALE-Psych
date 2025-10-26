@@ -38,8 +38,8 @@ function onCreate()
 		options.insert(3, 'leave charting mode');
 	}
 
-	subCamera = new FlxCamera();
-    subCamera.bgColor = FlxColor.TRANSPARENT;
+	subCamera = new ALECamera();
+	
     FlxG.cameras.add(subCamera, false);
 
 	var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
@@ -227,7 +227,7 @@ function postCreate()
 {
     if (CoolVars.mobileControls)
     {
-        mobileCamera = new FlxCamera();
+        mobileCamera = new ALECamera();
         mobileCamera.bgColor = FlxColor.TRANSPARENT;
         FlxG.cameras.add(mobileCamera, false);
 

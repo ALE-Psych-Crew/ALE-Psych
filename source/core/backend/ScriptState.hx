@@ -48,8 +48,7 @@ class ScriptState extends MusicBeatState implements IScriptState
         
 		camGame = initPsychCamera();
 
-		camHUD = new FlxCamera();
-		camHUD.bgColor = FlxColor.TRANSPARENT;
+		camHUD = new ALECamera();
 		
 		FlxG.cameras.add(camHUD, false);
     }

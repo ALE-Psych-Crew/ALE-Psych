@@ -26,7 +26,8 @@ function onCreate()
 	FlxG.sound.list.add(deathStart);
     deathStart.play();
 
-    bfCamera = new FlxCamera();
+    bfCamera = new ALECamera();
+    bfCamera.bgColor = FlxColor.BLACK;
     FlxG.cameras.add(bfCamera, false);
     bfCamera.zoom = game.camGame.zoom;
     bfCamera.scroll.x = game.camGame.scroll.x;

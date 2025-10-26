@@ -12,8 +12,8 @@ function onCreate()
 {
 	FlxState.transitioning = true;
 
-	transCamera = new FlxCamera();
-    transCamera.bgColor = FlxColor.TRANSPARENT;
+	transCamera = new ALECamera();
+	
     FlxG.cameras.add(transCamera, false);
 
 	transGradient = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, (transOut ? [0x0, FlxColor.BLACK] : [FlxColor.BLACK, 0x0]));

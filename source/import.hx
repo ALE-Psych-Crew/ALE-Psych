@@ -22,6 +22,7 @@ import utils.ALEJson as Json;
 
 import utils.cool.LogUtil.debugTrace;
 
+import funkin.visuals.ALECamera;
 import funkin.visuals.objects.Alphabet;
 
 import funkin.states.PlayState;

@@ -149,6 +149,7 @@ class HScriptConfig
 			funkin.substates.CustomSubState,
 
             funkin.visuals.mobile.MobileButton,
+			funkin.visuals.ALECamera,
             
             Controls,
 

@@ -50,8 +50,8 @@ class ModsMenuSubState extends MusicBeatSubState
 
         if (CoolVars.mobileControls)
         {
-            mobileCamera = new FlxCamera();
-            mobileCamera.bgColor = FlxColor.TRANSPARENT;
+            mobileCamera = new ALECamera();
+            
             FlxG.cameras.add(mobileCamera, false);
 
             var buttonMap:Array<Dynamic> = [
@@ -77,8 +77,7 @@ class ModsMenuSubState extends MusicBeatSubState
 
         options.push('Disable Mods');
 
-        modCamera = new FlxCamera();
-        modCamera.bgColor = FlxColor.TRANSPARENT;
+        modCamera = new ALECamera();
 
         FlxG.cameras.add(modCamera, false);
         var bg:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0xFF141820, 0xFF1F232B));
