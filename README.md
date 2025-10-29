@@ -37,11 +37,6 @@
     <img alt="Android Actions Build"
       src="https://img.shields.io/badge/Android-Actions%20Build-3DDC84?logo=android&logoColor=white&style=for-the-badge">
   </a>
-
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/ios-build.yaml/main/iOS%20Build.zip">
-    <img alt="iOS Actions Build"
-      src="https://img.shields.io/badge/iOS-Actions%20Build-000000?logo=apple&logoColor=white&style=for-the-badge">
-  </a>
 </p>
 
 ### Build Notes
