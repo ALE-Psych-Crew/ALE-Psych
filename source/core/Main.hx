@@ -138,7 +138,7 @@ class Main extends Sprite
 		
 		var hasReadExternal:Bool = false;
 		
-		for (perm in ['MANAGE_APP_ALL_FILES_ACCESS_PERMISSION'].concat(isAPI33 ? ['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']))
+		for (perm in ['MANAGE_APP_ALL_FILES_ACCESS_PERMISSION'].concat(isAPI33 ? ['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE'] : []))
 		{
 			if (AndroidPermissions.getGrantedPermissions().contains(perm))
 			{
