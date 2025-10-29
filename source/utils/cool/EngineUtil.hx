@@ -64,6 +64,8 @@ class EngineUtil
 			mobileDebug: false,
 			scriptsHotReloading: false,
 
+			verbose: false,
+
 			initialState: 'TitleState',
 			freeplayState: 'FreeplayState',
 			storyMenuState: 'StoryMenuState',

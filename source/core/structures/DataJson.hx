@@ -6,6 +6,8 @@ typedef DataJson =
     var mobileDebug:Bool;
     var scriptsHotReloading:Bool;
 
+    var verbose:Bool;
+
     var initialState:String;
     var freeplayState:String;
     var storyMenuState:String;

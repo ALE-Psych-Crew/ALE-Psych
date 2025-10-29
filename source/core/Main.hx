@@ -135,18 +135,26 @@ class Main extends Sprite
 	@:unreflective static function checkPermissions()
 	{
 		var isAPI33 = AndroidVersion.SDK_INT >= AndroidVersionCode.TIRAMISU;
-
-		if (!isAPI33)
-			AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
-
-		AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
-
-		var hasManageExternal = AndroidEnvironment.isExternalStorageManager();
 		
-		var hasReadExternal = AndroidPermissions.getGrantedPermissions().contains('READ_EXTERNAL_STORAGE');
+		var hasReadExternal:Bool = false;
+		
+		for (perm in ['MANAGE_APP_ALL_FILES_ACCESS_PERMISSION'].concat(isAPI33 ? ['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']))
+		{
+			if (AndroidPermissions.getGrantedPermissions().contains(perm))
+			{
+				hasReadExternal = true;
 
-		if ((isAPI33 && !hasManageExternal) || (!isAPI33 && !hasReadExternal))
-			CoolUtil.showPopUp('Notice', 'If you accepted the permissions you are all good!' + '\nIf you didn\'t then expect a crash' + '\nPress OK to see what happens');
+				break;
+			}
+		}
+
+		if (!hasReadExternal)
+		{
+			if (!isAPI33)
+				AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+
+			AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+		}
 	}
 	#end
 

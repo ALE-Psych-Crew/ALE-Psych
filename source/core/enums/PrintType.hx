@@ -13,21 +13,68 @@ enum abstract PrintType(String)
     var CUSTOM = 'custom';
     var POP_UP = 'pop-up';
 
-    private static var dataMap:Map<PrintType, Array<Dynamic>> = [
-        ERROR => ['ERROR', 0xFFFF5555],
-        WARNING => ['WARNING', 0xFFFFA500],
-        DEPRECATED => ['DEPRECATED', 0xFF8000],
-        TRACE => ['TRACE', 0xFFFFFFFF],
-        HSCRIPT => ['HSCRIPT', 0xFF88CC44],
-        LUA => ['LUA', 0xFF4466DD],
-        MISSING_FILE => ['MISSING FILE', 0xFFFF7F00],
-        MISSING_FOLDER => ['MISSING FOLDER', 0xFFFF7F00],
-        POP_UP => ['POP-UP', 0xFFFF00FF]
-    ];
+    public function unnecessary():Bool
+    {
+        return switch (cast(this, PrintType))
+        {
+            case POP_UP, HSCRIPT, LUA:
+                true;
+            default:
+                false;
+        }
+    }
 
-    public static function typeToString(type:PrintType):String
-        return dataMap.get(type)[0];
+    public function toString():String
+    {
+        return switch (cast(this, PrintType))
+        {
+            case ERROR:
+                'ERROR';
+            case WARNING:
+                'WARNING';
+            case DEPRECATED:
+                'DEPRECATED';
+            case TRACE:
+                'TRACE';
+            case HSCRIPT:
+                'HSCRIPT';
+            case LUA:
+                'LUA';
+            case MISSING_FILE:
+                'MISSING FILE';
+            case MISSING_FOLDER:
+                'MISSING FOLDER';
+            case POP_UP:
+                'POP-UP';
+            default:
+                'UNKNOWN';
+        }
+    }
 
-    public static function typeToColor(type:PrintType):FlxColor
-        return dataMap.get(type)[1];
+    public function toColor():FlxColor
+    {
+        return switch (cast(this, PrintType))
+        {
+            case ERROR:
+                0xFFFF5555;
+            case WARNING:
+                0xFFFFA500;
+            case DEPRECATED:
+                0xFF8000;
+            case TRACE:
+                0xFFFFFFFF;
+            case HSCRIPT:
+                0xFF88CC44;
+            case LUA:
+                0xFF4466DD;
+            case MISSING_FILE:
+                0xFFFF7F00;
+            case MISSING_FOLDER:
+                0xFFFF7F00;
+            case POP_UP:
+                0xFFFF00FF;
+            default:
+                FlxColor.GRAY;
+        }
+    }
 }
