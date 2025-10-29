@@ -48,8 +48,11 @@ function onCreate()
 	};
     
     var camFollow = new FlxObject(0, 0, 1, 1);
-    camFollow.setPosition(bf.getGraphicMidpoint().x + bf.cameraPosition[0], bf.getGraphicMidpoint().y + bf.cameraPosition[1]);
-    bfCamera.follow(camFollow, null, 0.025);
+    camFollow.setPosition(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y);
+
+    bfCamera.follow(camFollow, null, 0);
+
+    bfCamera.followLerp = 2.5;
 }
 
 var canPress:Bool = true;
@@ -73,7 +76,7 @@ function onUpdate()
 
             FlxTween.tween(bf, {alpha: 0}, 2, {ease: FlxEase.quintIn, onComplete: (_) -> { CoolUtil.resetState(); }});
 
-            FlxTween.tween(bf.scale, {x: bf.scale.x - 0.1, y: bf.scale.y - 0.1}, 2, {ease: FlxEase.quintIn});
+            FlxTween.tween(bf.scale, {x: bf.scale.x * 0.9, y: bf.scale.y * 0.9}, 2, {ease: FlxEase.quintIn});
 
             canPress = false;
         }
