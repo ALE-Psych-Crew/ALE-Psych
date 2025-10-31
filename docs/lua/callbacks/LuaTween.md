@@ -148,3 +148,9 @@
 
 - `tag`: Tween ID 
 
+---
+
+### > `cancelTweensOf(tag:String)`
+
+#### 
+
