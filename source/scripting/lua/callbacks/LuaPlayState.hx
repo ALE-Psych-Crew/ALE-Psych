@@ -136,7 +136,7 @@ class LuaPlayState extends LuaPresetBase
         });
 
         /**
-         * Sets the playState camera target
+         * Sets the game camera target
          * 
          * @param target Camera target. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend`
          */
@@ -289,7 +289,7 @@ class LuaPlayState extends LuaPresetBase
         });
 		
         /**
-         * Adds an object to the playState behind the Girlfriend entity
+         * Adds an object to the game behind the Girlfriend entity
          * 
          * @param obj Object ID
          */
@@ -299,7 +299,7 @@ class LuaPlayState extends LuaPresetBase
         });
         
         /**
-         * Adds an object to the playState behind the Boyfriend entity
+         * Adds an object to the game behind the Boyfriend entity
          * 
          * @param obj Object ID
          */
@@ -309,7 +309,7 @@ class LuaPlayState extends LuaPresetBase
         });
         
         /**
-         * Adds an object to the playState behind the Dad entity
+         * Adds an object to the game behind the Dad entity
          * 
          * @param obj Object ID
          */
