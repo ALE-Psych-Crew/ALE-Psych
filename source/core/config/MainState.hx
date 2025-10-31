@@ -25,12 +25,6 @@ class MainState extends MusicBeatState
 
 	override function create()
 	{
-		#if LUA_ALLOWED
-		LuaError.errorHandler = (e:String) -> {
-			debugTrace(e, ERROR);
-		};
-		#end
-
 		ALEUIUtils.color = FlxColor.fromRGB(50, 70, 100);
 		ALEUIUtils.outlineColor = FlxColor.WHITE;
 		ALEUIUtils.font = Paths.font('vcr.ttf');
@@ -48,6 +42,14 @@ class MainState extends MusicBeatState
 		super.create();
 
 		core.backend.Mods.init();
+
+		#if LUA_ALLOWED
+		LuaError.errorHandler = (e:String) -> {
+			debugTrace(e, ERROR);
+		};
+		
+        Sys.putEnv('LUA_PATH', Sys.getCwd() + '/' + Paths.modFolder() + '/scripts/modules/?.lua;');
+		#end
 
 		CoolUtil.reloadGameMetadata();
 
