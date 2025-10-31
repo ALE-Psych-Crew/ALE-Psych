@@ -20,7 +20,7 @@
 
 ### > `cameraSetTarget(target:String)`
 
-#### Sets the game camera target 
+#### Sets the playState camera target 
 
 - `target`: Camera target. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend` 
 
@@ -154,7 +154,7 @@
 
 ### > `addBehindGF(obj:String)`
 
-#### Adds an object to the game behind the Girlfriend entity 
+#### Adds an object to the playState behind the Girlfriend entity 
 
 - `obj`: Object ID 
 
@@ -162,7 +162,7 @@
 
 ### > `addBehindBF(obj:String)`
 
-#### Adds an object to the game behind the Boyfriend entity 
+#### Adds an object to the playState behind the Boyfriend entity 
 
 - `obj`: Object ID 
 
@@ -170,7 +170,7 @@
 
 ### > `addBehindDad(obj:String)`
 
-#### Adds an object to the game behind the Dad entity 
+#### Adds an object to the playState behind the Dad entity 
 
 - `obj`: Object ID 
 

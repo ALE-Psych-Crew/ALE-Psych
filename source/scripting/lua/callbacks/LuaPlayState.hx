@@ -8,7 +8,7 @@ import sys.FileSystem;
 
 class LuaPlayState extends LuaPresetBase
 {
-    public var game:PlayState = PlayState.instance;
+    public var playState:PlayState = PlayState.instance;
 
     override public function new(lua:LuaScript)
     {
@@ -47,23 +47,23 @@ class LuaPlayState extends LuaPresetBase
 		set('ratingName', '');
 		set('ratingFC', '');
 
-		set('inGameOver', false);
+		set('inplayStateOver', false);
 		set('mustHitSection', false);
 		set('altAnim', false);
 		set('gfSection', false);
         
-		set('healthGainMult', game.healthGain);
-		set('healthLossMult', game.healthLoss);
+		set('healthGainMult', playState.healthGain);
+		set('healthLossMult', playState.healthLoss);
 
 		#if FLX_PITCH
-		set('playbackRate', game.playbackRate);
+		set('playbackRate', playState.playbackRate);
 		#else
 		set('playbackRate', 1);
 		#end
 
-		set('guitarHeroSustains', game.guitarHeroSustains);
-		set('botPlay', game.cpuControlled);
-		set('practice', game.practiceMode);
+		set('guitarHeroSustains', playState.guitarHeroSustains);
+		set('botPlay', playState.cpuControlled);
+		set('practice', playState.practiceMode);
 
 		for (i in 0...4)
 		{
@@ -73,12 +73,12 @@ class LuaPlayState extends LuaPresetBase
 			set('defaultOpponentStrumY' + i, 0);
 		}
 		
-		set('defaultBoyfriendX', game.BF_X);
-		set('defaultBoyfriendY', game.BF_Y);
-		set('defaultOpponentX', game.DAD_X);
-		set('defaultOpponentY', game.DAD_Y);
-		set('defaultGirlfriendX', game.GF_X);
-		set('defaultGirlfriendY', game.GF_Y);
+		set('defaultBoyfriendX', playState.BF_X);
+		set('defaultBoyfriendY', playState.BF_Y);
+		set('defaultOpponentX', playState.DAD_X);
+		set('defaultOpponentY', playState.DAD_Y);
+		set('defaultGirlfriendX', playState.GF_X);
+		set('defaultGirlfriendY', playState.GF_Y);
 		
 		set('boyfriendName', PlayState.SONG.player1);
 		set('dadName', PlayState.SONG.player2);
@@ -88,16 +88,16 @@ class LuaPlayState extends LuaPresetBase
 		
 		set('buildTarget', CoolUtil.getBuildTarget());
 
-        set('startCountdown', game.startCountdown);
+        set('startCountdown', playState.startCountdown);
 
         /**
          * Ends the song
          */
         set('endSong', function()
         {
-            game.KillNotes();
+            playState.KillNotes();
 
-            game.endSong();
+            playState.endSong();
         });
 
         /**
@@ -105,10 +105,10 @@ class LuaPlayState extends LuaPresetBase
          */
         set('restartSong', function()
         {
-            game.paused = true;
-            game.vocals.volume = 0;
+            playState.paused = true;
+            playState.vocals.volume = 0;
 
-            game.shouldClearMemory = false;
+            playState.shouldClearMemory = false;
 
             FlxG.sound.music.volume = 0;
             
@@ -120,7 +120,7 @@ class LuaPlayState extends LuaPresetBase
          */
         set('exitSong', function()
         {
-            game.vocals.volume = 0;
+            playState.vocals.volume = 0;
 
             PlayState.deathCounter = 0;
             PlayState.seenCutscene = false;
@@ -128,7 +128,7 @@ class LuaPlayState extends LuaPresetBase
             PlayState.changedDifficulty = false;
             PlayState.chartingMode = false;
             
-            game.paused = true;
+            playState.paused = true;
 
             FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
@@ -136,7 +136,7 @@ class LuaPlayState extends LuaPresetBase
         });
 
         /**
-         * Sets the game camera target
+         * Sets the playState camera target
          * 
          * @param target Camera target. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend`
          */
@@ -145,11 +145,11 @@ class LuaPlayState extends LuaPresetBase
 			switch(target.trim().toLowerCase())
 			{
 				case 'gf', 'girlfriend':
-					game.moveCameraToGirlfriend();
+					playState.moveCameraToGirlfriend();
 				case 'dad', 'opponent':
-					game.moveCamera(true);
+					playState.moveCamera(true);
 				default:
-					game.moveCamera(false);
+					playState.moveCamera(false);
 			}
         });
 
@@ -162,7 +162,7 @@ class LuaPlayState extends LuaPresetBase
          */
         set('triggerEvent', function(name:String, arg1:Dynamic, arg2:Dynamic)
         {
-			game.triggerEvent(name, arg1, arg2, Conductor.songPosition);
+			playState.triggerEvent(name, arg1, arg2, Conductor.songPosition);
         });
 
         /**
@@ -175,12 +175,12 @@ class LuaPlayState extends LuaPresetBase
 			switch (character.toLowerCase())
             {
 				case 'dad', 'opponent':
-                    game.dad.dance();
+                    playState.dad.dance();
 				case 'gf' | 'girlfriend':
-                    if (game.gf != null)
-                        game.gf.dance();
+                    if (playState.gf != null)
+                        playState.gf.dance();
 				default:
-                    game.boyfriend.dance();
+                    playState.boyfriend.dance();
 			}
         });
 
@@ -195,7 +195,7 @@ class LuaPlayState extends LuaPresetBase
          */
         set('noteTween', function(tag:String, note:Int, props:Dynamic, ?time:Float, ?options:Dynamic)
         {
-            setTag(tag, LuaPresetUtils.complexTween(lua, tag, game.strumLineNotes.members[note], props, time, options));
+            setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], props, time, options));
         });
 
         /**
@@ -213,7 +213,7 @@ class LuaPlayState extends LuaPresetBase
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenX"');
 
-            setTag(tag, LuaPresetUtils.complexTween(lua, tag, game.strumLineNotes.members[note], {x: value}, duration, {ease: ease}));
+            setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {x: value}, duration, {ease: ease}));
         });
 
         /**
@@ -231,7 +231,7 @@ class LuaPlayState extends LuaPresetBase
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenY"');
 
-            setTag(tag, LuaPresetUtils.complexTween(lua, tag, game.strumLineNotes.members[note], {y: value}, duration, {ease: ease}));
+            setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {y: value}, duration, {ease: ease}));
         });
 
         /**
@@ -249,7 +249,7 @@ class LuaPlayState extends LuaPresetBase
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenAngle"');
 
-            setTag(tag, LuaPresetUtils.complexTween(lua, tag, game.strumLineNotes.members[note], {angle: value}, duration, {ease: ease}));
+            setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {angle: value}, duration, {ease: ease}));
         });
 
         /**
@@ -267,7 +267,7 @@ class LuaPlayState extends LuaPresetBase
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenDirection"');
 
-            setTag(tag, LuaPresetUtils.complexTween(lua, tag, game.strumLineNotes.members[note], {direction: value}, duration, {ease: ease}));
+            setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {direction: value}, duration, {ease: ease}));
         });
 
         /**
@@ -285,37 +285,37 @@ class LuaPlayState extends LuaPresetBase
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenAlpha"');
 
-            setTag(tag, LuaPresetUtils.complexTween(lua, tag, game.strumLineNotes.members[note], {alpha: value}, duration, {ease: ease}));
+            setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {alpha: value}, duration, {ease: ease}));
         });
 		
         /**
-         * Adds an object to the game behind the Girlfriend entity
+         * Adds an object to the playState behind the Girlfriend entity
          * 
          * @param obj Object ID
          */
         set('addBehindGF', function(obj:String)
         {
-            game.insert(game.members.indexOf(game.gfGroup), getTag(obj));
+            playState.insert(playState.members.indexOf(playState.gfGroup), getTag(obj));
         });
         
         /**
-         * Adds an object to the game behind the Boyfriend entity
+         * Adds an object to the playState behind the Boyfriend entity
          * 
          * @param obj Object ID
          */
         set('addBehindBF', function(obj:String)
         {
-            game.insert(game.members.indexOf(game.boyfriendGroup), getTag(obj));
+            playState.insert(playState.members.indexOf(playState.boyfriendGroup), getTag(obj));
         });
         
         /**
-         * Adds an object to the game behind the Dad entity
+         * Adds an object to the playState behind the Dad entity
          * 
          * @param obj Object ID
          */
         set('addBehindDad', function(obj:String)
         {
-            game.insert(game.members.indexOf(game.dadGroup), getTag(obj));
+            playState.insert(playState.members.indexOf(playState.dadGroup), getTag(obj));
         });
     }
 }

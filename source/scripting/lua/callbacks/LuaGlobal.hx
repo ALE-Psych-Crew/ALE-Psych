@@ -18,10 +18,7 @@ class LuaGlobal extends LuaPresetBase
         set('add', function(tag:String)
         {
             if (tagIs(tag, flixel.FlxBasic))
-                if (type == STATE)
-                    FlxG.state.add(getTag(tag));
-                else
-                    FlxG.state.subState.add(getTag(tag));
+                game.add(getTag(tag));
         });
 
         /**
@@ -33,10 +30,7 @@ class LuaGlobal extends LuaPresetBase
         set('remove', function(tag:String, ?destroy:Bool)
         {
             if (tagIs(tag, FlxBasic))
-                if (type == STATE)
-                    FlxG.state.remove(getTag(tag), destroy);
-                else
-                    FlxG.state.subState.remove(getTag(tag), destroy);
+                game.remove(getTag(tag), destroy);
         });
 
         /**
@@ -48,10 +42,7 @@ class LuaGlobal extends LuaPresetBase
         set('insert', function(position:Int, tag:String)
         {
             if (tagIs(tag, FlxBasic))
-                if (type == STATE)
-                    FlxG.state.insert(position, getTag(tag));
-                else
-                    FlxG.state.subState.insert(position, getTag(tag));
+                game.insert(position, getTag(tag));
         });
 
         /**
@@ -63,7 +54,7 @@ class LuaGlobal extends LuaPresetBase
          */
         set('getObjectOrder', function(tag:String)
         {
-            return type == STATE ? FlxG.state.members.indexOf(getTag(tag)) : FlxG.state.subState.members.indexOf(getTag(tag));
+            return game.members.indexOf(getTag(tag));
         });
 
         /**
@@ -79,14 +70,8 @@ class LuaGlobal extends LuaPresetBase
 
             var object:FlxBasic = getTag(tag);
 
-            if (type == STATE)
-            {
-                FlxG.state.remove(object);
-                FlxG.state.insert(position, object);
-            } else {
-                FlxG.state.subState.remove(object);
-                FlxG.state.subState.insert(position, object);
-            }
+            game.remove(object);
+            game.insert(position, object);
         });
 
         /**
@@ -128,5 +113,60 @@ class LuaGlobal extends LuaPresetBase
         {
             return FlxG.random.bool(chance);
         });
+
+        /**
+         * 
+         */
+        set('registerGlobalFunction', function(name:String)
+        {
+            globalFunctionLua(name);
+
+            #if HSCRIPT_ALLOWED
+            globalFunctionHScript(name);
+            #end
+        });
+        
+        /**
+         * 
+         */
+        set('registerGlobalLuaFunction', function(name:String)
+        {
+            globalFunctionLua(name);
+        });
+
+        #if HSCRIPT_ALLOWED
+        /**
+         * 
+         */
+        set('registerGlobalHScriptFunction', function(name:String)
+        {
+            globalFunctionHScript(name);
+        });
+        #end
+    }
+
+    function globalFunctionLua(name:String)
+    {
+        for (script in game.luaScripts)
+        {
+            if (script == lua)
+                continue;
+            
+            script.set(name, Reflect.makeVarArgs(function(?args:Array<Dynamic>):Dynamic
+            {
+                return lua.call(name, args);
+            }));
+        }
+    }
+
+    function globalFunctionHScript(name:String)
+    {
+        for (script in game.hScripts)
+        {
+            script.set(name, Reflect.makeVarArgs(function(?args:Array<Dynamic>):Dynamic
+            {
+                return lua.call(name, args);
+            }));
+        }  
     }
 }

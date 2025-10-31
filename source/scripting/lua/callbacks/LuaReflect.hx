@@ -212,10 +212,7 @@ class LuaReflect extends LuaPresetBase
             deprecatedPrint('Use "add" instead of "addInstance"');
 
             if (tagIs(tag, flixel.FlxBasic))
-                if (type == STATE)
-                    FlxG.state.add(getTag(tag));
-                else
-                    FlxG.state.subState.add(getTag(tag));
+                game.add(getTag(tag));
         });
     }
 }

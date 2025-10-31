@@ -1,6 +1,7 @@
 package core.interfaces;
 
 import flixel.FlxState;
+import flixel.FlxBasic;
 
 #if HSCRIPT_ALLOWED
 import scripting.haxe.HScript;
@@ -14,6 +15,8 @@ import scripting.lua.LuaScript;
 
 interface IScriptState
 {
+    public var members(default, null):Array<FlxBasic>;
+
     #if HSCRIPT_ALLOWED
     public var hScripts:Array<HScript>;
     
@@ -39,4 +42,8 @@ interface IScriptState
     public function destroyScripts():Void;
     public function destroyHScripts():Void;
     public function destroyLuaScripts():Void;
+
+    public function add(obj:FlxBasic):FlxBasic;
+    public function insert(index:Int, obj:FlxBasic):FlxBasic;
+    public function remove(obj:FlxBasic, destroy:Bool = false):FlxBasic;
 }

@@ -5,9 +5,13 @@ import haxe.ds.StringMap;
 
 import core.enums.ScriptType;
 
+import core.interfaces.IScriptState;
+
 class LuaPresetBase
 {
     public var lua:LuaScript;
+
+    public var game:IScriptState;
 
     public var variables(get, never):StringMap<Dynamic>;
     function get_variables():StringMap<Dynamic>
@@ -18,7 +22,11 @@ class LuaPresetBase
         return lua.type;
 
     public function new(lua:LuaScript)
+    {
         this.lua = lua;
+
+        game = lua.type == STATE ? ScriptState.instance : ScriptSubState.instance;
+    }
 
     public inline function set(name:String, value:Dynamic)
         lua.set(name, value);
@@ -36,7 +44,7 @@ class LuaPresetBase
         var instance:Dynamic = variables.get(split[0]);
 
         if (instance == null)
-            instance = type == STATE ? FlxG.state : FlxG.state.subState;
+            instance = game;
         else
             split.shift();
 

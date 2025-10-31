@@ -53,5 +53,9 @@ class LuaPreset
         new LuaVariables(lua);
 
         new LuaJson(lua);
+
+        #if HSCRIPT_ALLOWED
+        new LuaRuleScript(lua);
+        #end
     }
 }

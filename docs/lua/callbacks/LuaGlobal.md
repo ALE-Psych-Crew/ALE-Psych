@@ -84,3 +84,21 @@
 
 #### `RETURN`: Obtained boolean 
 
+---
+
+### > `registerGlobalFunction(name:String)`
+
+#### 
+
+---
+
+### > `registerGlobalLuaFunction(name:String)`
+
+#### 
+
+---
+
+### > `registerGlobalHScriptFunction(name:String)`
+
+#### 
+

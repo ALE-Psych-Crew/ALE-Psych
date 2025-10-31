@@ -213,10 +213,7 @@ class LuaSprite extends LuaPresetBase
             deprecatedPrint('Use "add" instead of "addLuaSprite"');
 
             if (tagIs(tag, FlxSprite))
-                if (type == STATE)
-                    FlxG.state.add(getTag(tag));
-                else
-                    FlxG.state.subState.add(getTag(tag));
+                game.add(getTag(tag));
         });
 
         /**
@@ -232,10 +229,7 @@ class LuaSprite extends LuaPresetBase
             deprecatedPrint('Use "remove" instead of "removeLuaSprite"');
 
             if (tagIs(tag, FlxSprite))
-                if (type == STATE)
-                    FlxG.state.remove(getTag(tag), destroy);
-                else
-                    FlxG.state.subState.remove(getTag(tag), destroy);
+                game.remove(getTag(tag), destroy);
         });
 
         /**

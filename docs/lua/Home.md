@@ -19,6 +19,7 @@
 - [LuaPaths](callbacks/LuaPaths.md)
 - [LuaPlayState](callbacks/LuaPlayState.md)
 - [LuaReflect](callbacks/LuaReflect.md)
+- [LuaRuleScript](callbacks/LuaRuleScript.md)
 - [LuaSave](callbacks/LuaSave.md)
 - [LuaShader](callbacks/LuaShader.md)
 - [LuaSound](callbacks/LuaSound.md)

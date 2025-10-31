@@ -25,10 +25,12 @@ class LuaScript
 
     public var closed:Bool = false;
 
-    public var variables:StringMap<Dynamic> = new StringMap<Dynamic>();
+    public var variables:StringMap<Dynamic> = new StringMap();
 
     public function new(name:String, type:ScriptType)
     {
+        variables.set('this', this);
+
         this.name = name;
 
         this.type = type;
@@ -104,6 +106,8 @@ class LuaScript
     public function close()
     {
         closed = true;
+
+        LuaUtils.cleanupStateFunctions(state);
 
         Lua.close(state);
     }
