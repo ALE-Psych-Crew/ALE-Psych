@@ -307,7 +307,7 @@ class LuaCoolUtil extends LuaPresetBase
             if (cl == null)
                 return;
 
-            CoolUtil.switchState(Type.createInstance(cl, args ?? []));
+            CoolUtil.openSubState(Type.createInstance(cl, args ?? []));
         });
 
 

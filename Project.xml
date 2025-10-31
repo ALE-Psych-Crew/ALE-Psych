@@ -31,6 +31,8 @@
 	<define name="COMPILE_ALL_CLASSES" unless="debug"/>
 
 	<define name="WINDOWS_API" if="windows cpp"/>
+	
+	<define name="MOBILE_API" if="android || ios"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -53,35 +55,34 @@
 	<assets path="mods" embed="false" unless="mobile"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
+	
+	<haxelib name="tjson"/>
+
+	<haxelib name="away3d"/>
 
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-ui"/>
 	<haxelib name="flixel-addons"/>
+	
+	<haxelib name="flxanimate"/>
 
-	<haxelib name="away3d"/>
+	<haxelib name="funkin.vis" />
+	<haxelib name="grig.audio" />
+
+	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
+
+	<haxelib name="rulescript" if="HSCRIPT_ALLOWED"/>
 
 	<haxelib name="hxluajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxluajit-wrapper" if="LUA_ALLOWED"/>
 
-	<haxelib name="rulescript" if="HSCRIPT_ALLOWED"/>
-
-	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
-	
-	<haxelib name="flxanimate"/>
-	
-	<haxelib name="tjson"/>
-
-	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
-
-	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
-
 	<haxelib name="ale-ui"/>
-	
 	<haxelib name="flixel-away3d"/>
 
-	<haxelib name="funkin.vis" />
+	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 
-	<haxelib name="grig.audio" />
+	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
+	<haxelib name="extension-haptics" if="MOBILE_API"/>
 
 	<!-- ______________________________ Haxe Defines _____________________________ -->
 

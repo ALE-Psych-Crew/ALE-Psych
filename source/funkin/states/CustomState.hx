@@ -2,7 +2,9 @@ package funkin.states;
 
 import haxe.ds.StringMap;
 
+#if cpp
 import sys.FileSystem;
+#end
 
 class CustomState extends ScriptState
 {
@@ -15,7 +17,7 @@ class CustomState extends ScriptState
     private var hsVariables:StringMap<Dynamic>;
     private var luaVariables:StringMap<Dynamic>;
 
-    #if !mobile
+    #if cpp
     @:unreflective private var reloadThread:Bool = CoolVars.data.developerMode && CoolVars.data.scriptsHotReloading;
     #end
 
@@ -35,7 +37,7 @@ class CustomState extends ScriptState
     {        
         super.create();
 
-        #if !mobile
+        #if cpp
         FlxG.autoPause = !CoolVars.data.developerMode || !CoolVars.data.scriptsHotReloading;
 
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
@@ -111,7 +113,7 @@ class CustomState extends ScriptState
 
     override public function destroy()
     {
-        #if !mobile
+        #if cpp
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
             reloadThread = false;
         #end
@@ -200,7 +202,7 @@ class CustomState extends ScriptState
 
         CoolUtil.switchState(new CustomState(scriptName, arguments, hsVariables, luaVariables), true, true);
 
-        #if !mobile
+        #if cpp
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
             reloadThread = false;
         #end

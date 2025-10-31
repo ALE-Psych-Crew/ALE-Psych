@@ -44,6 +44,10 @@ import lime.system.System as LimeSystem;
 import sys.FileSystem;
 #end
 
+#if MOBILE_API
+import extension.haptics.Haptic;
+#end
+
 #if (windows && cpp)
 @:buildXml('
 <target id="haxe">
@@ -225,6 +229,10 @@ class Main extends Sprite
 
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
+		#end
+
+		#if MOBILE_API
+		Haptic.initialize();
 		#end
 	}
 
