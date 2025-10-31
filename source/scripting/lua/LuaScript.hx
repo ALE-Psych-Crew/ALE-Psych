@@ -37,9 +37,9 @@ class LuaScript
 
         state = LuaL.newstate();
 
-        LuaL.openlibs(state);
-
         new LuaPreset(this);
+
+        LuaL.openlibs(state);
 
         LuaUtils.doFile(state, name);
     }
