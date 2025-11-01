@@ -76,6 +76,8 @@ class PlayStateUtil
 
 		if (goToPlayState && PlayState.SONG != null)
 			StateUtil.switchState(new PlayState());
+
+		debugTrace('Name: ' + name + ' - Difficulty: ' + difficulty, LOAD_SONG);
 	}
 
 	public static function loadWeek(weekName:String, names:Array<String>, difficulty:String, goToPlayState:Bool = true)
@@ -85,6 +87,8 @@ class PlayStateUtil
 
 		if (goToPlayState)
 			loadSong(PlayState.playlist[0], difficulty);
+
+		debugTrace('Name: ' + weekName + ' - Songs: ' + names + ' - Difficulty: ' + difficulty, LOAD_WEEK);
 	}
 	
     public static function exitSong()

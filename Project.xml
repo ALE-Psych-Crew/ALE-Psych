@@ -10,7 +10,7 @@
 
 	<set name="SWF_VERSION" value="11.8"/>
 	
-	<app preloader="flixel.system.FlxPreloader" />
+	<app preloader="flixel.system.FlxPreloader"/>
 	
 	<!-- _____________________________ ALE Defines _______________________________ -->
 
@@ -66,8 +66,8 @@
 	
 	<haxelib name="flxanimate"/>
 
-	<haxelib name="funkin.vis" />
-	<haxelib name="grig.audio" />
+	<haxelib name="funkin.vis"/>
+	<haxelib name="grig.audio"/>
 
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
@@ -140,13 +140,18 @@
 
 	<!-- ______________________________ Android Configs _____________________________ -->
 
-	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35" />
+	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35"/>
 
-	<config:android permission="android.permission.MANAGE_EXTERNAL_STORAGE" />
-	<config:android permission="android.permission.REQUEST_INSTALL_PACKAGES" />
+	<config:android permission="android.permission.MANAGE_EXTERNAL_STORAGE"/>
+	<config:android permission="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
-	<config:android permission="android.permission.INTERNET" />
-	<config:android permission="android.permission.ACCESS_NETWORK_STATE" />
+	<config:android permission="android.permission.INTERNET"/>
+	<config:android permission="android.permission.ACCESS_NETWORK_STATE"/>
+
+	<config:android>
+		<application android:appCategory="game"/>
+		<activity android:persistableMode="persistAcrossReboots" />
+	</config:android>
 
 	<certificate path="key.keystore" password="aleenginepass" alias="ale-engine" alias-password="aleenginepass" if="android"/>
 </project>

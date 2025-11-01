@@ -12,12 +12,15 @@ enum abstract PrintType(String)
     var MISSING_FOLDER = 'missing_folder';
     var CUSTOM = 'custom';
     var POP_UP = 'pop-up';
+    var LOAD_SONG = 'load_song';
+    var LOAD_WEEK = 'load_week';
+    var RESET_STATE = 'reset_state';
 
     public function unnecessary():Bool
     {
         return switch (cast(this, PrintType))
         {
-            case POP_UP, HSCRIPT, LUA:
+            case POP_UP, HSCRIPT, LUA, LOAD_SONG, LOAD_WEEK, RESET_STATE:
                 true;
             default:
                 false;
@@ -46,6 +49,12 @@ enum abstract PrintType(String)
                 'MISSING FOLDER';
             case POP_UP:
                 'POP-UP';
+            case LOAD_SONG:
+                'LOAD SONG';
+            case LOAD_WEEK:
+                'LOAD WEEK';
+            case RESET_STATE:
+                'RESET STATE';
             default:
                 'UNKNOWN';
         }
@@ -73,6 +82,12 @@ enum abstract PrintType(String)
                 0xFFFF7F00;
             case POP_UP:
                 0xFFFF00FF;
+            case LOAD_SONG:
+                FlxColor.CYAN;
+            case LOAD_WEEK:
+                0xFF00e5FF;
+            case RESET_STATE:
+                FlxColor.YELLOW;
             default:
                 FlxColor.GRAY;
         }

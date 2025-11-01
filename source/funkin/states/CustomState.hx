@@ -206,5 +206,7 @@ class CustomState extends ScriptState
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
             reloadThread = false;
         #end
+
+        debugTrace('Current State: ' + scriptName, RESET_STATE);
     }
 }
