@@ -220,7 +220,7 @@ class ChartingState extends MusicBeatState
 
 		vortex = FlxG.save.data.chart_vortex;
 		ignoreWarnings = FlxG.save.data.ignoreWarnings;
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menuBG'));
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.scrollFactor.set();
 		bg.color = 0xFF222222;
@@ -266,7 +266,7 @@ class ChartingState extends MusicBeatState
 		// sections = _song.notes;
 
 		updateJsonData();
-		currentSongName = 'songs/' + CoolUtil.loadPlayStateSong(_song.song, PlayState.difficulty).route;
+		currentSongName = CoolUtil.loadPlayStateSong(_song.song, PlayState.difficulty).route;
 		loadSong();
 		reloadGridLayer();
 		Conductor.bpm = _song.bpm;
@@ -413,7 +413,8 @@ class ChartingState extends MusicBeatState
 
 		var reloadSong:FlxButton = new FlxButton(saveButton.x + 90, saveButton.y, "Reload Audio", function()
 		{
-			currentSongName = 'songs/' + CoolUtil.loadPlayStateSong(UI_songTitle.text, CoolUtil.formatToSongPath(PlayState.difficulty)).route;
+			currentSongName = CoolUtil.loadPlayStateSong(UI_songTitle.text, CoolUtil.formatToSongPath(PlayState.difficulty)).route;
+
 			updateJsonData();
 			loadSong();
 			updateWaveform();
@@ -1443,7 +1444,6 @@ class ChartingState extends MusicBeatState
 		//trace(_song.notes.length);
 		if(_song.notes.length <= 1) //First load ever
 		{
-			trace('first load ever!!');
 			while(curTime < FlxG.sound.music.length)
 			{
 				addSection();

@@ -45,7 +45,7 @@ class PlayState extends ScriptState
 	public function new()
 	{
 		if (FlxG.sound.music == null)
-			FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
 		super();
 	}

@@ -83,14 +83,10 @@ The goal is simple: give developers the tools to build complete mods **without t
 <details>
   <summary>Click to expand</summary>
 
-- Editors are unstable and may crash. Use Psych 0.7.3 for editor work.  
-- Some performance issues may still exist.  
 - Documentation is incomplete.  
-- Certain HScript/Lua functions are missing.  
-- Transitions, pause menu, game over, and default songs are not fully customizable.  
-- Original week backgrounds are still in source; planned rewrite in HScript.  
+- Certain HScript/Lua functions are missing.
 - Options menu rewrite and note color customization are pending.  
-- More Lua functions and extensible classes are planned.  
+- More Lua functions and extensible classes are planned.
 
 </details>
 
