@@ -915,23 +915,22 @@ class ChartingState extends MusicBeatState
 		#if sys
 		if (Paths.exists('custom_notetypes'))
 		if (FileSystem.isDirectory(Paths.getPath('custom_noteTypes')))
-		for (folder in FileSystem.readDirectory(Paths.getPath('custom_notetypes')))
-			for (file in FileSystem.readDirectory(folder))
+		for (file in FileSystem.readDirectory(Paths.getPath('custom_notetypes')))
+		{
+			var fileName:String = file.toLowerCase().trim();
+			var wordLen:Int = 4; //length of word ".lua" and ".txt";
+			if((#if LUA_ALLOWED fileName.endsWith('.lua') || #end
+				#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3) || #end
+				fileName.endsWith('.txt')) && fileName != 'readme.txt')
 			{
-				var fileName:String = file.toLowerCase().trim();
-				var wordLen:Int = 4; //length of word ".lua" and ".txt";
-				if((#if LUA_ALLOWED fileName.endsWith('.lua') || #end
-					#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3) || #end
-					fileName.endsWith('.txt')) && fileName != 'readme.txt')
+				var fileToCheck:String = file.substr(0, file.length - wordLen);
+				if(!curNoteTypes.contains(fileToCheck))
 				{
-					var fileToCheck:String = file.substr(0, file.length - wordLen);
-					if(!curNoteTypes.contains(fileToCheck))
-					{
-						curNoteTypes.push(fileToCheck);
-						key++;
-					}
+					curNoteTypes.push(fileToCheck);
+					key++;
 				}
 			}
+		}
 		#end
 
 
