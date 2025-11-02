@@ -19,6 +19,17 @@ jobs:
         with:
           haxe-version: 4.3.7
 
+      - name: Cache haxelib and build artifacts (Android)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.haxelib
+            export/release/android/haxe
+            export/release/android/obj
+          key: haxe-android-${{ runner.os }}-${{ hashFiles('setup/install-haxelibs.sh') }}
+          restore-keys: |
+            haxe-android-${{ runner.os }}-
+
       - name: Install Libraries
         run: sh ./setup/install-haxelibs.sh
 

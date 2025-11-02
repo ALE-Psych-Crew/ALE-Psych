@@ -17,7 +17,18 @@ jobs:
       - name: Setup Haxe
         uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.6
+          haxe-version: 4.3.7
+
+      - name: Cache haxelib and build artifacts (Windows x64)
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.haxelib
+            export/release/windows/haxe
+            export/release/windows/obj
+          key: haxe-windows64-${{ runner.os }}-${{ hashFiles('setup/install-haxelibs.bat') }}
+          restore-keys: |
+            haxe-windows64-${{ runner.os }}-
 
       - name: Install Libraries
         run: setup/install-haxelibs.bat
