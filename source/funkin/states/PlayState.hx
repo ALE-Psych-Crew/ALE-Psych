@@ -980,7 +980,7 @@ class PlayState extends ScriptState
 
 				swagNote.noteType = songNotes[3] ?? '';
 
-				if (!Std.isOfType(songNotes[3], String))
+				if (songNotes[3] is Int)
 					swagNote.noteType = ChartingState.noteTypeList[songNotes[3]];
 
 				swagNote.scrollFactor.set();
