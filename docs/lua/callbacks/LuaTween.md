@@ -152,5 +152,7 @@
 
 ### > `cancelTweensOf(tag:String)`
 
-#### 
+#### Cancels all tweens running on an object 
+
+- `tag`: Object ID whose tweens will be cancelled 
 

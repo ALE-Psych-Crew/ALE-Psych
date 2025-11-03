@@ -88,17 +88,23 @@
 
 ### > `registerGlobalFunction(name:String)`
 
-#### 
+#### Shares a Lua function with all running scripts 
+
+- `name`: Function name to expose globally 
 
 ---
 
 ### > `registerGlobalLuaFunction(name:String)`
 
-#### 
+#### Shares a Lua function with all running Lua scripts 
+
+- `name`: Function name to expose globally 
 
 ---
 
 ### > `registerGlobalHScriptFunction(name:String)`
 
-#### 
+#### Shares a Lua function with all running HScript scripts 
+
+- `name`: Function name to expose globally 
 

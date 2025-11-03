@@ -57,5 +57,7 @@ class LuaPreset
         #if HSCRIPT_ALLOWED
         new LuaRuleScript(lua);
         #end
+
+        new LuaWindowsAPI(lua);
     }
 }

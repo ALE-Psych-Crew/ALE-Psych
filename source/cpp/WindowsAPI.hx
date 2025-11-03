@@ -9,16 +9,7 @@ import winapi.WindowsTerminalCPP;
 
 class WindowsAPI
 {
-	public static function obtainRAM():Int
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		return WindowsCPP.obtainRAM();
-		#else
-		return 0;
-		#end
-	}
-
+	/*
 	public static function screenCapture(path:String)
 	{
 		#if WINDOWS_API
@@ -26,6 +17,7 @@ class WindowsAPI
 		WindowsCPP.windowsScreenShot(path);
 		#end
 	}
+	*/
 
 	public static function showMessageBox(caption:String, message:String, icon:#if WINDOWS_API MessageBoxIcon = WARNING #else Int = 0 #end)
 	{
@@ -35,6 +27,7 @@ class WindowsAPI
 		#end
 	}
 
+	/*
 	public static function setWindowVisible(mode:Bool)
 	{
 		#if WINDOWS_API
@@ -42,22 +35,7 @@ class WindowsAPI
 		WindowsCPP.setWindowVisible(mode);
 		#end
 	}
-
-	public static function setWindowOppacity(a:Float)
-	{
-		#if WINDOWS_API
-		lime.app.Application.current.window.opacity = a;
-		#end
-	}
-
-	public static function getWindowOppacity():Float
-	{
-		#if WINDOWS_API
-		return lime.app.Application.current.window.opacity;
-		#else
-		return 1;
-		#end
-	}
+	*/
 
 	public static function setWindowBorderColor(r:Int, g:Int, b:Int)
 	{
@@ -67,6 +45,7 @@ class WindowsAPI
 		#end
 	}
 
+	/*
 	public static function hideTaskbar(hide:Bool)
 	{
 		#if WINDOWS_API
@@ -74,64 +53,12 @@ class WindowsAPI
 		WindowsCPP.hideTaskbar(hide);
 		#end
 	}
-
-	public static function setWallpaper(path:String)
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		WindowsCPP.setWallpaper(path);
-		#end
-	}
-
+	
 	public static function hideDesktopIcons(hide:Bool)
 	{
 		#if WINDOWS_API
 		reDefineMainWindowTitle(lime.app.Application.current.window.title);
 		WindowsCPP.hideDesktopIcons(hide);
-		#end
-	}
-
-	public static function moveDesktopWindowsInX(x:Int)
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		WindowsCPP.moveDesktopWindowsInX(x);
-		#end
-	}
-
-	public static function moveDesktopWindowsInY(y:Int)
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		WindowsCPP.moveDesktopWindowsInY(y);
-		#end
-	}
-
-	public static function moveDesktopWindowsInXY(x:Int, y:Int)
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		WindowsCPP.moveDesktopWindowsInXY(x, y);
-		#end
-	}
-
-	public static function getDesktopWindowsXPos():Int
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		return WindowsCPP.returnDesktopWindowsX();
-		#else
-		return 0;
-		#end
-	}
-
-	public static function getDesktopWindowsYPos():Int
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		return WindowsCPP.returnDesktopWindowsY();
-		#else
-		return 0;
 		#end
 	}
 
@@ -142,33 +69,7 @@ class WindowsAPI
 		WindowsCPP._setTaskBarAlpha(alpha);
 		#end
 	}
-
-	public static function getCursorPositionX()
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		return WindowsCPP.getCursorPositionX();
-		#else
-		return 0;
-		#end
-	}
-
-	public static function getCursorPositionY()
-	{
-		#if WINDOWS_API
-		reDefineMainWindowTitle(lime.app.Application.current.window.title);
-		return WindowsCPP.getCursorPositionY();
-		#else
-		return 0;
-		#end
-	}
-
-	public static function reDefineMainWindowTitle(windowTitle:String)
-	{
-		#if WINDOWS_API
-		WindowsCPP.reDefineMainWindowTitle(windowTitle);
-		#end
-	}
+	*/
 
 	public static function clearTerminal()
 	{
@@ -186,6 +87,7 @@ class WindowsAPI
 		#end
 	}
 
+	/*
 	public static function hideMainWindow()
 	{
 		#if WINDOWS_API
@@ -313,11 +215,19 @@ class WindowsAPI
 		WindowsTerminalCPP.hideConsoleWindow();
 		#end
 	}
+	*/
 
 	public static function sendNotification(title:String, desc:String)
 	{
 		#if WINDOWS_API
 		WinAPI.sendWindowsNotification(title, desc);
+		#end
+	}
+
+	public static function reDefineMainWindowTitle(windowTitle:String)
+	{
+		#if WINDOWS_API
+		WindowsCPP.reDefineMainWindowTitle(windowTitle);
 		#end
 	}
 }

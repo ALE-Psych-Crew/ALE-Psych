@@ -155,8 +155,7 @@ class HScriptConfig
 
 			Paths,
 
-			cpp.WindowsAPI,
-			cpp.MobileAPI
+			cpp.WindowsAPI
 		];
 
         for (theClass in presetClasses)

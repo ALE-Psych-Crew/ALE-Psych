@@ -134,7 +134,7 @@
 
 - `id`: Boolean ID 
 
-- `float`: Boolean value 
+- `bool`: Boolean value 
 
 ---
 
@@ -158,7 +158,7 @@
 
 - `id`: Boolean list ID 
 
-- `float`: List of booleans 
+- `bools`: List of booleans 
 
 ---
 
