@@ -117,7 +117,8 @@ We welcome contributions:
 
 ## Credits
 - **Alejo GD Official** — Director | Lead Programmer  
-- **THE VOID** — RuleScript integration
+- **THE VOID** — Co-Founder
+- **Kriptel** — RuleScript integration
 - **Malloy** — GitHub Maintainer | Managed Repositories and Wiki
 - **ManuArtz** — Artist
 - And [all contributors](https://github.com/ALE-Psych-Crew/ALE-Psych/graphs/contributors)  
