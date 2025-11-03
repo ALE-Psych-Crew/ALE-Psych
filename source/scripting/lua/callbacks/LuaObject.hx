@@ -13,7 +13,13 @@ class LuaObject extends LuaPresetBase
         super(lua);
 
         /**
-         * 
+         * Creates a `FlxObject`
+         *
+         * @param tag Object ID
+         * @param x Position on `x`
+         * @param y Position on `y`
+         * @param width Object width
+         * @param height Object height
          */
         set('makeLuaObject', function(tag:String, ?x:Float, ?y:Float, ?width:Float, ?height:Float)
         {

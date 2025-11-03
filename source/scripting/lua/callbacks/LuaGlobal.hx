@@ -115,7 +115,9 @@ class LuaGlobal extends LuaPresetBase
         });
 
         /**
-         * 
+         * Shares a Lua function with all running scripts
+         *
+         * @param name Function name to expose globally
          */
         set('registerGlobalFunction', function(name:String)
         {
@@ -125,9 +127,11 @@ class LuaGlobal extends LuaPresetBase
             globalFunctionHScript(name);
             #end
         });
-        
+
         /**
-         * 
+         * Shares a Lua function with all running Lua scripts
+         *
+         * @param name Function name to expose globally
          */
         set('registerGlobalLuaFunction', function(name:String)
         {
@@ -136,7 +140,9 @@ class LuaGlobal extends LuaPresetBase
 
         #if HSCRIPT_ALLOWED
         /**
-         * 
+         * Shares a Lua function with all running HScript scripts
+         *
+         * @param name Function name to expose globally
          */
         set('registerGlobalHScriptFunction', function(name:String)
         {

@@ -159,7 +159,9 @@ class LuaTween extends LuaPresetBase
         });
 
         /**
-         * 
+         * Cancels all tweens running on an object
+         *
+         * @param tag Object ID whose tweens will be cancelled
          */
         set('cancelTweensOf', function(tag:String)
         {

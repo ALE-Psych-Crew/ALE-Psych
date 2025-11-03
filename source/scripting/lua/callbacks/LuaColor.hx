@@ -69,7 +69,13 @@ class LuaColor extends LuaPresetBase
         });
 
         /**
-         * 
+         * Gets a color from its RGB components
+         *
+         * @param r Red component (0 to 255)
+         * @param g Green component (0 to 255)
+         * @param b Blue component (0 to 255)
+         *
+         * @return Obtained color
          */
         set('getColorFromRGB', function(r:Int, g:Int, b:Int):Int
         {

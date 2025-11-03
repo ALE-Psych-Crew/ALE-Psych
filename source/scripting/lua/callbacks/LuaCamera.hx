@@ -29,7 +29,13 @@ class LuaCamera extends LuaPresetBase
         });
 
         /**
-         * 
+         * Flashes a camera with a color overlay
+         *
+         * @param camera ID of the camera
+         * @param tag ID of the flash effect
+         * @param color Overlay color
+         * @param duration Duration of the flash
+         * @param force Defines whether the flash will be forced
          */
         set('cameraFlash', function(camera:String, tag:String, ?color:FlxColor, ?duration:Float, ?force:Bool)
         {
@@ -38,7 +44,14 @@ class LuaCamera extends LuaPresetBase
         });
 
         /**
-         * 
+         * Fades a camera in or out to a color
+         *
+         * @param camera ID of the camera
+         * @param tag ID of the fade effect
+         * @param color Fade color
+         * @param duration Duration of the fade
+         * @param fadeIn Defines whether the fade will fade in (`true`) or out (`false`)
+         * @param force Defines whether the fade will be forced
          */
         set('cameraFade', function(camera:String, tag:String, ?color:FlxColor, ?duration:Float, ?fadeIn:Bool, ?force:Bool)
         {
@@ -47,7 +60,9 @@ class LuaCamera extends LuaPresetBase
         });
 
         /**
-         * 
+         * Stops all camera effects (shake, fade and flash)
+         *
+         * @param camera ID of the camera
          */
         set('stopCameraFX', function(camera:String)
         {
@@ -56,7 +71,9 @@ class LuaCamera extends LuaPresetBase
         });
 
         /**
-         * 
+         * Stops the current camera fade
+         *
+         * @param camera ID of the camera
          */
         set('stopCameraFade', function(camera:String)
         {
@@ -65,7 +82,9 @@ class LuaCamera extends LuaPresetBase
         });
 
         /**
-         * 
+         * Stops the current camera flash
+         *
+         * @param camera ID of the camera
          */
         set('stopCameraFlash', function(camera:String)
         {
@@ -74,16 +93,22 @@ class LuaCamera extends LuaPresetBase
         });
 
         /**
-         * 
+         * Stops the current camera shake
+         *
+         * @param camera ID of the camera
          */
         set('stopCameraShake', function(camera:String)
         {
             if (tagIs(camera, FlxCamera))
                 getTag(camera).stopShake();
         });
-        
+
         /**
-         * 
+         * Makes a camera follow an object
+         *
+         * @param camera ID of the camera
+         * @param target ID of the object to follow
+         * @param lerp Lerp value used by the camera follow
          */
         set('cameraFollow', function(camera:String, target:String, ?lerp:Float)
         {

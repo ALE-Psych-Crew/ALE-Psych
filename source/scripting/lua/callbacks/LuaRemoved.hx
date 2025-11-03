@@ -12,8 +12,11 @@ class LuaRemoved extends LuaPresetBase
     {
         super(lua);
 		
-		for (name in [
-			'getRunningScripts',
+        /**
+         * Emits an error for callbacks that were removed from the engine
+         */
+        for (name in [
+                        'getRunningScripts',
 			'callScript',
 			'getGlobalFromScript',
 			'setGlobalFromScript',
@@ -55,9 +58,9 @@ class LuaRemoved extends LuaPresetBase
 			'addOffset',
 			'makeAnimatedLuaSprite',
 			'setScrollFactor',
-			'instanceArg'
-		])
-			set(name, () -> { errorPrint('"' + name + '" function was removed'); });
+                        'instanceArg'
+        ])
+            set(name, () -> { errorPrint('"' + name + '" function was removed'); });
     }
 }
 

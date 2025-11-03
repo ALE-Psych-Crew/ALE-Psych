@@ -12,24 +12,24 @@ class LuaPaths extends LuaPresetBase
     {
         super(lua);
 		
-		/**
-		 * Preloads a sound
-         * 
+        /**
+         * Preloads a sound
+         *
          * @param file Path of the audio
          * @param missingPrint Defines whether to show a warning if the file does not exist
-		 */
-		set('precacheSound', function(file:String, ?missingPrint:Bool)
+         */
+        set('precacheSound', function(file:String, ?missingPrint:Bool)
         {
             Paths.sound(file, missingPrint);
         });
 
-		/**
-		 * Preloads music
-         * 
+        /**
+         * Preloads music
+         *
          * @param file Path of the audio
          * @param missingPrint Defines whether to show a warning if the file does not exist
-		 */
-		set('precacheMusic', function(file:String, ?missingPrint:Bool)
+         */
+        set('precacheMusic', function(file:String, ?missingPrint:Bool)
         {
             Paths.music(file, missingPrint);
         });

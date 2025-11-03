@@ -13,13 +13,17 @@ class LuaRuleScript extends LuaPresetBase
     {
         super(lua);
 
-		/**
-		 * 
-		 */
-		set('createScriptedInstance', function(tag:String, path:String, ?args:Array<Dynamic>)
-		{
-			setTag(tag, RuleScript.createScriptedInstance(path, args));
-		});
+        /**
+         * Creates an instance of a RuleScript-enabled class
+         *
+         * @param tag Instance ID
+         * @param path RuleScript path
+         * @param args Arguments for the instance constructor
+         */
+        set('createScriptedInstance', function(tag:String, path:String, ?args:Array<Dynamic>)
+        {
+            setTag(tag, RuleScript.createScriptedInstance(path, args));
+        });
     }
 }
 #end

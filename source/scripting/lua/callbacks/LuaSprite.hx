@@ -218,11 +218,11 @@ class LuaSprite extends LuaPresetBase
 
         /**
          * Removes a sprite from the game
-		 * 
-		 * @param tag Sprite ID
-		 * @param destroy Defines whether the sprite should be destroyed
-		 * 
-		 * @deprecated Use `remove` instead
+         *
+         * @param tag Sprite ID
+         * @param destroy Defines whether the sprite should be destroyed
+         *
+         * @deprecated Use `remove` instead
          */
         set('removeLuaSprite', function(tag:String, ?destroy:Bool)
         {

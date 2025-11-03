@@ -178,10 +178,10 @@ class LuaShader extends LuaPresetBase
 
         /**
          * Sets a boolean on a shader
-         * 
+         *
          * @param tag Shader ID
          * @param id Boolean ID
-         * @param float Boolean value
+         * @param bool Boolean value
          */
         set('setShaderBool', function(tag:String, id:String, bool:Bool)
             {
@@ -209,10 +209,10 @@ class LuaShader extends LuaPresetBase
 
         /**
          * Sets a list of booleans on a shader
-         * 
+         *
          * @param tag Shader ID
          * @param id Boolean list ID
-         * @param float List of booleans
+         * @param bools List of booleans
          */
         set('setShaderBoolArray', function(tag:String, id:String, bools:Array<Bool>)
             {
