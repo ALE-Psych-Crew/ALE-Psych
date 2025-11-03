@@ -17,6 +17,7 @@ import openfl.text.*;
 import scripting.lua.*;
 
 import funkin.visuals.*;
+import funkin.visuals.game.*;
 import funkin.visuals.objects.*;
 import funkin.visuals.mobile.*;
 
@@ -62,3 +63,7 @@ class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
 #if LUA_ALLOWED
 class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
 #end
+
+class ScriptHealthIcon extends HealthIcon implements RuleScriptedClass {}
+
+class ScriptCharacter extends Character implements RuleScriptedClass {}

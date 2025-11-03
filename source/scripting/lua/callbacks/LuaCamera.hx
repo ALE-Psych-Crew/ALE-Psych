@@ -1,9 +1,9 @@
 package scripting.lua.callbacks;
 
+import flixel.FlxObject;
 import flixel.util.FlxAxes;
 
 import scripting.lua.LuaPresetBase;
-
 import scripting.lua.LuaPresetUtils;
 
 class LuaCamera extends LuaPresetBase
@@ -80,6 +80,15 @@ class LuaCamera extends LuaPresetBase
         {
             if (tagIs(camera, FlxCamera))
                 getTag(camera).stopShake();
+        });
+        
+        /**
+         * 
+         */
+        set('cameraFollow', function(camera:String, target:String, ?lerp:Float)
+        {
+            if (tagIs(camera, FlxCamera) && tagIs(target, FlxObject))
+                getTag(camera).follow(getTag(target), null, lerp);
         });
     }
 }

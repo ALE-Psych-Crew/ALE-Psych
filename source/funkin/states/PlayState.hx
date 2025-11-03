@@ -891,6 +891,8 @@ class PlayState extends ScriptState
 		#end
 		setOnScripts('songLength', songLength);
 		callOnScripts('onSongStart');
+
+		sectionHit();
 	}
 
 	var debugNum:Int = 0;

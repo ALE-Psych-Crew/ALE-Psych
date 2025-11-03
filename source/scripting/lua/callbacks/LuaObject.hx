@@ -13,6 +13,14 @@ class LuaObject extends LuaPresetBase
         super(lua);
 
         /**
+         * 
+         */
+        set('makeLuaObject', function(tag:String, ?x:Float, ?y:Float, ?width:Float, ?height:Float)
+        {
+            setTag(tag, new FlxObject(x, y, width, height));
+        });
+
+        /**
          * Centers an object on the screen
          * 
          * @param tag ID of the object
