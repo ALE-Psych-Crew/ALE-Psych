@@ -2313,19 +2313,22 @@ class PlayState extends ScriptState
 			if (daNote != note && daNote.mustPress && daNote.noteData == note.noteData && daNote.isSustainNote == note.isSustainNote && Math.abs(daNote.strumTime - note.strumTime) < 1)
 				invalidateNote(note);
 		});
+		
+		callOnLuaScripts('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
+		callOnHScripts('noteMiss', [daNote]);
 
 		noteMissCommon(daNote.noteData, daNote);
-		var result:Dynamic = callOnLuaScripts('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
-		if(result != CoolVars.Function_Stop) callOnHScripts('noteMiss', [daNote]);
 	}
 
 	function noteMissPress(direction:Int = 1):Void
 	{
 		if(ClientPrefs.data.ghostTapping) return;
 
-		noteMissCommon(direction);
-		FlxG.sound.play(Paths.sound('missnote' + FlxG.random.int(1, 3)), FlxG.random.float(0.1, 0.2));
 		callOnScripts('noteMissPress', [direction]);
+		
+		noteMissCommon(direction);
+
+		FlxG.sound.play(Paths.sound('missnote' + FlxG.random.int(1, 3)), FlxG.random.float(0.1, 0.2));
 	}
 
 	function noteMissCommon(direction:Int, note:Note = null)
