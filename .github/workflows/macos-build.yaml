@@ -1,0 +1,33 @@
+name: MacOS Build
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: MacOS Build
+    permissions: write-all
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull the New Commit
+        uses: actions/checkout@main
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install Libraries
+        run: |
+          sh ./setup/install-haxelibs.sh
+
+      - name: Build for MacOS
+        run: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
+
+      - name: Upload Game
+        uses: actions/upload-artifact@main
+        with:
+          name: MacOS Build
+          path: export/release/macos/bin
