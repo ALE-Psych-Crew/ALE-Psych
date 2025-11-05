@@ -23,23 +23,23 @@
 ## Downloads
 
 <p align="center">
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/windows-build.yaml/main/Windows%20Build.zip">
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build.zip">
     <img alt="Windows x64 Actions Build"
       src="https://img.shields.io/badge/Windows%20x64-Actions%20Build-0078D6?logo=windows&logoColor=white&style=for-the-badge">
   </a>
 
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/windows-build-32.yaml/main/Windows%20Build%20%2832%20Bits%29.zip">
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build%20%2832%20Bits%29.zip">
     <img alt="Windows x32 Actions Build"
       src="https://img.shields.io/badge/Windows%20x32-Actions%20Build-00A4EF?logo=windows&logoColor=white&style=for-the-badge">
   </a>
 
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/android-build.yaml/main/Android%20Build.zip">
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Android%20Build.zip">
     <img alt="Android Actions Build"
       src="https://img.shields.io/badge/Android-Actions%20Build-3DDC84?logo=android&logoColor=white&style=for-the-badge">
   </a>
 
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/linux-build.yaml/main/Linux%20Build.zip">
-    <img alt="Android Actions Build"
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Linux%20Build.zip">
+    <img alt="Linux Actions Build"
       src="https://img.shields.io/badge/Linux-Actions%20Build-7D7D7D?logo=linux&logoColor=white&style=for-the-badge">
   </a>
 </p>
