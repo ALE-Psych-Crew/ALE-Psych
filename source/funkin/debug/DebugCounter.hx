@@ -58,11 +58,11 @@ class DebugCounter extends Sprite
         switchMode(0);
     }
 
-    private var timer:#if linux Float #else Int #end = 0;
+    private var timer:Int = 0;
 
     private var focused:Bool = true;
 
-    override function __enterFrame(time:#if linux Float #else Int #end)
+    override function __enterFrame(time:Int)
     {
         if ((focused || !FlxG.autoPause) && visible)
         {

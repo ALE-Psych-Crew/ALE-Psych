@@ -118,7 +118,7 @@ class DebugField extends Sprite
         bg.scaleY = scaleY;
     }
 
-    override function __enterFrame(time:#if linux Float #else Int #end)
+    override function __enterFrame(time:Int)
     {   
         if (!visible)
             return;

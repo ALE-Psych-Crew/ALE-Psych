@@ -20,7 +20,7 @@ class DebugText extends TextField
         text = valueFunction();
     }
 
-    override function __enterFrame(time:#if linux Float #else Int #end)
+    override function __enterFrame(time:Int)
     {
         super.__enterFrame(time);
 
