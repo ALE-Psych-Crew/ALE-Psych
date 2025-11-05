@@ -37,6 +37,11 @@
     <img alt="Android Actions Build"
       src="https://img.shields.io/badge/Android-Actions%20Build-3DDC84?logo=android&logoColor=white&style=for-the-badge">
   </a>
+
+  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/linux-build.yaml/main/Linux%20Build.zip">
+    <img alt="Android Actions Build"
+      src="https://img.shields.io/badge/Linux-Actions%20Build-7D7D7D?logo=linux&logoColor=white&style=for-the-badge">
+  </a>
 </p>
 
 ### Build Notes
