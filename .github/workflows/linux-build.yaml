@@ -20,6 +20,7 @@ jobs:
           haxe-version: 4.3.7
 
       - name: Install Libraries
+        run: sudo apt-get install vlc libvlc-dev libvlccore-dev vlc-bin
         run: sh ./setup/install-haxelibs.sh
 
       - name: Build for Linux
