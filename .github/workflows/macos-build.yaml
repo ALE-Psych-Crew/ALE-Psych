@@ -8,7 +8,7 @@ jobs:
   build:
     name: MacOS Build
     permissions: write-all
-    runs-on: ubuntu-latest
+    runs-on: macos-15
 
     steps:
       - name: Pull the New Commit
