@@ -12,7 +12,6 @@ jobs:
 
     strategy:
       matrix:
-        platform: [android, linux, macos, windows, windows-32]
         include:
           - platform: Windows
             os: windows-latest
