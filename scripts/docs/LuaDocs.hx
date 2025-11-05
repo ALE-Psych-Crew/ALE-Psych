@@ -307,6 +307,8 @@ class LuaDocs
             }
         }
 
+        finalText += '\n\n##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)';
+
         if (finalText.trim().length <= 0)
             return;
 

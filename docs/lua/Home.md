@@ -19,6 +19,7 @@
 - [LuaPaths](callbacks/LuaPaths.md)
 - [LuaPlayState](callbacks/LuaPlayState.md)
 - [LuaReflect](callbacks/LuaReflect.md)
+- [LuaRemoved](callbacks/LuaRemoved.md)
 - [LuaRuleScript](callbacks/LuaRuleScript.md)
 - [LuaSave](callbacks/LuaSave.md)
 - [LuaShader](callbacks/LuaShader.md)
@@ -28,4 +29,5 @@
 - [LuaText](callbacks/LuaText.md)
 - [LuaTimer](callbacks/LuaTimer.md)
 - [LuaTween](callbacks/LuaTween.md)
+- [LuaVariables](callbacks/LuaVariables.md)
 - [LuaWindowsAPI](callbacks/LuaWindowsAPI.md)

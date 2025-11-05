@@ -18,3 +18,6 @@
 
 - `missingPrint`: Defines whether to show a warning if the file does not exist 
 
+
+
+##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)

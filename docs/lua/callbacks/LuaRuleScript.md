@@ -2,11 +2,14 @@
 
 ### > `createScriptedInstance(tag:String, path:String, ?args:Array<Dynamic>)`
 
-#### Creates an instance of a RuleScript-enabled class 
+#### Create an instance of a custom class 
 
 - `tag`: Instance ID 
 
-- `path`: RuleScript path 
+- `path`: Class Path 
 
 - `args`: Arguments for the instance constructor 
 
+
+
+##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)

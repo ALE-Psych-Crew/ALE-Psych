@@ -24,3 +24,6 @@
 
 - `axes`: Axes on which it will be centered. Can be `0x00`, `0x01`, `0x11`, `0x10` 
 
+
+
+##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)

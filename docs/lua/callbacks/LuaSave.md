@@ -36,3 +36,6 @@
 
 - `name`: Save file ID. Can be `preferences`, `score`, `custom`, `controls` 
 
+
+
+##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)
