@@ -75,14 +75,14 @@ jobs:
           haxe-version: 4.3.7
 
       - name: Install Extra Libraries
-        if: ${{ matrix.extra_libs != '' }}
+        if: ${{ matrix.extra_libs != "" }}
         run: ${{ matrix.extra_libs }}
 
       - name: Install Main Libraries
         run: ${{ matrix.setup_libs }}
 
       - name: Configure Android
-        if: ${{ matrix.configure_android != '' }}
+        if: ${{ matrix.configure_android != "" }}
         run: ${{ matrix.configure_android }}
 
       - name: Build for ${{ matrix.platform }}
