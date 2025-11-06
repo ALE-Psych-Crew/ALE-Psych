@@ -7,3 +7,4 @@ flixel.util.FlxDirectionFlags
 openfl.display.BlendMode
 flixel.util.FlxAxes
 flixel.math.FlxPoint
+flixel.sound.filters.FlxSoundFilterType

@@ -66,6 +66,7 @@
 	
 	<haxelib name="flxanimate"/>
 
+	<haxelib name="flxsoundfilters"/>
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio"/>
 

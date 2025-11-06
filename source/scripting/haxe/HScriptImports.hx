@@ -6,6 +6,8 @@ import scripting.haxe.imports.FlixelImports;
 
 import scripting.haxe.imports.FlixelAddonsImports;
 
+import scripting.haxe.imports.FlixelSoundFiltersImports;
+
 import scripting.haxe.imports.FlixelAway3DImports;
 
 import scripting.haxe.imports.HaxeImports;

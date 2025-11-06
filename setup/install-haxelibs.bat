@@ -24,6 +24,7 @@ haxelib install flixel-tools 1.5.1
 
 haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 7da385ca7fd8d8067aac03bc39798d37c5598e45
 
+haxelib git flxsoundfilters https://github.com/TheZoroForce240/FlxSoundFilters a89bb537684111a6ff85737981f4b2d8ef4b4f68
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 1966f8fbbbc509ed90d4b520f3c49c084fc92fd6
 haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e
 
