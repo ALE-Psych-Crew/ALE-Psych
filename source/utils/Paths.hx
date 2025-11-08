@@ -33,10 +33,16 @@ class Paths
 	public static inline final VIDEO_EXT = 'mp4';
 
     public static var cachedBytes:StringMap<Bytes> = new StringMap<Bytes>();
+    public static var permanentCachedBytes:Array<String> = [];
+
     public static var cachedContents:StringMap<String> = new StringMap<String>();
+    public static var permanentCachedContents:Array<String> = [];
 
 	public static var cachedGraphics:StringMap<FlxGraphic> = new StringMap<FlxGraphic>();
+	public static var permanentCachedGraphics:Array<String> = [];
+
     public static var cachedSounds:StringMap<Sound> = new StringMap<Sound>();
+    public static var permanentCachedSounds:Array<String> = [];
 
     // UTILS
 
@@ -59,7 +65,7 @@ class Paths
     public static inline function modFolder():String
         return 'mods/' + Mods.folder;
     
-    public static function clearEngineCache()
+    public static function clearEngineCache(?clearPermanent:Bool = false)
     {
 		@:privateAccess
 		for (key in FlxG.bitmap._cache.keys())
@@ -74,17 +80,29 @@ class Paths
 			}
 		}
 
+        if (clearPermanent)
+        {
+            permanentCachedBytes = [];
+            permanentCachedContents = [];
+            permanentCachedGraphics = [];
+            permanentCachedSounds = [];
+        }
+
         for (key in cachedBytes.keys())
-            cachedBytes.remove(key);
+            if (!permanentCachedBytes.contains(key))
+                cachedBytes.remove(key);
         
         for (key in cachedContents.keys())
-            cachedContents.remove(key);
+            if (!permanentCachedContents.contains(key))
+                cachedContents.remove(key);
         
         for (key in cachedGraphics.keys())
-            cachedGraphics.remove(key);
+            if (!permanentCachedGraphics.contains(key))
+                cachedGraphics.remove(key);
         
         for (key in cachedSounds.keys())
-            cachedSounds.remove(key);
+            if (!permanentCachedSounds.contains(key))
+                cachedSounds.remove(key);
     }
 
     // FILE SYSTEM
@@ -111,7 +129,7 @@ class Paths
         return false;
     }
 
-    public static function readDirectory(path:String, ?missingPrint:Bool = true):Array<String>
+    public static function readDirectory(path:String, missingPrint:Bool = true):Array<String>
     {
         if (isDirectory(path))
             return FileSystem.readDirectory(getPath(path));
@@ -122,7 +140,7 @@ class Paths
         return null;
     }
 
-    public static function stat(path:String, ?missingPrint:Bool = true):FileStat
+    public static function stat(path:String, missingPrint:Bool = true):FileStat
     {
         if (exists(path))
             return FileSystem.stat(getPath(path));
@@ -135,7 +153,7 @@ class Paths
 
     // FILE
 
-    public static function getBytes(path:String, ?missingPrint:Bool = true):Bytes
+    public static function getBytes(path:String, missingPrint:Bool = true):Bytes
     {
         if (cachedBytes.exists(path))
             return cachedBytes.get(path);
@@ -149,7 +167,7 @@ class Paths
         return null;
     }
 
-    public static function getContent(path:String, ?missingPrint:Bool = true):String
+    public static function getContent(path:String, missingPrint:Bool = true):String
     {
         if (cachedContents.exists(path))
             return cachedContents.get(path);
@@ -165,7 +183,7 @@ class Paths
 
     // IMAGE
 
-    public static function image(file:String, missingPrint:Bool = true):FlxGraphic
+    public static function image(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxGraphic
     {
         var path = 'images/' + file + '.' + IMAGE_EXT;
 
@@ -178,7 +196,7 @@ class Paths
 
         if (bitmap != null)
         {
-            var returnValue = cacheBitmap(path, bitmap);
+            var returnValue = cacheBitmap(path, bitmap, permanent);
 
             if (returnValue != null)
                 return returnValue;
@@ -190,12 +208,12 @@ class Paths
         return null;
     }
 
-    public static function getAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
-        return getSparrowAtlas(file, false) ?? getPackerAtlas(file, false) ?? getAsepriteAtlas(file, missingPrint);
+    public static function getAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
+        return getSparrowAtlas(file, permanent, false) ?? getPackerAtlas(file, permanent, false) ?? getAsepriteAtlas(file, permanent, missingPrint);
 
-    public static function getSparrowAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
+    public static function getSparrowAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
-        var graphic = image(file, missingPrint);
+        var graphic = image(file, permanent, missingPrint);
         var xmlContent = xml(file, missingPrint);
 
         if (graphic == null || xmlContent == null)
@@ -204,9 +222,9 @@ class Paths
         return FlxAtlasFrames.fromSparrow(graphic, xmlContent);
     }
     
-    public static function getPackerAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
+    public static function getPackerAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
-        var graphic = image(file, missingPrint);
+        var graphic = image(file, permanent, missingPrint);
         var txtContent = imageTxt(file, missingPrint);
 
         if (graphic == null || txtContent == null)
@@ -215,9 +233,9 @@ class Paths
         return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txtContent);
     }
 
-    public static function getAsepriteAtlas(file:String, missingPrint:Bool = true):FlxAtlasFrames
+    public static function getAsepriteAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
-        var graphic = image(file, missingPrint);
+        var graphic = image(file, permanent, missingPrint);
         var jsonContent = imageJson(file, missingPrint);
 
         if (graphic == null || jsonContent == null)
@@ -225,8 +243,43 @@ class Paths
 
         return FlxAtlasFrames.fromTexturePackerJson(graphic, jsonContent);
     }
+    
+    @:unreflective private static function getMultiAtlasBase(atlasFunc:String -> Bool -> Bool -> FlxAtlasFrames, files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
+    {
+		var parentFrames:FlxAtlasFrames = atlasFunc(files[0], permanent, missingPrint);
 
-	public static function loadAnimateAtlas(spr:PsychFlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null)
+		if (files.length > 1)
+		{
+			var original:FlxAtlasFrames = parentFrames;
+
+			parentFrames = new FlxAtlasFrames(parentFrames.parent);
+			parentFrames.addAtlas(original, true);
+
+			for (i in 1...files.length)
+			{
+				var extraFrames:FlxAtlasFrames = atlasFunc(files[i], permanent, missingPrint);
+
+				if (extraFrames != null)
+					parentFrames.addAtlas(extraFrames, true);
+			}
+		}
+
+		return parentFrames;
+    }
+
+    public static function getMultiAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
+        return getMultiAtlasBase(Paths.getAtlas, files, permanent, missingPrint);
+
+    public static function getMultiSparrowAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
+        return getMultiAtlasBase(Paths.getSparrowAtlas, files, permanent, missingPrint);
+
+    public static function getMultiPackerAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
+        return getMultiAtlasBase(Paths.getPackerAtlas, files, permanent, missingPrint);
+
+    public static function getMultiAsepriteAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
+        return getMultiAtlasBase(Paths.getAsepriteAtlas, files, permanent, missingPrint);
+
+	public static function loadAnimateAtlas(spr:PsychFlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null, permanent:Bool = false, missingPrint:Bool = true)
 	{
 		var changedAnimJson = false;
 		var changedAtlasJson = false;
@@ -267,14 +320,14 @@ class Paths
 
 						changedAtlasJson = true;
 
-						folderOrImg = image('$originalPath/spritemap$st');
+						folderOrImg = image('$originalPath/spritemap$st', permanent, missingPrint);
                         
 						break;
 					}
 				} else if (exists('images/$originalPath/spritemap$st.png')) {
 					changedImage = true;
 
-					folderOrImg = image('$originalPath/spritemap$st');
+					folderOrImg = image('$originalPath/spritemap$st', permanent, missingPrint);
 
 					break;
 				}
@@ -284,7 +337,7 @@ class Paths
 			{
 				changedImage = true;
 
-				folderOrImg = image(originalPath);
+				folderOrImg = image(originalPath, permanent, missingPrint);
 			}
 
 			if (!changedAnimJson)
@@ -297,59 +350,24 @@ class Paths
 
 		spr.loadAtlasEx(folderOrImg, spriteJson, animationJson);
 	}
-    
-    @:unreflective private static function getMultiAtlasBase(atlasFunc:String -> Bool -> FlxAtlasFrames, files:Array<String>, missingPrint:Bool = true):FlxAtlasFrames
-    {
-		var parentFrames:FlxAtlasFrames = atlasFunc(files[0], missingPrint);
-
-		if (files.length > 1)
-		{
-			var original:FlxAtlasFrames = parentFrames;
-
-			parentFrames = new FlxAtlasFrames(parentFrames.parent);
-			parentFrames.addAtlas(original, true);
-
-			for (i in 1...files.length)
-			{
-				var extraFrames:FlxAtlasFrames = atlasFunc(files[i], missingPrint);
-
-				if (extraFrames != null)
-					parentFrames.addAtlas(extraFrames, true);
-			}
-		}
-
-		return parentFrames;
-    }
-
-    public static function getMultiAtlas(files:Array<String>, missingPrint:Bool = true):FlxAtlasFrames
-        return getMultiAtlasBase(Paths.getAtlas, files, missingPrint);
-
-    public static function getMultiSparrowAtlas(files:Array<String>, missingPrint:Bool = true):FlxAtlasFrames
-        return getMultiAtlasBase(Paths.getSparrowAtlas, files, missingPrint);
-
-    public static function getMultiPackerAtlas(files:Array<String>, missingPrint:Bool = true):FlxAtlasFrames
-        return getMultiAtlasBase(Paths.getPackerAtlas, files, missingPrint);
-
-    public static function getMultiAsepriteAtlas(files:Array<String>, missingPrint:Bool = true):FlxAtlasFrames
-        return getMultiAtlasBase(Paths.getAsepriteAtlas, files, missingPrint);
 
     // SOUND
 
-	inline static public function voices(route:String, postfix:String = null, missingPrint:Bool = true)
-		return returnSound(route + '/song/Voices' + (postfix ?? ''), missingPrint);
+	inline static public function voices(route:String, postfix:String = null, permanent:Bool = false, missingPrint:Bool = true)
+		return returnSound(route + '/song/Voices' + (postfix ?? ''), permanent, missingPrint);
 
-	inline static public function inst(route:String, missingPrint:Bool = true)
-		return returnSound(route + '/song/Inst', missingPrint);
+	inline static public function inst(route:String, permanent:Bool = false, missingPrint:Bool = true)
+		return returnSound(route + '/song/Inst', permanent, missingPrint);
 
-    public static function music(file:String, missingPrint:Bool = true):Sound
-        return returnSound('music/' + file, missingPrint);
+    public static function music(file:String, permanent:Bool = false, missingPrint:Bool = true):Sound
+        return returnSound('music/' + file, permanent, missingPrint);
 
-    public static function sound(file:String, missingPrint:Bool = true):Sound
-        return returnSound('sounds/' + file, missingPrint);
+    public static function sound(file:String, permanent:Bool = false, missingPrint:Bool = true):Sound
+        return returnSound('sounds/' + file, permanent, missingPrint);
 
     // JSON
 
-    public static function json(file:String, ?missingPrint:Bool = true):Dynamic
+    public static function json(file:String, missingPrint:Bool = true):Dynamic
     {
         var path:String = file + '.json';
 
@@ -460,7 +478,7 @@ class Paths
 
     // PRECACHE
     
-	public static function cacheBitmap(file:String, ?bitmap:BitmapData = null):FlxGraphic
+	public static function cacheBitmap(file:String, ?bitmap:BitmapData = null, permanent:Bool = false):FlxGraphic
 	{
 		if (bitmap == null)
 		{
@@ -488,10 +506,13 @@ class Paths
         
 		cachedGraphics.set(file, newGraphic);
 
+        if (permanent)
+            permanentCachedGraphics.push(file);
+
 		return newGraphic;
 	}
 
-    public static function cacheSound(file:String, ?sound:Sound = null):Sound
+    public static function cacheSound(file:String, ?sound:Sound = null, permanent:Bool = false):Sound
     {
         if (sound == null)
         {
@@ -504,10 +525,13 @@ class Paths
 
         cachedSounds.set(file, sound);
 
+        if (permanent)
+            permanentCachedSounds.push(file);
+
         return sound;
     }
 
-    private static function returnSound(file:String, missingPrint:Bool = true):Sound
+    private static function returnSound(file:String, permanent:Bool = false, missingPrint:Bool = true):Sound
     {
         var path = file + '.' + SOUND_EXT;
 
@@ -520,7 +544,7 @@ class Paths
 
         if (sound != null)
         {
-            var returnValue = cacheSound(path, sound);
+            var returnValue = cacheSound(path, sound, permanent);
 
             if (returnValue != null)
                 return returnValue;

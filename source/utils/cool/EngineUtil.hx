@@ -52,6 +52,8 @@ class EngineUtil
 
 		FlxG.resetGame();
 
+		Paths.clearEngineCache(true);
+
 		#if desktop
 		Mouse.cursor = ARROW;
 		#end
