@@ -915,10 +915,10 @@ class PlayState extends ScriptState
 		{
 			if (songData.needsVoices)
 			{
-				var playerVocals = Paths.voices(songRoute, (boyfriend.vocalsFile == null || boyfriend.vocalsFile.length < 1) ? 'Player' : boyfriend.vocalsFile, false);
+				var playerVocals = Paths.voices(songRoute, (boyfriend.vocalsFile == null || boyfriend.vocalsFile.length < 1) ? 'Player' : boyfriend.vocalsFile, true, false);
 				vocals.loadEmbedded(playerVocals ?? Paths.voices(songRoute));
 				
-				var oppVocals = Paths.voices(songRoute, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile, false);
+				var oppVocals = Paths.voices(songRoute, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile, true, false);
 				if (oppVocals != null)
 					opponentVocals.loadEmbedded(oppVocals);
 			}

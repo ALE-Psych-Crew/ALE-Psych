@@ -304,10 +304,10 @@ class EditorPlayState extends MusicBeatSubState
 		{
 			if (songData.needsVoices)
 			{
-				var playerVocals = Paths.voices(PlayState.songRoute, (boyfriendVocals == null || boyfriendVocals.length < 1) ? 'Player' : boyfriendVocals, false);
+				var playerVocals = Paths.voices(PlayState.songRoute, (boyfriendVocals == null || boyfriendVocals.length < 1) ? 'Player' : boyfriendVocals, true, false);
 				vocals.loadEmbedded(playerVocals != null ? playerVocals : Paths.voices(PlayState.songRoute));
 				
-				var oppVocals = Paths.voices(PlayState.songRoute, (dadVocals == null || dadVocals.length < 1) ? 'Opponent' : dadVocals, false);
+				var oppVocals = Paths.voices(PlayState.songRoute, (dadVocals == null || dadVocals.length < 1) ? 'Opponent' : dadVocals, true, false);
 				if(oppVocals != null) opponentVocals.loadEmbedded(oppVocals);
 			}
 		}
