@@ -25,6 +25,8 @@ class MainState extends MusicBeatState
 
 	override function create()
 	{
+		Paths.clearEngineCache(true);
+
 		ALEUIUtils.color = FlxColor.fromRGB(50, 70, 100);
 		ALEUIUtils.outlineColor = FlxColor.WHITE;
 		ALEUIUtils.font = Paths.font('vcr.ttf');

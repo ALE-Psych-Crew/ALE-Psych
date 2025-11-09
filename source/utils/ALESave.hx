@@ -148,8 +148,10 @@ class ALESave
 
     public function destroy()
     {
+        ClientPrefs.data = null;
         ClientPrefs.data = {};
         
+        ClientPrefs.custom = null;
         ClientPrefs.custom = {};
 
         preferences.destroy();
