@@ -100,7 +100,7 @@ class LuaScript
         if (Reflect.isFunction(value))
             LuaUtils.addFunction(state, name, value);
         else
-            LuaUtils.setVariable(state, name, value);
+            variables.set(name, value);
     }
     
     public function close()
