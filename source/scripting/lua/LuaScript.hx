@@ -100,14 +100,12 @@ class LuaScript
         if (Reflect.isFunction(value))
             LuaUtils.addFunction(state, name, value);
         else
-            variables.set(name, value);
+            LuaUtils.setVariable(state, name, value);
     }
     
     public function close()
     {
         closed = true;
-
-        LuaUtils.cleanupStateFunctions(state);
 
         Lua.close(state);
     }
