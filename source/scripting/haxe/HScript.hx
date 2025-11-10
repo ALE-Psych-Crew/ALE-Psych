@@ -19,13 +19,16 @@ class HScript extends ALERuleScript
 {
 	public final type:ScriptType;
 
-	override public function new(filePath:String, context:Context, type:ScriptType, scriptName:String)
+	override public function new(filePath:String, context:Context, type:ScriptType, scriptName:String, ?customCallbacks:Array<Class<HScriptPresetBase>>)
 	{
 		this.type = type;
 
 		super(scriptName, context);
 
 		preset();
+
+        for (callbacks in (customCallbacks ?? []))
+            Type.createInstance(callbacks, [this]);
 
 		scriptName = filePath.split('/').pop();
 

@@ -2713,9 +2713,7 @@ class PlayState extends ScriptState
         #if HSCRIPT_ALLOWED
         if (Paths.exists(path + '.hx'))
         {
-            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, STATE, path);
-
-			new scripting.haxe.HScriptPlayState(script);
+            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, STATE, path, [scripting.haxe.callbacks.HScriptPlayState]);
 
             if (!script.failedParsing)
             {
@@ -2734,9 +2732,7 @@ class PlayState extends ScriptState
         {
             try
             {
-                var script:LuaScript = new LuaScript(Paths.getPath(path + '.lua'), STATE);
-
-				new scripting.lua.callbacks.LuaPlayState(script);
+                var script:LuaScript = new LuaScript(Paths.getPath(path + '.lua'), STATE, [scripting.lua.callbacks.LuaPlayState]);
 
                 luaScripts.push(script);
 

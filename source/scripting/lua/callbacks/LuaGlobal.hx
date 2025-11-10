@@ -149,6 +149,36 @@ class LuaGlobal extends LuaPresetBase
             globalFunctionHScript(name);
         });
         #end
+
+        /**
+         * 
+         */
+        set('registerGlobalVariable', function(tag:String)
+        {
+            globalVariableLua(tag);
+
+            #if HSCRIPT_ALLOWED
+            globalVariableHScript(tag);
+            #end
+        });
+
+        /**
+         * 
+         */
+        set('registerGlobalLuaVariable', function(tag:String)
+        {
+            globalVariableLua(tag);
+        });
+
+        #if HSCRIPT_ALLOWED
+        /**
+         * 
+         */
+        set('registerGlobalHScriptVariable', function(tag:String)
+        {
+            globalVariableHScript(tag);
+        });
+        #end
     }
 
     function globalFunctionLua(name:String)
@@ -174,5 +204,34 @@ class LuaGlobal extends LuaPresetBase
                 return lua.call(name, args);
             }));
         }  
+    }
+    
+    function globalVariableLua(tag:String)
+    {
+        final object:Dynamic = getTag(tag);
+
+        if (object == null)
+            return;
+
+        for (script in game.luaScripts)
+        {
+            if (script == lua)
+                continue;
+            
+            if (!script.variables.exists(tag))
+                script.variables.set(tag, object);
+        }
+    }
+
+    function globalVariableHScript(tag:String)
+    {
+        final object:Dynamic = getTag(tag);
+
+        if (object == null)
+            return;
+
+        for (script in game.hScripts)
+            if (!script.variables.exists(tag))
+                script.set(tag, object);
     }
 }

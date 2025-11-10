@@ -27,7 +27,7 @@ class LuaScript
 
     public var variables:StringMap<Dynamic> = new StringMap();
 
-    public function new(name:String, type:ScriptType)
+    public function new(name:String, type:ScriptType, ?customCallbacks:Array<Class<LuaPresetBase>>)
     {
         variables.set('this', this);
 
@@ -36,8 +36,13 @@ class LuaScript
         this.type = type;
 
         state = LuaL.newstate();
+        
+        LuaCallbackHandler.applyID(state, name);
 
         new LuaPreset(this);
+
+        for (callbacks in (customCallbacks ?? []))
+            Type.createInstance(callbacks, [this]);
 
         LuaL.openlibs(state);
 
@@ -98,7 +103,7 @@ class LuaScript
             return;
 
         if (Reflect.isFunction(value))
-            LuaUtils.addFunction(state, name, value);
+            LuaCallbackHandler.addFunction(state, name, value);
         else
             LuaUtils.setVariable(state, name, value);
     }
@@ -106,6 +111,8 @@ class LuaScript
     public function close()
     {
         closed = true;
+
+        LuaCallbackHandler.cleanupStateFunctions(state);
 
         Lua.close(state);
     }

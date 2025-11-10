@@ -108,6 +108,24 @@
 
 - `name`: Function name to expose globally 
 
+---
+
+### > `registerGlobalVariable(tag:String)`
+
+#### 
+
+---
+
+### > `registerGlobalLuaVariable(tag:String)`
+
+#### 
+
+---
+
+### > `registerGlobalHScriptVariable(tag:String)`
+
+#### 
+
 
 
 ##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)
