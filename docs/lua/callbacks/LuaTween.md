@@ -142,6 +142,12 @@
 
 ---
 
+### > `numTween(tag:String, fromValue:Float, toValue:Float, ?duration:Float, ?options:Dynamic)`
+
+#### 
+
+---
+
 ### > `cancelTween(tag:String)`
 
 #### Cancels a tween 

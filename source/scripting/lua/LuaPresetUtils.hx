@@ -50,6 +50,8 @@ class LuaPresetUtils
             },
             onComplete: (_) -> {
                 lua.call('onTweenComplete', [tag]);
+
+				lua.variables.remove(tag);
             },
             loopDelay: Reflect.field(options, 'loopDelay'),
             ease: easeByString(Reflect.field(options, 'ease') ?? '')
@@ -61,6 +63,9 @@ class LuaPresetUtils
 
 	public static function complexColorTween(lua:LuaScript, tag:String, obj:Dynamic, time:Float, from:FlxColor, to:FlxColor, options:Any):FlxTween
 		return FlxTween.color(obj, time, from, to, getTweenOptions(lua, tag, options));
+
+	public static function complexNumTween(lua:LuaScript, tag:String, fromValue:Float, toValue:Float, ?duration:Float, options:Any):FlxTween
+		return FlxTween.num(fromValue, toValue, duration, getTweenOptions(lua, tag, options), (val) -> { lua.call('onNumTweenUpdate', [tag, val]); });
 
 	public static function easeByString(?ease:String = '')
     {

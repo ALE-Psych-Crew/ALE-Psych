@@ -20,6 +20,8 @@ class LuaTimer extends LuaPresetBase
             var timer:FlxTimer = new FlxTimer().start(time ?? 1, function(tmr:FlxTimer)
             {
                 lua.call('onTimerComplete', [tag, tmr.loops, tmr.loopsLeft]);
+
+                removeTag(tag);
             }, loops ?? 1);
 
             setTag(tag, timer);
@@ -33,7 +35,11 @@ class LuaTimer extends LuaPresetBase
         set('cancelTimer', function(tag:String)
         {
             if (tagIs(tag, FlxTimer))
+            {
                 getTag(tag).cancel();
+
+                removeTag(tag);
+            }
         });
     }
 }

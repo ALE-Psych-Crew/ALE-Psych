@@ -66,11 +66,11 @@ class LuaPresetBase
         return result;
     }
 
-    public inline function setTag(name:String, value:Dynamic)
+    public inline function setTag(name:Null<String>, value:Dynamic)
     {
         if (variables.exists(name))
             errorPrint('There is already an object with the tag "' + name + '"');
-        else
+        else if (name != null)
             variables.set(name, value);
     }
 

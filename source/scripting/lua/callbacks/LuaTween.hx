@@ -148,6 +148,14 @@ class LuaTween extends LuaPresetBase
         });
 
         /**
+         * 
+         */
+        set('numTween', function(tag:String, fromValue:Float, toValue:Float, ?duration:Float, ?options:Dynamic)
+        {
+            setTag(tag, LuaPresetUtils.complexNumTween(lua, tag, fromValue, toValue, duration, options));
+        });
+
+        /**
          * Cancels a tween
          * 
          * @param tag Tween ID
@@ -155,7 +163,11 @@ class LuaTween extends LuaPresetBase
         set('cancelTween', function(tag:String)
         {
             if (tagIs(tag, FlxTween))
+            {
                 getTag(tag).cancel();
+
+                removeTag(tag);
+            }
         });
 
         /**

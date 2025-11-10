@@ -179,6 +179,14 @@ class LuaGlobal extends LuaPresetBase
             globalVariableHScript(tag);
         });
         #end
+
+        /**
+         * 
+         */
+        set('variableExists', function(tag:String):Bool
+        {
+            return lua.variables.exists(tag);
+        });
     }
 
     function globalFunctionLua(name:String)
