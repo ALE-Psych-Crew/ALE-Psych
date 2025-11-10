@@ -165,8 +165,7 @@ class LuaTween extends LuaPresetBase
          */
         set('cancelTweensOf', function(tag:String)
         {
-            if (tagIs(tag, FlxTween))
-                FlxTween.cancelTweensOf(getTag(tag));
+            FlxTween.cancelTweensOf(getTag(tag));
         });
     }
 }
