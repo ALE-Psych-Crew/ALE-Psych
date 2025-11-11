@@ -67,25 +67,25 @@ class Paths
     
     public static function clearEngineCache(?clearPermanent:Bool = false)
     {
-		@:privateAccess
-		for (key in FlxG.bitmap._cache.keys())
-		{
-			var obj = FlxG.bitmap._cache.get(key);
-
-			if (obj != null && !cachedGraphics.exists(key))
-			{
-				FlxG.bitmap._cache.remove(key);
-
-				obj.destroy();
-			}
-		}
-
         if (clearPermanent)
         {
-            permanentCachedBytes = [];
-            permanentCachedContents = [];
-            permanentCachedGraphics = [];
-            permanentCachedSounds = [];
+            @:privateAccess
+            for (key in FlxG.bitmap._cache.keys())
+            {
+                var obj = FlxG.bitmap._cache.get(key);
+
+                if (obj != null && !cachedGraphics.exists(key))
+                {
+                    FlxG.bitmap._cache.remove(key);
+
+                    obj.destroy();
+                }
+            }
+
+            permanentCachedBytes.resize(0);
+            permanentCachedContents.resize(0);
+            permanentCachedGraphics.resize(0);
+            permanentCachedSounds.resize(0);
         }
 
         for (key in cachedBytes.keys())
