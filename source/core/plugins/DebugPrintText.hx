@@ -13,7 +13,7 @@ class DebugPrintText extends FlxText
 
     override function update(elapsed:Float)
     {
-        if (!alive)
+        if (alive)
         {
             timer = Math.max(0, timer - elapsed);
 
