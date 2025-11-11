@@ -2,14 +2,19 @@ package utils.cool;
 
 import core.Main;
 import core.config.MainState;
+import core.plugins.ALEPluginsHandler;
+
 import openfl.ui.Mouse;
 import openfl.Lib;
+
 import lime.graphics.Image;
 
 class EngineUtil
 {
 	public static function resetEngine():Void
 	{
+        ALEPluginsHandler.finish();
+
 		if (MainState.debugCounter != null)
 		{
 			MainState.debugCounter.destroy();
