@@ -9,8 +9,11 @@ class DebugPrintPlugin extends FlxTypedGroup<DebugPrintText>
 
     public function print(debugText:String, ?prefix:String, ?color:FlxColor)
     {
-        var text:FlxText = recycle(DebugPrintText);
+        var text:DebugPrintText = recycle(DebugPrintText);
         text.clearFormats();
+
+        members.remove(text);
+        members.push(text);
 
         text.text = prefix + ' | ' + debugText;
 
