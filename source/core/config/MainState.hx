@@ -14,6 +14,7 @@ import hxluajit.wrapper.LuaError;
 #end
 
 import core.plugins.ALEPluginsHandler;
+import core.plugins.DebugPrintPlugin;
 
 import funkin.debug.DebugCounter;
 
@@ -24,6 +25,8 @@ class MainState extends MusicBeatState
     #if mobile
     @:unreflective private static var showedModMenu:Bool = Sys.getEnv('UNIQUE_MOD') != null && Sys.getEnv('UNIQUE_MOD') != '';
     #end
+
+	@:unreflective public static var debugPrintPlugin:DebugPrintPlugin;
 
 	override function create()
 	{
@@ -56,6 +59,13 @@ class MainState extends MusicBeatState
 		#end
 
 		CoolUtil.reloadGameMetadata();
+
+		ALEPluginsHandler.initialize();
+
+		debugPrintPlugin = null;
+
+		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
+			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
 
         DiscordRPC.initialize(CoolVars.data.discordID);
     
@@ -93,8 +103,6 @@ class MainState extends MusicBeatState
 		debugCounter = new DebugCounter(Paths.json('debug').fields == null ? [] : cast Paths.json('debug').fields);
 		
 		FlxG.game.addChild(debugCounter);
-
-		ALEPluginsHandler.initialize();
 	}
 
     function openalFix()

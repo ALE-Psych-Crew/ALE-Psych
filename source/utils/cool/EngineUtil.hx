@@ -13,8 +13,6 @@ class EngineUtil
 {
 	public static function resetEngine():Void
 	{
-        ALEPluginsHandler.finish();
-
 		if (MainState.debugCounter != null)
 		{
 			MainState.debugCounter.destroy();
@@ -60,6 +58,8 @@ class EngineUtil
 		#if desktop
 		Mouse.cursor = ARROW;
 		#end
+		
+        ALEPluginsHandler.finish();
 	}
 
 	public static function reloadGameMetadata()
@@ -70,6 +70,7 @@ class EngineUtil
 			scriptsHotReloading: false,
 
 			verbose: false,
+			allowDebugPrint: true,
 
 			initialState: 'TitleState',
 			freeplayState: 'FreeplayState',

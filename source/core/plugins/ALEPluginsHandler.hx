@@ -123,6 +123,9 @@ class ALEPluginsHandler
 		if (plugin.cameras.contains(pluginsCamera))
 			plugin.cameras.remove(pluginsCamera);
 
+		if (plugin.cameras.length <= 0)
+			plugin.cameras = [FlxG.camera];
+
 		plugins.remove(plugin);
 	}
 }

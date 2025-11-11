@@ -7,6 +7,7 @@ typedef DataJson =
     var scriptsHotReloading:Bool;
 
     var verbose:Bool;
+    var allowDebugPrint:Bool;
 
     var initialState:String;
     var freeplayState:String;
