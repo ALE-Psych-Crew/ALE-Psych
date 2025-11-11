@@ -103,7 +103,7 @@ class ALEPluginsHandler
 
 	public static function add(plugin:FlxBasic)
 	{
-		if (!initialized)
+		if (!initialized || plugins.contains(plugin))
 			return;
 
 		FlxG.plugins.addPlugin(plugin);
@@ -115,7 +115,7 @@ class ALEPluginsHandler
 
 	public static function remove(plugin:FlxBasic)
 	{
-		if (!initialized)
+		if (!initialized || !plugins.contains(plugin))
 			return;
 
 		FlxG.plugins.remove(plugin);
