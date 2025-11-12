@@ -9,6 +9,17 @@ class DebugPrintText extends FlxText
         font = Paths.font('jetbrains.ttf');
     }
 
+    public function setData(debugText:String, ?prefix:String, ?color:FlxColor)
+    {
+        text = prefix + ' | ' + debugText;
+
+        clearFormats();
+
+        addFormat(new FlxTextFormat(color), 0, prefix.length);
+        addFormat(new FlxTextFormat(0xFF505050), prefix.length + 1, prefix.length + 2);
+        setBorderStyle(OUTLINE_FAST, FlxColor.BLACK, 1);
+    }
+
     var timer:Float = 6;
 
     override function update(elapsed:Float)
@@ -28,8 +39,8 @@ class DebugPrintText extends FlxText
 
     override function kill()
     {
-        super.kill();
-        
         timer = 6;
+
+        super.kill();
     }
 }

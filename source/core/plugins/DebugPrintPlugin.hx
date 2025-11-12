@@ -10,24 +10,19 @@ class DebugPrintPlugin extends FlxTypedGroup<DebugPrintText>
     public function print(debugText:String, ?prefix:String, ?color:FlxColor)
     {
         var text:DebugPrintText = recycle(DebugPrintText);
-        text.clearFormats();
 
         members.remove(text);
         members.push(text);
 
-        text.text = prefix + ' | ' + debugText;
-
-        text.addFormat(new FlxTextFormat(color), 0, prefix.length);
-        text.addFormat(new FlxTextFormat(0xFF505050), prefix.length + 1, prefix.length + 2);
-        text.setBorderStyle(OUTLINE_FAST);
+        text.setData(debugText, prefix, color);
         
-        var curHeight:Float = FlxG.height - 5;
+        var curHeight:Float = FlxG.height - 8;
 
         for (i in 1...(members.length + 1))
         {
             var obj:DebugPrintText = members[members.length - i];
             
-            curHeight -= obj.height + 5;
+            curHeight -= obj.height + 4;
 
             if (curHeight <= -obj.height)
                 obj.kill();
