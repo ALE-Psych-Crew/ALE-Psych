@@ -78,7 +78,7 @@ class ALEPluginsHandler
 		if (!initialized)
 			return;
 
-		for (plugin in plugins)
+		for (plugin in plugins.copy())
 			remove(plugin);
 
 		FlxG.cameras.remove(pluginsCamera, true);
@@ -89,8 +89,6 @@ class ALEPluginsHandler
 		pluginsCamera = null;
 		
 		initialized = false;
-
-		plugins.resize(0);
 	}
 
 	@:unreflective public static function reset()
