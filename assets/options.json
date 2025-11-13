@@ -1,0 +1,150 @@
+{
+    "categories": [
+        {
+            "name": "Miscellaneous",
+            "options": [
+                {
+                    "name": "Controls",
+                    "description": "Adjust the delay for the game audio.",
+                    "type": "substate",
+                    "path": "ControlsSubState",
+                    "platform": "desktop",
+                    "scripted": true
+                },
+                {
+                    "name": "Note Offset",
+                    "description": "Adjust the delay for the game audio.",
+                    "type": "state",
+                    "path": "NoteOffsetState",
+                    "scripted": true
+                },
+                {
+                    "name": "Reset Options",
+                    "description": "Restore Default Settings",
+                    "type": "substate",
+                    "path": "ResetOptionsSubState",
+                    "scripted": true
+                }
+            ]
+        },
+        {
+            "name": "Graphics",
+            "options": [
+                {
+                    "name": "Low Quality",
+                    "description": "If checked, disables some background details, decreases loading times and improves performance.",
+                    "variable": "lowQuality",
+                    "type": "bool",
+                    "initialValue": false
+                },
+                {
+                    "name": "Anti-Aliasing",
+                    "description": "If unchecked, disables anti-aliasing, increases performance at the cost of sharper visuals.",
+                    "variable": "antialiasing",
+                    "type": "bool",
+                    "initialValue": true
+                },
+                {
+                    "name": "Shaders",
+                    "description": "If unchecked, disables shaders. It's used for some visual effects, and also CPU intensive for weaker PCs.",
+                    "variable": "shaders",
+                    "type": "bool",
+                    "initialValue": true
+                },
+                {
+                    "name": "GPU Caching",
+                    "description": "If checked, allows the GPU to be used for caching textures, decreasing RAM usage. Don't turn this on if you have a shitty Graphics Card.",
+                    "variable": "cacheOnGPU",
+                    "type": "bool",
+                    "initialValue": true
+                },
+                {
+                    "name": "Framerate",
+                    "description": "Pretty self explanatory, isn't it?",
+                    "variable": "framerate",
+                    "type": "integer",
+                    "min": 30,
+                    "max": 240,
+                    "change": 1,
+                    "initialValue": 60
+                }
+            ]
+        },
+        {
+            "name": "Visuals and UI",
+            "options": [
+                {
+                    "name": "Note Splash Opacity",
+                    "description": "How much transparent should the Note Splashes be.",
+                    "variable": "splashAlpha",
+                    "type": "integer",
+                    "min": 0,
+                    "max": 100,
+                    "change": 1,
+                    "initialValue": 60
+                },
+                {
+                    "name": "Flashing Lights",
+                    "description": "Uncheck this if you're sensitive to flashing lights!",
+                    "variable": "flashing",
+                    "type": "bool",
+                    "initialValue": true
+                },
+                {
+                    "name": "Check for Updates",
+                    "description": "Turn this on to check for updates when you start the game.",
+                    "variable": "checkForUpdates",
+                    "type": "bool",
+                    "initialValue": true
+                },
+                {
+                    "name": "Discord Rich Presence",
+                    "description": "Uncheck this to prevent accidental leaks, it will hide the Application from your \"Playing\" box on Discord.",
+                    "variable": "discordRPC",
+                    "type": "bool",
+                    "initialValue": true
+                }
+            ]
+        },
+        {
+            "name": "Gameplay",
+            "options": [
+                {
+                    "name": "Downscroll",
+                    "description": "If checked, notes go Down instead of Up, simple enough.",
+                    "variable": "downScroll",
+                    "type": "bool",
+                    "initialValue": false
+                },
+                {
+                    "name": "Ghost Tapping",
+                    "description": "If checked, you won't get misses from pressing keys while there are no notes able to hit.",
+                    "variable": "ghostTapping",
+                    "type": "bool",
+                    "initialValue": true
+                },
+                {
+                    "name": "Disable Reset Button",
+                    "description": "If checked, pressing Reset won't do anything.",
+                    "variable": "noReset",
+                    "type": "bool",
+                    "initialValue": false
+                },
+                {
+                    "name": "Botplay",
+                    "description": "If checked, the game will basically play itself (This will not prevent the player from dying and will not save the score).",
+                    "variable": "botplay",
+                    "type": "bool",
+                    "initialValue": false
+                },
+                {
+                    "name": "Practice Mode",
+                    "description": "If checked, the game will disable the possibility of dying (This will not save your score).",
+                    "variable": "practice",
+                    "type": "bool",
+                    "initialValue": false
+                }
+            ]
+        }
+    ]
+}

@@ -24,4 +24,6 @@ import funkin.editors.DialogueCharacterEditorState;
 */
 import funkin.editors.NoteSplashDebugState;
 
+import funkin.states.OptionsState;
+
 class FunkinImports {}

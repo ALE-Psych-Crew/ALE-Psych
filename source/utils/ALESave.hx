@@ -54,10 +54,8 @@ class ALESave
                     for (cat in cast(jsonData.categories, Array<Dynamic>))
                         if (cat.options != null)
                             for (option in cast(cat.options, Array<Dynamic>))
-                                if (Reflect.fields(CoolUtil.save.custom.data.settings).contains(option.variable))
-                                    Reflect.setField(ClientPrefs.custom, option.variable, Reflect.field(CoolUtil.save.custom.data.settings, option.variable));
-                                else
-                                    Reflect.setField(ClientPrefs.custom, option.variable, option.initialValue);
+                                if (option.variable != null && Reflect.field(ClientPrefs.data, option.variable) == null)
+                                    Reflect.setField(ClientPrefs.custom, option.variable, Reflect.field(CoolUtil.save.custom.data.settings, option.variable) ?? option.initialValue);
             }
         } else {
             ClientPrefs.custom = {};
@@ -130,28 +128,46 @@ class ALESave
 
     public function load()
     {
-        loadPreferences();
+        try
+        {
+            loadPreferences();
 
-        loadScore();
-        
-        loadControls();
+            loadScore();
+            
+            loadControls();
+        } catch(e) {
+            debugTrace('While loading preferences: ' + e, ERROR);
+        }
     }
 
     public function save()
     {
-        savePreferences();
+        try
+        {
+            savePreferences();
 
-        saveScore();
+            saveScore();
 
-        saveControls();
+            saveControls();
+        } catch(e) {
+            debugTrace('While saving preferences: ' + e, ERROR);
+        }
+    }
+
+    public function reset()
+    {
+        ClientPrefs.data = {};
+        
+        ClientPrefs.custom = {};
+
+        save();
+        load();
     }
 
     public function destroy()
     {
-        ClientPrefs.data = null;
         ClientPrefs.data = {};
         
-        ClientPrefs.custom = null;
         ClientPrefs.custom = {};
 
         preferences.destroy();

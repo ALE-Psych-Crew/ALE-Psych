@@ -35,9 +35,6 @@ class DiscordRPC
 
         Discord.Initialize(id, RawPointer.addressOf(eventHandlers), false, null);
 
-        if (!initialized)
-            dcTrace('Client Initialized');
-
         if (thread == null)
         {
             thread = Thread.create(function():Void

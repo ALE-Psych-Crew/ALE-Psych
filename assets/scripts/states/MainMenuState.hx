@@ -21,7 +21,7 @@ magentaBg.scale.set(1.25, 1.25);
 magentaBg.screenCenter('x');
 magentaBg.visible = false;
 
-var version = new FlxText(10, 0, 0, 'ALE Psych ' + CoolVars.engineVersion + '\nPress [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu\nFriday Night Funkin\' v0.2.8');
+var version = new FlxText(10, 0, 0, 'ALE Psych ' + CoolVars.engineVersion + (CoolVars.mobileControls ? '' : '\nPress [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu') + '\nFriday Night Funkin\' v0.2.8');
 version.setFormat(Paths.font('vcr.ttf'), 17.5, FlxColor.WHITE, 'left', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 version.scrollFactor.set();
 version.y = FlxG.height - version.height - 10;
@@ -119,7 +119,7 @@ function onUpdate(elapsed:Float)
                     case 'credits':
                         CoolUtil.switchState(new CustomState('CreditsState'));
                     case 'options':
-                        CoolUtil.switchState(new OptionsState(false));
+                        CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, null, ['isPlayState' => false]));
                 }
             });
         }

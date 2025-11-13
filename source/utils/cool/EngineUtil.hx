@@ -77,6 +77,7 @@ class EngineUtil
 			storyMenuState: 'StoryMenuState',
 			masterEditorState: 'MasterEditorState',
 			mainMenuState: 'MainMenuState',
+			optionsState: 'OptionsState',
 
 			loadDefaultWeeks: true,
 
@@ -92,6 +93,8 @@ class EngineUtil
 			bpm: 102.0,
 
 			discordID: '1309982575368077416',
+
+			modID: null
 		};
 
 		try
@@ -104,9 +107,7 @@ class EngineUtil
 					if (Reflect.hasField(CoolVars.data, field))
 						Reflect.setField(CoolVars.data, field, Reflect.field(json, field));
 			}
-		}
-		catch (error:Dynamic)
-		{
+		} catch (error:Dynamic) {
 			debugTrace('Error While Loading Game Data (data.json): ' + error, ERROR);
 		}
 

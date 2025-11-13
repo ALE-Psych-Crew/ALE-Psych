@@ -14,6 +14,7 @@ typedef DataJson =
     var storyMenuState:String;
     var masterEditorState:String;
     var mainMenuState:String;
+    var optionsState:String;
 
     var pauseSubState:String;
     var gameOverScreen:String;
@@ -29,4 +30,6 @@ typedef DataJson =
     var bpm:Float;
 
     var discordID:String;
+
+    var modID:Null<String>;
 }

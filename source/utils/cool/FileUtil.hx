@@ -84,6 +84,6 @@ class FileUtil
 	@:access(flixel.util.FlxSave.validate)
 	public static function getSavePath(modSupport:Bool = true):String
 	{
-		return FlxG.stage.application.meta.get('company') + '/' + flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file')) + (modSupport ? ((Mods.folder.trim() == '' ? '' : '/' + Mods.folder)) : '');
+		return FlxG.stage.application.meta.get('company') + '/' + flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file')) + (modSupport ? ((Mods.folder.trim() == '' ? '' : '/' + (CoolVars.data.modID ?? Mods.folder))) : '');
 	}
 }

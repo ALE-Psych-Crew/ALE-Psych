@@ -175,7 +175,7 @@ function onUpdate(elapsed:Float)
 			case 'options':
 				CoolVars.skipTransIn = true;
 
-				CoolUtil.switchState(new funkin.states.OptionsState(true));
+				CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, null, ['isPlayState' => true]));
 			case 'leave charting mode':
 				PlayState.chartingMode = false;
 				

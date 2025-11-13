@@ -103,23 +103,6 @@ function onCreate()
     weekText.y = bgShit.height / 2 - weekText.height / 2;
     add(weekText);
 
-    var tipBG:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 1, FlxColor.BLACK);
-    tipBG.alpha = 0.5;
-    add(tipBG);
-    tipBG.scrollFactor.set();
-
-    var tipText:FlxText = new FlxText(0, 0, 0, 'Press the [CONTROL] key to access the Gameplay Changers menu', 20);
-    tipText.font = Paths.font('vcr.ttf');
-    add(tipText);
-    tipText.scrollFactor.set();
-    tipText.x = FlxG.width / 2 - tipText.width / 2;
-
-    tipBG.scale.y = tipText.height + 10;
-    tipBG.updateHitbox();
-    tipBG.y = FlxG.height - tipBG.height;
-
-    tipText.y = tipBG.y + tipBG.height / 2 - tipText.height / 2;
-
     var ignoreFiles:Array<String> = [];
 
     var directories:Array<String> = [Paths.modFolder() + '/weeks'];
