@@ -53,7 +53,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(new funkin.states.OptionsState(false));
+            CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, null, ['isPlayState' => false]));
 
             FlxG.sound.play(Paths.sound('cancelMenu'));
         }
