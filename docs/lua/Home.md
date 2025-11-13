@@ -8,6 +8,7 @@
 - [LuaBasic](callbacks/LuaBasic.md)
 - [LuaCamera](callbacks/LuaCamera.md)
 - [LuaColor](callbacks/LuaColor.md)
+- [LuaConductor](callbacks/LuaConductor.md)
 - [LuaCoolUtil](callbacks/LuaCoolUtil.md)
 - [LuaDiscord](callbacks/LuaDiscord.md)
 - [LuaFileSystem](callbacks/LuaFileSystem.md)

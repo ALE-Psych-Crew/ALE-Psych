@@ -39,7 +39,6 @@ class LuaRemoved extends LuaPresetBase
 			'addHealth',
 			'getHealth',
 			'addCharacterToList',
-			'getSongPosition',
 			'getCharacterX',
 			'setCharacterX',
 			'getCharacterY',

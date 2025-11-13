@@ -16,8 +16,6 @@ class LuaPreset
 
         new LuaBasic(lua);
 
-        new LuaRemoved(lua);
-
         new LuaMouse(lua);
 
         new LuaTween(lua);
@@ -63,5 +61,9 @@ class LuaPreset
         #if VIDEOS_ALLOWED
         new LuaVideoSprite(lua);
         #end
+
+        new LuaConductor(lua);
+
+        new LuaRemoved(lua);
     }
 }
