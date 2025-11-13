@@ -59,5 +59,9 @@ class LuaPreset
         #end
 
         new LuaWindowsAPI(lua);
+
+        #if VIDEOS_ALLOWED
+        new LuaVideoSprite(lua);
+        #end
     }
 }

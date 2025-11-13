@@ -5,6 +5,6 @@ flixel.util.FlxAxes
 flixel.text.FlxText.FlxTextAlign
 flixel.util.FlxDirectionFlags
 openfl.display.BlendMode
-flixel.util.FlxAxes
 flixel.math.FlxPoint
 flixel.sound.filters.FlxSoundFilterType
+flixel.tweens.FlxTween.FlxTweenType

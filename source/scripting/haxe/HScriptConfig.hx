@@ -162,7 +162,8 @@ class HScriptConfig
 			curPackage.set(Type.getClassName(theClass).split('.').pop(), theClass);
 
         var abstracts:Array<String> = [
-            'flixel.util.FlxColor'
+            'flixel.util.FlxColor',
+			'flixel.tweens.FlxTween.FlxTweenType'
         ];
 
         for (abst in abstracts)

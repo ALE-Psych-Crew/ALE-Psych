@@ -30,4 +30,5 @@
 - [LuaTimer](callbacks/LuaTimer.md)
 - [LuaTween](callbacks/LuaTween.md)
 - [LuaVariables](callbacks/LuaVariables.md)
+- [LuaVideoSprite](callbacks/LuaVideoSprite.md)
 - [LuaWindowsAPI](callbacks/LuaWindowsAPI.md)
