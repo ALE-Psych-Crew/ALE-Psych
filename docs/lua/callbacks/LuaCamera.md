@@ -1,5 +1,23 @@
 # LuaCamera
 
+### > `makeLuaCamera(tag:String, x:Float, =, 0, y:Float, =, 0, width:Int, =, 0, heigth:Int, =, 0, zoom:Float, =, 0)`
+
+#### 
+
+---
+
+### > `addCamera(tag:String, ?defaultDraw:Bool)`
+
+#### 
+
+---
+
+### > `removeCamera(tag:String)`
+
+#### 
+
+---
+
 ### > `cameraShake(camera:String, tag:String, ?intensity:Float, ?duration:Float, ?force:Bool, ?axes:FlxAxes)`
 
 #### Shakes a camera 
