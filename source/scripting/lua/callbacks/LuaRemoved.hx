@@ -16,7 +16,7 @@ class LuaRemoved extends LuaPresetBase
          * Emits an error for callbacks that were removed from the engine
          */
         for (name in [
-                        'getRunningScripts',
+			'getRunningScripts',
 			'callScript',
 			'getGlobalFromScript',
 			'setGlobalFromScript',
@@ -57,11 +57,8 @@ class LuaRemoved extends LuaPresetBase
 			'getColorFromHex',
 			'addOffset',
 			'makeAnimatedLuaSprite',
-			'setScrollFactor',
-                        'instanceArg'
+			'setScrollFactor'
         ])
             set(name, () -> { errorPrint('"' + name + '" function was removed'); });
     }
 }
-
-							 //labubu skibidi toilet

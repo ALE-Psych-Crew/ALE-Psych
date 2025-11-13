@@ -50,7 +50,7 @@ class LuaSave extends LuaPresetBase
          */
         set('setDataFromSave', function(name:String, values:Any)
         {
-            LuaPresetUtils.setMultiProperty(cast(Reflect.getProperty(CoolUtil.save, name), FlxSave).data, values);
+            setMultiProperty(cast(Reflect.getProperty(CoolUtil.save, name), FlxSave).data, values);
         });
 
         /**

@@ -8,25 +8,6 @@ using StringTools;
 
 class LuaPresetUtils
 {
-    public static function setMultiProperty(obj:Dynamic, props:Dynamic)
-    {
-        var fields = Reflect.fields(props);
-
-        for (key in fields)
-        {
-            var value:Dynamic = Reflect.field(props, key);
-
-            if (Reflect.fields(value).length > 0)
-            {
-                var subObj = Reflect.field(obj, key) ?? Reflect.getProperty(obj, key);
-
-                setMultiProperty(subObj, value);
-            } else {
-                Reflect.setProperty(obj, key, value);
-            }
-        }
-    }
-
     inline public static function getClass(path:String):Dynamic
     {
         var cl:Dynamic = Type.resolveClass(path);

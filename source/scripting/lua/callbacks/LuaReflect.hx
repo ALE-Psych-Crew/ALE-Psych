@@ -73,7 +73,7 @@ class LuaReflect extends LuaPresetBase
 
             var pop:String = split.pop();
 
-            Reflect.setProperty(getTag(split.join('.')), pop, value);
+            Reflect.setProperty(getTag(split.join('.')), pop, parseArg(value));
         });
 
         /**
@@ -87,7 +87,7 @@ class LuaReflect extends LuaPresetBase
         set('setPropertyFromGroup', function(tag:String, index:Int, prop:String, value:Dynamic)
         {
             if (tagIs(tag, FlxTypedGroup))
-                Reflect.setProperty(getTag(tag).members[index], prop, value);
+                Reflect.setProperty(getTag(tag).members[index], prop, parseArg(value));
         });
 
         /**
@@ -108,7 +108,7 @@ class LuaReflect extends LuaPresetBase
 
             var pop:String = split.pop();
 
-            Reflect.setProperty(getRecursiveProperty(cl, split), pop, value);
+            Reflect.setProperty(getRecursiveProperty(cl, split), pop, parseArg(value));
         });
 
         /**
@@ -119,7 +119,7 @@ class LuaReflect extends LuaPresetBase
          */
         set('setProperties', function(tag:String, props:Any)
         {
-            LuaPresetUtils.setMultiProperty(getTag(tag), props);
+            setMultiProperty(getTag(tag), props);
         });
 
         /**
@@ -132,7 +132,7 @@ class LuaReflect extends LuaPresetBase
         set('setPropertiesFromGroup', function(tag:String, index:Int, props:Any)
         {
             if (tagIs(tag, FlxTypedGroup))
-                LuaPresetUtils.setMultiProperty(getTag(tag).members[index], props);
+                setMultiProperty(getTag(tag).members[index], props);
         });
 
         /**
@@ -148,7 +148,7 @@ class LuaReflect extends LuaPresetBase
             if (cl == null)
                 return;
 
-            LuaPresetUtils.setMultiProperty(cl, props);
+            setMultiProperty(cl, props);
         });
 
         /**
@@ -161,7 +161,7 @@ class LuaReflect extends LuaPresetBase
          */
         set('callMethod', function(tag:String, ?args:Array<Dynamic>):Dynamic
         {
-            return Reflect.callMethod(null, getTag(tag), args ?? []);
+            return Reflect.callMethod(null, getTag(tag), parseArgs(args ?? []));
         });
 
         /**
@@ -180,7 +180,7 @@ class LuaReflect extends LuaPresetBase
             if (cl == null)
                 return null;
 
-            return Reflect.callMethod(this, getRecursiveProperty(cl, func.split('.')), args ?? []);
+            return Reflect.callMethod(this, getRecursiveProperty(cl, func.split('.')), parseArgs(args ?? []));
         });
 
         /**
@@ -197,7 +197,7 @@ class LuaReflect extends LuaPresetBase
             if (cl == null)
                 return;
 
-            setTag(tag, Type.createInstance(cl, args ?? []));
+            setTag(tag, Type.createInstance(cl, parseArgs(args ?? [])));
         });
 
         /**
@@ -213,6 +213,16 @@ class LuaReflect extends LuaPresetBase
 
             if (tagIs(tag, flixel.FlxBasic))
                 game.add(getTag(tag));
+        });
+
+        /**
+         * Formats the string in a way that the game will interpret it as an object/instance
+         * 
+         * @param tag Instance ID
+         */
+        set('instanceArg', function(tag:String)
+        {
+            return INSTANCE_ARG_ID + tag;
         });
     }
 }

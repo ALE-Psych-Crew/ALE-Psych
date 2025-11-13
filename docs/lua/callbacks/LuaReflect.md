@@ -150,6 +150,14 @@
 
 ###### `DEPRECATED`: Use `add` instead 
 
+---
+
+### > `instanceArg(tag:String)`
+
+#### Formats the string in a way that the game will interpret it as an object/instance 
+
+- `tag`: Instance ID 
+
 
 
 ##### [Return to Home Page](https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/docs/lua/Home.md)

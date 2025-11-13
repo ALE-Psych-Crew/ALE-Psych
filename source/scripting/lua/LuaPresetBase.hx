@@ -94,5 +94,43 @@ class LuaPresetBase
 
         return result;
     }
+
+    final INSTANCE_ARG_ID:String = '__ALE_PSYCH_LUA_INSTANCE_ARGUMENT::';
+
+    function parseArg(tag:String):Dynamic
+    {
+        if (!Std.isOfType(tag, String) || !tag.startsWith(INSTANCE_ARG_ID))
+            return tag;
+
+        return getTag(tag.substring(INSTANCE_ARG_ID.length, tag.length));
+    }
+
+    function parseArgs(args:Array<Dynamic>):Array<Dynamic>
+    {
+        return [
+            for (arg in args)
+                parseArg(arg)   
+        ];
+    }
+
+    function setMultiProperty(obj:Dynamic, props:Dynamic)
+    {
+        var fields = Reflect.fields(props);
+
+        for (key in fields)
+        {
+            var value:Dynamic = Reflect.field(props, key);
+
+            if (Reflect.fields(value).length > 0)
+            {
+                var subObj = Reflect.field(obj, key) ?? Reflect.getProperty(obj, key);
+
+                setMultiProperty(subObj, value);
+            } else {
+                Reflect.setProperty(obj, key, parseArg(value));
+            }
+        }
+    }
+
 }
 #end
