@@ -11,6 +11,22 @@ class LuaPaths extends LuaPresetBase
     override public function new(lua:LuaScript)
     {
         super(lua);
+
+        /**
+         * 
+         */
+        set('clearEngineCache', function(?clearPermanent:Bool)
+        {
+            Paths.clearEngineCache(clearPermanent);
+        });
+
+        /**
+         * 
+         */
+        set('precacheImage', function(file:String, ?permanent:Bool, ?missingPrint:Bool)
+        {
+            Paths.image(file, permanent, missingPrint);
+        });
 		
         /**
          * Preloads a sound

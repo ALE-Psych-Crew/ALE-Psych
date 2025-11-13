@@ -66,5 +66,3 @@ class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
 
 class ScriptHealthIcon extends HealthIcon implements RuleScriptedClass {}
 class ScriptCharacter extends Character implements RuleScriptedClass {}
-
-class ScriptVideoSprite extends VideoSprite implements RuleScriptedClass {}

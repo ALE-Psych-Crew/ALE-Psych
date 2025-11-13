@@ -1,5 +1,17 @@
 # LuaPaths
 
+### > `clearEngineCache(?clearPermanent:Bool)`
+
+#### 
+
+---
+
+### > `precacheImage(file:String, ?permanent:Bool, ?missingPrint:Bool)`
+
+#### 
+
+---
+
 ### > `precacheSound(file:String, ?missingPrint:Bool)`
 
 #### Preloads a sound 
