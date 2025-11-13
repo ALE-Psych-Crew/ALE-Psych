@@ -12,23 +12,15 @@
 
 ---
 
-### > `precacheSound(file:String, ?missingPrint:Bool)`
+### > `precacheSound(file:String, ?permanent:Bool, ?missingPrint:Bool)`
 
-#### Preloads a sound 
-
-- `file`: Path of the audio 
-
-- `missingPrint`: Defines whether to show a warning if the file does not exist 
+#### 
 
 ---
 
-### > `precacheMusic(file:String, ?missingPrint:Bool)`
+### > `precacheMusic(file:String, ?permanent:Bool, ?missingPrint:Bool)`
 
-#### Preloads music 
-
-- `file`: Path of the audio 
-
-- `missingPrint`: Defines whether to show a warning if the file does not exist 
+#### 
 
 
 
