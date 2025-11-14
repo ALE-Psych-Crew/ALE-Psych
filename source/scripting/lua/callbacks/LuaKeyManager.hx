@@ -1,6 +1,10 @@
 package scripting.lua.callbacks;
 
+import flixel.input.keyboard.FlxKey;
+
 import scripting.lua.LuaPresetBase;
+
+import core.backend.MobileControls;
 
 using StringTools;
 
@@ -19,7 +23,12 @@ class LuaKeyManager extends LuaPresetBase
          */
         set('keyboardJustPressed', function(name:String)
         {
-            return Reflect.getProperty(FlxG.keys.justPressed, name.toUpperCase());
+            var keys:Array<FlxKey> = [FlxKey.fromString(name.toUpperCase().trim())];
+            
+            #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+                return MobileControls.anyJustPressed(keys);
+
+            #if !mobile return FlxG.keys.anyJustPressed(keys); #end
         });
     
         /**
@@ -31,7 +40,12 @@ class LuaKeyManager extends LuaPresetBase
          */
         set('keyboardPressed', function(name:String)
         {
-            return Reflect.getProperty(FlxG.keys.pressed, name.toUpperCase());
+            var keys:Array<FlxKey> = [FlxKey.fromString(name.toUpperCase().trim())];
+            
+            #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+                return MobileControls.anyPressed(keys);
+
+            #if !mobile return FlxG.keys.anyPressed(keys); #end
         });
     
         /**
@@ -43,7 +57,12 @@ class LuaKeyManager extends LuaPresetBase
          */
         set('keyboardReleased', function(name:String)
         {
-            return Reflect.getProperty(FlxG.keys.justReleased, name.toUpperCase());
+            var keys:Array<FlxKey> = [FlxKey.fromString(name.toUpperCase().trim())];
+            
+            #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+                return MobileControls.anyJustReleased(keys);
+
+            #if !mobile return FlxG.keys.anyJustReleased(keys); #end
         });
 
         /**
@@ -56,7 +75,12 @@ class LuaKeyManager extends LuaPresetBase
          */
         set('keyJustPressed', function(group:String, name:String)
         {
-            return FlxG.keys.anyJustPressed(Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), name));
+            var keys:Array<FlxKey> = Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), name);
+            
+            #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+                return MobileControls.anyJustPressed(keys);
+
+            #if !mobile return FlxG.keys.anyJustPressed(keys); #end
         });
 
         /**
@@ -69,7 +93,12 @@ class LuaKeyManager extends LuaPresetBase
          */
         set('keyPressed', function(group:String, name:String)
         {
-            return FlxG.keys.anyPressed(Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), name));
+            var keys:Array<FlxKey> = Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), name);
+            
+            #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+                return MobileControls.anyPressed(keys);
+
+            #if !mobile return FlxG.keys.anyPressed(keys); #end
         });
 
         /**
@@ -82,7 +111,12 @@ class LuaKeyManager extends LuaPresetBase
          */
         set('keyReleased', function(group:String, name:String)
         {
-            return FlxG.keys.anyJustReleased(Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), name));
+            var keys:Array<FlxKey> = Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), name);
+            
+            #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+                return MobileControls.anyJustReleased(keys);
+
+            #if !mobile return FlxG.keys.anyJustReleased(keys); #end
         });
     }
 }

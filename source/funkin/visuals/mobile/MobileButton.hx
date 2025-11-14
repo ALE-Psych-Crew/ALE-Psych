@@ -5,10 +5,6 @@ import core.backend.MobileControls;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 
-#if mobile
-import flixel.input.touch.FlxTouch;
-#end
-
 class MobileButton extends FlxSpriteGroup
 {
     public var keys:Null<Array<Null<FlxKey>>>;

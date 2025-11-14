@@ -15,6 +15,7 @@
 - [LuaGlobal](callbacks/LuaGlobal.md)
 - [LuaJson](callbacks/LuaJson.md)
 - [LuaKeyManager](callbacks/LuaKeyManager.md)
+- [LuaMobile](callbacks/LuaMobile.md)
 - [LuaMouse](callbacks/LuaMouse.md)
 - [LuaObject](callbacks/LuaObject.md)
 - [LuaPaths](callbacks/LuaPaths.md)

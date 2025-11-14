@@ -64,6 +64,8 @@ class LuaPreset
 
         new LuaConductor(lua);
 
+        new LuaMobile(lua);
+
         new LuaRemoved(lua);
     }
 }

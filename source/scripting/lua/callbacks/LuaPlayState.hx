@@ -317,5 +317,13 @@ class LuaPlayState extends LuaPresetBase
         {
             playState.insert(playState.members.indexOf(playState.dadGroup), getTag(obj));
         });
+
+        /**
+         * 
+         */
+        set('adjustMobileControls', function()
+        {
+            playState.adjustMobileControls();
+        });
     }
 }

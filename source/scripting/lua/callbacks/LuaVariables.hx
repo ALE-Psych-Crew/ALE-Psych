@@ -8,6 +8,8 @@ class LuaVariables extends LuaPresetBase
     {
         super(lua);
 
+		set('mobileControls', CoolVars.mobileControls);
+
 		set('Function_Stop', CoolVars.Function_Stop);
 		set('Function_Continue', CoolVars.Function_Continue);
 

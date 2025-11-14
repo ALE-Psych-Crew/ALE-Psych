@@ -208,6 +208,28 @@ class PlayState extends ScriptState
 
 	@:unreflective var mobileCamera:FlxCamera;
 
+	@:unreflective var mobilePads:Array<MobileButton> = [];
+
+	public function adjustMobileControls()
+	{
+		if (CoolVars.mobileControls)
+		{
+			for (i => pad in mobilePads)
+			{
+				pad.bg.scale.x = FlxG.width / 4;
+				pad.bg.scale.y = FlxG.height;
+				pad.bg.updateHitbox();
+				
+				pad.label.scale.x = FlxG.width / 4;
+				pad.label.scale.y = FlxG.height;
+				pad.label.updateHitbox();
+				
+				pad.x = FlxG.width / 4 * i;
+				pad.y = 0;
+			}
+		}
+	}
+
 	override public function create()
 	{
 		playbackRate = 1;
@@ -224,7 +246,7 @@ class PlayState extends ScriptState
             {
                 var curKeys:Array<Int> = [ClientPrefs.controls.notes.left, ClientPrefs.controls.notes.down, ClientPrefs.controls.notes.up, ClientPrefs.controls.notes.right][i];
 
-                var obj:MobileButton = new MobileButton(FlxG.width / 4 * i, 0, curKeys, null, FlxG.width / 4, FlxG.height);
+                var obj:MobileButton = new MobileButton(FlxG.width / 4 * i, 0, curKeys, null, 1, 1);
                 add(obj);
 
                 obj.callback = () -> {
@@ -236,6 +258,8 @@ class PlayState extends ScriptState
                 };
 				
                 obj.cameras = [mobileCamera];
+
+				mobilePads.push(obj);
             }
         }
 
@@ -362,6 +386,8 @@ class PlayState extends ScriptState
 		startCharacterScripts(boyfriend.curCharacter);
 
 		callOnScripts('onCreate');
+
+		adjustMobileControls();
 
 		var camPos:FlxPoint = FlxPoint.get(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
 		if(gf != null)
