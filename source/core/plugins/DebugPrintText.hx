@@ -17,7 +17,6 @@ class DebugPrintText extends FlxText
 
         addFormat(new FlxTextFormat(color), 0, prefix.length);
         addFormat(new FlxTextFormat(0xFF505050), prefix.length + 1, prefix.length + 2);
-        setBorderStyle(OUTLINE_FAST, FlxColor.BLACK, 1);
     }
 
     var timer:Float = 6;

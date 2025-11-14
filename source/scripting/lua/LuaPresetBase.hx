@@ -97,12 +97,20 @@ class LuaPresetBase
 
     final INSTANCE_ARG_ID:String = '__ALE_PSYCH_LUA_INSTANCE_ARGUMENT::';
 
-    function parseArg(tag:Dynamic):Dynamic
+    function parseArg(arg:Dynamic):Dynamic
     {
-        if (!Std.isOfType(tag, String) || !tag.startsWith(INSTANCE_ARG_ID))
-            return tag;
+        if (Std.isOfType(arg, Array))
+            return parseArgs(cast arg);
 
-        return getTag(tag.substring(INSTANCE_ARG_ID.length, tag.length));
+        if (!Std.isOfType(arg, String))
+            return arg;
+
+        var stringArg:String = cast arg;
+
+        if (!stringArg.startsWith(INSTANCE_ARG_ID))
+            return stringArg;
+
+        return getTag(stringArg.substring(INSTANCE_ARG_ID.length, stringArg.length));
     }
 
     function parseArgs(args:Array<Dynamic>):Array<Dynamic>
