@@ -983,7 +983,7 @@ class PlayState extends ScriptState
 				swagNote.noteType = songNotes[3] ?? '';
 
 				if (songNotes[3] is Int)
-					swagNote.noteType = ChartingState.noteTypeList[songNotes[3]];
+					swagNote.noteType = ChartingState.defaultNoteTypeList[Std.int(songNotes[3])];
 
 				swagNote.scrollFactor.set();
 
@@ -2406,11 +2406,8 @@ class PlayState extends ScriptState
 		var result:Array<Dynamic> = callOnLuaScripts('opponentNoteHitPre', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 		if(!result.contains(CoolVars.Function_Stop)) callOnHScripts('opponentNoteHitPre', [note]);
 
-		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
-			dad.playAnim('hey', true);
-			dad.specialAnim = true;
-			dad.heyTimer = 0.6;
-		} else if(!note.noAnimation) {
+		if(!note.noAnimation)
+		{
 			var altAnim:String = note.animSuffix;
 
 			if (SONG.notes[curSection] != null)
@@ -2472,26 +2469,13 @@ class PlayState extends ScriptState
 		if(!note.noAnimation) {
 			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))];
 
-			var char:Character = boyfriend;
-			var animCheck:String = 'hey';
-			if(note.gfNote)
-			{
-				char = gf;
-				animCheck = 'cheer';
-			}
+			var char:Character = note.gfNote ? gf : boyfriend;
 
 			if(char != null)
 			{
 				char.playAnim(animToPlay + note.animSuffix, true);
-				char.holdTimer = 0;
 
-				if(note.noteType == 'Hey!') {
-					if(char.animOffsets.exists(animCheck)) {
-						char.playAnim(animCheck, true);
-						char.specialAnim = true;
-						char.heyTimer = 0.6;
-					}
-				}
+				char.holdTimer = 0;
 			}
 		}
 

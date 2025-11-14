@@ -48,8 +48,7 @@ import sys.io.*;
 
 class ChartingState extends MusicBeatState
 {
-	public static var noteTypeList:Array<String> =
-	[
+	public static final defaultNoteTypeList:Array<String> = [
 		'',
 		'Alt Animation',
 		'Hey!',
@@ -57,6 +56,8 @@ class ChartingState extends MusicBeatState
 		'GF Sing',
 		'No Animation'
 	];
+
+	public var noteTypeList:Array<String> = [''];
 	
 	public var ignoreWarnings = false;
 	var curNoteTypes:Array<String> = [];
