@@ -97,7 +97,7 @@ class LuaPresetBase
 
     final INSTANCE_ARG_ID:String = '__ALE_PSYCH_LUA_INSTANCE_ARGUMENT::';
 
-    function parseArg(tag:String):Dynamic
+    function parseArg(tag:Dynamic):Dynamic
     {
         if (!Std.isOfType(tag, String) || !tag.startsWith(INSTANCE_ARG_ID))
             return tag;
