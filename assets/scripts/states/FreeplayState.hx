@@ -197,9 +197,6 @@ function onUpdate(elapsed:Float)
 
             CoolUtil.switchState(new CustomState(CoolVars.data.mainMenuState));
         }
-
-        if (FlxG.keys.justPressed.CONTROL || (CoolVars.mobileControls && MobileControls.anyJustPressed([FlxKey.CONTROL])))
-            CoolUtil.openSubState(new CustomSubState('GameplayChangersSubState'));
     }
 
     game.camGame.scroll.x = CoolUtil.fpsLerp(game.camGame.scroll.x, selInt * 30, 0.25);
