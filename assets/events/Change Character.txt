@@ -1,0 +1,2 @@
+Value 1: Character to change (Dad, BF, GF)
+Value 2: New character's name

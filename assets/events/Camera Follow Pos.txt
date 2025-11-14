@@ -1,0 +1,6 @@
+Value 1: X
+Value 2: Y
+
+The camera won't change the follow point
+after using this, for getting it back
+to normal, leave both values blank.
