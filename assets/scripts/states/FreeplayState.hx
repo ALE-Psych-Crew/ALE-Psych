@@ -63,25 +63,12 @@ function onCreate()
     add(tipBG);
     tipBG.scrollFactor.set();
 
-    var ignoreFiles:Array<String> = [];
-
-    var directories:Array<String> = [Paths.modFolder() + '/weeks'];
-
-    if (CoolVars.data.loadDefaultWeeks)
-        directories.push('assets/weeks');
-
-    for (path in directories)
-        if (FileSystem.exists(path) && FileSystem.isDirectory(path))
-            for (week in FileSystem.readDirectory(path))
-                if (week.endsWith('.json') && !ignoreFiles.contains(week))
-                {
-                    weeks.push(ALEParserHelper.getALEWeek(week.substring(0, week.length - 5)));
-
-                    ignoreFiles.push(week);
-                }
+    for (week in Paths.readDirectory('weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
+        if (week.endsWith('.json'))
+            weeks.push(ALEParserHelper.getALEWeek(week.substring(0, week.length - 5)));
 
     for (week in weeks)
-        if (!weekIsLocked(week))
+        if (!weekIsLocked(week) && !week.hideFreeplay)
             for (song in week.songs)
                 songs.push(
                     {

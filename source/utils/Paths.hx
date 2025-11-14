@@ -1,6 +1,7 @@
 package utils;
 
 import core.enums.PathType;
+import core.enums.ReadDirectoryType;
 
 import haxe.ds.StringMap;
 
@@ -62,7 +63,7 @@ class Paths
         return null;
     }
 
-    public static inline function modFolder():String
+    public static function modFolder():String
         return 'mods/' + Mods.folder;
     
     public static function clearEngineCache(?clearPermanent:Bool = false)
@@ -129,15 +130,27 @@ class Paths
         return false;
     }
 
-    public static function readDirectory(path:String, missingPrint:Bool = true):Array<String>
+    public static function readDirectory(path:String, type:ReadDirectoryType = UNIQUE, missingPrint:Bool = true):Array<String>
     {
-        if (isDirectory(path))
-            return FileSystem.readDirectory(getPath(path));
+        var result:Array<String> = [];
 
-        if (missingPrint)
-            debugTrace(path, MISSING_FOLDER);
+        for (folder in [#if MODS_ALLOWED modFolder() #end, 'assets'])
+        {
+            var finalPath:String = folder + '/' + path;
 
-        return null;
+            if (FileSystem.exists(finalPath))
+            {
+                if (FileSystem.isDirectory(finalPath))
+                {
+                    result = result.concat(FileSystem.readDirectory(finalPath));
+
+                    if (type == UNIQUE)
+                        break;
+                }
+            }
+        }
+
+        return result;
     }
 
     public static function stat(path:String, missingPrint:Bool = true):FileStat

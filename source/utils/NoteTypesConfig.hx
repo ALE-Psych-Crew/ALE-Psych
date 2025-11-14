@@ -17,7 +17,7 @@ class NoteTypesConfig
 	{
 		if(noteTypesData.exists(name)) return noteTypesData.get(name);
 
-		var path:String = 'custom_notetypes/$name.txt';
+		var path:String = 'noteTypes/$name.txt';
 
 		var str:String = Paths.exists(path) ? Paths.getContent(path) : null;
 

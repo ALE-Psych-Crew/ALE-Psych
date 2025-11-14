@@ -62,7 +62,7 @@ class ChartingState extends MusicBeatState
 	var curNoteTypes:Array<String> = [];
 	var undos = [];
 	var redos = [];
-	var eventStuff:Array<Dynamic> =
+	var eventStuff:Array<Array<Dynamic>> =
 	[
 		['', "Nothing. Yep, that's right."],
 		['Dadbattle Spotlight', "Used in Dad Battle,\nValue 1: 0/1 = ON/OFF,\n2 = Target Dad\n3 = Target BF"],
@@ -912,27 +912,9 @@ class ChartingState extends MusicBeatState
 			key++;
 		}
 
-		#if sys
-		if (Paths.exists('custom_notetypes'))
-		if (FileSystem.isDirectory(Paths.getPath('custom_noteTypes')))
-		for (file in FileSystem.readDirectory(Paths.getPath('custom_notetypes')))
-		{
-			var fileName:String = file.toLowerCase().trim();
-			var wordLen:Int = 4; //length of word ".lua" and ".txt";
-			if((#if LUA_ALLOWED fileName.endsWith('.lua') || #end
-				#if HSCRIPT_ALLOWED (fileName.endsWith('.hx') && (wordLen = 3) == 3) || #end
-				fileName.endsWith('.txt')) && fileName != 'readme.txt')
-			{
-				var fileToCheck:String = file.substr(0, file.length - wordLen);
-				if(!curNoteTypes.contains(fileToCheck))
-				{
-					curNoteTypes.push(fileToCheck);
-					key++;
-				}
-			}
-		}
-		#end
-
+		for (file in Paths.readDirectory('noteTypes', MULTIPLE))
+			if (file.endsWith('.txt'))
+				curNoteTypes.push(file.substring(0, file.length - 4));
 
 		var displayNameList:Array<String> = curNoteTypes.copy();
 		for (i in 1...displayNameList.length) {
@@ -967,23 +949,9 @@ class ChartingState extends MusicBeatState
 		var tab_group_event = new FlxUI(null, UI_box);
 		tab_group_event.name = 'Events';
 
-		#if LUA_ALLOWED
-		var eventPushedMap:Map<String, Bool> = new Map<String, Bool>();
-		if (Paths.exists('custom_events'))
-		if (FileSystem.isDirectory(Paths.getPath('custom_events')))
-		for (file in FileSystem.readDirectory(Paths.getPath('custom_events'))) {
-			var path = haxe.io.Path.join([Paths.getPath('custom_events'), file]);
-			if (!FileSystem.isDirectory(path) && file != 'readme.txt' && file.endsWith('.txt')) {
-				var fileToCheck:String = file.substr(0, file.length - 4);
-				if(!eventPushedMap.exists(fileToCheck)) {
-					eventPushedMap.set(fileToCheck, true);
-					eventStuff.push([fileToCheck, File.getContent(path)]);
-				}
-			}
-		}
-		eventPushedMap.clear();
-		eventPushedMap = null;
-		#end
+		for (file in Paths.readDirectory('events', MULTIPLE))
+			if (file.endsWith('.txt'))
+				eventStuff.push([file.substring(0, file.length - 4), Paths.getContent('events/' + file)]);
 
 		descText = new FlxText(20, 200, 0, eventStuff[0][0]);
 

@@ -103,22 +103,13 @@ function onCreate()
     weekText.y = bgShit.height / 2 - weekText.height / 2;
     add(weekText);
 
-    var ignoreFiles:Array<String> = [];
+    for (week in Paths.readDirectory('weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
+        if (week.endsWith('.json'))
+            weeks.push(ALEParserHelper.getALEWeek(week.substring(0, week.length - 5)));
 
-    var directories:Array<String> = [Paths.modFolder() + '/weeks'];
-
-    if (CoolVars.data.loadDefaultWeeks)
-        directories.push('assets/weeks');
-
-    for (path in directories)
-        if (FileSystem.exists(path) && FileSystem.isDirectory(path))
-            for (week in FileSystem.readDirectory(path))
-                if (week.endsWith('.json') && !ignoreFiles.contains(week))
-                {
-                    weeks.push(ALEParserHelper.getALEWeek(week.substring(0, week.length - 5)));
-
-                    ignoreFiles.push(week);
-                }
+    for (week in weeks.copy())
+        if (week.hideStoryMode)
+            weeks.remove(week);
 
     for (index => week in weeks)
     {
@@ -294,9 +285,6 @@ function onUpdate(elapsed:Float)
 
             CoolUtil.switchState(new CustomState(CoolVars.data.mainMenuState));
         }
-
-        if (FlxG.keys.justPressed.CONTROL || (CoolVars.mobileControls && MobileControls.anyJustPressed([FlxKey.CONTROL])))
-            CoolUtil.openSubState(new CustomSubState('GameplayChangersSubState'));
     }
 
     game.camGame.scroll.y = CoolUtil.fpsLerp(game.camGame.scroll.y, selInt * 125 - 475, 0.25);
@@ -323,8 +311,7 @@ function postCreate()
             [205, 395, ClientPrefs.controls.ui.up, '< normal', 90],
             [205, 550, ClientPrefs.controls.ui.down, '> normal', 90],
             [1105, 485, ClientPrefs.controls.ui.accept, 'a uppercase'],
-            [950, 485, ClientPrefs.controls.ui.back, 'b uppercase'],
-            [795, 485, [FlxKey.CONTROL], 'c uppercase']
+            [950, 485, ClientPrefs.controls.ui.back, 'b uppercase']
         ];
 
         for (button in buttonMap)

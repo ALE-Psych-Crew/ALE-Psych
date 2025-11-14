@@ -454,9 +454,9 @@ class PlayState extends ScriptState
 
 		#if (HSCRIPT_ALLOWED || LUA_ALLOWED)
 		for (notetype in noteTypes)
-			loadScript('custom_notetypes/' + notetype);
+			loadScript('noteTypes/' + notetype);
 		for (event in eventsPushed)
-			loadScript('custom_events/' + event);
+			loadScript('events/' + event);
 		#end
 		noteTypes = null;
 		eventsPushed = null;

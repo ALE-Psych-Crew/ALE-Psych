@@ -23,8 +23,8 @@ class ModsMenuSubState extends MusicBeatSubState
     var ignoreFolders:Array<String> = [
         '.git',
         'characters',
-        'custom_events',
-        'custom_notetypes',
+        'events',
+        'noteTypes',
         'data',
         'songs',
         'music',
