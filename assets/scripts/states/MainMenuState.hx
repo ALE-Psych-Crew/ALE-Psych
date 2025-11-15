@@ -4,6 +4,8 @@ import flixel.input.keyboard.FlxKey;
 import flixel.text.FlxTextBorderStyle;
 import flixel.effects.FlxFlicker;
 
+using StringTools;
+
 var options:Array = ['storyMode', 'freeplay', 'credits', 'options'];
 
 var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menuBGYellow'));
@@ -21,11 +23,44 @@ magentaBg.scale.set(1.25, 1.25);
 magentaBg.screenCenter('x');
 magentaBg.visible = false;
 
-var version = new FlxText(10, 0, 0, 'ALE Psych ' + CoolVars.engineVersion + (CoolVars.mobileControls ? '' : '\nPress [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu') + '\nFriday Night Funkin\' v0.2.8');
+var versionText:String = [
+    'ALE Psych ' + CoolVars.engineVersion,
+    (CoolVars.mobileControls ? '' : 'Press [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu'),
+    'Friday Night Funkin\' v0.2.8'
+];
+
+var version = new FlxText(10, 0, 0, versionText.join('\n'));
 version.setFormat(Paths.font('vcr.ttf'), 17.5, FlxColor.WHITE, 'left', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 version.scrollFactor.set();
 version.y = FlxG.height - version.height - 10;
 version.borderSize = 1.125;
+
+if (ClientPrefs.data.checkForUpdates)
+{
+    var http = new sys.Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
+
+    http.onData = function (data:String)
+    {
+        var onlineVersion:String = data.split('\n')[0].trim();
+        
+        if (onlineVersion != CoolVars.engineVersion.trim())
+        {
+            var prefix:String = 'ALE Psych ';
+
+            versionText[0] = prefix + CoolVars.engineVersion + ' [Current Version: ' + onlineVersion + ']';
+
+            version.text = versionText.join('\n');
+
+            version.addFormat(new flixel.text.FlxTextFormat(FlxColor.RED), prefix.length, prefix.length + CoolVars.engineVersion.length);
+        }
+    }
+    
+    http.onError = (error) -> {
+        debugTrace('During the game version check: $error', 'error');
+    }
+
+    http.request();
+}
 
 var sprites:Array<FlxSprite> = [];
 

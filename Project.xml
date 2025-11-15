@@ -26,8 +26,6 @@
 
 	<define name="CRASH_HANDLER"/>
 
-	<define name="CHECK_FOR_UPDATES" if="desktop"/>
-
 	<define name="COMPILE_ALL_CLASSES" unless="debug"/>
 
 	<define name="WINDOWS_API" if="windows cpp"/>
@@ -77,7 +75,6 @@
 	<haxelib name="hxluajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxluajit-wrapper" if="LUA_ALLOWED"/>
 
-	<haxelib name="ale-ui"/>
 	<haxelib name="flixel-away3d"/>
 
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>

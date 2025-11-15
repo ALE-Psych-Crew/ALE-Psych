@@ -20,7 +20,7 @@ import scripting.haxe.imports.Away3DImports;
 
 #end
 
-import scripting.haxe.imports.ALEUIImports;
+//import scripting.haxe.imports.ALEUIImports;
 
 import scripting.haxe.imports.FunkinImports;
 
