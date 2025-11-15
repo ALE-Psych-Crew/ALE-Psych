@@ -154,7 +154,7 @@ function onUpdate(elapsed:Float)
                     case 'credits':
                         CoolUtil.switchState(new CustomState('CreditsState'));
                     case 'options':
-                        CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, null, ['isPlayState' => false]));
+                        CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, null, ['isPlayState' => false], ['isPlayState' => false]));
                 }
             });
         }

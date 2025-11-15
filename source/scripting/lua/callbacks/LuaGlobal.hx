@@ -4,6 +4,8 @@ import scripting.lua.LuaPresetBase;
 
 import flixel.FlxBasic;
 
+import haxe.ds.StringMap;
+
 class LuaGlobal extends LuaPresetBase
 {
     override public function new(lua:LuaScript)
@@ -198,6 +200,32 @@ class LuaGlobal extends LuaPresetBase
                 (cast (game, ScriptSubState)).close();
             });
         }
+
+        /**
+         * 
+         */
+        set('switchToCustomState', function(name:String, ?arguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
+        {
+            CoolUtil.switchState(new CustomState(name, arguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
+        });
+
+        /**
+         * 
+         */
+        set('openCustomSubState', function(name:String, ?arguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
+        {
+            CoolUtil.openSubState(new CustomSubState(name, arguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
+        });
+    }
+
+    function tableToStringMap(table:Any):StringMap<Dynamic>
+    {
+        var result:StringMap<Dynamic> = new StringMap<Dynamic>();
+
+        for (field in Reflect.fields(table))
+            result.set(field, Reflect.field(table, field));
+
+        return result;
     }
 
     function globalFunctionLua(name:String)
