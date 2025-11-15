@@ -187,6 +187,17 @@ class LuaGlobal extends LuaPresetBase
         {
             return lua.variables.exists(tag);
         });
+
+        if (type == SUBSTATE)
+        {
+            /**
+             * 
+             */
+            set('close', function()
+            {
+                (cast (game, ScriptSubState)).close();
+            });
+        }
     }
 
     function globalFunctionLua(name:String)

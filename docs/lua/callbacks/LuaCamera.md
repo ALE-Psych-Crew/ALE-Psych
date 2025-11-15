@@ -1,6 +1,6 @@
 # LuaCamera
 
-### > `makeLuaCamera(tag:String, x:Float, =, 0, y:Float, =, 0, width:Int, =, 0, heigth:Int, =, 0, zoom:Float, =, 0)`
+### > `makeLuaCamera(tag:String, x:Float, y:Float, width:Int, heigth:Int, zoom:Float)`
 
 #### 
 

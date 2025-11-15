@@ -15,7 +15,7 @@ class LuaCamera extends LuaPresetBase
         /**
          * 
          */
-        set('makeLuaCamera', function(tag:String, x:Float = 0, y:Float = 0, width:Int = 0, heigth:Int = 0, zoom:Float = 0)
+        set('makeLuaCamera', function(tag:String, x:Float, y:Float, width:Int, heigth:Int, zoom:Float)
             {
                 setTag(tag, new ALECamera(x, y, width, heigth, zoom));
             }

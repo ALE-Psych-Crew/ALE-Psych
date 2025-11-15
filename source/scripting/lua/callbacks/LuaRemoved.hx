@@ -52,7 +52,6 @@ class LuaRemoved extends LuaPresetBase
 			'setHealthBarColors',
 			'setTimeBarColors',
 			'startVideo',
-			'close',
 			'getColorFromHex',
 			'addOffset',
 			'makeAnimatedLuaSprite',
