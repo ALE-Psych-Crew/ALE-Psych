@@ -4,12 +4,15 @@ Oso::Tengo Hambre Oso
 Dame de Comer::Oso
 Si te Mueve'::Te Metemo' el Güevo
 oso::forever
+Nezumi Es::El Goat
 Diablo::Tenía que Ser Pedrito
 Weekend Afternoon::Extended (WIP)
+Santix::Mencionado
 I LOVE YOU::VOID :3
 saqueme de Venezuela::don pool
 yo::soy luigi
 AdrianoSH x::Khorix
+Malloy::Estuvo Aqui
 TBOANE::ALE[-1]
 Piffu::Piffu
  ::hola khorix
