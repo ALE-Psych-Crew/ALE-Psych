@@ -1,5 +1,17 @@
 # LuaReflect
 
+### > `setVariableFromClass(tag:String, path:String, prop:String)`
+
+#### 
+
+---
+
+### > `setVariableFromGroup(tag:String, groupTag:String, index:Int)`
+
+#### 
+
+---
+
 ### > `getProperty(tag:String):Dynamic`
 
 #### Gets a value from an object 

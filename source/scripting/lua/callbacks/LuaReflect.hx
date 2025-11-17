@@ -15,6 +15,28 @@ class LuaReflect extends LuaPresetBase
         super(lua);
 
         /**
+         * 
+         */
+        set('setVariableFromClass', function(tag:String, path:String, prop:String)
+        {
+            var cl:Dynamic = LuaPresetUtils.getClass(path);
+
+            if (cl == null)
+                return;
+
+            setTag(tag, getRecursiveProperty(cl, prop.split('.')));
+        });
+
+        /**
+         * 
+         */
+        set('setVariableFromGroup', function(tag:String, groupTag:String, index:Int)
+        {
+            if (tagIs(groupTag, FlxTypedGroup))
+                setTag(tag, getTag(groupTag).members[index]);
+        });
+
+        /**
          * Gets a value from an object
          * 
          * @param tag Variable being searched

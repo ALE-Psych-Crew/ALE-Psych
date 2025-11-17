@@ -70,7 +70,7 @@ class LuaPresetBase
     {
         if (variables.exists(name))
             errorPrint('There is already an object with the tag "' + name + '"');
-        else if (name != null)
+        else if (name != null && value != null)
             variables.set(name, value);
     }
 
