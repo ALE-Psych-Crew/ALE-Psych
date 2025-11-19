@@ -19,30 +19,15 @@
 - [Community](#community)
 - [Credits](#credits)
 - [License](#license)
+---
 
 ## Downloads
 
-<p align="center">
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build.zip">
-    <img alt="Windows x64 Actions Build"
-      src="https://img.shields.io/badge/Windows%20x64-Actions%20Build-0078D6?logo=windows&logoColor=white&style=for-the-badge">
-  </a>
-
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build%20%2832%20Bits%29.zip">
-    <img alt="Windows x32 Actions Build"
-      src="https://img.shields.io/badge/Windows%20x32-Actions%20Build-00A4EF?logo=windows&logoColor=white&style=for-the-badge">
-  </a>
-
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Android%20Build.zip">
-    <img alt="Android Actions Build"
-      src="https://img.shields.io/badge/Android-Actions%20Build-3DDC84?logo=android&logoColor=white&style=for-the-badge">
-  </a>
-
-  <a href="https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Linux%20Build.zip">
-    <img alt="Linux Actions Build"
-      src="https://img.shields.io/badge/Linux-Actions%20Build-7D7D7D?logo=linux&logoColor=white&style=for-the-badge">
-  </a>
-</p>
+### Latest Builds
+[![Windows x64](https://img.shields.io/badge/Windows%20x64-LATEST-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build.zip)
+[![Windows x32](https://img.shields.io/badge/Windows%20x32-LATEST-00A4EF?style=for-the-badge&logo=windows&logoColor=white)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build%20(32%20Bits).zip)
+[![Android](https://img.shields.io/badge/Android-LATEST-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Android%20Build.zip)
+[![Linux](https://img.shields.io/badge/Linux-LATEST-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Linux%20Build.zip)
 
 ### Build Notes
 
