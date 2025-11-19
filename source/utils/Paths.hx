@@ -27,6 +27,8 @@ import core.backend.Mods;
 
 import openfl.media.Sound;
 
+import yaml.Yaml;
+
 class Paths
 {
     public static inline final IMAGE_EXT = 'png';
@@ -378,7 +380,7 @@ class Paths
     public static function sound(file:String, permanent:Bool = false, missingPrint:Bool = true):Sound
         return returnSound('sounds/' + file, permanent, missingPrint);
 
-    // JSON
+    // DATA LANGUAGES
 
     public static function json(file:String, missingPrint:Bool = true):Dynamic
     {
@@ -393,6 +395,21 @@ class Paths
         }
 
         return Json.parse(getContent(path));
+    }
+
+    public static function yaml(file:String, missingPrint:Bool = true):Dynamic
+    {
+        var path:String = file + '.yaml';
+
+        if (!exists(path))
+        {
+            if (missingPrint)
+                debugTrace(path, MISSING_FILE);
+
+            return null;
+        }
+
+        return Yaml.parse(getContent(path));
     }
 
     // CONTENT

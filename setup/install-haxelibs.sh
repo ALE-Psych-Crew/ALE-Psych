@@ -9,6 +9,7 @@ echo "Installing dependencies..."
 haxelib git hxcpp https://github.com/AlejoGDOfficial/MobilePorting-hxcpp
 
 haxelib install tjson 1.4.0
+haxelib install yaml 2.0.1
 
 haxelib git lime https://github.com/AlejoGDOfficial/Lime
 

@@ -55,6 +55,7 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 	
 	<haxelib name="tjson"/>
+	<haxelib name="yaml"/>
 
 	<haxelib name="away3d"/>
 
