@@ -1,6 +1,10 @@
 package utils.cool;
 
+import haxe.io.Bytes;
+
 import sys.thread.Thread;
+
+import openfl.utils.ByteArray;
 
 class SystemUtil
 {
@@ -47,4 +51,7 @@ class SystemUtil
 		return 'unknown';
 		#end
 	}
+
+	public static function byteArrayFromBytes(bytes:Bytes):ByteArray
+		return ByteArray.fromBytes(bytes);
 }
