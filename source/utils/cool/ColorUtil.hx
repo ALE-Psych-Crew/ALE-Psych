@@ -57,5 +57,8 @@ class ColorUtil
 	}
 	
 	public static function colorFromArray(arr:Array<Int>):Int
-    	return FlxColor.fromRGB(arr[0], arr[1], arr[2]);
+    	return FlxColor.fromRGB(arr[0], arr[1], arr[2]);	
+
+	public static function colorLerp(from:FlxColor, to:FlxColor, ratio:Float):FlxColor
+		return FlxColor.interpolate(from, to, MathUtil.fpsRatio(ratio));
 }
