@@ -170,12 +170,6 @@ class Main extends Sprite
 		setupGame();
 		
 		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
-
-		Lib.application.window.onClose.add(function()
-			{
-				CoolUtil.save?.save();		
-			}
-		);
 	}
 
 	private function setupGame():Void
@@ -212,6 +206,10 @@ class Main extends Sprite
 		Lib.application.window.onClose.add(function()
 			{
 				CoolUtil.save?.save();
+
+				#if WINDOWS_API
+				winapi.WindowsAPI.resetWindowsFuncs();
+				#end
 			}
 		);
 
@@ -271,6 +269,10 @@ class Main extends Sprite
 		debugTrace(errMsg, ERROR);
 
 		DiscordRPC.shutdown();
+
+		#if WINDOWS_API
+		winapi.WindowsAPI.resetWindowsFuncs();
+		#end
 
 		Sys.exit(1);
 	}

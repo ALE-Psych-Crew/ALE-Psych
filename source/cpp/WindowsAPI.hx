@@ -9,7 +9,6 @@ import winapi.WindowsTerminalCPP;
 
 class WindowsAPI
 {
-	/*
 	public static function screenCapture(path:String)
 	{
 		#if WINDOWS_API
@@ -17,7 +16,6 @@ class WindowsAPI
 		WindowsCPP.windowsScreenShot(path);
 		#end
 	}
-	*/
 
 	public static function showMessageBox(caption:String, message:String, icon:#if WINDOWS_API MessageBoxIcon = WARNING #else Int = 0 #end)
 	{
@@ -27,7 +25,6 @@ class WindowsAPI
 		#end
 	}
 
-	/*
 	public static function setWindowVisible(mode:Bool)
 	{
 		#if WINDOWS_API
@@ -35,7 +32,6 @@ class WindowsAPI
 		WindowsCPP.setWindowVisible(mode);
 		#end
 	}
-	*/
 
 	public static function setWindowBorderColor(r:Int, g:Int, b:Int)
 	{
@@ -45,7 +41,6 @@ class WindowsAPI
 		#end
 	}
 
-	/*
 	public static function hideTaskbar(hide:Bool)
 	{
 		#if WINDOWS_API
@@ -69,7 +64,6 @@ class WindowsAPI
 		WindowsCPP._setTaskBarAlpha(alpha);
 		#end
 	}
-	*/
 
 	public static function clearTerminal()
 	{
@@ -87,7 +81,6 @@ class WindowsAPI
 		#end
 	}
 
-	/*
 	public static function hideMainWindow()
 	{
 		#if WINDOWS_API
@@ -215,7 +208,6 @@ class WindowsAPI
 		WindowsTerminalCPP.hideConsoleWindow();
 		#end
 	}
-	*/
 
 	public static function sendNotification(title:String, desc:String)
 	{

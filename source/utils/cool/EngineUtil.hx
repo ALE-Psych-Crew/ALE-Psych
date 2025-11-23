@@ -36,6 +36,10 @@ class EngineUtil
 		for (key in CoolVars.globalVars.keys())
 			CoolVars.globalVars.remove(key);
 
+		#if WINDOWS_API
+		winapi.WindowsAPI.resetWindowsFuncs();
+		#end
+
 		#if (windows && cpp)
 		cpp.WindowsAPI.setWindowBorderColor(255, 255, 255);
 		#end
