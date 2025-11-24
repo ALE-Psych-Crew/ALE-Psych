@@ -14,6 +14,7 @@ import cpp.RawPointer;
 import cpp.ConstCharStar;
 
 import lime.app.Application;
+import StringTools; // needed by _clipLabel/_sanitizeUrl
 
 class DiscordRPC
 {
@@ -93,7 +94,7 @@ class DiscordRPC
 
     /**
      * Extended presence update (backward-compatible).
-     * @param details/state/largeImage/smallImage/usesTime/endTime  // original fields
+     * @param details/state/largeImage/smallImage/usesTime/endTime
      * @param largeText  Hover text for large image
      * @param smallText  Hover text for small image
      * @param buttons    Array<Dynamic> of {label:String, url:String} (max 2)
@@ -193,11 +194,10 @@ class DiscordRPC
     public static function setButtons(buttons:Array<Dynamic>):Void
     {
         #if DISCORD_ALLOWED
-        // wipe cache first
         _btn1Label = _btn1Url = _btn2Label = _btn2Url = null;
         if (buttons == null) return;
 
-        var stash = [];
+        var stash:Array<{label:String, url:String}> = [];
         for (b in buttons)
         {
             if (b == null) continue;
