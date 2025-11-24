@@ -109,28 +109,36 @@ class DiscordRPC
 		final user:String = request[0].username;
 		final discriminator:Int = Std.parseInt(request[0].discriminator);
 
-	    dcTrace('Connected to User ' + (discriminator == 0 ? user : user + ' #' + discriminator));
+        for (index => button in CoolVars.data.discordButtons)
+        {
+            if (index > 1)
+                break;
+                
+            var btn:DiscordButton = new DiscordButton();
+            
+            btn.label = button.label ?? 'Button';
+            btn.url = button.url ?? 'https://ale-psych-crew.github.io/ALE-Psych-Website';
+
+            presence.buttons[index] = btn;
+        }
+
+        updatePresence();
+
+	    debugTrace('Connected to User ' + (discriminator == 0 ? user : user + ' #' + discriminator), DISCORD);
 		#end
     }
 
 	private static function onDisconnected(errorCode:Int, message:ConstCharStar):Void
 	{
 		#if DISCORD_ALLOWED
-		dcTrace('Disconnected (' + errorCode + ': ' + message + ')');
+		debugTrace('Disconnected (' + errorCode + ': ' + message + ')', DISCORD);
 		#end
 	}
 
 	private static function onError(errorCode:Int, message:ConstCharStar):Void
 	{
 		#if DISCORD_ALLOWED
-		dcTrace('Error ' + errorCode + ': ' + message);
+		debugTrace('Error ' + errorCode + ': ' + message, DISCORD);
 		#end
 	}
-
-	#if DISCORD_ALLOWED
-	private static function dcTrace(data:Dynamic)
-	{
-		debugTrace(data, CUSTOM, 'DISCORD', 0xFF5865F2);
-	}
-	#end
 }

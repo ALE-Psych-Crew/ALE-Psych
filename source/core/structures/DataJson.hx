@@ -1,6 +1,6 @@
 package core.structures;
 
-typedef DataJson =
+typedef DataJSON =
 {
     var developerMode:Bool;
     var mobileDebug:Bool;
@@ -30,6 +30,8 @@ typedef DataJson =
     var bpm:Float;
 
     var discordID:String;
+
+    var discordButtons:Array<DataJSONDiscordButton>;
 
     var modID:Null<String>;
 }

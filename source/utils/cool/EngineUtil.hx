@@ -98,6 +98,13 @@ class EngineUtil
 
 			discordID: '1309982575368077416',
 
+			discordButtons: [
+				{
+					label: 'ALE Psych Website',
+					url: 'https://ale-psych-crew.github.io/ALE-Psych-Website/'
+				}
+			],
+
 			modID: null
 		};
 

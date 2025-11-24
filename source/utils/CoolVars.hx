@@ -1,11 +1,11 @@
 package utils;
 
 import openfl.Lib;
-import core.structures.DataJson;
+import core.structures.DataJSON;
 
 @:build(core.macros.CoolVarsMacro.build())
 class CoolVars {
-	public static var data:DataJson = null;
+	public static var data:DataJSON = null;
 
 	public static var skipTransIn:Bool = false;
 	public static var skipTransOut:Bool = false;

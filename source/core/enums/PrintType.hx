@@ -15,12 +15,13 @@ enum abstract PrintType(String)
     var LOAD_SONG = 'load_song';
     var LOAD_WEEK = 'load_week';
     var RESET_STATE = 'reset_state';
+    var DISCORD = 'discord';
 
     public function unnecessary():Bool
     {
         return switch (cast(this, PrintType))
         {
-            case POP_UP, HSCRIPT, LUA, LOAD_SONG, LOAD_WEEK, RESET_STATE:
+            case POP_UP, HSCRIPT, LUA, LOAD_SONG, LOAD_WEEK, RESET_STATE, DISCORD:
                 true;
             default:
                 false;
@@ -55,6 +56,8 @@ enum abstract PrintType(String)
                 'LOAD WEEK';
             case RESET_STATE:
                 'RESET STATE';
+            case DISCORD:
+                'DISCORD';
             default:
                 'UNKNOWN';
         }
@@ -88,6 +91,8 @@ enum abstract PrintType(String)
                 0xFF00e5FF;
             case RESET_STATE:
                 FlxColor.YELLOW;
+            case DISCORD:
+                0xFF5865F2;
             default:
                 FlxColor.GRAY;
         }
