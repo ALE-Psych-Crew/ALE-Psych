@@ -19,7 +19,6 @@ class LuaPlayState extends LuaPresetBase
          */
         set('inChartEditor', false);
 
-		set('difficulty', PlayState.difficulty);
         /**
          * Current Conductor BPM value.
          */
