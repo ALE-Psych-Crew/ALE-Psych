@@ -42,7 +42,7 @@ haxelib git flixel-away3d https://github.com/ALE-Psych-Crew/Flixel-Away-3D
 
 haxelib install hxdiscord_rpc 1.3.0 --skip-dependencies
 
-haxelib install sl-windows-api 1.1.0
+haxelib install sl-windows-api 1.2.0
 haxelib install extension-haptics 1.0.4 --skip-dependencies
 
 echo Finished!
