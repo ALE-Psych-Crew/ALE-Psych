@@ -26,8 +26,13 @@ class DiscordRPC
     // HScript-friendly caches
     private static var _largeImageText:String = null;
     private static var _smallImageText:String = null;
+
+    // Typed button cache (avoid Dynamic -> const char* casts)
     #if DISCORD_ALLOWED
-    private static var _buttons:Array<{label:String, url:String}> = [];
+    private static var _btn1Label:String = null;
+    private static var _btn1Url:String   = null;
+    private static var _btn2Label:String = null;
+    private static var _btn2Url:String   = null;
     #end
 
     public static function initialize(id:String)
@@ -54,7 +59,6 @@ class DiscordRPC
                         #end
 
                         Discord.RunCallbacks();
-
                         Sys.sleep(1);
                     }
                 }
@@ -81,7 +85,7 @@ class DiscordRPC
         presence = new DiscordRichPresence();
         _largeImageText = null;
         _smallImageText = null;
-        _buttons = [];
+        _btn1Label = _btn1Url = _btn2Label = _btn2Url = null;
 
         Discord.Shutdown();
         #end
@@ -106,36 +110,32 @@ class DiscordRPC
         ?buttons:Array<Dynamic> = null)
     {
         #if DISCORD_ALLOWED
-        // Update caches when provided
         if (largeText != null || smallText != null)
             setImageTexts(largeText, smallText);
         if (buttons != null)
             setButtons(buttons);
 
         var startTime:Float = 0;
-        if (usesTime)
-            startTime = Date.now().getTime();
-        if (endTime > 0)
-            endTime = startTime + endTime;
+        if (usesTime) startTime = Date.now().getTime();
+        if (endTime > 0) endTime = startTime + endTime;
 
         presence.state = state;
         presence.details = details;
-        presence.largeImageKey = largeImage;
 
+        presence.largeImageKey  = largeImage;
         presence.largeImageText = (_largeImageText != null && _largeImageText.length > 0)
             ? _largeImageText
             : 'Engine Version: ' + CoolVars.engineVersion;
 
-        presence.smallImageKey = smallImage;
+        presence.smallImageKey  = smallImage;
         presence.smallImageText = (_smallImageText != null && _smallImageText.length > 0)
             ? _smallImageText
             : null;
 
         presence.startTimestamp = Std.int(startTime / 1000);
-        presence.endTimestamp = Std.int(endTime / 1000);
+        presence.endTimestamp   = Std.int(endTime   / 1000);
 
         _applyButtons();
-
         updatePresence();
         #end
     }
@@ -177,57 +177,79 @@ class DiscordRPC
     }
     #end
 
-    // -------- Helpers --------
+    // ---------- Helpers ----------
 
+    /** Set hover texts shown on large/small image tooltips. */
     public static inline function setImageTexts(?largeText:String, ?smallText:String):Void
     {
         if (largeText != null) _largeImageText = (largeText.length > 0) ? largeText : null;
         if (smallText != null) _smallImageText = (smallText.length > 0) ? smallText : null;
     }
 
+    /**
+     * Set up to 2 link buttons. Accepts Array<Dynamic> with {label:String, url:String}.
+     * Validates https:// and label length; stores typed strings.
+     */
     public static function setButtons(buttons:Array<Dynamic>):Void
     {
         #if DISCORD_ALLOWED
-        _buttons = [];
+        // wipe cache first
+        _btn1Label = _btn1Url = _btn2Label = _btn2Url = null;
         if (buttons == null) return;
 
+        var stash = [];
         for (b in buttons)
         {
             if (b == null) continue;
             var label = _clipLabel(Std.string(Reflect.field(b, "label")));
             var url   = _sanitizeUrl(Std.string(Reflect.field(b, "url")));
-            if (label != null && url != null)
-                _buttons.push({ label: label, url: url });
-            if (_buttons.length >= 2) break;
+            if (label != null && url != null) {
+                stash.push({label: label, url: url});
+                if (stash.length >= 2) break;
+            }
         }
+
+        if (stash.length >= 1) { _btn1Label = stash[0].label; _btn1Url = stash[0].url; }
+        if (stash.length >= 2) { _btn2Label = stash[1].label; _btn2Url = stash[1].url; }
         #end
     }
 
+    /** Clear any previously set buttons and push the clear to the client. */
     public static function clearButtons():Void
     {
         #if DISCORD_ALLOWED
-        _buttons = [];
-        for (i in 0...2)
-            presence.buttons[i] = null; // clear slot (don’t assign null to label/url)
+        _btn1Label = _btn1Url = _btn2Label = _btn2Url = null;
+
+        // Clear by assigning empty structs (not null)
+        var empty0 = new DiscordButton(); // fields default to null pointers
+        var empty1 = new DiscordButton();
+        presence.buttons[0] = empty0;
+        presence.buttons[1] = empty1;
+
         updatePresence();
         #end
     }
 
+    // --------- Internal: apply/validate buttons ---------
+
     #if DISCORD_ALLOWED
     static function _applyButtons():Void
     {
-        for (i in 0...2)
-        {
-            if (i < _buttons.length)
-            {
-                var btn = new DiscordButton();
-                btn.label = _buttons[i].label; // non-null
-                btn.url   = _buttons[i].url;   // non-null
-                presence.buttons[i] = btn;
-            } else {
-                presence.buttons[i] = null; // remove slot
-            }
+        // Slot 0
+        var btn0 = new DiscordButton();
+        if (_btn1Label != null && _btn1Url != null) {
+            btn0.label = _btn1Label; // typed String -> const char*
+            btn0.url   = _btn1Url;
         }
+        presence.buttons[0] = btn0;
+
+        // Slot 1
+        var btn1 = new DiscordButton();
+        if (_btn2Label != null && _btn2Url != null) {
+            btn1.label = _btn2Label;
+            btn1.url   = _btn2Url;
+        }
+        presence.buttons[1] = btn1;
     }
 
     static inline function _clipLabel(s:String):String
