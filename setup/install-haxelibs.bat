@@ -32,7 +32,7 @@ haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf
 haxelib install hxvlc 2.2.2 --skip-dependencies
 
 haxelib git hscript https://github.com/HaxeFoundation/hscript 92ffe9c519bbccf783df0b3400698c5b3cc645ef
-haxelib git rulescript https://github.com/Kriptel/RuleScript 78650fa694ac56bf9bd318a0dad974a774a0a66a --skip-dependencies
+haxelib git rulescript https://github.com/Kriptel/RuleScript 4f4c2b89a728b55154fde129474b454da921f65f --skip-dependencies
 
 haxelib install hxluajit 1.0.5 --skip-dependencies
 haxelib install hxluajit-wrapper 1.0.0 --skip-dependencies
