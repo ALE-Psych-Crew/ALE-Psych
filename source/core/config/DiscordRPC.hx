@@ -23,7 +23,7 @@ class DiscordRPC
 
     @:unreflective private static var thread:Thread;
 
-    // Cached extras for hover texts + buttons (HScript-friendly)
+    // HScript-friendly caches
     private static var _largeImageText:String = null;
     private static var _smallImageText:String = null;
     #if DISCORD_ALLOWED
@@ -77,18 +77,44 @@ class DiscordRPC
         #if DISCORD_ALLOWED
         initialized = false;
 
+        // Reset presence + caches
+        presence = new DiscordRichPresence();
+        _largeImageText = null;
+        _smallImageText = null;
+        _buttons = [];
+
         Discord.Shutdown();
         #end
     }
 
-    public static function changePresence(details:String, ?state:String, ?largeImage:String, ?smallImage:String, ?usesTime:Bool = false, ?endTime:Float = 0)
+    /**
+     * Extended presence update (backward-compatible).
+     * @param details/state/largeImage/smallImage/usesTime/endTime  // original fields
+     * @param largeText  Hover text for large image
+     * @param smallText  Hover text for small image
+     * @param buttons    Array<Dynamic> of {label:String, url:String} (max 2)
+     */
+    public static function changePresence(
+        details:String,
+        ?state:String,
+        ?largeImage:String,
+        ?smallImage:String,
+        ?usesTime:Bool = false,
+        ?endTime:Float = 0,
+        ?largeText:String = null,
+        ?smallText:String = null,
+        ?buttons:Array<Dynamic> = null)
     {
         #if DISCORD_ALLOWED
-        var startTime:Float = 0;
+        // Update caches when provided
+        if (largeText != null || smallText != null)
+            setImageTexts(largeText, smallText);
+        if (buttons != null)
+            setButtons(buttons);
 
+        var startTime:Float = 0;
         if (usesTime)
             startTime = Date.now().getTime();
-
         if (endTime > 0)
             endTime = startTime + endTime;
 
@@ -96,7 +122,6 @@ class DiscordRPC
         presence.details = details;
         presence.largeImageKey = largeImage;
 
-        // Use configured hover text when provided; fallback keeps engine version
         presence.largeImageText = (_largeImageText != null && _largeImageText.length > 0)
             ? _largeImageText
             : 'Engine Version: ' + CoolVars.engineVersion;
@@ -109,7 +134,7 @@ class DiscordRPC
         presence.startTimestamp = Std.int(startTime / 1000);
         presence.endTimestamp = Std.int(endTime / 1000);
 
-        _applyButtons(); // keep buttons in sync
+        _applyButtons();
 
         updatePresence();
         #end
@@ -127,7 +152,6 @@ class DiscordRPC
         #if DISCORD_ALLOWED
         final user:String = request[0].username;
         final discriminator:Int = Std.parseInt(request[0].discriminator);
-
         dcTrace('Connected to User ' + (discriminator == 0 ? user : user + ' #' + discriminator));
         #end
     }
@@ -153,19 +177,14 @@ class DiscordRPC
     }
     #end
 
-    // --------- New public helpers (HScript-safe) ---------
+    // -------- Helpers --------
 
-    /** Set hover texts shown on large/small image tooltips. */
     public static inline function setImageTexts(?largeText:String, ?smallText:String):Void
     {
-        _largeImageText = (largeText != null && largeText.length > 0) ? largeText : null;
-        _smallImageText = (smallText != null && smallText.length > 0) ? smallText : null;
+        if (largeText != null) _largeImageText = (largeText.length > 0) ? largeText : null;
+        if (smallText != null) _smallImageText = (smallText.length > 0) ? smallText : null;
     }
 
-    /**
-     * Set up to 2 link buttons. Accepts Array<Dynamic> for HScript.
-     * Each item must have: { label:String, url:String } with https:// URL.
-     */
     public static function setButtons(buttons:Array<Dynamic>):Void
     {
         #if DISCORD_ALLOWED
@@ -179,44 +198,35 @@ class DiscordRPC
             var url   = _sanitizeUrl(Std.string(Reflect.field(b, "url")));
             if (label != null && url != null)
                 _buttons.push({ label: label, url: url });
-            if (_buttons.length >= 2) break; // Discord allows 2 buttons max
+            if (_buttons.length >= 2) break;
         }
         #end
     }
 
-    /** Clear any previously set buttons and push the clear to the client. */
     public static function clearButtons():Void
     {
         #if DISCORD_ALLOWED
         _buttons = [];
-        for (i in 0...2) {
-            var btn = new DiscordButton();
-            btn.label = null;
-            btn.url = null;
-            presence.buttons[i] = btn;
-        }
+        for (i in 0...2)
+            presence.buttons[i] = null; // clear slot (don’t assign null to label/url)
         updatePresence();
         #end
     }
 
-    // --------- Internal: apply/validate buttons ---------
-
     #if DISCORD_ALLOWED
     static function _applyButtons():Void
     {
-        // Always rewrite both slots to prevent stale buttons
         for (i in 0...2)
         {
-            var btn = new DiscordButton();
             if (i < _buttons.length)
             {
-                btn.label = _buttons[i].label;
-                btn.url   = _buttons[i].url;
+                var btn = new DiscordButton();
+                btn.label = _buttons[i].label; // non-null
+                btn.url   = _buttons[i].url;   // non-null
+                presence.buttons[i] = btn;
             } else {
-                btn.label = null;
-                btn.url   = null;
+                presence.buttons[i] = null; // remove slot
             }
-            presence.buttons[i] = btn;
         }
     }
 
@@ -225,7 +235,7 @@ class DiscordRPC
         if (s == null) return null;
         var t = StringTools.trim(s);
         if (t.length == 0) return null;
-        if (t.length > 32) t = t.substr(0, 32); // Discord UI label limit
+        if (t.length > 32) t = t.substr(0, 32);
         return t;
     }
 
