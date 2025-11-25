@@ -28,6 +28,8 @@ haxelib git flxsoundfilters https://github.com/TheZoroForce240/FlxSoundFilters a
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 1966f8fbbbc509ed90d4b520f3c49c084fc92fd6
 haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e
 
+haxelib install funkin-modchart 1.2.4 --skip-dependencies
+
 haxelib install hxvlc 2.2.2 --skip-dependencies
 
 haxelib git hscript https://github.com/HaxeFoundation/hscript 92ffe9c519bbccf783df0b3400698c5b3cc645ef

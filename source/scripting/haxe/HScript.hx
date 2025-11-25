@@ -11,9 +11,9 @@ import flixel.FlxObject;
 import sys.FileSystem;
 import sys.io.File;
 
-import scripting.haxe.HScriptImports;
-
 import rulescript.Context;
+
+import scripting.haxe.Extensible;
 
 class HScript extends ALERuleScript
 {
