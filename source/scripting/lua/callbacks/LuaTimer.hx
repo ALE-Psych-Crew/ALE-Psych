@@ -8,13 +8,6 @@ class LuaTimer extends LuaPresetBase
     {
         super(lua);
 
-        /**
-         * Starts and runs a `FlxTimer`
-         * 
-         * @param tag Timer ID
-         * @param time Timer duration
-         * @param loops Number of repetitions of the timer
-         */
         set('runTimer', function(tag:String, ?time:Float, ?loops:Int)
         {
             var timer:FlxTimer = new FlxTimer().start(time ?? 1, function(tmr:FlxTimer)
@@ -27,11 +20,6 @@ class LuaTimer extends LuaPresetBase
             setTag(tag, timer);
         });
         
-        /**
-         * Cancels a timer
-         * 
-         * @param tag Timer ID
-         */
         set('cancelTimer', function(tag:String)
         {
             if (tagIs(tag, FlxTimer))

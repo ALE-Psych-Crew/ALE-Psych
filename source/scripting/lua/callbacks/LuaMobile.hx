@@ -10,9 +10,6 @@ class LuaMobile extends LuaPresetBase
     {
         super(lua);
 
-        /**
-         * 
-         */
         set('makeLuaMobileButton', function(tag:String, ?x:Float, ?y:Float, ?group:String, ?key:String, letter:String, ?width:Float, ?height:Float)
         {
             setTag(tag, new MobileButton(x, y, Reflect.getProperty(Reflect.getProperty(ClientPrefs.controls, group), key), letter, width, height));

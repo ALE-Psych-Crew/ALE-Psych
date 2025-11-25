@@ -12,9 +12,6 @@ class LuaRemoved extends LuaPresetBase
     {
         super(lua);
 		
-        /**
-         * Emits an error for callbacks that were removed from the engine
-         */
         for (name in [
 			'getRunningScripts',
 			'callScript',

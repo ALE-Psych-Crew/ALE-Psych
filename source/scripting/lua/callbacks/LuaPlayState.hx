@@ -90,9 +90,6 @@ class LuaPlayState extends LuaPresetBase
 
         set('startCountdown', playState.startCountdown);
 
-        /**
-         * Ends the song
-         */
         set('endSong', function()
         {
             playState.KillNotes();
@@ -100,9 +97,6 @@ class LuaPlayState extends LuaPresetBase
             playState.endSong();
         });
 
-        /**
-         * Restarts the song
-         */
         set('restartSong', function()
         {
             playState.paused = true;
@@ -115,9 +109,6 @@ class LuaPlayState extends LuaPresetBase
             CoolUtil.resetState();
         });
 
-        /**
-         * Exits the song to the corresponding menu
-         */
         set('exitSong', function()
         {
             playState.vocals.volume = 0;
@@ -135,11 +126,6 @@ class LuaPlayState extends LuaPresetBase
             CoolUtil.switchState(new CustomState(PlayState.isStoryMode ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
         });
 
-        /**
-         * Sets the game camera target
-         * 
-         * @param target Camera target. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend`
-         */
         set('cameraSetTarget', function(target:String)
         {
 			switch(target.trim().toLowerCase())
@@ -153,23 +139,11 @@ class LuaPlayState extends LuaPresetBase
 			}
         });
 
-        /**
-         * Triggers an event in the song
-         * 
-         * @param name Event name
-         * @param arg1 First event argument
-         * @param arg2 Second event argument
-         */
         set('triggerEvent', function(name:String, arg1:Dynamic, arg2:Dynamic)
         {
 			playState.triggerEvent(name, arg1, arg2, Conductor.songPosition);
         });
 
-        /**
-         * Executes dance logic on a character
-         * 
-         * @param character Character to use. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend`
-         */
         set('characterDance', function(character:String)
         {
 			switch (character.toLowerCase())
@@ -184,31 +158,11 @@ class LuaPlayState extends LuaPresetBase
 			}
         });
 
-        /**
-         * Performs a tween on a note
-         * 
-         * @param tag Tween ID
-         * @param note Note position in the strumLine
-         * @param props Table of variables to modify
-         * @param time Tween duration
-         * @param options Tween options. See [TweenOptions](https://api.haxeflixel.com/flixel/tweens/TweenOptions.html)
-         */
         set('noteTween', function(tag:String, note:Int, props:Dynamic, ?time:Float, ?options:Dynamic)
         {
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], props, time, options));
         });
 
-        /**
-         * Performs a tween on the `x` variable of a note
-         * 
-         * @param tag Tween ID
-         * @param note Note position in the strumLine
-         * @param value Variable value
-         * @param duration Tween duration
-         * @param ease Tween ease
-         * 
-         * @deprecated Use `noteTween` instead
-         */
         set('noteTweenX', function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenX"');
@@ -216,17 +170,6 @@ class LuaPlayState extends LuaPresetBase
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {x: value}, duration, {ease: ease}));
         });
 
-        /**
-         * Performs a tween on the `y` variable of a note
-         * 
-         * @param tag Tween ID
-         * @param note Note position in the strumLine
-         * @param value Variable value
-         * @param duration Tween duration
-         * @param ease Tween ease
-         * 
-         * @deprecated Use `noteTween` instead
-         */
         set('noteTweenY', function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenY"');
@@ -234,17 +177,6 @@ class LuaPlayState extends LuaPresetBase
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {y: value}, duration, {ease: ease}));
         });
 
-        /**
-         * Performs a tween on the `angle` variable of a note
-         * 
-         * @param tag Tween ID
-         * @param note Note position in the strumLine
-         * @param value Variable value
-         * @param duration Tween duration
-         * @param ease Tween ease
-         * 
-         * @deprecated Use `noteTween` instead
-         */
         set('noteTweenAngle', function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenAngle"');
@@ -252,17 +184,6 @@ class LuaPlayState extends LuaPresetBase
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {angle: value}, duration, {ease: ease}));
         });
 
-        /**
-         * Performs a tween on the `direction` variable of a note
-         * 
-         * @param tag Tween ID
-         * @param note Note position in the strumLine
-         * @param value Variable value
-         * @param duration Tween duration
-         * @param ease Tween ease
-         * 
-         * @deprecated Use `noteTween` instead
-         */
         set('noteTweenDirection', function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenDirection"');
@@ -270,17 +191,6 @@ class LuaPlayState extends LuaPresetBase
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {direction: value}, duration, {ease: ease}));
         });
 
-        /**
-         * Performs a tween on the `alpha` variable of a note
-         * 
-         * @param tag Tween ID
-         * @param note Note position in the strumLine
-         * @param value Variable value
-         * @param duration Tween duration
-         * @param ease Tween ease
-         * 
-         * @deprecated Use `noteTween` instead
-         */
         set('noteTweenAlpha', function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)
         {
             deprecatedPrint('Use "noteTween" instead of "noteTweenAlpha"');
@@ -288,39 +198,21 @@ class LuaPlayState extends LuaPresetBase
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, playState.strumLineNotes.members[note], {alpha: value}, duration, {ease: ease}));
         });
 		
-        /**
-         * Adds an object to the game behind the Girlfriend entity
-         * 
-         * @param obj Object ID
-         */
         set('addBehindGF', function(obj:String)
         {
             playState.insert(playState.members.indexOf(playState.gfGroup), getTag(obj));
         });
         
-        /**
-         * Adds an object to the game behind the Boyfriend entity
-         * 
-         * @param obj Object ID
-         */
         set('addBehindBF', function(obj:String)
         {
             playState.insert(playState.members.indexOf(playState.boyfriendGroup), getTag(obj));
         });
         
-        /**
-         * Adds an object to the game behind the Dad entity
-         * 
-         * @param obj Object ID
-         */
         set('addBehindDad', function(obj:String)
         {
             playState.insert(playState.members.indexOf(playState.dadGroup), getTag(obj));
         });
 
-        /**
-         * 
-         */
         set('adjustMobileControls', function()
         {
             playState.adjustMobileControls();

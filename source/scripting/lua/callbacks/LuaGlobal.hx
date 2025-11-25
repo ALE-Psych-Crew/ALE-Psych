@@ -12,59 +12,29 @@ class LuaGlobal extends LuaPresetBase
     {
         super(lua);
 
-        /**
-         * Adds an object to the game
-         * 
-         * @param tag ID of the object
-         */
         set('add', function(tag:String)
         {
             if (tagIs(tag, flixel.FlxBasic))
                 game.add(getTag(tag));
         });
 
-        /**
-         * Removes an object from the game
-         * 
-         * @param tag ID of the object
-         * @param destroy Defines whether the object should be destroyed
-         */
         set('remove', function(tag:String, ?destroy:Bool)
         {
             if (tagIs(tag, FlxBasic))
                 game.remove(getTag(tag), destroy);
         });
 
-        /**
-         * Inserts an object into the game
-         * 
-         * @param position Position where the object will be inserted
-         * @param tag ID of the object
-         */
         set('insert', function(position:Int, tag:String)
         {
             if (tagIs(tag, FlxBasic))
                 game.insert(position, getTag(tag));
         });
 
-        /**
-         * Gets the position of an object in the game
-         * 
-         * @param tag ID of the object
-         * 
-         * @return Object position
-         */
         set('getObjectOrder', function(tag:String)
         {
             return game.members.indexOf(getTag(tag));
         });
 
-        /**
-         * Removes and reinserts an object in a different position
-         * 
-         * @param tag ID of the object
-         * @param position New position
-         */
         set('setObjectOrder', function(tag:String, position:Int)
         {
             if (!tagIs(tag, FlxBasic))
@@ -76,51 +46,21 @@ class LuaGlobal extends LuaPresetBase
             game.insert(position, object);
         });
 
-        /**
-         * Gets a random integer
-         * 
-         * @param min Smallest integer
-         * @param max Largest integer
-         * @param excludes Integers that will not be used
-         * 
-         * @return Obtained integer
-         */
         set('getRandomInt', function(?min:Int, ?max:Int, ?excludes:Array<Int>)
         {
             return FlxG.random.int(min, max, excludes);
         });
 
-        /**
-         * Gets a random float
-         * 
-         * @param min Smallest float
-         * @param max Largest float
-         * @param excludes Floats that will not be used
-         * 
-         * @return Obtained float
-         */
         set('getRandomFloat', function(?min:Float, ?max:Float, ?excludes:Array<Float>)
         {
             return FlxG.random.float(min, max, excludes);
         });
 
-        /**
-         * Gets a random boolean
-         * 
-         * @param chance Probability that the value is `true` (from 0 to 100)
-         * 
-         * @return Obtained boolean
-         */
         set('getRandomBool', function(?chance:Float)
         {
             return FlxG.random.bool(chance);
         });
 
-        /**
-         * Shares a Lua function with all running scripts
-         *
-         * @param name Function name to expose globally
-         */
         set('registerGlobalFunction', function(name:String)
         {
             globalFunctionLua(name);
@@ -130,31 +70,18 @@ class LuaGlobal extends LuaPresetBase
             #end
         });
 
-        /**
-         * Shares a Lua function with all running Lua scripts
-         *
-         * @param name Function name to expose globally
-         */
         set('registerGlobalLuaFunction', function(name:String)
         {
             globalFunctionLua(name);
         });
 
         #if HSCRIPT_ALLOWED
-        /**
-         * Shares a Lua function with all running HScript scripts
-         *
-         * @param name Function name to expose globally
-         */
         set('registerGlobalHScriptFunction', function(name:String)
         {
             globalFunctionHScript(name);
         });
         #end
 
-        /**
-         * 
-         */
         set('registerGlobalVariable', function(tag:String)
         {
             globalVariableLua(tag);
@@ -164,27 +91,18 @@ class LuaGlobal extends LuaPresetBase
             #end
         });
 
-        /**
-         * 
-         */
         set('registerGlobalLuaVariable', function(tag:String)
         {
             globalVariableLua(tag);
         });
 
         #if HSCRIPT_ALLOWED
-        /**
-         * 
-         */
         set('registerGlobalHScriptVariable', function(tag:String)
         {
             globalVariableHScript(tag);
         });
         #end
 
-        /**
-         * 
-         */
         set('variableExists', function(tag:String):Bool
         {
             return lua.variables.exists(tag);
@@ -192,26 +110,17 @@ class LuaGlobal extends LuaPresetBase
 
         if (type == SUBSTATE)
         {
-            /**
-             * 
-             */
             set('close', function()
             {
                 (cast (game, ScriptSubState)).close();
             });
         }
 
-        /**
-         * 
-         */
         set('switchToCustomState', function(name:String, ?arguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
         {
             CoolUtil.switchState(new CustomState(name, arguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
         });
 
-        /**
-         * 
-         */
         set('openCustomSubState', function(name:String, ?arguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
         {
             CoolUtil.openSubState(new CustomSubState(name, arguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));

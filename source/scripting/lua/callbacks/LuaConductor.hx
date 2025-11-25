@@ -8,33 +8,21 @@ class LuaConductor extends LuaPresetBase
     {
         super(lua);
         
-        /**
-         * 
-         */
         set('getSongPosition', function()
         {
             return Conductor.songPosition;
         });
 
-        /**
-         * 
-         */
         set('getSongStep', function()
         {
             return Conductor.curStep;
         });
 
-        /**
-         * 
-         */
         set('getSongBeat', function()
         {
             return Conductor.curBeat;
         });
 
-        /**
-         * 
-         */
         set('getSongSection', function()
         {
             return Conductor.curSection;

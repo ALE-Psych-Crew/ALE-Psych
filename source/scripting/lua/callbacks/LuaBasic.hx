@@ -12,14 +12,6 @@ class LuaBasic extends LuaPresetBase
     {
         super(lua);
 
-        /**
-         * Sets the camera in which an object will be drawn
-         * 
-         * @param tag ID of the object
-         * @param camera ID of the camera
-         * 
-         * @deprecated Use `setObjectCameras` instead
-         */
         set('setObjectCamera', function(tag:String, camera:String)
         {
             deprecatedPrint('Use "setObjectCameras" instead of "setObjectCamera"');
@@ -28,12 +20,6 @@ class LuaBasic extends LuaPresetBase
                 getTag(tag).cameras = [getTag(camera)];
         });
 
-        /**
-         * Sets the cameras in which an object will be drawn
-         * 
-         * @param tag ID of the object
-         * @param cameras List of camera IDs
-         */
         set('setObjectCameras', function(tag:String, cameras:Array<String>)
         {
             var theCameras:Array<FlxCamera> = [];
@@ -46,14 +32,6 @@ class LuaBasic extends LuaPresetBase
                 cast(getTag(tag), FlxBasic).cameras = theCameras;
         });
 
-        /**
-         * Shows if one object is touching another
-         * 
-         * @param tag0 ID of the first object
-         * @param tag1 ID of the second object
-         * 
-         * @return Whether the objects are overlapping
-         */
         set('objectsOverlap', function(tag0:String, tag1:String):Bool
         {
             if (tagIs(tag0, FlxBasic) && tagIs(tag0, FlxBasic))
