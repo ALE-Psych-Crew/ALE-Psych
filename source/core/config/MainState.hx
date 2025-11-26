@@ -87,6 +87,8 @@ class MainState extends MusicBeatState
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
+		FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
+
         #if mobile
         if (showedModMenu || Mods.UNIQUE_MOD != null)
         {
