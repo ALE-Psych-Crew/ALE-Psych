@@ -25,6 +25,8 @@ class HScript extends ALERuleScript
 
 		super(scriptName, context);
 
+		superInstance = type == STATE ? FlxG.state : FlxG.state.subState;
+
 		preset();
 
         for (callbacks in (customCallbacks ?? []))
