@@ -1,233 +1,238 @@
 import funkin.visuals.objects.Alphabet;
 import funkin.visuals.objects.HealthIcon;
 
-import flixel.input.keyboard.FlxKey;
-
-import flixel.util.FlxColor;
-
 import utils.Score;
+
+import flixel.math.FlxPoint;
 
 import ALEParserHelper;
 
 using StringTools;
 
-var weeks:Array<ALEWeek> = [];
+final weeks:Array<ALEWeek> = [];
 
-var songs:Array<Dynamic> = [];
+final weekNames:Array<ALEWeek> = [];
 
-var bg:FlxSprite;
-
-var sprites:FlxTypedGroup<Alphabet>;
-
-var icons:FlxTypedGroup<HealthIcon>;
-
-var textsBG:FlxSprite;
-var scoreText:FlxText;
-var diffText:FlxText;
-
-var selInt:Int = CoolUtil.save.custom.data.freeplay ?? 0;
-
-var diffSelInt:Int = CoolUtil.save.custom.data.freeplayDifficulty ?? 2;
-
-function onCreate()
-{
-    bg = new FlxSprite().loadGraphic(Paths.image('ui/menuBG'));
-    add(bg);
-    bg.scale.x = bg.scale.y = 1.25;
-    bg.scrollFactor.set();
-
-    sprites = new FlxTypedGroup<Alphabet>();
-    add(sprites);
-
-    icons = new FlxTypedGroup<HealthIcon>();
-    add(icons);
-
-    textsBG = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
-    textsBG.alpha = 0.5;
-    add(textsBG);
-    textsBG.scrollFactor.set();
-
-    scoreText = new FlxText(0, 0, 0, 'SCORE TEXT', 35);
-    scoreText.font = Paths.font('vcr.ttf');
-    add(scoreText);
-    scoreText.scrollFactor.set();
-    
-    diffText = new FlxText(0, 0, 0, 'DIFFICULTY TEXT', 25);
-    diffText.font = Paths.font('vcr.ttf');
-    add(diffText);
-    diffText.scrollFactor.set();
-    diffText.y = scoreText.y + scoreText.height + 2;
-
-    var tipBG:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 1, FlxColor.BLACK);
-    tipBG.alpha = 0.5;
-    add(tipBG);
-    tipBG.scrollFactor.set();
-
-    for (week in Paths.readDirectory('weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
-        if (week.endsWith('.json'))
-            weeks.push(ALEParserHelper.getALEWeek(week.substring(0, week.length - 5)));
-
-    for (week in weeks)
-        if (!weekIsLocked(week) && !week.hideFreeplay)
-            for (song in week.songs)
-                songs.push(
-                    {
-                        name: song.name,
-                        icon: song.icon,
-                        color: CoolUtil.colorFromArray(song.color),
-                        difficulties: week.difficulties
-                    }
-                );
-
-    for (index => song in songs)
+for (week in Paths.readDirectory('weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
+    if (week.endsWith('.json'))
     {
-        var alpha:Alphabet = new Alphabet(30 * index + 150, 175 * index + 300, song.name);
-        sprites.add(alpha);
+        var name:String = week.substring(0, week.length - 5);
 
-        var icon:HealthIcon = new HealthIcon(song.icon);
-        icons.add(icon);
-        icon.scrollFactor.set(1, 1);
-        icon.x = alpha.x + alpha.width + 15;
-        icon.y = alpha.y + alpha.height / 2 - icon.height / 2;
+        if (weekNames.contains(name))
+            continue;
+
+        weeks.push(ALEParserHelper.getALEWeek(name));
+
+        weekNames.push(name);
     }
-
-    selInt = FlxMath.bound(selInt, 0, songs.length - 1);
-
-    bg.color = songs[selInt].color;
-
-    changeShit();
-}
-
-function changeShit()
-{
-    for (index => sprite in sprites)
-    {
-        sprite.alpha = icons.members[index].alpha = index == selInt ? 1 : 0.5;
-    }
-
-    FlxTween.cancelTweensOf(bg);
-    FlxTween.color(bg, 1, bg.color, songs[selInt].color, {ease: FlxEase.cubeOut});
-
-    changeDiff();
-}
-
-function changeDiff()
-{
-    diffSelInt = FlxMath.bound(diffSelInt, 0, songs[selInt].difficulties.length - 1);
-
-    var formmatedSong:String = CoolUtil.formatToSongPath(songs[selInt].name.trim() + '-' + songs[selInt].difficulties[diffSelInt].trim());
-
-    scoreText.text = 'SCORE: ' + (Score.song.get(formmatedSong) ?? 0) + ' (' + CoolUtil.floorDecimal(Score.rating.get(formmatedSong) * 100 ?? 0, 2) + '%)';
-
-    var several:Bool = songs[selInt].difficulties.length > 1;
-    
-    diffText.text = (several ? '< ' : '') + songs[selInt].difficulties[diffSelInt].toUpperCase() + (several ? ' >' : '');
-
-    textsBG.scale.x = Math.max(scoreText.width, diffText.width) + 20;
-    textsBG.scale.y = scoreText.height + 2 + diffText.height + 10;
-    textsBG.updateHitbox();
-    textsBG.x = FlxG.width - textsBG.width;
-
-    scoreText.x = textsBG.x + textsBG.width / 2 - scoreText.width / 2;
-    scoreText.y = textsBG.height / 2 - (scoreText.height + 2 + diffText.height) / 2;
-
-    diffText.x = textsBG.x + textsBG.width / 2 - diffText.width / 2;
-    diffText.y = diffText.y = scoreText.y + scoreText.height + 2;
-}
 
 function weekIsLocked(week:ALEWeek):Bool
 {
-    return week.locked && week.weekBefore.length > 0 && !utils.Score.completed.exists(week.weekBefore);
+    return week.locked && week.weekBefore.length > 0 && !Score.completed.exists(week.weekBackground);
 }
+
+final songs:Array<ALEWeekSong> = [];
+
+for (week in weeks)
+    if (!weekIsLocked(week) && !week.hideFreeplay)
+        for (song in week.songs)
+            songs.push(
+                {
+                    name: song.name,
+                    icon: song.icon,
+                    color: CoolUtil.colorFromArray(song.color),
+                    difficulties: week.difficulties
+                }
+            );
+
+var sprites:Array<FlxTypedSpriteGroup<FlxSprite>> = [];
+
+final SONG_SPACE:FlxPoint = FlxPoint.get(50, 150);
+
+function createSongSprites(song:ALEWeekSong, index:Int)
+{
+    var group:FlxTypedSpriteGroup<FlxSprite> = new FlxTypedSpriteGroup<FlxSprite>();
+    add(group);
+
+    var text:Alphabet = new Alphabet(0, 0, song.name);
+    group.add(text);
+    
+    var icon:HealthIcon = new HealthIcon(song.icon);
+    icon.x = text.width + 20;
+    icon.y = text.height / 2 - icon.height / 2;
+    group.add(icon);
+
+    group.x = SONG_SPACE.x * index;
+    group.y = SONG_SPACE.y * index;
+
+    sprites.push(group);
+}
+
+var selInt:Int = CoolUtil.save.custom.data.freeplaySelection ?? 0;
+
+selInt = FlxMath.bound(selInt, 0, songs.length - 1);
+
+var diffSelInt:Int = CoolUtil.save.custom.data.freeplayDifficultySelection ?? 1;
+
+var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menuBG'));
+add(bg);
+bg.scrollFactor.set();
+bg.color = songs[selInt].color;
+
+for (index => song in songs)
+    createSongSprites(song, index);
+
+var scoreBG:FlxSprite = new FlxSprite().makeGraphic(1, 1, FlxColor.BLACK);
+scoreBG.scrollFactor.set();
+scoreBG.alpha = 0.5;
+add(scoreBG);
+
+var scoreText:FlxText = new FlxText(0, 0, 0, '', 35);
+scoreText.font = Paths.font('vcr.ttf');
+scoreText.scrollFactor.set();
+add(scoreText);
+
+var difficultyText:FlxText = new FlxText(0, 0, 0, '', 25);
+difficultyText.font = Paths.font('vcr.ttf');
+difficultyText.scrollFactor.set();
+add(difficultyText);
+
+function changeDifficulty()
+{
+    var curDiffs:Array<String> = songs[selInt].difficulties;
+
+    if (diffSelInt < 0)
+        diffSelInt = curDiffs.length - 1;
+
+    if (diffSelInt > curDiffs.length - 1)
+        diffSelInt = 0;
+
+    var formattedSong:String = CoolUtil.formatToSongPath(songs[selInt].name.trim() + '-' + curDiffs[diffSelInt].trim());
+    
+    scoreText.text = 'SCORE: ' + (Score.song.get(formattedSong) ?? 0) + ' (' + CoolUtil.floorDecimal(Score.rating.get(formattedSong) * 100 ?? 0, 2) + '%)';
+
+    var severalDifficulties:Bool = curDiffs.length > 1;
+
+    difficultyText.text = (severalDifficulties ? '< ' : '') + curDiffs[diffSelInt].toUpperCase() + (severalDifficulties ? ' >' : '');
+    
+    scoreBG.scale.x = Math.max(scoreText.width, difficultyText.width) + 20;
+    scoreBG.scale.y = scoreText.height + 2 + difficultyText.height + 10;
+    scoreBG.updateHitbox();
+    scoreBG.x = FlxG.width - scoreBG.width;
+
+    scoreText.x = scoreBG.x + scoreBG.width / 2 - scoreText.width / 2;
+    scoreText.y = scoreBG.height / 2 - (scoreText.height + 2 + difficultyText.height) / 2;
+
+    difficultyText.x = scoreBG.x + scoreBG.width / 2 - difficultyText.width / 2;
+    difficultyText.y = scoreText.y + scoreText.height + 2;
+}
+
+function changeSelection()
+{
+    if (selInt < 0)
+        selInt = sprites.length - 1;
+
+    if (selInt > sprites.length - 1)
+        selInt = 0;
+
+    for (index => group in sprites)
+    {
+        group.alpha = index == selInt ? 1 : 0.5;
+
+        if (index == selInt)
+        {
+            FlxTween.cancelTweensOf(bg);
+
+            FlxTween.color(bg, 0.5, bg.color, songs[index].color, {ase: FlxEase.cubeOut});
+        }
+    }
+
+    changeDifficulty();
+}
+
+changeSelection();
 
 var canSelect:Bool = true;
 
+final CAMERA_OFFSET:FlxPoint = FlxPoint.get(150, 300);
+final CAMERA_SPEED:FlxPoint = FlxPoint.get(0.25, 0.25);
+
 function onUpdate(elapsed:Float)
 {
+    camGame.scroll.x = CoolUtil.fpsLerp(camGame.scroll.x, selInt * SONG_SPACE.x - CAMERA_OFFSET.x, CAMERA_SPEED.x);
+    camGame.scroll.y = CoolUtil.fpsLerp(camGame.scroll.y, selInt * SONG_SPACE.y - CAMERA_OFFSET.y, CAMERA_SPEED.y);
+
     if (canSelect)
     {
-        if (Controls.UI_UP_P || Controls.UI_DOWN_P || Controls.MOUSE_WHEEL)
-        {
-            if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_UP)
-                if (selInt <= 0)
-                    selInt = sprites.members.length - 1;
-                else
-                    selInt--;
-
-            if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
-                if (selInt >= sprites.members.length - 1)
-                    selInt = 0;
-                else
-                    selInt++;
-
-            changeShit();
-
-            FlxG.sound.play(Paths.sound('scrollMenu'));
-        }
-
-        if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P)
-        {
-            if (Controls.UI_LEFT_P)
-                if (diffSelInt <= 0)
-                    diffSelInt = songs[selInt].difficulties.length - 1;
-                else
-                    diffSelInt--;
-
-            if (Controls.UI_RIGHT_P)
-                if (diffSelInt >= songs[selInt].difficulties.length - 1)
-                    diffSelInt = 0;
-                else
-                    diffSelInt++;
-
-            changeDiff();
-        }
-
-        if (Controls.ACCEPT)
-        {
-            PlayState.isStoryMode = false;
-            
-            CoolUtil.loadSong(songs[selInt].name, CoolUtil.formatToSongPath(songs[selInt].difficulties[diffSelInt]));
-        }
-
         if (Controls.BACK)
         {
             canSelect = false;
 
-            FlxG.sound.play(Paths.sound('cancelMenu'));
-
             CoolUtil.switchState(new CustomState(CoolVars.data.mainMenuState));
+
+            FlxG.sound.play(Paths.sound('cancelMenu', true));
+        }
+
+        if (Controls.ACCEPT)
+        {
+            canSelect = false;
+
+            CoolUtil.loadSong(songs[selInt].name, songs[selInt].difficulties[diffSelInt]);
+
+            FlxG.sound.music?.pause();
+        }
+
+        if (Controls.UI_DOWN_P || Controls.UI_UP_P || (Controls.MOUSE_WHEEL && !FlxG.keys.pressed.SHIFT))
+        {
+            if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_UP)
+                selInt--;
+
+            if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
+                selInt++;
+
+            changeSelection();
+
+            FlxG.sound.play(Paths.sound('scrollMenu', true));
+        }
+
+        if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P || (Controls.MOUSE_WHEEL && FlxG.keys.pressed.SHIFT))
+        {
+            if (Controls.UI_LEFT_P || Controls.MOUSE_WHEEL_UP)
+                diffSelInt--;
+
+            if (Controls.UI_RIGHT_P || Controls.MOUSE_WHEEL_DOWN)
+                diffSelInt++;
+
+            changeDifficulty();
         }
     }
-
-    game.camGame.scroll.x = CoolUtil.fpsLerp(game.camGame.scroll.x, selInt * 30, 0.25);
-    game.camGame.scroll.y = CoolUtil.fpsLerp(game.camGame.scroll.y, selInt * 175, 0.25);
 }
 
-var mobileCamera:FlxCamera;
+var mobileCamera:ALECamera;
 
 function postCreate()
 {
     if (CoolVars.mobileControls)
     {
         mobileCamera = new ALECamera();
-        
+
         FlxG.cameras.add(mobileCamera, false);
 
-        var buttonMap:Array<Dynamic> = [
-            [50, 485, ClientPrefs.controls.ui.left, '< normal'],
+        var buttonsMap:Array<Dynamic> = [
+            [40, 485, ClientPrefs.controls.ui.left, '< normal'],
             [360, 485, ClientPrefs.controls.ui.right, '> normal'],
             [205, 395, ClientPrefs.controls.ui.up, '< normal', 90],
             [205, 550, ClientPrefs.controls.ui.down, '> normal', 90],
             [1105, 485, ClientPrefs.controls.ui.accept, 'a uppercase'],
-            [950, 485, ClientPrefs.controls.ui.back, 'b uppercase'],
-            [795, 485, [FlxKey.CONTROL], 'c uppercase']
+            [950, 485, ClientPrefs.controls.ui.back, 'b uppercase']
         ];
 
-        for (button in buttonMap)
+        for (button in buttonsMap)
         {
             var obj:MobileButton = new MobileButton(button[0], button[1], button[2], button[3]);
             add(obj);
             obj.label.angle = button[4] ?? 0;
+
             obj.cameras = [mobileCamera];
         }
     }
@@ -235,10 +240,6 @@ function postCreate()
 
 function onDestroy()
 {
-    if (CoolVars.mobileControls)
-        FlxG.cameras.remove(mobileCamera);
-
-    CoolUtil.save.custom.data.freeplay = selInt;
-    CoolUtil.save.custom.data.freeplayDifficulty = diffSelInt;
-    CoolUtil.save.custom.flush();
+    CoolUtil.save.custom.data.freeplaySelection = selInt;
+    CoolUtil.save.custom.data.freeplayDifficultySelection = diffSelInt;
 }
