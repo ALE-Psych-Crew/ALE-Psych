@@ -62,14 +62,14 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-ui"/>
 	<haxelib name="flixel-addons"/>
-	
+
 	<haxelib name="flxanimate"/>
 
 	<haxelib name="flxsoundfilters"/>
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio"/>
 
-	<haxelib name="funkin-modchart" />
+	<haxelib name="funkin-modchart"/>
 
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 

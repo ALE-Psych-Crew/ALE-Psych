@@ -62,6 +62,10 @@ class MainState extends MusicBeatState
 
 		CoolUtil.reloadGameMetadata();
 
+		#if WINDOWS_API
+		cpp.WindowsAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
+		#end
+
 		ALEPluginsHandler.initialize();
 
 		debugPrintPlugin = null;

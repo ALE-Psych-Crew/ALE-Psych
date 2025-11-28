@@ -40,10 +40,6 @@ class EngineUtil
 		winapi.WindowsAPI.resetWindowsFuncs();
 		#end
 
-		#if (windows && cpp)
-		cpp.WindowsAPI.setWindowBorderColor(255, 255, 255);
-		#end
-
 		FlxG.mouse.visible = true;
 
 		FlxTween.globalManager.clear();
@@ -93,6 +89,8 @@ class EngineUtil
 			icon: 'appIcon',
 			width: Main.game.width,
 			height: Main.game.height,
+
+			windowColor: [33, 33, 33],
 
 			bpm: 102.0,
 

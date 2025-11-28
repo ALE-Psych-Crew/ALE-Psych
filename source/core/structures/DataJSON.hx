@@ -27,6 +27,8 @@ typedef DataJSON =
     var width:Int;
     var height:Int;
 
+    var windowColor:Array<Int>;
+
     var bpm:Float;
 
     var discordID:String;
