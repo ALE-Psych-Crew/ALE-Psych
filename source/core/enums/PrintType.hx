@@ -28,6 +28,17 @@ enum abstract PrintType(String)
         }
     }
 
+    public function printable():Bool
+    {
+        return switch (cast(this, PrintType))
+        {
+            case POP_UP, DISCORD:
+                false;
+            default:
+                true;
+        }
+    }
+
     public function toString():String
     {
         return switch (cast(this, PrintType))

@@ -4,7 +4,7 @@ class DebugPrintText extends FlxText
 {
     public function new()
     {
-        super(10, 0, FlxG.width - 20, '', 15);
+        super(10, 0, FlxG.width - 20, '', 17);
 
         font = Paths.font('jetbrains.ttf');
     }
@@ -17,6 +17,8 @@ class DebugPrintText extends FlxText
 
         addFormat(new FlxTextFormat(color), 0, prefix.length);
         addFormat(new FlxTextFormat(0xFF505050), prefix.length + 1, prefix.length + 2);
+        
+        setBorderStyle(OUTLINE_FAST, FlxColor.BLACK);
     }
 
     var timer:Float = 6;
