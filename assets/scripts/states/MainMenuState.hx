@@ -1,29 +1,109 @@
-import funkin.states.OptionsState;
+import funkin.visuals.objects.Alphabet;
 
 import flixel.input.keyboard.FlxKey;
-import flixel.text.FlxTextBorderStyle;
 import flixel.effects.FlxFlicker;
+import flixel.text.FlxText.FlxTextBorderStyle;
+
+import sys.Http;
 
 using StringTools;
 
-var options:Array = ['storyMode', 'freeplay', 'credits', 'options'];
+@typedef OptionData = {
+    @:optional var state:String;
+    @:optional var variables:StringMap<Dynamic>;
+    @:optional var behavior:Void -> Void;
+    @:optional var overrideDefaultBehavior:Bool;
+};
+
+var selInt:Int = CoolUtil.save.custom.data.mainMenuSelection ?? 0;
+
+var sprites:Array<FlxSprite> = [];
+
+final OPTION_SPACE:Int = 175;
+
+final CAMERA_SPEED:Float = 0.25;
+
+var canSelect:Bool = true;
+
+var options:StringMap<OptionData> = [
+    {
+        id: 'storyMode',
+        state: CoolVars.data.storyMenuState
+    },
+    {
+        id: 'freeplay',
+        state: CoolVars.data.freeplayState
+    },
+    {
+        id: 'credits',
+        state: 'CreditsState'
+    },
+    {
+        id: 'options',
+        state: CoolVars.data.optionsState,
+        variables: [
+            'isPlayState' => false
+        ]
+    }
+];
+
+function createOption(id:String, index:Int)
+{
+    var spr:FlxSprite = new FlxSprite(0, index * OPTION_SPACE);
+    spr.frames = Paths.getSparrowAtlas('mainMenuState/' + id);
+    spr.animation.addByPrefix('basic', 'basic', 24, true);
+    spr.animation.addByPrefix('white', 'white', 24, true);
+    spr.animation.play('basic');
+    spr.x = FlxG.width / 2 - spr.width / 2;
+
+    add(spr);
+
+    sprites.push(spr);
+}
+
+function changeSelection()
+{
+    if (selInt < 0)
+        selInt = options.length - 1;
+
+    if (selInt > options.length - 1)
+        selInt = 0;
+
+    for (index => spr in sprites)
+    {
+        spr.animation.play(index == selInt ? 'white' : 'basic', true);
+        spr.centerOffsets();
+    }
+}
+
+function selectMenu(data:OptionData)
+{
+    canSelect = false;
+
+    if (ClientPrefs.data.flashing)
+        FlxFlicker.flicker(sprites[selInt], 0, 0.075);
+    
+    for (index => spr in sprites)
+        if (index != selInt)
+            FlxTween.tween(spr, {alpha: 0}, 0.5, {ease: FlxEase.cubeIn});
+
+    FlxG.sound.play(Paths.sound('confirmMenu', true));
+
+    FlxTimer.wait(1, () -> {
+        CoolUtil.switchState(new CustomState(data.state, data.variables, data.variables));
+    });
+}
 
 var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menuBGYellow'));
 add(bg);
-bg.antialiasing = ClientPrefs.data.antialiasing;
-bg.scrollFactor.set(0, 0.75 / options.length);
 bg.scale.set(1.25, 1.25);
-bg.screenCenter('x');
+bg.scrollFactor.set(0, 0.5 / options.length);
+bg.x = FlxG.width / 2 - bg.width / 2;
 
-var magentaBg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('ui/menuBGMagenta'));
-add(magentaBg);
-magentaBg.antialiasing = ClientPrefs.data.antialiasing;
-magentaBg.scrollFactor.set(0, 0.75 / options.length);
-magentaBg.scale.set(1.25, 1.25);
-magentaBg.screenCenter('x');
-magentaBg.visible = false;
+for (index => option in options)
+    createOption(option.id, index);
 
-var versionText:String = [
+var versionText:Array<String> = [
     'ALE Psych ' + CoolVars.engineVersion,
     (CoolVars.mobileControls ? '' : 'Press [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu'),
     'Friday Night Funkin\' v0.2.8'
@@ -34,10 +114,11 @@ version.setFormat(Paths.font('vcr.ttf'), 17.5, FlxColor.WHITE, 'left', FlxTextBo
 version.scrollFactor.set();
 version.y = FlxG.height - version.height - 10;
 version.borderSize = 1.125;
+add(version);
 
 if (ClientPrefs.data.checkForUpdates)
 {
-    var http = new sys.Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
+    var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
 
     http.onData = function (data:String)
     {
@@ -62,117 +143,45 @@ if (ClientPrefs.data.checkForUpdates)
     http.request();
 }
 
-var sprites:Array<FlxSprite> = [];
-
-for (index => option in options)
-{
-    var img:FlxSprite = new FlxSprite();
-    img.frames = Paths.getSparrowAtlas('mainMenuState/' + option);
-    img.animation.addByPrefix('basic', 'basic', 24, true);
-    img.animation.addByPrefix('white', 'white', 24, true);
-    img.animation.play('basic');
-    img.antialiasing = ClientPrefs.data.antialiasing;
-    img.x = FlxG.width / 2 - img.width / 2;
-    img.y = 175 * index;
-    add(img);
-    img.animation.callback = (_, __, ___) -> {
-        img.centerOffsets();
-        img.centerOrigin();
-    }
-
-    sprites.push(img);
-}
-
-add(version);
-
-var selInt:Int = CoolUtil.save.custom.data.mainMenu ?? 0;
-
-function changeShit()
-{   
-    for (index => sprite in sprites)
-    {
-        sprite.animation.play(index == selInt ? 'white' : 'basic');
-    }
-}
-
-changeShit();
-
-var canSelect:Bool = true;
+changeSelection();
 
 function onUpdate(elapsed:Float)
 {
-    game.camGame.scroll.y = CoolUtil.fpsLerp(game.camGame.scroll.y, selInt * 175 - FlxG.height * (0.25 + 0.5 * selInt / sprites.length), 0.3);
+    game.camGame.scroll.y = CoolUtil.fpsLerp(game.camGame.scroll.y, selInt * OPTION_SPACE - FlxG.height * (0.25 + 0.5 * selInt / options.length), CAMERA_SPEED);
 
     if (canSelect)
     {
-        if (Controls.UI_UP_P || Controls.UI_DOWN_P || Controls.MOUSE_WHEEL)
-        {
-            if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_UP)
-                if (selInt <= 0)
-                    selInt = sprites.length - 1;
-                else
-                    selInt--;
-
-            if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
-                if (selInt >= sprites.length - 1)
-                    selInt = 0;
-                else
-                    selInt++;
-
-            changeShit();
-
-            FlxG.sound.play(Paths.sound('scrollMenu'));
-        }
-        
-        if (Controls.ACCEPT)
-        {
-            canSelect = false;
-
-            FlxG.sound.play(Paths.sound('confirmMenu'));
-
-            if (ClientPrefs.data.flashing)
-                FlxFlicker.flicker(magentaBg, 1.1, 0.15, false);
-
-            for (index => sprite in sprites)
-            {
-                if (index == selInt)
-                {
-                    if (ClientPrefs.data.flashing)
-                        FlxFlicker.flicker(sprite, 0, 0.05);
-                } else {
-                    FlxTween.tween(sprite, {alpha: 0}, 60 / Conductor.bpm, {ease: FlxEase.cubeIn});
-                }
-            }
-
-            new FlxTimer().start(1, (_) -> {
-                switch (options[selInt])
-                {
-                    case 'storyMode':
-                        CoolUtil.switchState(new CustomState(CoolVars.data.storyMenuState));
-                    case 'freeplay':
-                        CoolUtil.switchState(new CustomState(CoolVars.data.freeplayState));
-                    case 'credits':
-                        CoolUtil.switchState(new CustomState('CreditsState'));
-                    case 'options':
-                        CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, null, ['isPlayState' => false], ['isPlayState' => false]));
-                }
-            });
-        }
-
         if (Controls.BACK)
         {
             canSelect = false;
 
-            FlxG.sound.play(Paths.sound('cancelMenu'));
-
             CoolUtil.switchState(new CustomState(CoolVars.data.initialState));
+
+            FlxG.sound.play(Paths.sound('cancelMenu', true));
         }
 
-        if (!CoolVars.mobileControls && Controls.ENGINE_MASTER_EDITOR && CoolVars.data.developerMode)
+        if (Controls.UI_UP_P || Controls.UI_DOWN_P || Controls.MOUSE_WHEEL)
         {
-            canSelect = false;
+            if (Controls.UI_UP_P || Controls.MOUSE_WHEEL_UP)
+                selInt--;
 
-            CoolUtil.switchState(new CustomState(CoolVars.data.masterEditorState));
+            if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
+                selInt++;
+
+            changeSelection();
+
+            FlxG.sound.play(Paths.sound('scrollMenu', true));
+        }
+
+        if (Controls.ACCEPT)
+        {
+            var data:OptionData = options[selInt];
+
+            if (data.behavior != null)
+                data.behavior();
+
+            if (!data.overrideDefaultBehavior)
+                selectMenu(data);
         }
     }
 }
@@ -209,6 +218,5 @@ function onDestroy()
     if (CoolVars.mobileControls)
         FlxG.cameras.remove(mobileCamera);
 
-    CoolUtil.save.custom.data.mainMenu = selInt;
-    CoolUtil.save.custom.flush();
+    CoolUtil.save.custom.data.mainMenuSelection = selInt;
 }

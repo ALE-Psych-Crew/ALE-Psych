@@ -1,170 +1,152 @@
-import flixel.util.FlxColor;
-
 import funkin.visuals.objects.Alphabet;
 
-var skippedIntro:Bool = false;
+var randomPhrases:String = Paths.getContent('introTexts.txt').split('\n');
 
-var epicTexts:FlxTypedGroup = new FlxTypedGroup();
+var phrase:Array<String> = randomPhrases[FlxG.random(0, randomPhrases.length - 1)].split('::');
 
-var logo:FlxSprite;
-var gf:FlxSprite;
-var pressEnter:FlxSprite;
+var introTexts:IntMap = [
+    0 => 'Ninjamuffin\nPhantomArcade\nKawaiiSprite\nEvilsk ER',
+    2 => 'Present',
+    3 => null,
+    4 => 'Not Associated With',
+    6 => 'Newgrounds',
+    7 => null,
+    8 => phrase[0],
+    10 => phrase[1],
+    11 => null,
+    12 => 'Friday',
+    13 => 'Night',
+    14 => 'Funkin\'',
+    15 => 'ALE Psych'
+];
 
-Paths.music('freakyMenu');
+var texts:FlxTypedGroup<FlxBasic> = new FlxTypedGroup<FlxBasic>();
+add(texts);
 
-Paths.sound('confirmMenu');
-
-function onCreate()
+function spawnIntroText(text:String)
 {
-    WindowsAPI.setWindowBorderColor(33, 33, 33);
-    
-    add(epicTexts);
-
-    logo = new FlxSprite(-125, -100);
-    logo.frames = Paths.getSparrowAtlas('introState/logo');
-    logo.animation.addByPrefix('bump', 'logo bumpin', 24, false);
-    logo.animation.play('bump');
-    add(logo);
-    logo.antialiasing = ClientPrefs.data.antialiasing;
-    logo.alpha = 0;
-    
-    gf = new FlxSprite(550, 50);
-    gf.frames = Paths.getSparrowAtlas('introState/gf');
-    gf.animation.addByIndices('danceLeft', 'gf', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-    gf.animation.addByIndices('danceRight', 'gf', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-    add(gf);
-    gf.antialiasing = ClientPrefs.data.antialiasing;
-    gf.alpha = 0;
-
-    pressEnter = new FlxSprite(150, 576);
-    pressEnter.frames = Paths.getSparrowAtlas('introState/titleEnter');
-    pressEnter.animation.addByPrefix('idle', "idle", 24);
-    pressEnter.animation.addByPrefix('press', "press", 24);
-    pressEnter.animation.addByPrefix('freeze', "freeze", 24);
-    add(pressEnter);
-    pressEnter.antialiasing = ClientPrefs.data.antialiasing;
-    pressEnter.animation.play('idle');
-    pressEnter.centerOffsets();
-    pressEnter.updateHitbox();
-
-    pressEnter.alpha = 0;
-    pressEnter.color = 0xFF33FFFF;
-    
-    if (FlxG.sound.music == null)
-        FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
-    else
-        skipIntro();
-}
-
-function skipIntro()
-{
-    skippedIntro = true;
-    
-    epicTexts.clear();
-
-    gf.alpha = 1;
-    logo.alpha = 1;
-    pressEnter.alpha = 1;
-}
-
-var curTime:Float = 0;
-
-var changingState:Bool = false;
-
-var canSelect = true;
-
-function onUpdate(elapsed:Float)
-{
-    curTime += elapsed;
-
-    if (canSelect && Controls.ACCEPT && !changingState)
+    if (text == null)
     {
-        if (skippedIntro)
-        {
-            pressEnter.animation.play(ClientPrefs.data.flashing ? 'press' : 'freeze');
-            
-            changingState = true;
+        texts.clear();
 
-            pressEnter.color = FlxColor.WHITE;
-            pressEnter.alpha = 1;
-
-            FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
-
-            new FlxTimer().start(1.2, function(tmr:FlxTimer)
-            {
-                CoolUtil.switchState(new CustomState('MainMenuState'));
-            });
-
-            canSelect = false;
-        } else {
-            game.camGame.flash(ClientPrefs.data.flashing ? FlxColor.WHITE : FlxColor.BLACK, ClientPrefs.data.flashing ? 3 : 1);
-
-            skipIntro();
-        }
+        return;
     }
 
-    if (skippedIntro && !changingState)
-        pressEnter.alpha = 0.64 + Math.sin(curTime * 2) * 0.36;
+    var objOffset:Float = FlxG.height * 0.225;
+
+    if (texts.members.length >= 1)
+    {
+        var lastObj:Alphabet = texts.members[texts.members.length - 1];
+
+        objOffset = lastObj.y + lastObj.height + 15;
+    }
+
+    var obj:Alphabet = new Alphabet(FlxG.width / 2, objOffset, text);
+    texts.add(obj);
+    obj.alignment = 'centered';
 }
 
-function changeShit(text:String)
+var logo:FlxSprite = new FlxSprite(-130, -100);
+logo.frames = Paths.getSparrowAtlas('titleState/logo');
+logo.animation.addByPrefix('idle', 'idle', 24);
+
+var gf:FlxSprite = new FlxSprite(550, 50);
+gf.frames = Paths.getSparrowAtlas('titleState/gf');
+gf.animation.addByPrefix('left', 'left', 24);
+gf.animation.addByPrefix('right', 'right', 24);
+
+var enter:FlxSprite = new FlxSprite(135, 600);
+enter.frames = Paths.getSparrowAtlas('titleState/enter');
+enter.animation.addByPrefix('idle', 'idle', 1);
+enter.animation.addByPrefix('press', 'press', 24);
+enter.animation.addByPrefix('freeze', 'freeze', 1);
+enter.animation.play('idle');
+enter.color = FlxColor.CYAN;
+
+FlxTween.tween(enter, {alpha: 0.25}, 1.5, {ease: FlxEase.smoothStepInOut, type: FlxTweenType.PINGPONG});
+
+var finishedIntro:Bool = false;
+
+function finishIntro()
 {
-    var alphabet:Alphabet = new Alphabet(FlxG.width / 2, epicTexts.members.length >= 1 ? epicTexts.members[epicTexts.members.length - 1].height + epicTexts.members[epicTexts.members.length - 1].y + 15 : 200, text);
-    alphabet.scaleX = alphabet.scaleY = 0.8;
-    alphabet.alignment = 'centered';
-    epicTexts.add(alphabet);
+    if (finishedIntro)
+        return;
+
+    finishedIntro = true;
+
+    texts.clear();
+        
+    add(logo);
+
+    add(gf);
+
+    add(enter);
 }
 
-var sickBeats:Float = 0;
-
-var randomText:Array<String> = File.getContent(Paths.getPath('introTexts.txt')).split('\n');
-randomText = randomText[FlxG.random.int(0, randomText.length - 1)].toUpperCase().split('::');
-
-var phrases:Array<String> = [
-    null,
-    "NINJAMUFFIN\nPHANTOMARCADE\nKAWAIISPRITE\nEVILSK ER",
-    null,
-    'PRESENT',
-    null,
-    'NOT ASSOCIATED WITH',
-    null,
-    'NEWGROUNDS',
-    null,
-    randomText[0],
-    null,
-    randomText[1],
-    null,
-    'FRIDAY',
-    'NIGHT',
-    "FUNKIN'",
-];
+var safeBeat:Int = -1;
 
 function onBeatHit(curBeat:Int)
 {
-    if(logo != null)
-        logo.animation.play('bump', true);
+    safeBeat++;
 
-    if (curBeat % 2 == 0)
-        gf.animation.play('danceRight');
-    
-    if (curBeat % 2 == 1)
-        gf.animation.play('danceLeft');
-
-    sickBeats = sickBeats + 1;
-
-    if (!skippedIntro)
+    if (finishedIntro)
     {
-        if (sickBeats == 16)
-        {
-            game.camGame.flash(ClientPrefs.data.flashing ? FlxColor.WHITE : FlxColor.BLACK, ClientPrefs.data.flashing ? 3 : 1);
-            
-            skipIntro();
-        } else if (sickBeats < 16) {
-            if (sickBeats % 4 == 0)
-                epicTexts.clear();
+        logo.animation.play('idle', true);
 
-            if (phrases[sickBeats] != null)
-                changeShit(phrases[sickBeats]);
+        gf.animation.play(curBeat % 2 == 0 ? 'left' : 'right', true);
+    } else {
+        if (safeBeat >= 16)
+        {
+            finishIntro();
+
+            if (ClientPrefs.data.flashing)
+                camGame.flash(FlxColor.WHITE, 2);
+        } else if (introTexts.exists(safeBeat)) {
+            spawnIntroText(introTexts.get(safeBeat));
+        }
+    }
+}
+
+if (FlxG.sound.music == null)
+{
+    FlxG.sound.playMusic(Paths.music('freakyMenu'));
+
+    onBeatHit(0);
+} else {
+    finishIntro();
+}
+
+var canSelect:Bool = true;
+
+function onUpdate(elapsed:Float)
+{
+    if (canSelect)
+    {
+        if (Controls.ACCEPT)
+        {
+            if (finishedIntro)
+            {
+                canSelect = false;
+
+                FlxTween.cancelTweensOf(enter);
+
+                enter.alpha = 1;
+                enter.color = FlxColor.WHITE;
+                enter.animation.play(ClientPrefs.data.flashing ? 'press' : 'freeze', true);
+
+                FlxG.sound.play(Paths.sound('confirmMenu', true));
+
+                if (ClientPrefs.data.flashing)
+                    camGame.flash(FlxColor.WHITE, 1, null, true);
+
+                FlxTimer.wait(1, () -> {
+                    CoolUtil.switchState(new CustomState(CoolVars.data.mainMenuState));
+                });
+            } else {
+                finishIntro();
+
+                camGame.flash(FlxColor.BLACK, 0.5);
+            }
         }
     }
 }
