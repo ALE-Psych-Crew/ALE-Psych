@@ -55,12 +55,20 @@ jobs:
             artifact_name: Linux Build
             artifact_path: export/release/linux/bin
             
+          - platform: MacOS
+            os: macos-13
+            build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
+            setup_libs: sh ./setup/install-haxelibs.sh
+            configure_android:
+            artifact_name: MacOS Build
+            artifact_path: export/release/macos/bin
+            
     steps:
       - name: Pull the New Commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.7
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@v1
+        uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
 
