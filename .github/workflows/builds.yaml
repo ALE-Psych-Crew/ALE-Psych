@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    name: Build (${{ matrix.platform }})
+    name: Build ${{ matrix.platform }}
     permissions: write-all
     runs-on: ${{ matrix.os }}
 
