@@ -151,6 +151,8 @@ class Paths
                 }
             }
         }
+        
+        result.sort((a, b) -> return Reflect.compare(a, b));
 
         return result;
     }
