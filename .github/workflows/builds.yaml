@@ -18,8 +18,7 @@ jobs:
             build_cmd: haxelib run lime build windows
             setup_libs: setup/install-haxelibs.bat
             extra_libs:
-            configure_android:
-            artifact_name: Windows Build
+            additional_commands:
             artifact_path: export/release/windows/bin
 
           - platform: Windows x32
@@ -27,8 +26,7 @@ jobs:
             build_cmd: haxelib run lime build windows -32 -D 32bits -D HXCPP_M32
             setup_libs: setup/install-haxelibs.bat
             extra_libs:
-            configure_android:
-            artifact_name: Windows Build (32 Bits)
+            additional_commands:
             artifact_path: export/32bit/windows/bin
 
           - platform: Android
@@ -36,12 +34,11 @@ jobs:
             build_cmd: haxelib run lime build android
             setup_libs: sh ./setup/install-haxelibs.sh
             extra_libs:
-            configure_android: |
+            additional_commands: |
               haxelib run lime config ANDROID_SDK $ANDROID_HOME
               haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
               haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
               haxelib run lime config ANDROID_SETUP true
-            artifact_name: Android Build
             artifact_path: export/release/android/bin/app/build/outputs/apk/release/*.apk
 
           - platform: Linux
@@ -51,24 +48,28 @@ jobs:
             extra_libs: |
               sudo apt-get install libvlc-dev
               sudo apt-get install libvlccore-dev
-            configure_android:
-            artifact_name: Linux Build
+            additional_commands:
             artifact_path: export/release/linux/bin
+            
+          - platform: iOS
+            os: macos-15
+            build_cmd: haxelib run lime build ios -nosign -final
+            setup_libs: sh ./setup/install-haxelibs.sh
+            additional_commands:
+            artifact_path: export/release/ios/build/Release-iphoneos/*.ipa
             
           - platform: MacOS
             os: macos-15
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./setup/install-haxelibs.sh
-            configure_android:
-            artifact_name: MacOS Build
+            additional_commands:
             artifact_path: export/release/macos/bin
             
           - platform: MacOS x64
             os: macos-15-intel
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./setup/install-haxelibs.sh
-            configure_android:
-            artifact_name: MacOS Build (x64)
+            additional_commands:
             artifact_path: export/release/macos/bin
             
     steps:
@@ -87,9 +88,9 @@ jobs:
       - name: Install Main Libraries
         run: ${{ matrix.setup_libs }}
 
-      - name: Configure Android
-        if: ${{ matrix.configure_android }}
-        run: ${{ matrix.configure_android }}
+      - name: Additional Commands
+        if: ${{ matrix.additional_commands }}
+        run: ${{ matrix.additional_commands }}
 
       - name: Build for ${{ matrix.platform }}
         run: ${{ matrix.build_cmd }}
@@ -97,6 +98,6 @@ jobs:
       - name: Upload Game
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_name }}
+          name: ${{ matrix.platform }} Build
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error

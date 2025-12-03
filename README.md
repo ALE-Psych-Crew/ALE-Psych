@@ -17,12 +17,12 @@
 
 ### Latest Builds
 
-[![Windows x64](https://img.shields.io/badge/Windows%20x64-LATEST-0078D6?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Windows%20Build.zip)
-[![Windows x32](https://img.shields.io/badge/Windows%20x32-LATEST-00A4EF?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Windows%20Build%20(32%20Bits).zip)
+[![Windows](https://img.shields.io/badge/Windows-LATEST-0078D6?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Windows%20Build.zip)
+[![Windows x32](https://img.shields.io/badge/Windows%20x32-LATEST-00A4EF?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Windows%20x32%20Build.zip)
 [![Android](https://img.shields.io/badge/Android-LATEST-3DDC84?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Android%20Build.zip)
 [![Linux](https://img.shields.io/badge/Linux-LATEST-FCC624?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Linux%20Build.zip)
 [![MacOS](https://img.shields.io/badge/MacOS-LATEST-9B9B9B?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20Build.zip)
-[![MacOS x64](https://img.shields.io/badge/MacOS%20x64-LATEST-7A7A7A?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20Build.zip)
+[![MacOS x64](https://img.shields.io/badge/MacOS%20x64-LATEST-7A7A7A?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20x64%20Build.zip)
 
 ---
 
