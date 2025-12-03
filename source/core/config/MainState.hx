@@ -50,6 +50,12 @@ class MainState extends MusicBeatState
 
 		super.create();
 
+		utils.Rating.ratingWindows = {
+			sickWindow: 50,
+			goodWindow: 100,
+			badWindow: 135
+		};
+
 		core.backend.Mods.init();
 
 		#if LUA_ALLOWED

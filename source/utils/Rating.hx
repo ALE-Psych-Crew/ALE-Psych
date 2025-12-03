@@ -2,13 +2,11 @@ package utils;
 
 import core.config.ClientPrefs;
 
+import core.structures.RatingWindows;
+
 class Rating
 {
-	static final ratingWindows:Dynamic = {
-		sickWindow: 45,
-		goodWindow: 90,
-		badWindow: 135
-	};
+	public static var ratingWindows:RatingWindows;
 
 	public var name:String = '';
 	public var image:String = '';
