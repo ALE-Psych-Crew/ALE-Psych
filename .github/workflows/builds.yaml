@@ -64,7 +64,7 @@ jobs:
             artifact_path: export/release/macos/bin
             
           - platform: MacOS x64
-            os: macos-13
+            os: macos-15-intel
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./setup/install-haxelibs.sh
             configure_android:
