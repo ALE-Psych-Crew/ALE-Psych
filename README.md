@@ -4,17 +4,25 @@
 
 <h3 align="center"><em><strong>"If Psych was so good, why wasn’t there a Psych 2?"</strong></em></h3>
 
-<p align="center" style="margin:0;padding:0;">
-  <a href="https://github.com/ALE-Psych-Crew/ALE-Psych/stargazers" style="display:inline-block;margin:0;padding:0;">
-    <img alt="Stars" src="https://img.shields.io/github/stars/ALE-Psych-Crew/ALE-Psych?style=flat-square">
-  </a><a href="https://github.com/ALE-Psych-Crew/ALE-Psych/network/members" style="display:inline-block;margin:0;padding:0;">
-    <img alt="Forks" src="https://img.shields.io/github/forks/ALE-Psych-Crew/ALE-Psych?style=flat-square">
-  </a><a href="https://github.com/ALE-Psych-Crew/ALE-Psych/issues" style="display:inline-block;margin:0;padding:0;">
-    <img alt="Issues" src="https://img.shields.io/github/issues/ALE-Psych-Crew/ALE-Psych?style=flat-square">
-  </a><a href="https://github.com/ALE-Psych-Crew/ALE-Psych/blob/main/LICENSE" style="display:inline-block;margin:0;padding:0;">
+<p align="center">
+    <img alt="Stars" src="https://img.shields.io/github/stars/ALE-Psych-Crew/ALE-Psych?style=flat-square" style=";padding-right:10px;">
+    <img alt="Forks" src="https://img.shields.io/github/forks/ALE-Psych-Crew/ALE-Psych?style=flat-square" style=";padding-right:10px;">
+    <img alt="Issues" src="https://img.shields.io/github/issues/ALE-Psych-Crew/ALE-Psych?style=flat-square" style=";padding-right:10px;">
     <img alt="License" src="https://img.shields.io/github/license/ALE-Psych-Crew/ALE-Psych?style=flat-square">
-  </a>
 </p>
+
+---
+
+## Downloads
+
+### Latest Builds
+
+[![Windows x64](https://img.shields.io/badge/Windows%20x64-LATEST-0078D6?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Windows%20Build.zip)
+[![Windows x32](https://img.shields.io/badge/Windows%20x32-LATEST-00A4EF?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Windows%20Build%20(32%20Bits).zip)
+[![Android](https://img.shields.io/badge/Android-LATEST-3DDC84?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Android%20Build.zip)
+[![Linux](https://img.shields.io/badge/Linux-LATEST-FCC624?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/Linux%20Build.zip)
+[![MacOS](https://img.shields.io/badge/MacOS-LATEST-9B9B9B?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20Build.zip)
+[![MacOS x64](https://img.shields.io/badge/MacOS%20x64-LATEST-7A7A7A?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20Build.zip)
 
 ---
 
@@ -28,16 +36,6 @@
 - [Community Scripts and Tools](#community-scripts-and-tools)
 - [Credits](#credits)
 - [License](#license)
-
----
-
-## Downloads
-
-### Latest Builds
-[![Windows x64](https://img.shields.io/badge/Windows%20x64-LATEST-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build.zip)
-[![Windows x32](https://img.shields.io/badge/Windows%20x32-LATEST-00A4EF?style=for-the-badge&logo=windows&logoColor=white)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Windows%20Build%20(32%20Bits).zip)
-[![Android](https://img.shields.io/badge/Android-LATEST-3DDC84?style=for-the-badge&logo=android&logoColor=white)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Android%20Build.zip)
-[![Linux](https://img.shields.io/badge/Linux-LATEST-FCC624?style=for-the-badge&logo=linux&logoColor=black)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/main.yaml/main/Linux%20Build.zip)
 
 ### Build Notes
 
