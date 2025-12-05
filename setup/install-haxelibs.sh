@@ -22,6 +22,8 @@ haxelib install flixel-addons 3.3.2
 haxelib install flixel-ui 2.6.4
 haxelib install flixel-tools 1.5.1
 
+haxelib git ale-ui https://github.com/ALE-Psych-Crew/ALE-UI
+
 haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 7da385ca7fd8d8067aac03bc39798d37c5598e45
 
 haxelib git flxsoundfilters https://github.com/TheZoroForce240/FlxSoundFilters a89bb537684111a6ff85737981f4b2d8ef4b4f68

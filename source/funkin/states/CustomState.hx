@@ -2,6 +2,8 @@ package funkin.states;
 
 import haxe.ds.StringMap;
 
+import ale.ui.ALEUIUtils;
+
 #if cpp
 import sys.FileSystem;
 #end
@@ -108,6 +110,9 @@ class CustomState extends ScriptState
 
         callOnScripts('onUpdate', [elapsed]);
 
+        if (Controls.RESET && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
+            resetCustomState();
+        
         callOnScripts('postUpdate', [elapsed]);
     }
 

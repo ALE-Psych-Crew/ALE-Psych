@@ -63,6 +63,8 @@
 	<haxelib name="flixel-ui"/>
 	<haxelib name="flixel-addons"/>
 
+	<haxelib name="ale-ui"/>
+
 	<haxelib name="flxanimate"/>
 
 	<haxelib name="flxsoundfilters"/>

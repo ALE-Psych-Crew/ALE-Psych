@@ -50,6 +50,8 @@ class ImportsMacro
             'flixel.sound.filters',
             'flixel.sound.filters.effects',
 
+            'ale.ui',
+
             'flixel.away3d',
 
             'away3d.animators',

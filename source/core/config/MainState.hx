@@ -7,7 +7,7 @@ import flixel.FlxState;
 import openfl.Lib;
 import openfl.display.StageScaleMode;
 
-//import ale.ui.ALEUIUtils;
+import ale.ui.ALEUIUtils;
 
 #if LUA_ALLOWED
 import hxluajit.wrapper.LuaError;
@@ -32,11 +32,10 @@ class MainState extends MusicBeatState
 	{
 		Paths.clearEngineCache(true);
 
-		/*
-		ALEUIUtils.color = FlxColor.fromRGB(50, 70, 100);
-		ALEUIUtils.outlineColor = FlxColor.WHITE;
-		ALEUIUtils.font = Paths.font('vcr.ttf');
-		*/
+    	ALEUIUtils.OBJECT_SIZE = 25;
+    	ALEUIUtils.FONT = Paths.font('vcr.ttf');
+    	ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
+      	ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
 
 		CoolVars.skipTransOut = true;
 

@@ -21,6 +21,8 @@ import funkin.visuals.game.*;
 import funkin.visuals.objects.*;
 import funkin.visuals.mobile.*;
 
+import ale.ui.*;
+
 private typedef FlxDrawItem = flixel.graphics.tile.FlxDrawQuadsItem;
 
 class Extensible {}
@@ -66,3 +68,9 @@ class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
 
 class ScriptHealthIcon extends HealthIcon implements RuleScriptedClass {}
 class ScriptCharacter extends Character implements RuleScriptedClass {}
+
+// ALE UI
+
+class ScriptALEMouseSprite extends ALEMouseSprite implements RuleScriptedClass {}
+
+class ScriptALEUISprite extends ALEUISprite implements RuleScriptedClass {}

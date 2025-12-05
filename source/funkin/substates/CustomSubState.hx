@@ -2,6 +2,8 @@ package funkin.substates;
 
 import haxe.ds.StringMap;
 
+import ale.ui.ALEUIUtils;
+
 class CustomSubState extends ScriptSubState
 {
     public static var instance:CustomSubState;
@@ -64,6 +66,9 @@ class CustomSubState extends ScriptSubState
 
         callOnScripts('onUpdate', [elapsed]);
 
+        if (Controls.BACK && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
+            close();
+
         callOnScripts('postUpdate', [elapsed]);
     }
 
@@ -84,33 +89,27 @@ class CustomSubState extends ScriptSubState
     {
         super.stepHit();
 
-        setOnScripts('curStep', curStep);
+        callOnScripts('onStepHit', [curStep]);
 
-        callOnScripts('onStepHit');
-
-        callOnScripts('postStepHit');
+        callOnScripts('postStepHit', [curStep]);
     }
 
     override public function beatHit()
     {
         super.beatHit();
 
-        setOnScripts('curBeat', curBeat);
+        callOnScripts('onBeatHit', [curBeat]);
 
-        callOnScripts('onBeatHit');
-
-        callOnScripts('postBeatHit');
+        callOnScripts('postBeatHit', [curBeat]);
     }
 
     override public function sectionHit()
     {
         super.sectionHit();
 
-        setOnScripts('curSection', curSection);
+        callOnScripts('onSectionHit', [curSection]);
 
-        callOnScripts('onSectionHit');
-
-        callOnScripts('postSectionHit');
+        callOnScripts('postSectionHit', [curSection]);
     }
 
     override public function onFocus()
