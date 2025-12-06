@@ -183,6 +183,13 @@ function onUpdate(elapsed:Float)
             if (!data.overrideDefaultBehavior)
                 selectMenu(data);
         }
+
+        if (Controls.ENGINE_CHART)
+        {
+            canSelect = false;
+
+            CoolUtil.switchState(new CustomState('MasterEditorState'));
+        }
     }
 }
 
