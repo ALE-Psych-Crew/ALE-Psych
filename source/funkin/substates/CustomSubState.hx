@@ -112,6 +112,33 @@ class CustomSubState extends ScriptSubState
         callOnScripts('postSectionHit', [curSection]);
     }
 
+    override public function safeStepHit(safeStep:Int)
+    {
+        super.safeStepHit(safeStep);
+
+        callOnScripts('onSafeStepHit', [safeStep]);
+
+        callOnScripts('postSafeStepHit', [safeStep]);
+    }
+
+    override public function safeBeatHit(safeBeat:Int)
+    {
+        super.safeBeatHit(safeBeat);
+
+        callOnScripts('onSafeBeatHit', [safeBeat]);
+
+        callOnScripts('postSafeBeatHit', [safeBeat]);
+    }
+
+    override public function safeSectionHit(safeSection:Int)
+    {
+        super.safeSectionHit(safeSection);
+
+        callOnScripts('onSafeSectionHit', [safeSection]);
+
+        callOnScripts('postSafeSectionHit', [safeSection]);
+    }
+
     override public function onFocus()
     {
         super.onFocus();

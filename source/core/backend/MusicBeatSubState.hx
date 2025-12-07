@@ -95,20 +95,52 @@ class MusicBeatSubState extends FlxSubState
 		curStep = lastChange.stepTime + Math.floor(shit);
 	}
 
+	var lastSafeStep:Int = 0;
+
 	public function stepHit():Void
 	{
+		var prev:Int = lastSafeStep;
+
+		for (i in 0...(curStep - prev))
+			safeStepHit(Math.floor(lastSafeStep + 1));
+
 		if (curStep % 4 == 0)
 			beatHit();
 	}
 
+	var lastSafeBeat:Int = 0;
+
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		var prev:Int = lastSafeBeat;
+
+		for (i in 0...(curBeat - prev))
+			safeBeatHit(Math.floor(lastSafeBeat + 1));
 	}
-	
+
+	var lastSafeSection:Int = 0;
+
 	public function sectionHit():Void
 	{
-		//yep, you guessed it, nothing again, dumbass
+		var prev:Int = lastSafeSection;
+
+		for (i in 0...(curSection - prev))
+			safeSectionHit(Math.floor(lastSafeSection + 1));
+	}
+
+	public function safeStepHit(safeStep:Int)
+	{
+		lastSafeStep = safeStep;
+	}
+
+	public function safeBeatHit(safeBeat:Int)
+	{
+		lastSafeBeat = safeBeat;
+	}
+
+	public function safeSectionHit(safeSection:Int)
+	{
+		lastSafeSection = safeSection;
 	}
 	
 	function getBeatsOnSection()

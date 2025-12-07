@@ -161,7 +161,7 @@ function onUpdate(elapsed:Float)
 				{
 					PlayState.startOnTime = timeSecond;
 
-					resetSong();
+					PlayStateUtil.resetSong();
 				} else {
 					if (timeSecond != Conductor.songPosition)
 					{
@@ -179,7 +179,7 @@ function onUpdate(elapsed:Float)
 			case 'leave charting mode':
 				PlayState.chartingMode = false;
 				
-				resetSong();
+				PlayStateUtil.resetSong();
 			case 'exit to menu':
 				CoolVars.skipTransIn = true;
 

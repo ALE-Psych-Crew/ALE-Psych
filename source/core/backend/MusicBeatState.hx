@@ -192,15 +192,53 @@ class MusicBeatState extends FlxUIState
 		return cast (FlxG.state, MusicBeatState);
 	}
 
+	var lastSafeStep:Int = 0;
+
 	public function stepHit():Void
 	{
+		var prev:Int = lastSafeStep;
+
+		for (i in 0...(curStep - prev))
+			safeStepHit(Math.floor(lastSafeStep + 1));
+
 		if (curStep % 4 == 0)
 			beatHit();
 	}
 
-	public function beatHit():Void {}
+	var lastSafeBeat:Int = 0;
 
-	public function sectionHit():Void {}
+	public function beatHit():Void
+	{
+		var prev:Int = lastSafeBeat;
+
+		for (i in 0...(curBeat - prev))
+			safeBeatHit(Math.floor(lastSafeBeat + 1));
+	}
+
+	var lastSafeSection:Int = 0;
+
+	public function sectionHit():Void
+	{
+		var prev:Int = lastSafeSection;
+
+		for (i in 0...(curSection - prev))
+			safeSectionHit(Math.floor(lastSafeSection + 1));
+	}
+
+	public function safeStepHit(safeStep:Int)
+	{
+		lastSafeStep = safeStep;
+	}
+
+	public function safeBeatHit(safeBeat:Int)
+	{
+		lastSafeBeat = safeBeat;
+	}
+
+	public function safeSectionHit(safeSection:Int)
+	{
+		lastSafeSection = safeSection;
+	}
 
 	function getBeatsOnSection()
 	{
