@@ -83,12 +83,8 @@ function finishIntro()
     add(enter);
 }
 
-var safeBeat:Int = -1;
-
-function onBeatHit(curBeat:Int)
+function onSafeBeatHit(safeBeat:Int)
 {
-    safeBeat++;
-
     if (finishedIntro)
     {
         logo.animation.play('idle', true);
@@ -111,7 +107,7 @@ if (FlxG.sound.music == null)
 {
     FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
-    onBeatHit(0);
+    onSafeBeatHit(0);
 } else {
     finishIntro();
 }
