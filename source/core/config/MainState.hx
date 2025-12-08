@@ -32,11 +32,6 @@ class MainState extends MusicBeatState
 	{
 		Paths.clearEngineCache(true);
 
-    	ALEUIUtils.OBJECT_SIZE = 25;
-    	ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
-    	ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
-      	ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
-
 		CoolVars.skipTransOut = true;
 
 		FlxG.fixedTimestep = false;
@@ -56,6 +51,11 @@ class MainState extends MusicBeatState
 		};
 
 		core.backend.Mods.init();
+
+    	ALEUIUtils.OBJECT_SIZE = 25;
+    	ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
+    	ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
+      	ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
 
 		#if LUA_ALLOWED
 		LuaError.errorHandler = (e:String) -> {
