@@ -8,6 +8,6 @@ class HScriptPresetBase
 
     public function new(hs:HScript)
     {
-		game = hs.type == STATE ? ScriptState.instance : ScriptSubState.instance;
+		  game = hs.type == STATE ? ScriptState.instance : ScriptSubState.instance;
     }
 }

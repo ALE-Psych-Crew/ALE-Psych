@@ -7,10 +7,13 @@ import flixel.FlxBasic;
 import scripting.haxe.HScript;
 
 import rulescript.Context;
+
+import scripting.haxe.HScriptPresetBase;
 #end
 
 #if LUA_ALLOWED
 import scripting.lua.LuaScript;
+import scripting.lua.LuaPresetBase;
 #end
 
 interface IScriptState
@@ -26,6 +29,9 @@ interface IScriptState
     #if LUA_ALLOWED
     public var luaScripts:Array<LuaScript>;
     #end
+
+    public var hsCustomCallbacks:Array<Class<HScriptPresetBase>>;
+    public var luaCustomCallbacks:Array<Class<LuaPresetBase>>;
 
     public function loadScript(path:String, ?hsArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Void;
     public function loadHScript(path:String, ?args:Array<Dynamic>):Void;

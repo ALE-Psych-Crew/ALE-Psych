@@ -8,6 +8,11 @@ import rulescript.Context;
 
 #if LUA_ALLOWED
 import scripting.lua.LuaScript;
+import scripting.lua.LuaPresetBase;
+#end
+
+#if HSCRIPT_ALLOWED
+import scripting.haxe.HScriptPresetBase;
 #end
 
 import haxe.Exception;
@@ -27,6 +32,9 @@ class ScriptSubState extends MusicBeatSubState implements IScriptState
     #if LUA_ALLOWED
     public var luaScripts:Array<LuaScript> = [];
     #end
+
+    public var hsCustomCallbacks:Array<Class<HScriptPresetBase>> = [];
+    public var luaCustomCallbacks:Array<Class<LuaPresetBase>> = [];
 
     public var camGame:FlxCamera;
 
@@ -89,7 +97,7 @@ class ScriptSubState extends MusicBeatSubState implements IScriptState
         #if HSCRIPT_ALLOWED
         if (Paths.exists(path + '.hx'))
         {
-            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, args, SUBSTATE, path, [scripting.haxe.callbacks.HScriptPlayState]);
+            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, args, SUBSTATE, path, hsCustomCallbacks);
 
             if (!script.failedParsing)
             {
@@ -108,7 +116,7 @@ class ScriptSubState extends MusicBeatSubState implements IScriptState
         {
             try
             {
-                var script:LuaScript = new LuaScript(Paths.getPath(path + '.lua'), SUBSTATE, args, [scripting.lua.callbacks.LuaPlayState]);
+                var script:LuaScript = new LuaScript(Paths.getPath(path + '.lua'), SUBSTATE, args, luaCustomCallbacks);
 
                 luaScripts.push(script);
 

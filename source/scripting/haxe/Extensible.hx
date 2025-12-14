@@ -14,6 +14,7 @@ import flixel.addons.display.*;
 import openfl.display.*;
 import openfl.text.*;
 
+import scripting.haxe.*;
 import scripting.lua.*;
 
 import funkin.visuals.*;
@@ -64,6 +65,10 @@ class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
 
 #if LUA_ALLOWED
 class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
+#end
+
+#if HSCRIPT_ALLOWED
+class ScriptHScriptPresetBase extends HScriptPresetBase implements RuleScriptedClass {}
 #end
 
 class ScriptHealthIcon extends HealthIcon implements RuleScriptedClass {}

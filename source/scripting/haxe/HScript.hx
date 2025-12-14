@@ -15,6 +15,10 @@ import rulescript.Context;
 
 import scripting.haxe.Extensible;
 
+#if HSCRIPT_ALLOWED
+import scripting.haxe.HScriptPresetBase;
+#end
+
 class HScript extends ALERuleScript
 {
 	public final type:ScriptType;

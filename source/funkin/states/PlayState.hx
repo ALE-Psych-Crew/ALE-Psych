@@ -232,6 +232,9 @@ class PlayState extends ScriptState
 
 	override public function create()
 	{
+		hsCustomCallbacks = [scripting.haxe.callbacks.HScriptPlayState];
+		luaCustomCallbacks = [scripting.lua.callbacks.LuaPlayState];
+
 		playbackRate = 1;
 
 		super.create();
