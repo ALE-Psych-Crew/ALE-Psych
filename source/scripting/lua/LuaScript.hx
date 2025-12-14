@@ -27,7 +27,7 @@ class LuaScript
 
     public var variables:StringMap<Dynamic> = new StringMap();
 
-    public function new(name:String, type:ScriptType, ?customCallbacks:Array<Class<LuaPresetBase>>)
+    public function new(name:String, type:ScriptType, ?args:Array<Dynamic>, ?customCallbacks:Array<Class<LuaPresetBase>>)
     {
         variables.set('this', this);
 
@@ -47,6 +47,8 @@ class LuaScript
         LuaL.openlibs(state);
 
         LuaUtils.doFile(state, name);
+
+        call('new', args ?? []);
     }
 
     public function call(name:String, args:Array<Dynamic>):Dynamic

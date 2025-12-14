@@ -2537,40 +2537,4 @@ class PlayState extends ScriptState
 		setOnScripts('rating', ratingPercent);
 		setOnScripts('ratingFC', ratingFC);
 	}
-
-    override public function loadHScript(path:String)
-    {
-        #if HSCRIPT_ALLOWED
-        if (Paths.exists(path + '.hx'))
-        {
-            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, STATE, path, [scripting.haxe.callbacks.HScriptPlayState]);
-
-            if (!script.failedParsing)
-            {
-                hScripts.push(script);
-
-                debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
-            }
-        }
-        #end
-    }
-
-    override public function loadLuaScript(path:String)
-    {
-        #if LUA_ALLOWED
-        if (Paths.exists(path + '.lua'))
-        {
-            try
-            {
-                var script:LuaScript = new LuaScript(Paths.getPath(path + '.lua'), STATE, [scripting.lua.callbacks.LuaPlayState]);
-
-                luaScripts.push(script);
-
-                debugTrace('"' + path + '.lua" has been Successfully Loaded', LUA);
-            } catch (error:Exception) {
-                debugTrace(error.message, ERROR);
-            }
-        }
-        #end
-    }
 }

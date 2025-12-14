@@ -1,184 +1,274 @@
 # LuaPlayState
 
-### > `endSong()`
+### > `inChartEditor(false, ;)`
 
-#### Ends the song 
+---
+
+### > `curBpm(Conductor.bpm, ;)`
+
+---
+
+### > `bpm(PlayState.SONG.bpm, ;)`
+
+---
+
+### > `scrollSpeed(PlayState.SONG.speed, ;)`
+
+---
+
+### > `crochet(Conductor.crochet, ;)`
+
+---
+
+### > `stepCrochet(Conductor.stepCrochet, ;)`
+
+---
+
+### > `songLength(FlxG.sound.music.length, ;)`
+
+---
+
+### > `songName(PlayState.SONG.song, ;)`
+
+---
+
+### > `songPath(PlayState.songRoute, ;)`
+
+---
+
+### > `startedCountdown(false, ;)`
+
+---
+
+### > `curStage(PlayState.SONG.stage, ;)`
+
+---
+
+### > `isStoryMode(PlayState.isStoryMode, ;)`
+
+---
+
+### > `difficulty(PlayState.difficulty, ;)`
+
+---
+
+### > `week(PlayState.week, ;)`
+
+---
+
+### > `seenCutscene(PlayState.seenCutscene, ;)`
+
+---
+
+### > `hasVocals(PlayState.SONG.needsVoices, ;)`
+
+---
+
+### > `cameraX(0, ;)`
+
+---
+
+### > `cameraY(0, ;)`
+
+---
+
+### > `score(0, ;)`
+
+---
+
+### > `misses(0, ;)`
+
+---
+
+### > `hits(0, ;)`
+
+---
+
+### > `combo(0, ;)`
+
+---
+
+### > `rating(0, ;)`
+
+---
+
+### > `ratingName(;)`
+
+---
+
+### > `ratingFC(;)`
+
+---
+
+### > `inplayStateOver(false, ;)`
+
+---
+
+### > `mustHitSection(false, ;)`
+
+---
+
+### > `altAnim(false, ;)`
+
+---
+
+### > `gfSection(false, ;)`
+
+---
+
+### > `healthGainMult(playState.healthGain, ;)`
+
+---
+
+### > `healthLossMult(playState.healthLoss, ;)`
+
+---
+
+### > `playbackRate(playState.playbackRate, ;)`
+
+---
+
+### > `playbackRate(1, ;)`
+
+---
+
+### > `guitarHeroSustains(playState.guitarHeroSustains, ;)`
+
+---
+
+### > `botPlay(playState.cpuControlled, ;)`
+
+---
+
+### > `practice(playState.practiceMode, ;)`
+
+---
+
+### > `defaultPlayerStrumX(+, i, 0, ;)`
+
+---
+
+### > `defaultPlayerStrumY(+, i, 0, ;)`
+
+---
+
+### > `defaultOpponentStrumX(+, i, 0, ;)`
+
+---
+
+### > `defaultOpponentStrumY(+, i, 0, ;)`
+
+---
+
+### > `defaultBoyfriendX(playState.BF_X, ;)`
+
+---
+
+### > `defaultBoyfriendY(playState.BF_Y, ;)`
+
+---
+
+### > `defaultOpponentX(playState.DAD_X, ;)`
+
+---
+
+### > `defaultOpponentY(playState.DAD_Y, ;)`
+
+---
+
+### > `defaultGirlfriendX(playState.GF_X, ;)`
+
+---
+
+### > `defaultGirlfriendY(playState.GF_Y, ;)`
+
+---
+
+### > `boyfriendName(PlayState.SONG.player1, ;)`
+
+---
+
+### > `dadName(PlayState.SONG.player2, ;)`
+
+---
+
+### > `gfName(PlayState.SONG.gfVersion, ;)`
+
+---
+
+### > `splashAlpha(ClientPrefs.data.splashAlpha, ;)`
+
+---
+
+### > `buildTarget(CoolUtil.getBuildTarget, ;)`
+
+---
+
+### > `startCountdown(playState.startCountdown, ;)`
+
+---
+
+### > `endSong()`
 
 ---
 
 ### > `restartSong()`
 
-#### Restarts the song 
-
 ---
 
 ### > `exitSong()`
-
-#### Exits the song to the corresponding menu 
 
 ---
 
 ### > `cameraSetTarget(target:String)`
 
-#### Sets the game camera target 
-
-- `target`: Camera target. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend` 
-
 ---
 
 ### > `triggerEvent(name:String, arg1:Dynamic, arg2:Dynamic)`
-
-#### Triggers an event in the song 
-
-- `name`: Event name 
-
-- `arg1`: First event argument 
-
-- `arg2`: Second event argument 
 
 ---
 
 ### > `characterDance(character:String)`
 
-#### Executes dance logic on a character 
-
-- `character`: Character to use. Can be `gf`/`girlfriend`, `dad`/`opponent` or `bf`/`boyfriend` 
-
 ---
 
 ### > `noteTween(tag:String, note:Int, props:Dynamic, ?time:Float, ?options:Dynamic)`
-
-#### Performs a tween on a note 
-
-- `tag`: Tween ID 
-
-- `note`: Note position in the strumLine 
-
-- `props`: Table of variables to modify 
-
-- `time`: Tween duration 
-
-- `options`: Tween options. See [TweenOptions](https://api.haxeflixel.com/flixel/tweens/TweenOptions.html) 
 
 ---
 
 ### > `noteTweenX(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)`
 
-#### Performs a tween on the `x` variable of a note 
-
-- `tag`: Tween ID 
-
-- `note`: Note position in the strumLine 
-
-- `value`: Variable value 
-
-- `duration`: Tween duration 
-
-- `ease`: Tween ease 
-
-###### `DEPRECATED`: Use `noteTween` instead 
-
 ---
 
 ### > `noteTweenY(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)`
-
-#### Performs a tween on the `y` variable of a note 
-
-- `tag`: Tween ID 
-
-- `note`: Note position in the strumLine 
-
-- `value`: Variable value 
-
-- `duration`: Tween duration 
-
-- `ease`: Tween ease 
-
-###### `DEPRECATED`: Use `noteTween` instead 
 
 ---
 
 ### > `noteTweenAngle(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)`
 
-#### Performs a tween on the `angle` variable of a note 
-
-- `tag`: Tween ID 
-
-- `note`: Note position in the strumLine 
-
-- `value`: Variable value 
-
-- `duration`: Tween duration 
-
-- `ease`: Tween ease 
-
-###### `DEPRECATED`: Use `noteTween` instead 
-
 ---
 
 ### > `noteTweenDirection(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)`
-
-#### Performs a tween on the `direction` variable of a note 
-
-- `tag`: Tween ID 
-
-- `note`: Note position in the strumLine 
-
-- `value`: Variable value 
-
-- `duration`: Tween duration 
-
-- `ease`: Tween ease 
-
-###### `DEPRECATED`: Use `noteTween` instead 
 
 ---
 
 ### > `noteTweenAlpha(tag:String, note:Int, value:Dynamic, duration:Float, ease:String)`
 
-#### Performs a tween on the `alpha` variable of a note 
-
-- `tag`: Tween ID 
-
-- `note`: Note position in the strumLine 
-
-- `value`: Variable value 
-
-- `duration`: Tween duration 
-
-- `ease`: Tween ease 
-
-###### `DEPRECATED`: Use `noteTween` instead 
-
 ---
 
 ### > `addBehindGF(obj:String)`
-
-#### Adds an object to the game behind the Girlfriend entity 
-
-- `obj`: Object ID 
 
 ---
 
 ### > `addBehindBF(obj:String)`
 
-#### Adds an object to the game behind the Boyfriend entity 
-
-- `obj`: Object ID 
-
 ---
 
 ### > `addBehindDad(obj:String)`
 
-#### Adds an object to the game behind the Dad entity 
-
-- `obj`: Object ID 
-
 ---
 
 ### > `adjustMobileControls()`
-
-#### 
 
 
 

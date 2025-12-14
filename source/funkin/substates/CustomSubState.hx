@@ -10,18 +10,20 @@ class CustomSubState extends ScriptSubState
 
     public var scriptName:String = '';
 
-    public var arguments:Array<Dynamic>;
+    public var hsArguments:Array<Dynamic>;
+    public var luaArguments:Array<Dynamic>;
     
     public var hsVariables:StringMap<Dynamic>;
     public var luaVariables:StringMap<Dynamic>;
 
-    override public function new(script:String, ?arguments:Array<Dynamic>, ?hsVariables:StringMap<Dynamic>, ?luaVariables:StringMap<Dynamic>)
+    override public function new(script:String, ?hsArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>, ?hsVariables:StringMap<Dynamic>, ?luaVariables:StringMap<Dynamic>)
     {
         super();
 
         scriptName = script;
 
-        this.arguments = arguments;
+        this.hsArguments = hsArguments;
+        this.luaArguments = luaArguments;
 
         this.hsVariables = hsVariables;
         this.luaVariables = luaVariables;
@@ -33,9 +35,9 @@ class CustomSubState extends ScriptSubState
 
         instance = this;
 
-        loadScripts();
-
-        setOnScripts('arguments', arguments);
+        loadScript('scripts/substates/' + scriptName, hsArguments, luaArguments);
+        
+        loadScript('scripts/substates/global', hsArguments, luaArguments);
 
         for (map in [hsVariables, luaVariables])
             if (map != null)
@@ -51,13 +53,6 @@ class CustomSubState extends ScriptSubState
         callOnScripts('onCreate');
 
         callOnScripts('postCreate');
-    }
-
-    private function loadScripts()
-    {
-        loadScript(scriptName);
-        
-        loadScript('global');
     }
 
     override public function update(elapsed:Float)

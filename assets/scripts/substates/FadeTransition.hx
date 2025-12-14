@@ -8,6 +8,15 @@ var transGradient:FlxSprite;
 
 var transCamera:FlxCamera;
 
+var transIn:Bool;
+var finishCallback:Void -> Void;
+
+function new(trsIn:Bool, ?cllBck:Void -> Void)
+{
+	transIn = trsIn;
+	finishCallback = cllBck;
+}
+
 function onCreate()
 {
 	FlxState.transitioning = true;
@@ -16,7 +25,7 @@ function onCreate()
 	
     FlxG.cameras.add(transCamera, false);
 
-	transGradient = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, (transOut ? [0x0, FlxColor.BLACK] : [FlxColor.BLACK, 0x0]));
+	transGradient = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, (transIn ? [FlxColor.BLACK, 0x0] : [0x0, FlxColor.BLACK]));
 	transGradient.scrollFactor.set();
 	add(transGradient);
 	transGradient.cameras = [transCamera];
@@ -37,10 +46,11 @@ function onUpdate(elapsed:Float)
 
 	if (transGradient.y >= FlxG.height)
 	{
+		close();
+
 		if (transIn)
 			finishCallback();
 
-		close();
 	}
 }
 

@@ -38,17 +38,10 @@ class MusicBeatState extends FlxUIState
             #if cpp
             CoolUtil.openSubState(new CustomSubState(
                 CoolVars.data.transition,
-                null,
-                [
-                    'transIn' => false,
-                    'transOut' => true,
-                    'finishCallback' => null
-                ],
-                [
-                    'transIn' => false,
-                    'transOut' => true,
-                    'finishCallback' => null
-                ]
+                [false, null],
+                [false],
+				null,
+                ['finishCallback' => null]
             ));
             #end
         }

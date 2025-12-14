@@ -19,7 +19,7 @@ class HScript extends ALERuleScript
 {
 	public final type:ScriptType;
 
-	override public function new(filePath:String, context:Context, type:ScriptType, scriptName:String, ?customCallbacks:Array<Class<HScriptPresetBase>>)
+	override public function new(filePath:String, context:Context, ?args:Array<Dynamic>, type:ScriptType, scriptName:String, ?customCallbacks:Array<Class<HScriptPresetBase>>)
 	{
 		this.type = type;
 
@@ -36,6 +36,8 @@ class HScript extends ALERuleScript
 
 		if (FileSystem.exists(filePath))
 			tryExecute(File.getContent(filePath), onError);
+		
+		call('new', args ?? []);
 	}
 
 	function preset():Void

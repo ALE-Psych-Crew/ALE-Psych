@@ -14,22 +14,24 @@ class CustomState extends ScriptState
 
     public var scriptName:String = '';
 
-    private var arguments:Array<Dynamic>;
-    
-    private var hsVariables:StringMap<Dynamic>;
-    private var luaVariables:StringMap<Dynamic>;
-
     #if cpp
     @:unreflective private var reloadThread:Bool = CoolVars.data.developerMode && CoolVars.data.scriptsHotReloading;
     #end
 
-    override public function new(script:String, ?arguments:Array<Dynamic>, ?hsVariables:StringMap<Dynamic>, ?luaVariables:StringMap<Dynamic>)
+    public var hsArguments:Array<Dynamic>;
+    public var luaArguments:Array<Dynamic>;
+    
+    public var hsVariables:StringMap<Dynamic>;
+    public var luaVariables:StringMap<Dynamic>;
+
+    override public function new(script:String, ?hsArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>, ?hsVariables:StringMap<Dynamic>, ?luaVariables:StringMap<Dynamic>)
     {
         super();
 
         scriptName = script;
 
-        this.arguments = arguments;
+        this.hsArguments = hsArguments;
+        this.luaArguments = luaArguments;
 
         this.hsVariables = hsVariables;
         this.luaVariables = luaVariables;
@@ -79,9 +81,9 @@ class CustomState extends ScriptState
 
         instance = this;
 
-        loadScripts();
-
-        setOnScripts('arguments', arguments);
+        loadScript('scripts/states/' + scriptName, hsArguments, luaArguments);
+        
+        loadScript('scripts/states/global', hsArguments, luaArguments);
 
         for (map in [hsVariables, luaVariables])
             if (map != null)
@@ -91,17 +93,9 @@ class CustomState extends ScriptState
                     else
                         setOnLuaScripts(key, map.get(key));
 
-        setOnScripts('resetCustomState', resetCustomState);
-        
         callOnScripts('onCreate');
 
         callOnScripts('postCreate');
-    }
-
-    public function loadScripts()
-    {
-        loadScript(scriptName);
-        loadScript('global');
     }
 
     override public function update(elapsed:Float)
@@ -232,7 +226,7 @@ class CustomState extends ScriptState
     {
         shouldClearMemory = false;
 
-        CoolUtil.switchState(new CustomState(scriptName, arguments, hsVariables, luaVariables), true, true);
+        CoolUtil.switchState(new CustomState(scriptName, hsArguments, luaArguments, hsVariables, luaVariables), true, true);
 
         #if cpp
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)

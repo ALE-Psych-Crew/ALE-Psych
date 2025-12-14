@@ -41,9 +41,7 @@ var options:StringMap<OptionData> = [
     {
         id: 'options',
         state: CoolVars.data.optionsState,
-        variables: [
-            'isPlayState' => false
-        ]
+        arguments: [false]
     }
 ];
 
@@ -90,7 +88,7 @@ function selectMenu(data:OptionData)
     FlxG.sound.play(Paths.sound('confirmMenu', true));
 
     FlxTimer.wait(1, () -> {
-        CoolUtil.switchState(new CustomState(data.state, data.variables, data.variables));
+        CoolUtil.switchState(new CustomState(data.state, data.arguments, data.arguments));
     });
 }
 

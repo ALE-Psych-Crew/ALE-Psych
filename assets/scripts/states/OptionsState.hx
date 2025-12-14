@@ -26,6 +26,13 @@ var toSelect:Array<BaseOption> = [];
 
 var offset:Int = 130;
 
+var isPlayState:Bool;
+
+function new(?isPlay:Bool)
+{
+    isPlayState = isPlay ?? false;
+}
+
 function createOption(index:Int, obj:BaseOption)
 {
     obj.groupIndex = index;

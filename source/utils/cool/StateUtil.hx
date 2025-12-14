@@ -41,17 +41,10 @@ class StateUtil
             #if cpp
 			openSubState(new CustomSubState(
 				CoolVars.data.transition,
+                [true, () -> { FlxG.switchState(state); }],
+                [true],
 				null,
-				[
-					'transIn' => true,
-					'transOut' => false,
-					'finishCallback' => () -> { FlxG.switchState(state); }
-				],
-				[
-					'transIn' => true,
-					'transOut' => false,
-					'finishCallback' => () -> { FlxG.switchState(state); }
-				]
+				['finishCallback' => () -> { FlxG.switchState(state); }]
 			));
 			#end
 		}

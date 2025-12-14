@@ -60,12 +60,12 @@ class ScriptState extends MusicBeatState implements IScriptState
         super.destroy();
     }
 
-    public function loadScript(path:String)
+    public function loadScript(path:String, ?haxeArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>)
     {
         #if HSCRIPT_ALLOWED
         if (path.endsWith('.hx'))
         {
-            loadHScript(path.substring(0, path.length - 3));
+            loadHScript(path.substring(0, path.length - 3), haxeArgs);
 
             return;
         }
@@ -74,29 +74,27 @@ class ScriptState extends MusicBeatState implements IScriptState
         #if LUA_ALLOWED
         if (path.endsWith('.lua'))
         {
-            loadLuaScript(path.substring(0, path.length - 4));
+            loadLuaScript(path.substring(0, path.length - 4), luaArgs);
 
             return;
         }
         #end
 
         #if HSCRIPT_ALLOWED
-        loadHScript(path);
+        loadHScript(path, haxeArgs);
         #end
 
         #if LUA_ALLOWED
-        loadLuaScript(path);
+        loadLuaScript(path, luaArgs);
         #end
     }
 
-    public function loadHScript(path:String)
+    public function loadHScript(path:String, ?args:Array<Dynamic>)
     {
         #if HSCRIPT_ALLOWED
-        var newPath:String = 'scripts/states/' + path;
-
-        if (Paths.exists(newPath + '.hx'))
+        if (Paths.exists(path + '.hx'))
         {
-            var script:HScript = new HScript(Paths.getPath(newPath + '.hx'), hScriptsContext, STATE, path);
+            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, args, STATE, path, [scripting.haxe.callbacks.HScriptPlayState]);
 
             if (!script.failedParsing)
             {
@@ -108,16 +106,14 @@ class ScriptState extends MusicBeatState implements IScriptState
         #end
     }
 
-    public function loadLuaScript(path:String)
+    public function loadLuaScript(path:String, ?args:Array<Dynamic>)
     {
         #if LUA_ALLOWED
-        var newPath:String = 'scripts/states/' + path;
-
-        if (Paths.exists(newPath + '.lua'))
+        if (Paths.exists(path + '.lua'))
         {
             try
             {
-                var script:LuaScript = new LuaScript(Paths.getPath(newPath + '.lua'), STATE);
+                var script:LuaScript = new LuaScript(Paths.getPath(path + '.lua'), STATE, args, [scripting.lua.callbacks.LuaPlayState]);
 
                 luaScripts.push(script);
 

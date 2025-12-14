@@ -116,14 +116,14 @@ class LuaGlobal extends LuaPresetBase
             });
         }
 
-        set('switchToCustomState', function(name:String, ?arguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
+        set('switchToCustomState', function(name:String, ?hsArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
         {
-            CoolUtil.switchState(new CustomState(name, arguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
+            CoolUtil.switchState(new CustomState(name, hsArguments, luaArguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
         });
 
-        set('openCustomSubState', function(name:String, ?arguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
+        set('openCustomSubState', function(name:String, ?hsArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>, ?hsVariables:Any, ?luaVariables:Any)
         {
-            CoolUtil.openSubState(new CustomSubState(name, arguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
+            CoolUtil.openSubState(new CustomSubState(name, hsArguments, luaArguments, tableToStringMap(hsVariables), tableToStringMap(luaVariables)));
         });
     }
 

@@ -27,9 +27,9 @@ interface IScriptState
     public var luaScripts:Array<LuaScript>;
     #end
 
-    public function loadScript(path:String):Void;
-    public function loadHScript(path:String):Void;
-    public function loadLuaScript(path:String):Void;
+    public function loadScript(path:String, ?hsArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Void;
+    public function loadHScript(path:String, ?args:Array<Dynamic>):Void;
+    public function loadLuaScript(path:String, ?args:Array<Dynamic>):Void;
 
     public function setOnScripts(name:String, value:Dynamic):Void;
     public function setOnHScripts(name:String, value:Dynamic):Void;

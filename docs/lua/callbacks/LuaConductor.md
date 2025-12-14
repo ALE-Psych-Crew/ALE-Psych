@@ -2,25 +2,17 @@
 
 ### > `getSongPosition()`
 
-#### 
-
 ---
 
 ### > `getSongStep()`
-
-#### 
 
 ---
 
 ### > `getSongBeat()`
 
-#### 
-
 ---
 
 ### > `getSongSection()`
-
-#### 
 
 
 
