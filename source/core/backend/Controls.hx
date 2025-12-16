@@ -4,6 +4,8 @@ import core.structures.UIControls;
 import core.structures.NotesControls;
 import core.structures.EngineControls;
 
+import flixel.input.keyboard.FlxKey;
+
 class Controls
 {
     public static var NOTE_LEFT(get, never):Bool;
@@ -290,6 +292,24 @@ class Controls
             return MobileControls.anyJustPressed(ClientPrefs.controls.engine.master_menu);
 
         #if !mobile return FlxG.keys.anyJustPressed(ClientPrefs.controls.engine.master_menu); #end
+    }
+
+    public static var CONTROL(get, never):Bool;
+    static function get_CONTROL():Bool
+    {
+        #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+            return MobileControls.anyPressed([FlxKey.CONTROL]);
+
+        #if !mobile return FlxG.keys.pressed.CONTROL; #end
+    }
+
+    public static var SHIFT(get, never):Bool;
+    static function get_SHIFT():Bool
+    {
+        #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
+            return MobileControls.anyPressed([FlxKey.SHIFT]);
+
+        #if !mobile return FlxG.keys.pressed.SHIFT; #end
     }
 
     public static var MOUSE_WHEEL(get, never):Bool;
