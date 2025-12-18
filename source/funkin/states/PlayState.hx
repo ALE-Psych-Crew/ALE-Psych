@@ -2249,7 +2249,7 @@ class PlayState extends ScriptState
 					altAnim = '-alt';
 
 			var char:Character = dad;
-			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))] + altAnim;
+			var animToPlay:String = note.animToPlay ?? singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))] + altAnim;
 			if(note.gfNote) char = gf;
 
 			if(char != null)
@@ -2319,13 +2319,13 @@ class PlayState extends ScriptState
 		}
 
 		if(!note.noAnimation) {
-			var animToPlay:String = singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))];
+			var animToPlay:String = note.animToPlay ?? (singAnimations[Std.int(Math.abs(Math.min(singAnimations.length-1, note.noteData)))] + note.animSuffix);
 
 			var char:Character = note.gfNote ? gf : boyfriend;
 
 			if(char != null)
 			{
-				char.playAnim(animToPlay + note.animSuffix, true);
+				char.playAnim(animToPlay, true);
 
 				char.holdTimer = 0;
 			}
