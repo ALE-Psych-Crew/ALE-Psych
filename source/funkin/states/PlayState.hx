@@ -2224,8 +2224,21 @@ class PlayState extends ScriptState
 
 	function opponentNoteHit(note:Note):Void
 	{
-		var result:Array<Dynamic> = callOnLuaScripts('opponentNoteHitPre', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
-		if(!result.contains(CoolVars.Function_Stop)) callOnHScripts('opponentNoteHitPre', [note]);
+		var isSus:Bool = note.isSustainNote;
+		var leData:Int = Math.round(Math.abs(note.noteData));
+		var leType:String = note.noteType;
+
+		var luaArgs:Array<Dynamic> = [notes.members.indexOf(note), leData, leType, isSus];
+		var hxArgs:Array<Dynamic> = [note];
+
+		callOnLuaScripts('opponentNoteHitPre', luaArgs);
+		callOnHScripts('opponentNoteHitPre', hxArgs);
+		
+		callOnLuaScripts('noteHitPre', luaArgs.concat([false]));
+		callOnHScripts('noteHitPre', hxArgs.concat([false]));
+
+		luaArgs = null;
+		hxArgs = null;
 
 		if(!note.noAnimation)
 		{
@@ -2249,9 +2262,18 @@ class PlayState extends ScriptState
 		if(opponentVocals.length <= 0) vocals.volume = 1;
 		strumPlayAnim(true, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
 		note.hitByOpponent = true;
+
+		var luaArgs:Array<Dynamic> = [notes.members.indexOf(note), leData, leType, isSus];
+		var hxArgs:Array<Dynamic> = [note];
+
+		callOnLuaScripts('opponentNoteHit', luaArgs);
+		callOnHScripts('opponentNoteHit', hxArgs);
 		
-		var result:Array<Dynamic> = callOnLuaScripts('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
-		if(!result.contains(CoolVars.Function_Stop)) callOnHScripts('opponentNoteHit', [note]);
+		callOnLuaScripts('noteHit', luaArgs.concat([false]));
+		callOnHScripts('noteHit', hxArgs.concat([false]));
+
+		luaArgs = null;
+		hxArgs = null;
 
 		if (!note.isSustainNote) invalidateNote(note);
 	}
@@ -2265,8 +2287,17 @@ class PlayState extends ScriptState
 		var leData:Int = Math.round(Math.abs(note.noteData));
 		var leType:String = note.noteType;
 
-		var result:Array<Dynamic> = callOnLuaScripts('goodNoteHitPre', [notes.members.indexOf(note), leData, leType, isSus]);
-		if(!result.contains(CoolVars.Function_Stop)) callOnHScripts('goodNoteHitPre', [note]);
+		var luaArgs:Array<Dynamic> = [notes.members.indexOf(note), leData, leType, isSus];
+		var hxArgs:Array<Dynamic> = [note];
+
+		callOnLuaScripts('goodNoteHitPre', luaArgs);
+		callOnHScripts('goodNoteHitPre', hxArgs);
+		
+		callOnLuaScripts('noteHitPre', luaArgs.concat([true]));
+		callOnHScripts('noteHitPre', hxArgs.concat([true]));
+
+		luaArgs = null;
+		hxArgs = null;
 
 		note.wasGoodHit = true;
 
@@ -2318,8 +2349,17 @@ class PlayState extends ScriptState
 		if (guitarHeroSustains && note.isSustainNote) gainHealth = false;
 		if (gainHealth) health += note.hitHealth * healthGain;
 
-		var result:Array<Dynamic> = callOnLuaScripts('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
-		if(!result.contains(CoolVars.Function_Stop)) callOnHScripts('goodNoteHit', [note]);
+		var luaArgs:Array<Dynamic> = [notes.members.indexOf(note), leData, leType, isSus];
+		var hxArgs:Array<Dynamic> = [note];
+
+		callOnLuaScripts('goodNoteHit', luaArgs);
+		callOnHScripts('goodNoteHit', hxArgs);
+		
+		callOnLuaScripts('noteHit', luaArgs.concat([true]));
+		callOnHScripts('noteHit', hxArgs.concat([true]));
+
+		luaArgs = null;
+		hxArgs = null;
 
 		if(!note.isSustainNote) invalidateNote(note);
 	}
