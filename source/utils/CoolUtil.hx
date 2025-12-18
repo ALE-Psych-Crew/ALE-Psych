@@ -15,6 +15,7 @@ import flixel.input.keyboard.FlxKey;
 		'utils.cool.StringUtil',
 		'utils.cool.SystemUtil',
 		'utils.cool.KeyUtil',
+		'utils.cool.ReflectUtil',
 		'flixel.away3d.Flx3DUtil'
 	]
 ))
