@@ -167,10 +167,5 @@ class LuaCoolUtil extends LuaPresetBase
         {
             CoolUtil.browserLoad(site);
         });
-
-        set('getBuildTarget', function():String
-        {
-            return CoolUtil.getBuildTarget();
-        });
     }
 }

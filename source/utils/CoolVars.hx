@@ -4,7 +4,8 @@ import openfl.Lib;
 import core.structures.DataJSON;
 
 @:build(core.macros.CoolVarsMacro.build())
-class CoolVars {
+class CoolVars
+{
 	public static var data:DataJSON = null;
 
 	public static var skipTransIn:Bool = false;
@@ -21,6 +22,8 @@ class CoolVars {
 		return Lib.application?.meta?.get('version') ?? '';
 
 	public static var globalVars:Map<String, Dynamic> = new Map<String, Dynamic>();
+
+	public static final BUILD_TARGET:String = #if windows 'windows' #elseif linux 'linux' #elseif mac 'mac' #elseif ios 'ios' #elseif android 'android' #else 'unknown' #end;
 
 	@:unreflective public static final Function_Stop:String = '##_ALE_PSYCH_LUA_FUNCTION_STOP_##';
 	@:unreflective public static final Function_Continue:String = '##_ALE_PSYCH_LUA_FUNCTION_CONTINUE_##';

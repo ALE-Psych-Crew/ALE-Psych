@@ -29,5 +29,7 @@ class LuaVariables extends LuaPresetBase
 
 		set('scriptName', lua.name);
 		set('currentModDirectory', Mods.folder);
+
+		set('buildTarget', CoolVars.BUILD_TARGET);
     }
 }

@@ -414,6 +414,21 @@ class Paths
         return Yaml.parse(getContent(path));
     }
 
+    public static function ndll(fileName:String, funcName:String, ?args:Int = 0, missingPrint:Bool = true):Dynamic
+    {
+        var path = 'ndlls/' + fileName + '-' + CoolVars.BUILD_TARGET + '.ndll';
+
+        if (!exists(path))
+        {
+            if (missingPrint)
+                debugTrace(path, MISSING_FILE);
+
+            return Reflect.makeVarArgs((arr:Array<Dynamic>) -> {});
+        }
+
+        return lime.system.CFFI.load(Paths.getPath(path), funcName, args);
+    }
+
     // CONTENT
 
     public static function xml(file:String, missingPrint:Bool = true):String

@@ -86,8 +86,6 @@ class LuaPlayState extends LuaPresetBase
 		
 		set('splashAlpha', ClientPrefs.data.splashAlpha);
 		
-		set('buildTarget', CoolUtil.getBuildTarget());
-
         set('startCountdown', playState.startCountdown);
 
         set('endSong', function()
