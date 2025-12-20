@@ -11,6 +11,17 @@ class PlayStateUtil
 	{
 		var json = songJson;
 
+		if (json.format == 'psych_v1_convert' || json.format == 'psych_v1')
+		{
+			for (section in cast(json.notes, Array<Dynamic>))
+				if (section.sectionNotes != null && section.sectionNotes.length > 0)
+					for (note in cast(section.sectionNotes, Array<Dynamic>))
+						if (!section.mustHitSection)
+							note[1] = note[1] > 3 ? note[1] % 4 : note[1] += 4;
+		} else {
+			json = songJson.song;
+		}
+
 		if (json.gfVersion == null)
 		{
 			json.gfVersion = json.player3;
@@ -58,7 +69,7 @@ class PlayStateUtil
 		if (json == null)
 			debugTrace(name + '/charts/' + difficulty + '.json', MISSING_FILE);
 		else
-			jsonData = loadPlayStateJSON(Paths.json(json.substring(0, json.length - 5)).song);
+			jsonData = loadPlayStateJSON(Paths.json(json.substring(0, json.length - 5)));
 
 		return {
 			route: FileUtil.searchComplexFile('songs/' + name),
