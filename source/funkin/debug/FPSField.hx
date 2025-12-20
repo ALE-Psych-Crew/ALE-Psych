@@ -22,7 +22,7 @@ class FPSField extends DebugField
                             value: 'FPS'
                         }
                     ],
-                    size: 25
+                    size: 17
                 },
                 {
                     lines: [

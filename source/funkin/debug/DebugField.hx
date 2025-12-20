@@ -88,7 +88,7 @@ class DebugField extends Sprite
 
     @:unreflective private var offset:Float = 2.5;
 
-    function createLabel(func:Void -> String, ?size:Int = 15, ?color:FlxColor = FlxColor.WHITE, ?off:Float = 0)
+    function createLabel(func:Void -> String, ?size:Int = 12, ?color:FlxColor = FlxColor.WHITE, ?off:Float = 0)
     {
         var label:DebugText = new DebugText(func);
         label.defaultTextFormat = new TextFormat(Paths.font('jetbrains.ttf'), size, color);

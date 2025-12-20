@@ -2,7 +2,7 @@
 <project xmlns="http://lime.openfl.org/project/1.0.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': ALE Psych" file="ALEPsych" packageName="com.alejogdofficial.alepsych" package="com.alejogdofficial.alepsych" main="core.Main" version="0.1 Pre-Release" company="AlejoGDOfficial"/>
+	<app title="Friday Night Funkin': ALE Psych" file="ALEPsych" packageName="com.alejogdofficial.alepsych" package="com.alejogdofficial.alepsych" main="core.Main" version="0.1 Beta" company="AlejoGDOfficial"/>
 
 	<set name="APP_ID" value="0x0100f6c013bbc000"/>
 
