@@ -103,7 +103,6 @@
 	<haxedef name='lime_disable_assets_version'/>	
 
 	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="DISCORD_ALLOWED"/>
-	<haxedef name="NO_PRECOMPILED_HEADERS" if="android"/>
 
 	<haxedef name="HXC_LIBVLC_LOGGING" if="VIDEOS_ALLOWED debug"/>
 	
@@ -153,6 +152,9 @@
 	<!-- ______________________________ Android Configs _____________________________ -->
 
 	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35"/>
+
+	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" if="android"/>
+	<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE" if="android"/>
 
 	<config:android permission="android.permission.MANAGE_EXTERNAL_STORAGE"/>
 	<config:android permission="android.permission.REQUEST_INSTALL_PACKAGES"/>

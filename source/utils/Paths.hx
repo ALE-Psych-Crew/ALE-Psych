@@ -544,11 +544,12 @@ class Paths
 			bitmap.image.data = null;
 			bitmap.dispose();
 			bitmap.disposeImage();
+            
 			bitmap = BitmapData.fromTexture(texture);
 		}
 
 		var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, file);
-		newGraphic.persist = true;
+        newGraphic.persist = true;
 		newGraphic.destroyOnNoUse = false;
         
 		cachedGraphics.set(file, newGraphic);

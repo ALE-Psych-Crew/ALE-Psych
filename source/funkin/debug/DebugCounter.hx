@@ -10,11 +10,9 @@ import utils.cool.KeyUtil;
 
 class DebugCounter extends Sprite
 {
-    var fpsCounter:DebugField;
+    @:unreflective var fps:DebugField;
 
     var fields:Array<DebugField> = [];
-
-    var offset:Float = 0;
 
     public function new(data:Array<Array<DebugFieldText>>)
     {
@@ -25,37 +23,49 @@ class DebugCounter extends Sprite
         FlxG.stage.addEventListener('activate', onFocus);
         FlxG.stage.addEventListener('deactivate', onUnFocus);
 
-        fpsCounter = new FPSField();
-        addChild(fpsCounter);
+        fps = new FPSField();
+        addField(fps);
 
-        offset += fpsCounter.bg.scaleY;
+        curHeight = fps.bg.scaleY;
 
-        var conductor:ConductorField = new ConductorField();
-        addChild(conductor);
-        fields.push(conductor);
-        conductor.y = offset;
-
-        offset += conductor.bg.scaleY;
-
-        var flixel:FlixelField = new FlixelField();
-        addChild(flixel);
-        fields.push(flixel);
-        flixel.y = offset;
-
-        offset += flixel.bg.scaleY;
-
-        for (field in data)
-        {
-            var debug:DebugField = new DebugField(field);
-            addChild(debug);
-            debug.y = offset;
-            
-            fields.push(debug);
-
-            offset += debug.bg.scaleY;
-        }
+        for (field in [new EngineField(), new ConductorField(), new FlixelField()].concat([for (field in data) new DebugField(field)]))
+            addField(field);
 
         switchMode(0);
+    }
+
+    var curHeight:Float = 0;
+
+    public function addField(field:DebugField)
+    {
+        fields.push(field);
+
+        addChild(field);
+        
+        field.y = curHeight;
+
+        curHeight += field.height;
+    }
+
+    public function removeField(field:DebugField)
+    {
+        fields.remove(field);
+
+        removeChild(field);
+
+        sortFields();
+    }
+
+    public function sortFields()
+    {
+        curHeight = fps.bg.scaleY;
+
+        for (field in fields)
+        {
+            field.y = curHeight;
+
+            curHeight += field.bg.scaleY;
+        }
     }
 
     private var timer:Int = 0;
@@ -87,19 +97,17 @@ class DebugCounter extends Sprite
 
         FlxG.stage.removeEventListener('activate', onFocus);
         FlxG.stage.removeEventListener('deactivate', onUnFocus);
-        
+
         for (field in fields)
         {
-            fields.remove(field);
-
-            removeChild(field);
+            removeField(field);
 
             field = null;
         }
+        
+        removeChild(fps);
 
-        removeChild(fpsCounter);
-
-        fpsCounter = null;
+        fps = null;
     }
 
     function onFocus(_)
@@ -122,13 +130,13 @@ class DebugCounter extends Sprite
                 for (field in fields)
                     field.visible = false;
 
-                fpsCounter.visible = true;
-                fpsCounter.bg.visible = false;
+                fps.visible = true;
+                fps.bg.visible = false;
             
-                for (label in fpsCounter.labels)
+                for (label in fps.labels)
                     label.text = label.valueFunction();
 
-                fpsCounter.updateBG();
+                fps.updateBG();
             case 1:
                 for (field in fields)
                 {
@@ -140,12 +148,12 @@ class DebugCounter extends Sprite
                     field.visible = true;
                 }
 
-                fpsCounter.bg.visible = true;
+                fps.bg.visible = true;
             case 2:
                 for (field in fields)
                     field.visible = false;
 
-                fpsCounter.visible = false;
+                fps.visible = false;
         }
     }
     

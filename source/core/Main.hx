@@ -1,8 +1,7 @@
 package core;
 
-import flixel.graphics.FlxGraphic;
-import flixel.FlxGame;
 import flixel.FlxState;
+import flixel.graphics.FlxGraphic;
 import flixel.input.keyboard.FlxKey;
 
 import haxe.io.Path;
@@ -78,10 +77,7 @@ class Main extends Sprite
 		width: 1280,
 		height: 720,
 		initialState: #if mobile CopyState #else MainState #end,
-		zoom: -1.0,
-		framerate: 60,
-		skipSplash: true,
-		startFullscreen: false
+		framerate: 60
 	};
 
 	public static function main():Void
@@ -96,7 +92,12 @@ class Main extends Sprite
 		#if android
 		requestPermissions();
 
-		Sys.setCwd(Path.addTrailingSlash(AndroidContext.getObbDir()));
+		var androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/alepsychcrew.ALEPsych';
+
+		if (!FileSystem.exists(androidPath))
+			FileSystem.createDirectory(androidPath);
+
+		Sys.setCwd(Path.addTrailingSlash(androidPath));
 		#end
 
 		#if ios
@@ -179,23 +180,7 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-		#if (openfl <= "9.2.0")
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
-		if (game.zoom == -1.0)
-		{
-			var ratioX:Float = stageWidth / game.width;
-			var ratioY:Float = stageHeight / game.height;
-			game.zoom = Math.min(ratioX, ratioY);
-			game.width = Math.ceil(stageWidth / game.zoom);
-			game.height = Math.ceil(stageHeight / game.zoom);
-		}
-		#else
-		if (game.zoom == -1.0)
-			game.zoom = 1.0;
-		#end
-	
-		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
+		addChild(new ALEGame(game.width, game.height, game.initialState, game.framerate));
 
 		#if html5
 		FlxG.autoPause = false;

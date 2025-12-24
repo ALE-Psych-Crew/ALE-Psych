@@ -18,6 +18,8 @@ import core.plugins.DebugPrintPlugin;
 
 import funkin.debug.DebugCounter;
 
+import cpp.WindowsAPI;
+
 class MainState extends MusicBeatState
 {
 	public static var debugCounter:DebugCounter;
@@ -67,9 +69,11 @@ class MainState extends MusicBeatState
 		#end
 
 		CoolUtil.reloadGameMetadata();
-
+		
+        WindowsAPI.setWindowTitle();
+		
 		#if WINDOWS_API
-		cpp.WindowsAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
+		WindowsAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
 		#end
 
 		ALEPluginsHandler.initialize();

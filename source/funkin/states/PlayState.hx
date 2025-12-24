@@ -1402,12 +1402,12 @@ class PlayState extends ScriptState
 
 		if (generatedMusic)
 		{
-			if(!inCutscene)
+			if (!inCutscene)
 			{
 				if(!cpuControlled)
 					keysCheck();
-				else
-					playerDance();
+
+				playerDance();
 
 				if(notes.length > 0)
 				{
@@ -1986,7 +1986,7 @@ class PlayState extends ScriptState
 
 		var ret:Array<Dynamic> = callOnScripts('onKeyPressPre', [key]);
 		
-		if(ret.contains(CoolVars.Function_Stop))
+		if (ret.contains(CoolVars.Function_Stop))
 			return;
 
 		var lastTime:Float = Conductor.songPosition;
@@ -2120,9 +2120,6 @@ class PlayState extends ScriptState
 					}
 				}
 			}
-
-			if (!holdArray.contains(true) || endingSong)
-				playerDance();
 		}
 
 		if((strumsBlocked.contains(true)) && releaseArray.contains(true))

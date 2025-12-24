@@ -125,8 +125,13 @@ class CopyState extends MusicBeatState
 		{
 			var directory = Path.directory(file);
 
-			if (!FileSystem.exists(directory))
-				FileSystem.createDirectory(directory);
+			try
+			{
+				if (!FileSystem.exists(directory))
+					FileSystem.createDirectory(directory);
+			} catch (e) {
+				throw '';
+			}
 
 			try
 			{

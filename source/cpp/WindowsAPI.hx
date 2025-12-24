@@ -12,8 +12,6 @@ class WindowsAPI
 	public static function screenCapture(path:String)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP.windowsScreenShot(path);
 		#end
 	}
@@ -21,8 +19,6 @@ class WindowsAPI
 	public static function showMessageBox(caption:String, message:String, icon:#if WINDOWS_API MessageBoxIcon = WARNING #else Int = 0 #end)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP.showMessageBox(caption, message, icon);
 		#end
 	}
@@ -30,8 +26,6 @@ class WindowsAPI
 	public static function setWindowVisible(mode:Bool)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP.setWindowVisible(mode);
 		#end
 	}
@@ -39,8 +33,6 @@ class WindowsAPI
 	public static function setWindowBorderColor(r:Int, g:Int, b:Int)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP.setWindowBorderColor(r, g, b);
 		#end
 	}
@@ -48,8 +40,6 @@ class WindowsAPI
 	public static function hideTaskbar(hide:Bool)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP.hideTaskbar(hide);
 		#end
 	}
@@ -57,8 +47,6 @@ class WindowsAPI
 	public static function hideDesktopIcons(hide:Bool)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP.hideDesktopIcons(hide);
 		#end
 	}
@@ -66,8 +54,6 @@ class WindowsAPI
 	public static function setTaskBarAlpha(alpha:Float)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsCPP._setTaskBarAlpha(alpha);
 		#end
 	}
@@ -75,8 +61,6 @@ class WindowsAPI
 	public static function clearTerminal()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.clearTerminal();
 		#end
 	}
@@ -84,8 +68,6 @@ class WindowsAPI
 	public static function showConsole()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.allocConsole();
 		#end
 	}
@@ -93,8 +75,6 @@ class WindowsAPI
 	public static function hideMainWindow()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.hideMainWindow();
 		#end
 	}
@@ -102,8 +82,6 @@ class WindowsAPI
 	public static function setConsoleTitle(title:String)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.setConsoleTitle(title);
 		#end
 	}
@@ -111,8 +89,6 @@ class WindowsAPI
 	public static function setConsoleWindowIcon(path:String)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.setConsoleWindowIcon(path);
 		#end
 	}
@@ -120,8 +96,6 @@ class WindowsAPI
 	public static function centerConsoleWindow()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.centerConsoleWindow();
 		#end
 	}
@@ -129,8 +103,6 @@ class WindowsAPI
 	public static function disableResizeConsoleWindow()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.disableResizeConsoleWindow();
 		#end
 	}
@@ -138,8 +110,6 @@ class WindowsAPI
 	public static function disableCloseConsoleWindow()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.disableCloseConsoleWindow();
 		#end
 	}
@@ -147,8 +117,6 @@ class WindowsAPI
 	public static function maximizeConsoleWindow()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.maximizeConsoleWindow();
 		#end
 	}
@@ -156,8 +124,6 @@ class WindowsAPI
 	public static function getConsoleWindowWidth():Int
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		return WindowsTerminalCPP.returnConsoleWindowWidth();
 		#else
 		return 0;
@@ -167,8 +133,6 @@ class WindowsAPI
 	public static function getConsoleWindowHeight():Int
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		return WindowsTerminalCPP.returnConsoleWindowHeight();
 		#else
 		return 0;
@@ -178,8 +142,6 @@ class WindowsAPI
 	public static function setConsoleCursorPosition(x:Int, y:Int)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.setConsoleCursorPosition(x, y);
 		#end
 	}
@@ -187,8 +149,6 @@ class WindowsAPI
 	public static function getConsoleCursorPositionInX():Int
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		return WindowsTerminalCPP.getConsoleCursorPositionInX();
 		#else
 		return 0;
@@ -198,8 +158,6 @@ class WindowsAPI
 	public static function getConsoleCursorPositionInY():Int
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		return WindowsTerminalCPP.getConsoleCursorPositionInY();
 		#else
 		return 0;
@@ -209,8 +167,6 @@ class WindowsAPI
 	public static function setConsoleWindowPositionX(posX:Int)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.setConsoleWindowPositionX(posX);
 		#end
 	}
@@ -218,8 +174,6 @@ class WindowsAPI
 	public static function setConsoleWindowPositionY(posY:Int)
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.setConsoleWindowPositionY(posY);
 		#end
 	}
@@ -227,8 +181,6 @@ class WindowsAPI
 	public static function hideConsoleWindow()
 	{
 		#if WINDOWS_API
-		setWindowTitle();
-
 		WindowsTerminalCPP.hideConsoleWindow();
 		#end
 	}
