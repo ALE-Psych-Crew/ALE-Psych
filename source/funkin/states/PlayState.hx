@@ -209,6 +209,7 @@ class PlayState extends ScriptState
 	@:unreflective var mobileCamera:FlxCamera;
 
 	@:unreflective var mobilePads:Array<MobileButton> = [];
+	@:unreflective var pauseButton:MobileButton;
 
 	public function adjustMobileControls()
 	{
@@ -264,6 +265,10 @@ class PlayState extends ScriptState
 
 				mobilePads.push(obj);
             }
+
+			pauseButton = new MobileButton(0, 0, ClientPrefs.controls.ui.pause, '< normal', 120, 120);
+			pauseButton.cameras = [mobileCamera];
+			add(pauseButton);
         }
 
 		startCallback = startCountdown;

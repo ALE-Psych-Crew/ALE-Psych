@@ -86,7 +86,7 @@ class DebugField extends Sprite
         return result;
     }
 
-    @:unreflective private var offset:Float = 2.5;
+    var offset:Float = 2.5;
 
     function createLabel(func:Void -> String, ?size:Int = 12, ?color:FlxColor = FlxColor.WHITE, ?off:Float = 0)
     {

@@ -34,7 +34,7 @@ class MobileButton extends FlxSpriteGroup
         {
             bg.makeGraphic(theWidth, theHeight, 0x80404040);
 
-            label.frames = Paths.getSparrowAtlas('ui/alphabet');
+            label.frames = Paths.getSparrowAtlas('ui/alphabet', true);
             label.animation.addByPrefix('idle', letter.toLowerCase() + ' instance 1');
             label.animation.play('idle');
             label.setGraphicSize(0, theHeight - theHeight * 0.4);
@@ -73,9 +73,18 @@ class MobileButton extends FlxSpriteGroup
 
     var pressDetect:Bool = true;
 
+    @:unreflective var ignoreFrame:Bool = true;
+
     override function update(elapsed:Float)
     {
         super.update(elapsed);
+
+        if (ignoreFrame)
+        {
+            ignoreFrame = false;
+
+            return;
+        }
 
         justPressed = false;
         justReleased = false;

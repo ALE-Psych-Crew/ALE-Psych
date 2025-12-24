@@ -1,6 +1,9 @@
 package utils;
 
+import core.Main;
+
 import openfl.Lib;
+
 import core.structures.DataJSON;
 
 @:build(core.macros.CoolVarsMacro.build())
@@ -20,6 +23,11 @@ class CoolVars
 
 	public static function get_engineVersion():String
 		return Lib.application?.meta?.get('version') ?? '';
+
+	public static var onlineVersion(get, never):String;
+
+	public static function get_onlineVersion():String
+		return Main.onlineVersion;
 
 	public static var globalVars:Map<String, Dynamic> = new Map<String, Dynamic>();
 

@@ -17,6 +17,7 @@ import openfl.text.*;
 import scripting.haxe.*;
 import scripting.lua.*;
 
+import funkin.debug.*;
 import funkin.visuals.*;
 import funkin.visuals.game.*;
 import funkin.visuals.objects.*;
@@ -70,6 +71,8 @@ class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
 #if HSCRIPT_ALLOWED
 class ScriptHScriptPresetBase extends HScriptPresetBase implements RuleScriptedClass {}
 #end
+
+// @:forceOverride class ScriptDebugField extends DebugField implements RuleScriptedClass {}
 
 class ScriptHealthIcon extends HealthIcon implements RuleScriptedClass {}
 class ScriptCharacter extends Character implements RuleScriptedClass {}

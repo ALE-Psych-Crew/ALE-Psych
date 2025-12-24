@@ -47,6 +47,8 @@ import sys.FileSystem;
 import extension.haptics.Haptic;
 #end
 
+import sys.Http;
+
 #if (windows && cpp)
 @:buildXml('
 <target id="haxe">
@@ -80,6 +82,9 @@ class Main extends Sprite
 		framerate: 60
 	};
 
+	@:allow(utils.CoolVars)
+	@:unreflective private static var onlineVersion:String = '';
+
 	public static function main():Void
 	{
 		Lib.current.addChild(new Main());
@@ -88,6 +93,19 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
+
+		http.onData = function (data:String)
+		{
+			onlineVersion = data.split('\n')[0].trim();
+		}
+		
+		http.onError = (error) -> {
+			debugTrace('During the game version check: $error', ERROR);
+		}
+
+    	http.request();
 
 		#if android
 		requestPermissions();
