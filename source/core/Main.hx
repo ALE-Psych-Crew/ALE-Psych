@@ -110,7 +110,7 @@ class Main extends Sprite
 		#if android
 		requestPermissions();
 
-		var androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/alepsychcrew.ALEPsych';
+		var androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/.alepsychcrew.ALEPsych';
 
 		if (!FileSystem.exists(androidPath))
 			FileSystem.createDirectory(androidPath);

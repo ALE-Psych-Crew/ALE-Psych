@@ -34,8 +34,8 @@ haxelib install funkin-modchart 1.2.4 --skip-dependencies
 
 haxelib install hxvlc 2.2.5 --skip-dependencies
 
-haxelib git hscript https://github.com/HaxeFoundation/hscript 92ffe9c519bbccf783df0b3400698c5b3cc645ef
-haxelib git rulescript https://github.com/Kriptel/RuleScript 4f4c2b89a728b55154fde129474b454da921f65f --skip-dependencies
+haxelib git hscript https://github.com/HaxeFoundation/hscript 31882f176a9deb4bda3aaba83f6ebc1981a060b3
+haxelib git rulescript https://github.com/Kriptel/RuleScript e588be5d7d3f6003ea3a88a04141c273bca1ae08 --skip-dependencies
 
 haxelib install hxluajit 1.0.5 --skip-dependencies
 haxelib install hxluajit-wrapper 1.0.0 --skip-dependencies
