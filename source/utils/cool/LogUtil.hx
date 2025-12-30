@@ -8,7 +8,7 @@ class LogUtil
 {
 	public static function debugTrace(text:Dynamic, ?type:PrintType = TRACE, ?customType:String = '', ?customColor:FlxColor = FlxColor.GRAY, ?pos:haxe.PosInfos)
 	{
-		if ((type.unnecessary() && !CoolVars.data.verbose) || !CoolVars.data.developerMode)
+		if (CoolVars.data == null || (type.unnecessary() && !CoolVars.data.verbose) || !CoolVars.data.developerMode)
 			return;
 		
 		Sys.println(ansiColorString(type == CUSTOM ? customType : type.toString(), type == CUSTOM ? customColor : type.toColor()) + ansiColorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : ansiColorString(pos.fileName + ': ', 0xFF888888)) + text);

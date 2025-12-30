@@ -94,18 +94,23 @@ class Main extends Sprite
 	{
 		super();
 
-		var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
-
-		http.onData = function (data:String)
+		try
 		{
-			onlineVersion = data.split('\n')[0].trim();
-		}
-		
-		http.onError = (error) -> {
-			debugTrace('During the game version check: $error', ERROR);
-		}
+			var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
 
-    	http.request();
+			http.onData = function (data:String)
+			{
+				onlineVersion = data.split('\n')[0].trim();
+			}
+			
+			http.onError = (error) -> {
+				debugTrace('During the game version check: $error', ERROR);
+			}
+
+			http.request();
+		} catch (e:Dynamic) {
+				debugTrace('During the game version check: ' + e.message, ERROR);
+		}
 
 		#if android
 		requestPermissions();

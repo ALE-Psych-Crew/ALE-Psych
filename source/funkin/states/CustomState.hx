@@ -37,21 +37,36 @@ class CustomState extends ScriptState
         this.luaVariables = luaVariables;
     }
 
+    @:unreflective var watchFiles:Array<String> = [];
+
     override public function create()
     {        
         super.create();
+
+        instance = this;
+
+        loadScript('scripts/states/' + scriptName, hsArguments, luaArguments);
+        
+        loadScript('scripts/states/global', hsArguments, luaArguments);
+
+        for (map in [hsVariables, luaVariables])
+            if (map != null)
+                for (key in map.keys())
+                    if (map == hsVariables)
+                        setOnHScripts(key, map.get(key));
+                    else
+                        setOnLuaScripts(key, map.get(key));
 
         #if cpp
         FlxG.autoPause = !CoolVars.data.developerMode || !CoolVars.data.scriptsHotReloading;
 
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
         {
-            var watchFiles = [];
-
             for (ext in ['.hx', '.lua'])
                 for (file in [scriptName, 'global'])
-                    if (Paths.exists('scripts/states/' + file + ext))
-                        watchFiles.push(Paths.getPath('scripts/states/' + file + ext));
+                    addHotReloadingFile('scripts/states/' + file + ext);
+
+            callOnScripts('onHotReloadingConfig');
 
             CoolUtil.createSafeThread(() -> {
                 var lastTimes:Map<String, Float> = [];
@@ -79,24 +94,14 @@ class CustomState extends ScriptState
         }
         #end
 
-        instance = this;
-
-        loadScript('scripts/states/' + scriptName, hsArguments, luaArguments);
-        
-        loadScript('scripts/states/global', hsArguments, luaArguments);
-
-        for (map in [hsVariables, luaVariables])
-            if (map != null)
-                for (key in map.keys())
-                    if (map == hsVariables)
-                        setOnHScripts(key, map.get(key));
-                    else
-                        setOnLuaScripts(key, map.get(key));
-
         callOnScripts('onCreate');
 
         callOnScripts('postCreate');
     }
+
+    public function addHotReloadingFile(path:String)
+        if (Paths.exists(path))
+            watchFiles.push(Paths.getPath(path));
 
     override public function update(elapsed:Float)
     {
