@@ -114,31 +114,15 @@ version.y = FlxG.height - version.height - 10;
 version.borderSize = 1.125;
 add(version);
 
-if (ClientPrefs.data.checkForUpdates)
+if (CoolUtil.onlineVersion != null && CoolUtil.onlineVersion != CoolVars.engineVersion.trim())
 {
-    var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
+    var prefix:String = 'ALE Psych ';
 
-    http.onData = function (data:String)
-    {
-        var onlineVersion:String = data.split('\n')[0].trim();
-        
-        if (onlineVersion != CoolVars.engineVersion.trim())
-        {
-            var prefix:String = 'ALE Psych ';
+    versionText[0] = prefix + CoolVars.engineVersion + ' [Current Version: ' + CoolUtil.onlineVersion + ']';
 
-            versionText[0] = prefix + CoolVars.engineVersion + ' [Current Version: ' + onlineVersion + ']';
+    version.text = versionText.join('\n');
 
-            version.text = versionText.join('\n');
-
-            version.addFormat(new flixel.text.FlxTextFormat(FlxColor.RED), prefix.length, prefix.length + CoolVars.engineVersion.length);
-        }
-    }
-    
-    http.onError = (error) -> {
-        debugTrace('During the game version check: $error', 'error');
-    }
-
-    http.request();
+    version.addFormat(new flixel.text.FlxTextFormat(FlxColor.RED), prefix.length, prefix.length + CoolVars.engineVersion.length);
 }
 
 changeSelection();

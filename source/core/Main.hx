@@ -109,7 +109,7 @@ class Main extends Sprite
 
 			http.request();
 		} catch (e:Dynamic) {
-				debugTrace('During the game version check: ' + e.message, ERROR);
+			debugTrace('During the game version check: ' + e.message, ERROR);
 		}
 
 		#if android
