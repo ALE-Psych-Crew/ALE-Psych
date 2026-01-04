@@ -42,6 +42,15 @@ import core.enums.Countdown;
 
 class PlayState extends ScriptState
 {
+	@:unreflective public static final defaultNoteTypeList:Array<String> = [
+		'',
+		'Alt Animation',
+		'Hey!',
+		'Hurt Note',
+		'GF Sing',
+		'No Animation'
+	];
+
 	public function new()
 	{
 		if (FlxG.sound.music == null)
@@ -293,8 +302,7 @@ class PlayState extends ScriptState
 		if (SONG == null)
 			CoolUtil.loadSong('tutorial', 'normal');
 
-		Conductor.mapBPMChanges(SONG);
-		Conductor.bpm = SONG.bpm;
+		calculateBPMChanges(SONG);
 
 		#if DISCORD_ALLOWED
 		if (isStoryMode)
@@ -1017,7 +1025,7 @@ class PlayState extends ScriptState
 				swagNote.noteType = songNotes[3] ?? '';
 
 				if (songNotes[3] is Int)
-					swagNote.noteType = ChartingState.defaultNoteTypeList[Std.int(songNotes[3])];
+					swagNote.noteType = PlayState.defaultNoteTypeList[Std.int(songNotes[3])];
 
 				swagNote.scrollFactor.set();
 
@@ -1302,14 +1310,11 @@ class PlayState extends ScriptState
 			} else {
 				boyfriendIdleTime = 0;
 			}
-		}
-		else FlxG.camera.followLerp = 0;
+		} else FlxG.camera.followLerp = 0;
+
 		callOnScripts('onUpdate', [elapsed]);
 
 		super.update(elapsed);
-
-		setOnScripts('curDecStep', curDecStep);
-		setOnScripts('curDecBeat', curDecBeat);
 
 		if(botplayTxt != null && botplayTxt.visible) {
 			botplaySine += 180 * elapsed;
@@ -1326,9 +1331,7 @@ class PlayState extends ScriptState
 
 		if(!endingSong && !inCutscene && CoolVars.data.developerMode)
 		{
-			if (Controls.ENGINE_CHART)
-				openChartEditor();
-			else if (Controls.ENGINE_CHARACTER)
+			if (Controls.ENGINE_CHARACTER)
 				openCharacterEditor();
 		}
 
@@ -1546,22 +1549,6 @@ class PlayState extends ScriptState
 		#end
 	}
 
-	function openChartEditor()
-	{
-		FlxG.camera.followLerp = 0;
-
-		paused = true;
-		if(FlxG.sound.music != null)
-			FlxG.sound.music.stop();
-		chartingMode = true;
-
-		#if DISCORD_ALLOWED
-		DiscordRPC.changePresence("Chart Editor", null, null, true);
-		#end
-
-		CoolUtil.switchState(new ChartingState());
-	}
-
 	function openCharacterEditor()
 	{
 		FlxG.camera.followLerp = 0;
@@ -1677,6 +1664,8 @@ class PlayState extends ScriptState
 
 	public function finishSong(?ignoreNoteOffset:Bool = false):Void
 	{
+		shouldUpdateMusic = false;
+
 		updateTime = false;
 		
 		if (FlxG.sound.music != null)
@@ -1741,12 +1730,6 @@ class PlayState extends ScriptState
 
 			playbackRate = 1;
 
-			if (chartingMode)
-			{
-				openChartEditor();
-				return false;
-			}
-
 			if (isStoryMode)
 			{
 				campaignScore += songScore;
@@ -1776,6 +1759,7 @@ class PlayState extends ScriptState
 
 				changedDifficulty = false;
 			}
+			
 			transitioning = true;
 		}
 		return true;
@@ -1835,7 +1819,7 @@ class PlayState extends ScriptState
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
-		var daRating:Rating = Conductor.judgeNote(ratingsData, noteDiff / playbackRate);
+		var daRating:Rating = Rating.judgeNote(ratingsData, noteDiff / playbackRate);
 
 		totalNotesHit += daRating.ratingMod;
 		note.ratingMod = daRating.ratingMod;
@@ -2409,7 +2393,6 @@ class PlayState extends ScriptState
         destroyScripts();
 	}
 
-	var lastStepHit:Int = -1;
 	override function stepHit()
 	{
 		if (FlxG.sound.music != null)
@@ -2429,24 +2412,13 @@ class PlayState extends ScriptState
 
 		super.stepHit();
 
-		if (curStep == lastStepHit)
-			return;
-
-		lastStepHit = curStep;
-
         callOnScripts('onStepHit', [curStep]);
 
         callOnScripts('postStepHit', [curStep]);
 	}
 
-	var lastBeatHit:Int = -1;
-
 	override function beatHit()
 	{
-		if(lastBeatHit >= curBeat) {
-			return;
-		}
-
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, ClientPrefs.data.downScroll ? FlxSort.ASCENDING : FlxSort.DESCENDING);
 
@@ -2460,8 +2432,6 @@ class PlayState extends ScriptState
 
 		super.beatHit();
 		
-		lastBeatHit = curBeat;
-
         callOnScripts('onBeatHit', [curBeat]);
 
         callOnScripts('postBeatHit', [curBeat]);

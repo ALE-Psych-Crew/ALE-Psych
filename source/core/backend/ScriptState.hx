@@ -33,7 +33,6 @@ class ScriptState extends MusicBeatState implements IScriptState
     public var luaScripts:Array<LuaScript> = [];
     #end
 
-	public var camGame:FlxCamera;
 	public var camHUD:FlxCamera;
 
     public var hsCustomCallbacks:Array<Class<HScriptPresetBase>> = [];
@@ -54,8 +53,6 @@ class ScriptState extends MusicBeatState implements IScriptState
         
         instance = this;
         
-		camGame = initPsychCamera();
-
 		camHUD = new ALECamera();
 		
 		FlxG.cameras.add(camHUD, false);

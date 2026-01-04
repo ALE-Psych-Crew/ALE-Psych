@@ -33,6 +33,11 @@ class MainState extends MusicBeatState
 
 	override function create()
 	{
+		Conductor.offset = 0;
+		Conductor.stepsPerBeat = 4;
+		Conductor.beatsPerSection = 4;
+		Conductor.bpm = 100;
+
 		Paths.clearEngineCache(true);
 
 		CoolVars.skipTransOut = true;

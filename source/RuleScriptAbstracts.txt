@@ -8,3 +8,4 @@ openfl.display.BlendMode
 flixel.math.FlxPoint
 flixel.sound.filters.FlxSoundFilterType
 flixel.tweens.FlxTween.FlxTweenType
+openfl.net.URLLoaderDataFormat

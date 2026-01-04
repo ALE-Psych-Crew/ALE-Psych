@@ -18,9 +18,9 @@ haxelib install openfl 9.4.1
 haxelib git away3d https://github.com/ALE-Psych-Crew/away3d
 
 haxelib install flixel 6.1.1 --skip-dependencies
-haxelib install flixel-addons 3.3.2
-haxelib install flixel-ui 2.6.4
-haxelib install flixel-tools 1.5.1
+haxelib install flixel-addons 3.3.2 --skip-dependencies
+haxelib install flixel-ui 2.6.4 --skip-dependencies
+haxelib install flixel-tools 1.5.1 --skip-dependencies
 
 haxelib install ale-ui 1.0.3
 
@@ -29,8 +29,6 @@ haxelib git flxanimate https://github.com/Dot-Stuff/flxanimate 7da385ca7fd8d8067
 haxelib git flxsoundfilters https://github.com/TheZoroForce240/FlxSoundFilters a89bb537684111a6ff85737981f4b2d8ef4b4f68
 haxelib git funkin.vis https://github.com/FunkinCrew/funkVis 1966f8fbbbc509ed90d4b520f3c49c084fc92fd6
 haxelib git grig.audio https://github.com/FunkinCrew/grig.audio 8567c4dad34cfeaf2ff23fe12c3796f5db80685e
-
-haxelib install funkin-modchart 1.2.4 --skip-dependencies
 
 haxelib install hxvlc 2.2.5 --skip-dependencies
 

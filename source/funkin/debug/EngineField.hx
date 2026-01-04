@@ -18,7 +18,7 @@ class EngineField extends DebugField
                     lines: [
                         {
                             type: TEXT,
-                            value: 'Current Version: ' + CoolVars.engineVersion + '\nOnline Version: ' + CoolVars.onlineVersion + '\nCommit: ' + CoolVars.GITHUB_COMMIT
+                            value: 'Current Version: ' + CoolVars.engineVersion + '\nOnline Version: ' + CoolVars.onlineVersion + '\nCommit: ' + CoolVars.GITHUB_COMMIT + '\nTimestamp: ' + CoolVars.BUILD_TIMESTAMP
                         }
                     ],
                     size: 10,

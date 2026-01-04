@@ -71,8 +71,6 @@
 	<haxelib name="funkin.vis"/>
 	<haxelib name="grig.audio"/>
 
-	<haxelib name="funkin-modchart"/>
-
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
 	<haxelib name="rulescript" if="HSCRIPT_ALLOWED"/>
@@ -91,14 +89,9 @@
 	
 	<haxeflag name="--macro" value="core.macros.ImportsMacro.include()"/>
 
-	<haxeflag name="--macro" value="modchart.backend.macros.Macro.includeFiles()"/>
-
 	<!-- ______________________________ Haxe Defines _____________________________ -->
 
 	<haxeflag name="-dce" value="no"/>
-
-	<haxedef name="FM_ENGINE" value="ALEPSYCH"/>
-	<haxedef name="FM_ENGINE_VERSION" value="0.1"/>
 
 	<haxedef name='lime_disable_assets_version'/>	
 

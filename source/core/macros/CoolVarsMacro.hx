@@ -28,6 +28,12 @@ class CoolVarsMacro
             pos: Context.currentPos()
         });
 
+        fields.push({
+            name: 'BUILD_TIMESTAMP',
+            access: [APublic, AStatic, AFinal],
+            kind: FVar(macro:String, macro Date.now().toString()),
+            pos: Context.currentPos()
+        });
 
 		return fields;
 	}

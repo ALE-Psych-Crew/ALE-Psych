@@ -50,7 +50,6 @@ class CharacterEditorState extends MusicBeatState
 	var animsTxtGroup:FlxTypedGroup<FlxText>;
 	var curAnim = 0;
 
-	private var camEditor:FlxCamera;
 	private var camHUD:FlxCamera;
 
 	var UI_box:FlxUITabMenu;
@@ -69,8 +68,6 @@ class CharacterEditorState extends MusicBeatState
 	{
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-
-		camEditor = initPsychCamera();
 
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;

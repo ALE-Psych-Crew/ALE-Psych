@@ -16,7 +16,7 @@ class ConductorField extends DebugField
                 },
                 {
                     lines: [
-                        for (i in 0...5)
+                        for (i in 0...6)
                         {
                             {
                                 type: TEXT,
@@ -35,6 +35,7 @@ class ConductorField extends DebugField
             '\nBPM: ' + Conductor.bpm +
             '\nStep: ' + Conductor.curStep +
             '\nBeat: ' + Conductor.curBeat +
-            '\nSection: ' + Conductor.curSection;
+            '\nSection: ' + Conductor.curSection +
+            '\nTime Signature: ' + Conductor.beatsPerSection + ' / ' + Conductor.stepsPerBeat;
     }
 }
