@@ -24,6 +24,6 @@ class MathUtil
 	public static function fpsRatio(ratio:Float)
 		return FlxMath.bound(ratio * FlxG.elapsed * 60, 0, 1);
 
-	public static function snapNumber(og:Float, mod:Int):Float
+	public static function snapNumber(og:Float, mod:Float):Float
 		return Math.floor(og / mod) * mod;
 }
