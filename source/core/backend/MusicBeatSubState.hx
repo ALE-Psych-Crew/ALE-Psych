@@ -89,7 +89,7 @@ class MusicBeatSubState extends FlxSubState implements IMusicState
 			while (curBPMIndex + 1 < bpmChangeMap.length && Conductor.songPosition >= bpmChangeMap[curBPMIndex + 1].time)
 				curBPMIndex++;
 
-			while (curBPMIndex > 0 && Conductor.songPosition < bpmChangeMap[curBPMIndex - 1].time)
+			while (curBPMIndex >= 0 && Conductor.songPosition < bpmChangeMap[curBPMIndex].time)
 				curBPMIndex--;
 
 			var change:BPMChange = bpmChangeMap[curBPMIndex];
