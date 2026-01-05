@@ -1,5 +1,7 @@
 package core.backend;
 
+import core.structures.BPMChange;
+
 import core.interfaces.IMusicState;
 
 import utils.Song.SwagSong;
@@ -92,34 +94,54 @@ class MusicBeatState extends FlxUIState implements IMusicState
         FlxG.bitmap.clearCache();
     }
 	
-	var bpmChangeMap:Null<Array<Float>>;
+	var bpmChangeMap:Null<Array<BPMChange>>;
 
 	public function calculateBPMChanges(?song:Null<SwagSong>)
 	{
-		bpmChangeMap = song == null ? null : [];
-
-		_lastStep = 0;
-
-		curStep = curBeat = curSection = -1;
-
 		if (song == null)
+		{
+			bpmChangeMap = null;
+
 			return;
+		}
+
+		var curTime:Float = 0;
+		var curStep:Int = 0;
 
 		Conductor.bpm = song.bpm;
+		
+		bpmChangeMap = [
+			{
+				bpm: Conductor.bpm,
+				time: 0,
+				step: 0
+			}
+		];
 
-		for (sectionIndex => section in song.notes)
+		for (section in song.notes)
 		{
-			if (section.changeBPM)
+			if (section.changeBPM && section.bpm != Conductor.bpm)
+			{
 				Conductor.bpm = section.bpm;
 
-			for (i in 0...(Conductor.stepsPerBeat * Conductor.beatsPerSection))
-				bpmChangeMap.push((bpmChangeMap[bpmChangeMap.length - 1] ?? 0) + Conductor.stepCrochet);
+				bpmChangeMap.push(
+					{
+						bpm: Conductor.bpm,
+						time: curTime,
+						step: curStep
+					}
+				);
+			}
+			
+			curTime += Conductor.sectionCrochet;
+			curStep += Conductor.beatsPerSection * Conductor.stepsPerBeat;
 		}
 
 		Conductor.bpm = song.bpm;
 	}
 
-    private var _lastStep:Int = 0;
+	var curBPMIndex:Int = 0;
+
     public var curStep:Int = -1;
 
     public var curBeat:Int = -1;
@@ -130,24 +152,33 @@ class MusicBeatState extends FlxUIState implements IMusicState
 
 	public function updateMusic()
 	{
-		if (!shouldUpdateMusic || FlxG.sound.music == null)
+		if (!shouldUpdateMusic || FlxG.sound.music == null || Conductor.songPosition < 0)
 			return;
+
+		var newStep:Int = -1;
 
 		if (bpmChangeMap == null)
 		{
-			_lastStep = Math.floor(Conductor.songPosition / Conductor.stepCrochet);
+			newStep = Math.floor(Conductor.songPosition / Conductor.stepCrochet);
 		} else {
-			while (Conductor.songPosition > bpmChangeMap[_lastStep] ?? FlxG.sound.music.length)
-				_lastStep++;
+			while (curBPMIndex + 1 < bpmChangeMap.length && Conductor.songPosition >= bpmChangeMap[curBPMIndex + 1].time)
+				curBPMIndex++;
 
-			while (Conductor.songPosition < bpmChangeMap[_lastStep - 1] ?? 0)
-				_lastStep--;
+			while (curBPMIndex > 0 && Conductor.songPosition < bpmChangeMap[curBPMIndex - 1].time)
+				curBPMIndex--;
+
+			var change:BPMChange = bpmChangeMap[curBPMIndex];
+
+			if (Conductor.bpm != change.bpm)
+				Conductor.bpm = change.bpm;
+
+			newStep = change.step + Math.floor((Conductor.songPosition - change.time) / Conductor.stepCrochet);
 		}
-		
-		if (_lastStep != curStep)
-		{
-			curStep = _lastStep;
 
+		if (curStep != newStep)
+		{
+			curStep = newStep;
+			
 			stepHit();
 		}
 	}
@@ -168,9 +199,11 @@ class MusicBeatState extends FlxUIState implements IMusicState
 		for (i in 0...(curStep - prev))
 			safeStepHit(Math.floor(lastSafeStep + 1));
 
-		if (curStep % Conductor.stepsPerBeat == 0)
+		var newBeat:Int = Math.floor(curStep / Conductor.stepsPerBeat);
+
+		if (curBeat != newBeat)
 		{
-			curBeat = Math.floor(curStep / Conductor.stepsPerBeat);
+			curBeat = newBeat;
 
 			beatHit();
 		}
@@ -185,9 +218,11 @@ class MusicBeatState extends FlxUIState implements IMusicState
 		for (i in 0...(curBeat - prev))
 			safeBeatHit(Math.floor(lastSafeBeat + 1));
 
-		if (curBeat % Conductor.beatsPerSection == 0)
+		var newSection = Math.floor(curBeat / Conductor.beatsPerSection);
+
+		if (curSection != newSection)
 		{
-			curSection = Math.floor(curBeat / Conductor.beatsPerSection);
+			curSection = newSection;
 
 			sectionHit();
 		}

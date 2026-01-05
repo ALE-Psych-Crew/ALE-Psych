@@ -242,6 +242,8 @@ class PlayState extends ScriptState
 
 	override public function create()
 	{
+		shouldUpdateMusic = false;
+
 		hsCustomCallbacks = [scripting.haxe.callbacks.HScriptPlayState];
 		luaCustomCallbacks = [scripting.lua.callbacks.LuaPlayState];
 
@@ -424,8 +426,6 @@ class PlayState extends ScriptState
 		add(noteGroup);
 		uiGroup = new FlxSpriteGroup();
 		add(uiGroup);
-
-		Conductor.songPosition = -5000 / Conductor.songPosition;
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		noteGroup.add(strumLineNotes);
@@ -902,6 +902,8 @@ class PlayState extends ScriptState
 	
 	function startSong():Void
 	{
+		shouldUpdateMusic = true;
+
 		startingSong = false;
 
 		if (FlxG.sound.music != null)
@@ -1342,7 +1344,7 @@ class PlayState extends ScriptState
 		updateIconsPosition();
 
 		if (startedCountdown && !paused)
-			Conductor.songPosition += FlxG.elapsed * 1000 * playbackRate;
+			Conductor.songPosition += elapsed * 1000 * playbackRate;
 
 		if (startingSong)
 		{
@@ -2499,11 +2501,11 @@ class PlayState extends ScriptState
 
 			if (SONG.notes[curSection].changeBPM)
 			{
-				Conductor.bpm = SONG.notes[curSection].bpm;
 				setOnScripts('curBpm', Conductor.bpm);
 				setOnScripts('crochet', Conductor.crochet);
 				setOnScripts('stepCrochet', Conductor.stepCrochet);
 			}
+			
 			setOnScripts('mustHitSection', SONG.notes[curSection].mustHitSection);
 			setOnScripts('altAnim', SONG.notes[curSection].altAnim);
 			setOnScripts('gfSection', SONG.notes[curSection].gfSection);

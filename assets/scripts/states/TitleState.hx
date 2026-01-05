@@ -85,12 +85,8 @@ function finishIntro()
 
 function onSafeBeatHit(safeBeat:Int)
 {
-    if (finishedIntro)
+    if (!finishedIntro)
     {
-        logo.animation.play('idle', true);
-
-        gf.animation.play(curBeat % 2 == 0 ? 'left' : 'right', true);
-    } else {
         if (safeBeat >= 16)
         {
             finishIntro();
@@ -100,6 +96,16 @@ function onSafeBeatHit(safeBeat:Int)
         } else if (introTexts.exists(safeBeat)) {
             spawnIntroText(introTexts.get(safeBeat));
         }
+    }
+}
+
+function postBeatHit(curBeat:Int)
+{
+    if (finishedIntro)
+    {
+        logo.animation.play('idle', true);
+
+        gf.animation.play(curBeat % 2 == 0 ? 'left' : 'right', true);
     }
 }
 

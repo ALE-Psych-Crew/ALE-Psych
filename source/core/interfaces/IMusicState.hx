@@ -1,5 +1,7 @@
 package core.interfaces;
 
+import core.structures.BPMChange;
+
 import flixel.FlxState;
 import flixel.FlxBasic;
 
@@ -7,11 +9,10 @@ import utils.Song.SwagSong;
 
 interface IMusicState
 {
-    private var bpmChangeMap:Null<Array<Float>>;
+    private var bpmChangeMap:Null<Array<BPMChange>>;
 
     public function calculateBPMChanges(?song:Null<SwagSong>):Void;
 
-    private var _lastStep:Int;
     public var curStep:Int;
 
     public var curBeat:Int;
