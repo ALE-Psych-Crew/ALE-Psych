@@ -5,7 +5,7 @@ class MathUtil
 	public static function floorDecimal(value:Float, decimals:Int):Float
 		return FlxMath.roundDecimal(value, decimals);
 
-	inline public static function quantize(f:Float, snap:Float)
+	inline public static function quantize(f:Float, snap:Float):Float
 		return Math.fround(f * snap) / snap;
 
 	inline public static function numberArray(max:Int, ?min = 0):Array<Int>
