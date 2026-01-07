@@ -110,9 +110,9 @@ class MusicBeatSubState extends FlxSubState implements IMusicState
 
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed);
-		
 		updateMusic();
+		
+		super.update(elapsed);
 	}
 
 	var lastSafeStep:Int = 0;
