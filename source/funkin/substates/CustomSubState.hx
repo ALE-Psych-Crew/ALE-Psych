@@ -57,10 +57,10 @@ class CustomSubState extends ScriptSubState
 
     override public function update(elapsed:Float)
     {
-        super.update(elapsed);
-
         callOnScripts('onUpdate', [elapsed]);
 
+        super.update(elapsed);
+        
         if (Controls.BACK && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
             close();
 

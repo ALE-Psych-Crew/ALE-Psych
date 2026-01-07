@@ -105,10 +105,10 @@ class CustomState extends ScriptState
 
     override public function update(elapsed:Float)
     {
-        super.update(elapsed);
-
         callOnScripts('onUpdate', [elapsed]);
 
+        super.update(elapsed);
+        
         if (Controls.RESET && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
             resetCustomState();
         

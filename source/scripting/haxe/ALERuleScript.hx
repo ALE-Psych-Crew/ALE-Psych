@@ -2,6 +2,7 @@ package scripting.haxe;
 
 import rulescript.RuleScript;
 import rulescript.interps.RuleScriptInterp;
+import rulescript.interps.NeoInterp;
 import rulescript.parsers.HxParser;
 import rulescript.Context;
 
@@ -12,17 +13,19 @@ import haxe.Exception;
 
 import rulescript.Context;
 
+typedef ALEInterp = RuleScriptInterp;
+
 class ALERuleScript extends RuleScript
 {
 	public var failedParsing:Bool = false;
 
 	override public function new(scriptName:String, ?context:Context)
 	{
-		super(null, new ALEParser(scriptName), context);
+		super(new ALEInterp(), new ALEParser(scriptName), context);
 
 		getParser(HxParser).allowAll();
 
-		getInterp(RuleScriptInterp).scriptName = scriptName.replace('.', '/') + '.hx';
+		getInterp(ALEInterp).scriptName = scriptName.replace('.', '/') + '.hx';
 
 		this.errorHandler = onError;
 	}

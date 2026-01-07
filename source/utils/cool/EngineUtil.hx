@@ -130,7 +130,7 @@ class EngineUtil
 		resizeGame(CoolVars.data.width, CoolVars.data.height);
 	}
 
-	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true)
+	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true, ?scale:Float = 1)
 	{
 		for (camera in FlxG.cameras.list)
 		{
@@ -138,24 +138,26 @@ class EngineUtil
 			camera.height = FlxG.height;
 		}
 
-		#if !mobile
-		FlxG.fullscreen = false;
 		FlxG.initialWidth = width;
 		FlxG.initialHeight = height;
+
 		FlxG.resizeGame(width, height);
-		FlxG.resizeWindow(width, height);
+		FlxG.resizeWindow(Math.floor(width / scale), Math.floor(height / scale));
+
+		#if !mobile
+		FlxG.fullscreen = false;
 
 		if (centerWindow)
 		{
 			Lib.application.window.x = Std.int((Lib.application.window.display.bounds.width - Lib.application.window.width) / 2);
 			Lib.application.window.y = Std.int((Lib.application.window.display.bounds.height - Lib.application.window.height) / 2);
 		}
+		#end
 
 		for (camera in FlxG.cameras.list)
 		{
 			camera.width = width;
 			camera.height = height;
 		}
-		#end
 	}
 }
