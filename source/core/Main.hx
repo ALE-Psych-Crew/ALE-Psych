@@ -74,7 +74,7 @@ extern "C" HRESULT WINAPI SetCurrentProcessExplicitAppUserModelID(PCWSTR AppID);
 
 class Main extends Sprite
 {
-	@:allow(utils.cool.EngineUtil)
+	@:allow(core.backend.Mods)
 	private static var game = {
 		width: 1280,
 		height: 720,
@@ -203,6 +203,8 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
+		core.backend.Mods.init();
+
 		addChild(new ALEGame(game.width, game.height, game.initialState, game.framerate));
 
 		#if html5
@@ -232,7 +234,7 @@ class Main extends Sprite
 			}
 
 			if (FlxG.game != null)
-			resetSpriteCache(FlxG.game);
+				resetSpriteCache(FlxG.game);
 		});
 
 		#if VIDEOS_ALLOWED

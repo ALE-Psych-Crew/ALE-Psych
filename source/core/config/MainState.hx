@@ -61,8 +61,6 @@ class MainState extends MusicBeatState
 			badWindow: 135
 		};
 
-		core.backend.Mods.init();
-
     	ALEUIUtils.OBJECT_SIZE = 25;
     	ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
     	ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
@@ -76,8 +74,6 @@ class MainState extends MusicBeatState
         Sys.putEnv('LUA_PATH', Sys.getCwd() + '/' + Paths.modFolder() + '/scripts/modules/?.lua;');
 		#end
 
-		CoolUtil.reloadGameMetadata();
-		
         WindowsAPI.setWindowTitle();
 		
 		#if WINDOWS_API

@@ -6,7 +6,6 @@ import core.interfaces.IMusicState;
 
 import utils.Song.SwagSong;
 
-import flixel.addons.ui.FlxUIState;
 import flixel.FlxState;
 
 #if cpp
@@ -15,7 +14,7 @@ import cpp.vm.Gc;
 import hl.Gc;
 #end
 
-class MusicBeatState extends FlxUIState implements IMusicState
+class MusicBeatState extends FlxState implements IMusicState
 {
 	public static var instance:MusicBeatState;
 

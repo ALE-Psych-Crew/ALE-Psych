@@ -1,31 +1,28 @@
 package utils;
 
-import core.enums.PathType;
 import core.enums.ReadDirectoryType;
-
-import haxe.ds.StringMap;
-
-import haxe.io.Bytes;
-
-import sys.FileStat;
-import sys.FileSystem;
-import sys.io.File;
-
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.FlxGraphic;
-import flixel.sound.FlxSound;
-import flixel.util.FlxColor;
-
-import funkin.visuals.objects.PsychFlxAnimate;
-
-import openfl.display.BitmapData;
-import openfl.display3D.textures.RectangleTexture;
-
-import lime.media.AudioBuffer;
 
 import core.backend.Mods;
 
+import openfl.utils.Assets as OpenFLAssets;
+import openfl.display3D.textures.RectangleTexture;
+import openfl.display.BitmapData;
 import openfl.media.Sound;
+
+import lime.media.AudioBuffer;
+import lime.utils.Bytes;
+
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.FlxGraphic;
+
+import funkin.visuals.objects.PsychFlxAnimate;
+
+import utils.ALEAssetLibrary;
+
+import sys.FileStat;
+import sys.FileSystem;
+
+import haxe.ds.StringMap;
 
 import yaml.Yaml;
 
@@ -47,22 +44,20 @@ class Paths
     public static var cachedSounds:StringMap<Sound> = new StringMap<Sound>();
     public static var permanentCachedSounds:Array<String> = [];
 
+    public static var library(get, never):ALEAssetLibrary;
+    static function get_library():ALEAssetLibrary
+        return cast OpenFLAssets.getLibrary('default');
+
     // UTILS
 
     public static inline function getPath(file:String, missingPrint:Bool = true):String
     {
-        #if MODS_ALLOWED
-        if (exists(file, MODS))
-            return modFolder() + '/' + file;
-        #end
+        final path:String = OpenFLAssets.getPath(file);
 
-        if (exists(file, ASSETS))
-            return 'assets/' + file;
-
-        if (missingPrint)
+        if (path == null && missingPrint)
             debugTrace(file, MISSING_FILE);
 
-        return null;
+        return path;
     }
 
     public static function modFolder():String
@@ -110,18 +105,8 @@ class Paths
 
     // FILE SYSTEM
     
-    public static inline function exists(path:String, ?pathMode:PathType = BOTH):Bool
-    {
-        #if MODS_ALLOWED
-        if (FileSystem.exists(modFolder() + '/' + path) && (pathMode == MODS || pathMode == BOTH) && Mods.folder != '' && Mods.folder != null)
-            return true;
-        #end
-
-        if (FileSystem.exists('assets/' + path) && (pathMode == ASSETS || pathMode == BOTH))
-            return true;
-        
-        return false;
-    }
+    public static inline function exists(path:String):Bool
+        return OpenFLAssets.exists(path);
 
     public static function isDirectory(path:String):Bool
     {
@@ -136,7 +121,7 @@ class Paths
     {
         var result:Array<String> = [];
 
-        for (folder in [#if MODS_ALLOWED modFolder() #end, 'assets'])
+        for (folder in library.roots)
         {
             var finalPath:String = folder + '/' + path;
 
@@ -176,7 +161,7 @@ class Paths
             return cachedBytes.get(path);
         
         if (exists(path))
-            return File.getBytes(getPath(path));
+            return OpenFLAssets.getBytes(path);
 
         if (missingPrint)
             debugTrace(path, MISSING_FILE);
@@ -190,7 +175,7 @@ class Paths
             return cachedContents.get(path);
         
         if (exists(path))
-            return File.getContent(getPath(path));
+            return OpenFLAssets.getText(path);
 
         if (missingPrint)
             debugTrace(path, MISSING_FILE);
@@ -426,7 +411,7 @@ class Paths
             return Reflect.makeVarArgs((arr:Array<Dynamic>) -> {});
         }
 
-        return lime.system.CFFI.load(Paths.getPath(path), funcName, args);
+        return lime.system.CFFI.load(getPath(path), funcName, args);
     }
 
     // CONTENT
@@ -525,17 +510,8 @@ class Paths
 
     // PRECACHE
     
-	public static function cacheBitmap(file:String, ?bitmap:BitmapData = null, permanent:Bool = false):FlxGraphic
+	public static function cacheBitmap(file:String, bitmap:BitmapData, permanent:Bool = false):FlxGraphic
 	{
-		if (bitmap == null)
-		{
-			if (FileSystem.exists(file))
-				bitmap = BitmapData.fromBytes(File.getBytes(file));
-            
-			if (bitmap == null)
-                return null;
-		}
-
 		if (ClientPrefs.data.cacheOnGPU)
 		{
 			var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
@@ -560,17 +536,8 @@ class Paths
 		return newGraphic;
 	}
 
-    public static function cacheSound(file:String, ?sound:Sound = null, permanent:Bool = false):Sound
+    public static function cacheSound(file:String, sound:Sound, permanent:Bool = false):Sound
     {
-        if (sound == null)
-        {
-            if (FileSystem.exists(file))
-                sound = Sound.fromAudioBuffer(AudioBuffer.fromBytes(File.getBytes(file)));
-
-            if (sound == null)
-                return null;
-        }
-
         cachedSounds.set(file, sound);
 
         if (permanent)

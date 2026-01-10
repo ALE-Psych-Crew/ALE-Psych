@@ -12,6 +12,7 @@ import flixel.graphics.*;
 import flixel.addons.display.*;
 
 import openfl.display.*;
+import openfl.utils.*;
 import openfl.text.*;
 
 import scripting.haxe.*;
@@ -25,7 +26,11 @@ import funkin.visuals.mobile.*;
 
 import ale.ui.*;
 
+import utils.*;
+
 private typedef FlxDrawItem = flixel.graphics.tile.FlxDrawQuadsItem;
+
+private typedef LimeAssetLibrary = lime.utils.AssetLibrary;
 
 class Extensible {}
 

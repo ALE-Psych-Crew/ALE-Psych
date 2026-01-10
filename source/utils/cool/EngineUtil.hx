@@ -53,6 +53,8 @@ class EngineUtil
 			FlxG.sound.music = null;
 		}
 
+		core.backend.Mods.init();
+
 		FlxG.resetGame();
 
 		#if desktop
@@ -60,74 +62,6 @@ class EngineUtil
 		#end
 		
         ALEPluginsHandler.finish();
-	}
-
-	public static function reloadGameMetadata()
-	{
-		CoolVars.data = {
-			developerMode: false,
-			mobileDebug: false,
-			scriptsHotReloading: false,
-
-			verbose: false,
-			allowDebugPrint: true,
-
-			initialState: 'TitleState',
-			freeplayState: 'FreeplayState',
-			storyMenuState: 'StoryMenuState',
-			masterEditorState: 'MasterEditorState',
-			mainMenuState: 'MainMenuState',
-			optionsState: 'OptionsState',
-
-			loadDefaultWeeks: true,
-
-			pauseSubState: 'PauseSubState',
-			gameOverScreen: 'GameOverSubState',
-			transition: 'FadeTransition',
-
-			title: 'Friday Night Funkin\': ALE Psych',
-			icon: 'appIcon',
-			width: Main.game.width,
-			height: Main.game.height,
-
-			windowColor: [33, 33, 33],
-
-			bpm: 102.0,
-
-			discordID: '1309982575368077416',
-
-			discordButtons: [
-				{
-					label: 'ALE Psych Website',
-					url: 'https://ale-psych-crew.github.io/ALE-Psych-Website/'
-				}
-			],
-
-			modID: null
-		};
-
-		try
-		{
-			if (Paths.exists('data.json'))
-			{
-				var json:Dynamic = Paths.json('data');
-
-				for (field in Reflect.fields(json))
-					if (Reflect.hasField(CoolVars.data, field))
-						Reflect.setField(CoolVars.data, field, Reflect.field(json, field));
-			}
-		} catch (error:Dynamic) {
-			debugTrace('Error While Loading Game Data (data.json): ' + error, ERROR);
-		}
-
-		if (Paths.exists(CoolVars.data.icon + '.png'))
-			Lib.current.stage.window.setIcon(Image.fromFile(Paths.getPath(CoolVars.data.icon + '.png')));
-		else
-			Lib.current.stage.window.setIcon(Image.fromFile(Paths.getPath('images/appIcon.png')));
-
-		FlxG.stage.window.title = CoolVars.data.title;
-
-		resizeGame(CoolVars.data.width, CoolVars.data.height);
 	}
 
 	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true, ?scale:Float = 1)
@@ -138,8 +72,8 @@ class EngineUtil
 			camera.height = FlxG.height;
 		}
 
-		FlxG.initialWidth = width;
-		FlxG.initialHeight = height;
+		Reflect.setProperty(FlxG, 'initialWidth', width);
+		Reflect.setProperty(FlxG, 'initialHeight', height);
 
 		FlxG.resizeGame(width, height);
 		FlxG.resizeWindow(Math.floor(width / scale), Math.floor(height / scale));

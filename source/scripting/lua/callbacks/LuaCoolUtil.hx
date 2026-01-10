@@ -41,11 +41,6 @@ class LuaCoolUtil extends LuaPresetBase
             CoolUtil.resetEngine();
         });
 
-        set('reloadGameMetadata', function()
-        {
-            CoolUtil.reloadGameMetadata();
-        });
-        
         set('resizeGame', function(width:Int, height:Int, ?centerWindow:Bool)
         {
             CoolUtil.resizeGame(width, height, centerWindow);

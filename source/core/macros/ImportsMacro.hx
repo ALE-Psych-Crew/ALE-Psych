@@ -86,14 +86,14 @@ class ImportsMacro
             'away3d.primitives',
             'away3d.textures',
             'away3d.tools.helpers',
+
+            'haxe.runtime',
             #end
 
             'funkin.visuals.objects',
             'funkin.states',
             'funkin.substates',
-            'funkin.editors',
-
-            //'ale.ui'
+            //'funkin.editors'
         ];
 
         for (pack in packs)

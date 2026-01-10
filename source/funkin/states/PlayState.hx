@@ -36,8 +36,6 @@ import funkin.visuals.stages.objects.*;
 import scripting.haxe.*;
 import scripting.lua.*;
 
-import funkin.editors.*;
-
 import core.enums.Countdown;
 
 class PlayState extends ScriptState
@@ -1558,7 +1556,6 @@ class PlayState extends ScriptState
 		paused = true;
 		if(FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-		CoolUtil.switchState(new CharacterEditorState(SONG.player2));
 	}
 
 	public var isDead:Bool = false;

@@ -27,6 +27,10 @@ typedef DataJSON =
     var width:Int;
     var height:Int;
 
+    var paths:Array<String>;
+
+    var dependencies:Array<String>;
+
     var windowColor:Array<Int>;
 
     var bpm:Float;
