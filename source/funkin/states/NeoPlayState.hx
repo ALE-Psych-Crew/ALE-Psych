@@ -10,13 +10,22 @@ class NeoPlayState extends MusicBeatState
 {
     var SONG:ALESong;
 
+    var instSound:openfl.media.Sound;
+
+    public function new(?song:String, ?difficulty:String)
+    {
+        super();
+            
+        SONG ??= ALEFormatter.getSong(song ?? 'fresh', difficulty ?? 'hard');
+
+        instSound = Paths.voices('songs/' + (song ?? 'fresh'));
+    }
+
     override function create()
     {
         super.create();
-            
-        SONG ??= ALEFormatter.getSong('fresh', 'hard');
 
-        FlxG.sound.playMusic(Paths.inst('songs/fresh'));
+        FlxG.sound.playMusic(instSound);
 
         loadSong();
     }
