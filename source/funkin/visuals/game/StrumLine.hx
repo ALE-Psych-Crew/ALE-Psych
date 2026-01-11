@@ -81,23 +81,33 @@ class StrumLine extends FlxSpriteGroup
 
     public var missTime:Float = 175;
 
+    public final speedMult:Float = ClientPrefs.data.downScroll ? -0.45 : 0.45;
+
+    var hitData:Array<Bool> = [];
+
+    var keyPressed:Array<Bool> = [];
+
+    var hitNotes:Array<Note> = [];
+    var deleteNotes:Array<Note> = [];
+
     override public function update(elapsed:Float)
     {
         super.update(elapsed);
 
         final songPosition:Float = Conductor.songPosition;
 
-        final speedMult:Float = (ClientPrefs.data.downScroll ? -0.45 : 0.45);
-
         while (notesToSpawn.length > 0 && notesToSpawn[notesToSpawn.length - 1].time <= songPosition + Math.max(spawnTime / scrollSpeed, spawnTime))
             notes.add(notesToSpawn.pop());
 
-        final hitData:Array<Bool> = [];
+        hitData.resize(0);
 
-        final keyPressed:Array<Bool> = [];
+        if (!botplay)
+            for (index => strum in strums.members)
+                keyPressed[index] = FlxG.keys.anyJustPressed(strum.input);
 
-        for (index => strum in strums.members)
-            keyPressed[index] = FlxG.keys.anyJustPressed(strum.input);
+        hitNotes.resize(0);
+
+        deleteNotes.resize(0);
 
         for (note in notes)
         {
@@ -114,21 +124,27 @@ class StrumLine extends FlxSpriteGroup
             if (botplay)
             {
                 if (timeDiff <= 0)
-                    hitNote(note);
+                    hitNotes.push(note);
             } else {
                 if (Math.abs(timeDiff) <= 180)
                 {
                     if (keyPressed[note.data])
                     {
-                        hitNote(note);
+                        hitNotes.push(note);
 
                         hitData[note.data] = true;
                     }
                 } else if (timeDiff < 0) {
-                    removeNote(note);
+                    deleteNotes.push(note);
                 }
             }
         }
+
+        for (note in hitNotes)
+            hitNote(note);
+
+        for (note in deleteNotes)
+            removeNote(note);
 
         if (botplay)
             return;
@@ -168,6 +184,8 @@ class StrumLine extends FlxSpriteGroup
 
     public function removeNote(note:Note)
     {
-        notes.remove(note);
+        note.kill();
+        notes.remove(note, true);
+        note.destroy();
     }
 }

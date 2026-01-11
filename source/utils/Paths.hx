@@ -32,17 +32,23 @@ class Paths
 	public static inline final SOUND_EXT = #if web 'mp3' #else 'ogg' #end;
 	public static inline final VIDEO_EXT = 'mp4';
 
-    public static var cachedBytes:StringMap<Bytes> = new StringMap<Bytes>();
+    public static var cachedBytes:StringMap<Bytes> = new StringMap();
     public static var permanentCachedBytes:Array<String> = [];
 
-    public static var cachedContents:StringMap<String> = new StringMap<String>();
+    public static var cachedContents:StringMap<String> = new StringMap();
     public static var permanentCachedContents:Array<String> = [];
 
-	public static var cachedGraphics:StringMap<FlxGraphic> = new StringMap<FlxGraphic>();
+	public static var cachedGraphics:StringMap<FlxGraphic> = new StringMap();
 	public static var permanentCachedGraphics:Array<String> = [];
 
-    public static var cachedSounds:StringMap<Sound> = new StringMap<Sound>();
+    public static var cachedSounds:StringMap<Sound> = new StringMap();
     public static var permanentCachedSounds:Array<String> = [];
+
+    public static var cachedAtlas:StringMap<FlxAtlasFrames> = new StringMap();
+    public static var permanentCachedAtlas:Array<String> = [];
+
+    public static var cachedMultiAtlas:Map<Array<String>, FlxAtlasFrames> = new Map();
+    public static var permanentCachedMultiAtlas:Array<Array<String>> = [];
 
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
@@ -84,6 +90,8 @@ class Paths
             permanentCachedContents.resize(0);
             permanentCachedGraphics.resize(0);
             permanentCachedSounds.resize(0);
+            permanentCachedAtlas.resize(0);
+            permanentCachedMultiAtlas.resize(0);
         }
 
         for (key in cachedBytes.keys())
@@ -101,6 +109,14 @@ class Paths
         for (key in cachedSounds.keys())
             if (!permanentCachedSounds.contains(key))
                 cachedSounds.remove(key);
+        
+        for (key in cachedAtlas.keys())
+            if (!permanentCachedAtlas.contains(key))
+                cachedAtlas.remove(key);
+        
+        for (key in cachedMultiAtlas.keys())
+            if (!permanentCachedMultiAtlas.contains(key))
+                cachedMultiAtlas.remove(key);
     }
 
     // FILE SYSTEM
@@ -215,39 +231,72 @@ class Paths
 
     public static function getSparrowAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
+        if (cachedAtlas.exists(file))
+            return cachedAtlas.get(file);
+
         var graphic = image(file, permanent, missingPrint);
         var xmlContent = xml(file, missingPrint);
 
         if (graphic == null || xmlContent == null)
             return null;
 
-        return FlxAtlasFrames.fromSparrow(graphic, xmlContent);
+        var frames:FlxAtlasFrames = FlxAtlasFrames.fromSparrow(graphic, xmlContent);
+
+        cachedAtlas.set(file, frames);
+
+        if (permanent)
+            permanentCachedAtlas.push(file);
+
+        return frames;
     }
     
     public static function getPackerAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
+        if (cachedAtlas.exists(file))
+            return cachedAtlas.get(file);
+
         var graphic = image(file, permanent, missingPrint);
         var txtContent = imageTxt(file, missingPrint);
 
         if (graphic == null || txtContent == null)
             return null;
 
-        return FlxAtlasFrames.fromSpriteSheetPacker(graphic, txtContent);
+        var frames:FlxAtlasFrames = FlxAtlasFrames.fromSpriteSheetPacker(graphic, txtContent);
+
+        cachedAtlas.set(file, frames);
+
+        if (permanent)
+            permanentCachedAtlas.push(file);
+
+        return frames;
     }
 
     public static function getAsepriteAtlas(file:String, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
+        if (cachedAtlas.exists(file))
+            return cachedAtlas.get(file);
+
         var graphic = image(file, permanent, missingPrint);
         var jsonContent = imageJson(file, missingPrint);
 
         if (graphic == null || jsonContent == null)
             return null;
 
-        return FlxAtlasFrames.fromTexturePackerJson(graphic, jsonContent);
+        var frames:FlxAtlasFrames = FlxAtlasFrames.fromTexturePackerJson(graphic, jsonContent);
+
+        cachedAtlas.set(file, frames);
+
+        if (permanent)
+            permanentCachedAtlas.push(file);
+
+        return frames;
     }
     
     @:unreflective private static function getMultiAtlasBase(atlasFunc:String -> Bool -> Bool -> FlxAtlasFrames, files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
+        if (cachedMultiAtlas.exists(files))
+            return cachedMultiAtlas.get(files);
+
 		var parentFrames:FlxAtlasFrames = atlasFunc(files[0], permanent, missingPrint);
 
 		if (files.length > 1)
@@ -265,6 +314,11 @@ class Paths
 					parentFrames.addAtlas(extraFrames, true);
 			}
 		}
+
+        cachedMultiAtlas.set(files, parentFrames);
+
+        if (permanent)
+            permanentCachedMultiAtlas.push(files);
 
 		return parentFrames;
     }
