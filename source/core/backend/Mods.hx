@@ -1,5 +1,7 @@
 package core.backend;
 
+import core.config.MainState;
+
 import flixel.util.FlxSave;
 
 import utils.cool.EngineUtil;
@@ -117,17 +119,28 @@ class Mods
         #if MODS_ALLOWED
         if (modFolder)
         {
-            libraryRoots.push(folderPath);
-
             for (path in CoolVars.data.paths)
                 libraryRoots.push(folderPath + '/' + path.trim());
+			
+            libraryRoots.push(folderPath);
         }
         #end
 
 		final libPath:String = FileSystem.exists(folderPath + '/.alelib') ? (folderPath + '/.alelib') : '.alelib';
 
         for (path in CoolVars.data.dependencies)
-            libraryRoots.push(libPath + '/' + path.trim());
+		{
+			final finalPath:String = libPath + '/' + path.trim();
+
+			if (FileSystem.exists(finalPath))
+			{
+            	libraryRoots.push(finalPath);
+			} else {
+				MainState.missingLibraries ??= [];
+
+				MainState.missingLibraries.push(path.trim());
+			}
+		}
 
         libraryRoots.push('assets');
 

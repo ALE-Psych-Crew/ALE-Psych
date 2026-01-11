@@ -1,12 +1,9 @@
 package core.plugins;
 
+import funkin.visuals.plugins.DebugPrintText;
+
 class DebugPrintPlugin extends FlxTypedGroup<DebugPrintText>
 {
-    override public function new()
-    {
-        super();
-    }
-
     public function print(debugText:String, ?prefix:String, ?color:FlxColor)
     {
         var text:DebugPrintText = recycle(DebugPrintText);

@@ -13,8 +13,7 @@ import ale.ui.ALEUIUtils;
 import hxluajit.wrapper.LuaError;
 #end
 
-import core.plugins.ALEPluginsHandler;
-import core.plugins.DebugPrintPlugin;
+import core.plugins.*;
 
 import funkin.debug.DebugCounter;
 
@@ -29,7 +28,14 @@ class MainState extends MusicBeatState
     @:unreflective private static var showedModMenu:Bool = false;
     #end
 
-	@:unreflective public static var debugPrintPlugin:DebugPrintPlugin;
+	@:unreflective private static var showedOutdatedNotification:Bool = false;
+
+	public static var debugPrintPlugin:DebugPrintPlugin;
+	
+	public static var notificationsPlugin:NotificationsPlugin;
+
+	@:allow(core.backend.Mods)
+	@:unreflective private static var missingLibraries:Array<String>;
 
 	override function create()
 	{
@@ -86,6 +92,24 @@ class MainState extends MusicBeatState
 
 		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
 			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+
+		notificationsPlugin = null;
+
+		ALEPluginsHandler.add(notificationsPlugin = new NotificationsPlugin());
+
+		if (!showedOutdatedNotification && CoolVars.engineVersion != CoolVars.onlineVersion)
+		{
+			showedOutdatedNotification = true;
+
+			CoolUtil.notify('Outdated!', 'Update to Version ' + CoolVars.onlineVersion);
+		}
+
+		if (missingLibraries != null)
+		{
+			CoolUtil.notify('Missing Libraries!', [for (index => lib in missingLibraries) ((index + 1) + '. ' + lib).rpad(' ', 20)].join('\n'));
+
+			missingLibraries = null;
+		}
 
         DiscordRPC.initialize(CoolVars.data.discordID);
     

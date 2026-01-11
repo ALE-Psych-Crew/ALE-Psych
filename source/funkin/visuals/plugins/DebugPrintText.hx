@@ -1,4 +1,4 @@
-package core.plugins;
+package funkin.visuals.plugins;
 
 class DebugPrintText extends FlxText
 {
