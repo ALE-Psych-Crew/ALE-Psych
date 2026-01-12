@@ -1,6 +1,6 @@
 package core.enums;
 
-enum abstract PrintType(String)
+enum abstract PrintType(String) from String to String
 {
     var ERROR = 'error';
     var WARNING = 'warning';

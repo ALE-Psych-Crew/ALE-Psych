@@ -1,6 +1,6 @@
 package core.enums;
 
-enum abstract NoteType(String)
+enum abstract NoteType(String) from String to String
 {
     var NOTE = 'note';
     var SUSTAIN = 'sustain';

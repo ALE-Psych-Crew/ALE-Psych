@@ -1,6 +1,6 @@
 package core.enums;
 
-enum abstract Countdown(String)
+enum abstract Countdown(String) from String to String
 {
 	var THREE = 'three';
 	var TWO = 'two';
