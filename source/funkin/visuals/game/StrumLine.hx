@@ -3,23 +3,23 @@ package funkin.visuals.game;
 import utils.ALEFormatter;
 
 import funkin.visuals.game.Strum;
+import funkin.visuals.game.Splash;
 import funkin.visuals.game.ALENote as Note;
 
 import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxSort;
 
-import core.enums.CharacterType;
-import core.enums.Rating;
-
 import core.structures.ALEStrumLine;
 import core.structures.ALESongStrumLine;
 
 import core.enums.CharacterType;
+import core.enums.Rating;
 
 class StrumLine extends FlxSpriteGroup
 {
     public var strums:FlxTypedSpriteGroup<Strum>;
     public var notes:FlxTypedSpriteGroup<Note>;
+    public var splashes:FlxTypedSpriteGroup<Splash>;
 
     public var botplay:Bool;
 
@@ -42,6 +42,10 @@ class StrumLine extends FlxSpriteGroup
         botplay = chartData.type != PLAYER;
 
         add(strums = new FlxTypedSpriteGroup<Strum>());
+        
+        add(notes = new FlxTypedSpriteGroup<Note>());
+
+        add(splashes = new FlxTypedSpriteGroup<Splash>());
 
         var inputs = ClientPrefs.controls.notes;
 
@@ -51,20 +55,21 @@ class StrumLine extends FlxSpriteGroup
 
         for (strumIndex => strumConfig in config.strums)
         {
-            final strum:Strum = new Strum(strumConfig, strumIndex, inputsArray[strumIndex], config.textures, config.scale, config.space);
+            final strum:Strum = new Strum(strumConfig, strumIndex, inputsArray[strumIndex], config.strumFramerate, config.strumTextures, config.strumScale, config.space);
             strums.add(strum);
             strum.returnToIdle = botplay;
+
+            final splash:Splash = new Splash(strumConfig, strum, config.splashScale, config.splashFramerate, config.splashTextures);
+            splashes.add(splash);
 
             strumHeight = Math.max(strumHeight, strum.height);
         }
 
         x = chartData.rightToLeft ? config.position.x : FlxG.width - config.position.x - (config.strums.length - 1) * config.space - strums.members[strums.members.length - 1].width;
         y = ClientPrefs.data.downScroll ? FlxG.height - config.position.y - strumHeight : config.position.y;
-        
-        add(notes = new FlxTypedSpriteGroup<Note>());
 
         for (note in arrayNotes)
-            notesToSpawn.push(new Note(config.strums[note[1]], strums.members[note[1]], note[0], note[1], note[2], note[3], NOTE, config.space, config.scale, config.textures));
+            notesToSpawn.push(new Note(config.strums[note[1]], note[0], note[1], note[2], note[3], NOTE, config.space, config.noteScale, config.noteTextures));
         
         notesToSpawn.sort(
             function(a:Note, b:Note)
@@ -80,8 +85,6 @@ class StrumLine extends FlxSpriteGroup
     public var spawnTime:Float = 5000;
 
     public var missTime:Float = 175;
-
-    public final speedMult:Float = ClientPrefs.data.downScroll ? -0.45 : 0.45;
 
     var hitData:Array<Bool> = [];
 
@@ -109,36 +112,34 @@ class StrumLine extends FlxSpriteGroup
 
         deleteNotes.resize(0);
 
-        for (note in notes)
-        {
-            if (note == null)
-                continue;
+        notes.forEachAlive(
+            (note) -> {
+                final strum:Strum = strums.members[note.data];
+                
+                note.followStrum(strum, Conductor.stepCrochet, scrollSpeed);
 
-            final timeDiff:Float = note.time - songPosition;
+                if (hitData[note.data])
+                    return;
 
-            note.y = this.y + timeDiff * speedMult * scrollSpeed;
-
-            if (hitData[note.data])
-                continue;
-
-            if (botplay)
-            {
-                if (timeDiff <= 0)
-                    hitNotes.push(note);
-            } else {
-                if (Math.abs(timeDiff) <= 180)
+                if (botplay)
                 {
-                    if (keyPressed[note.data])
-                    {
+                    if (note.timeDistance <= 0)
                         hitNotes.push(note);
+                } else {
+                    if (Math.abs(note.timeDistance) <= 180)
+                    {
+                        if (keyPressed[note.data])
+                        {
+                            hitNotes.push(note);
 
-                        hitData[note.data] = true;
+                            hitData[note.data] = true;
+                        }
+                    } else if (note.timeDistance < 0) {
+                        deleteNotes.push(note);
                     }
-                } else if (timeDiff < 0) {
-                    deleteNotes.push(note);
                 }
             }
-        }
+        );
 
         for (note in hitNotes)
             hitNote(note);
@@ -149,27 +150,37 @@ class StrumLine extends FlxSpriteGroup
         if (botplay)
             return;
 
-        for (index => strum in strums.members)
-        {
-            if (!hitData[index] && keyPressed[index])
-                strum.playAnim('pressed');
+        var strlIndex:Int = 0;
 
-            if (FlxG.keys.anyJustReleased(strum.input))
-                strum.playAnim('idle');
-        }
+        strums.forEachAlive(
+            (strum) -> {
+                if (!hitData[strlIndex] && keyPressed[strlIndex])
+                    strum.playAnim('pressed');
+
+                if (FlxG.keys.anyJustReleased(strum.input))
+                    strum.playAnim('idle');
+
+                strlIndex++;
+            }
+        );
     }
 
     public function hitNote(note:Note)
     {
-        final rating:Rating = judgeNote(Math.abs(note.time - Conductor.songPosition));
+        final rating:Rating = judgeNote(note.timeDistance);
 
-        note.strum.playAnim('hit');
+        if (rating == SICK && !botplay)
+            splashes.members[note.data].splash();
+
+        strums.members[note.data].playAnim('hit');
 
         removeNote(note);
     }
 
     public function judgeNote(time:Float):Rating
     {
+        time = Math.abs(time);
+
         if (time < 45)
             return SICK;
 

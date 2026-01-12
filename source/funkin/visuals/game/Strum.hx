@@ -9,8 +9,6 @@ import core.structures.ALEStrum;
 
 class Strum extends FlxSprite
 {
-    public final config:ALEStrum;
-
     public var input:Array<FlxKey>;
 
     public var textureShader:RGBShaderReference;
@@ -20,21 +18,21 @@ class Strum extends FlxSprite
     public var data:Int;
 
     public var returnToIdle:Bool = false;
-    public var returnToIdleTime:Float = 0.125;
+    public var returnToIdleTime:Float = 0.15;
 
-    public function new(config:ALEStrum, data:Int, input:Array<FlxKey>, skins:Array<String>, scale:Float, space:Float)
+    public var direction:Float = 0;
+
+    public function new(config:ALEStrum, data:Int, input:Array<FlxKey>, framerate:Float, skins:Array<String>, scale:Float, space:Float)
     {
         super();
 
         this.data = data;
 
-        this.config = config;
-
         frames = Paths.getMultiAtlas([for (skin in skins) 'noteSkins/' + skin]);
 
-        animation.addByPrefix('idle', config.idle, config.frameRate, false);
-        animation.addByPrefix('hit', config.hit, config.frameRate, false);
-        animation.addByPrefix('pressed', config.pressed, config.frameRate, false);
+        animation.addByPrefix('idle', config.idle, framerate, false);
+        animation.addByPrefix('hit', config.hit, framerate, false);
+        animation.addByPrefix('pressed', config.pressed, framerate, false);
 
         animation.play('idle');
 

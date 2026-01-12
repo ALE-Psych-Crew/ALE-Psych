@@ -7,6 +7,6 @@ typedef ALEStrum = {
     var note:String;
     var sustain:String;
     var end:String;
-    var shader:Null<Array<String>>;
-    var frameRate:Int;
+    var shader:Array<String>;
+    var splash:Array<String>;
 }

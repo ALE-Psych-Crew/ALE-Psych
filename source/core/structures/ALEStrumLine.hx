@@ -2,9 +2,15 @@ package core.structures;
 
 typedef ALEStrumLine = {
     var position:Point;
-    var scale:Float;
+    var splashScale:Float;
+    var strumScale:Float;
+    var noteScale:Float;
     var space:Float;
-    var textures:Array<String>;
-    var spashTextures:Array<String>;
+    var splashTextures:Array<String>;
+    var strumTextures:Array<String>;
+    var noteTextures:Array<String>;
+    var splashFramerate:Int;
+    var strumFramerate:Int;
+    var noteFramerate:Int;
     var strums:Array<ALEStrum>;
 }
