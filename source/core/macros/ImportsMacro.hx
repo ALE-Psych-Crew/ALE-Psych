@@ -15,11 +15,6 @@ class ImportsMacro
             'openfl',
             'openfl.net',
 
-            'haxe.crypto',
-            'haxe.display',
-            'haxe.exceptions',
-            'haxe.extern',
-
             'flixel.util',
             'flixel.ui',
             'flixel.tweens',
@@ -87,6 +82,13 @@ class ImportsMacro
             'away3d.textures',
             'away3d.tools.helpers',
 
+            'haxe.crypto',
+            'haxe.display',
+            'haxe.exceptions',
+            'haxe.extern',
+            'haxe.ds',
+            'haxe.sys',
+            'haxe.sys.io',
             'haxe.runtime',
             #end
 
