@@ -1,5 +1,7 @@
 package utils;
 
+import core.structures.CacheArray;
+
 import core.enums.ReadDirectoryType;
 
 import core.backend.Mods;
@@ -19,10 +21,10 @@ import funkin.visuals.objects.PsychFlxAnimate;
 
 import utils.ALEAssetLibrary;
 
+import haxe.ds.StringMap;
+
 import sys.FileStat;
 import sys.FileSystem;
-
-import haxe.ds.StringMap;
 
 import yaml.Yaml;
 
@@ -33,22 +35,28 @@ class Paths
 	public static inline final VIDEO_EXT = 'mp4';
 
     public static var cachedBytes:StringMap<Bytes> = new StringMap();
-    public static var permanentCachedBytes:Array<String> = [];
+    public static var permanentBytes:Array<String> = [];
 
     public static var cachedContents:StringMap<String> = new StringMap();
-    public static var permanentCachedContents:Array<String> = [];
+    public static var permanentContents:Array<String> = [];
 
 	public static var cachedGraphics:StringMap<FlxGraphic> = new StringMap();
-	public static var permanentCachedGraphics:Array<String> = [];
+	public static var permanentGraphics:Array<String> = [];
 
     public static var cachedSounds:StringMap<Sound> = new StringMap();
-    public static var permanentCachedSounds:Array<String> = [];
+    public static var permanentSounds:Array<String> = [];
 
     public static var cachedAtlas:StringMap<FlxAtlasFrames> = new StringMap();
-    public static var permanentCachedAtlas:Array<String> = [];
+    public static var permanentAtlas:Array<String> = [];
 
-    public static var cachedMultiAtlas:Map<Array<String>, FlxAtlasFrames> = new Map();
-    public static var permanentCachedMultiAtlas:Array<Array<String>> = [];
+    public static var cachedJson:StringMap<Dynamic> = new StringMap();
+    public static var permanentJson:Array<String> = [];
+
+    public static var cachedYaml:StringMap<Dynamic> = new StringMap();
+    public static var permanentYaml:Array<String> = [];
+
+    public static var cachedMultiAtlas:StringMap<FlxAtlasFrames> = new StringMap();
+    public static var permanentMultiAtlas:Array<String> = [];
 
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
@@ -71,6 +79,17 @@ class Paths
     
     public static function clearEngineCache(?clearPermanent:Bool = false)
     {
+        var cachedObjects:Array<CacheArray> = [
+            {cache: cachedBytes, permanent: permanentBytes},
+            {cache: cachedContents, permanent: permanentContents},
+            {cache: cachedGraphics, permanent: permanentGraphics},
+            {cache: cachedSounds, permanent: permanentSounds},
+            {cache: cachedAtlas, permanent: permanentAtlas},
+            {cache: cachedMultiAtlas, permanent: permanentMultiAtlas},
+            {cache: cachedJson, permanent: permanentJson},
+            {cache: cachedYaml, permanent: permanentYaml}
+        ];
+        
         if (clearPermanent)
         {
             @:privateAccess
@@ -86,37 +105,14 @@ class Paths
                 }
             }
 
-            permanentCachedBytes.resize(0);
-            permanentCachedContents.resize(0);
-            permanentCachedGraphics.resize(0);
-            permanentCachedSounds.resize(0);
-            permanentCachedAtlas.resize(0);
-            permanentCachedMultiAtlas.resize(0);
+            for (array in cachedObjects)
+                array.permanent.resize(0);
         }
 
-        for (key in cachedBytes.keys())
-            if (!permanentCachedBytes.contains(key))
-                cachedBytes.remove(key);
-        
-        for (key in cachedContents.keys())
-            if (!permanentCachedContents.contains(key))
-                cachedContents.remove(key);
-        
-        for (key in cachedGraphics.keys())
-            if (!permanentCachedGraphics.contains(key))
-                cachedGraphics.remove(key);
-        
-        for (key in cachedSounds.keys())
-            if (!permanentCachedSounds.contains(key))
-                cachedSounds.remove(key);
-        
-        for (key in cachedAtlas.keys())
-            if (!permanentCachedAtlas.contains(key))
-                cachedAtlas.remove(key);
-        
-        for (key in cachedMultiAtlas.keys())
-            if (!permanentCachedMultiAtlas.contains(key))
-                cachedMultiAtlas.remove(key);
+        for (array in cachedObjects)
+            for (key in array.cache.keys())
+                if (!array.permanent.contains(key))
+                    array.cache.remove(key);
     }
 
     // FILE SYSTEM
@@ -245,7 +241,7 @@ class Paths
         cachedAtlas.set(file, frames);
 
         if (permanent)
-            permanentCachedAtlas.push(file);
+            permanentAtlas.push(file);
 
         return frames;
     }
@@ -266,7 +262,7 @@ class Paths
         cachedAtlas.set(file, frames);
 
         if (permanent)
-            permanentCachedAtlas.push(file);
+            permanentAtlas.push(file);
 
         return frames;
     }
@@ -287,15 +283,15 @@ class Paths
         cachedAtlas.set(file, frames);
 
         if (permanent)
-            permanentCachedAtlas.push(file);
+            permanentAtlas.push(file);
 
         return frames;
     }
     
     @:unreflective private static function getMultiAtlasBase(atlasFunc:String -> Bool -> Bool -> FlxAtlasFrames, files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
     {
-        if (cachedMultiAtlas.exists(files))
-            return cachedMultiAtlas.get(files);
+        if (cachedMultiAtlas.exists(files.join('::')))
+            return cachedMultiAtlas.get(files.join('::'));
 
 		var parentFrames:FlxAtlasFrames = atlasFunc(files[0], permanent, missingPrint);
 
@@ -315,10 +311,10 @@ class Paths
 			}
 		}
 
-        cachedMultiAtlas.set(files, parentFrames);
+        cachedMultiAtlas.set(files.join('::'), parentFrames);
 
         if (permanent)
-            permanentCachedMultiAtlas.push(files);
+            permanentMultiAtlas.push(files.join('::'));
 
 		return parentFrames;
     }
@@ -423,10 +419,13 @@ class Paths
 
     // DATA LANGUAGES
 
-    public static function json(file:String, missingPrint:Bool = true):Dynamic
+    public static function json(file:String, permanent:Bool = false, missingPrint:Bool = true):Dynamic
     {
         var path:String = file + '.json';
 
+        if (cachedJson.exists(path))
+            return cachedJson.get(path);
+
         if (!exists(path))
         {
             if (missingPrint)
@@ -435,13 +434,21 @@ class Paths
             return null;
         }
 
-        return Json.parse(getContent(path));
+        var json:Dynamic = Json.parse(getContent(path));
+
+        if (permanent)
+            permanentJson.push(path);
+
+        return json;
     }
 
-    public static function yaml(file:String, missingPrint:Bool = true):Dynamic
+    public static function yaml(file:String, permanent:Bool = false, missingPrint:Bool = true):Dynamic
     {
         var path:String = file + '.yaml';
 
+        if (cachedYaml.exists(path))
+            return cachedYaml.get(path);
+
         if (!exists(path))
         {
             if (missingPrint)
@@ -450,7 +457,12 @@ class Paths
             return null;
         }
 
-        return Yaml.parse(getContent(path));
+        var yaml:Dynamic = Yaml.parse(getContent(path));
+
+        if (permanent)
+            permanentYaml.push(path);
+
+        return yaml;
     }
 
     public static function ndll(fileName:String, funcName:String, ?args:Int = 0, missingPrint:Bool = true):Dynamic
@@ -585,7 +597,7 @@ class Paths
 		cachedGraphics.set(file, newGraphic);
 
         if (permanent)
-            permanentCachedGraphics.push(file);
+            permanentGraphics.push(file);
 
 		return newGraphic;
 	}
@@ -595,7 +607,7 @@ class Paths
         cachedSounds.set(file, sound);
 
         if (permanent)
-            permanentCachedSounds.push(file);
+            permanentSounds.push(file);
 
         return sound;
     }

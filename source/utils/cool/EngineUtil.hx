@@ -24,11 +24,27 @@ class EngineUtil
 
 		CoolVars.skipTransIn = CoolVars.skipTransOut = true;
 
-		if (ScriptState.instance != null)
-			ScriptState.instance.destroyScripts();
+		var stateInstance:ScriptState = ScriptState.instance;
 
-		if (ScriptSubState.instance != null)
-			ScriptSubState.instance.destroyScripts();
+		if (stateInstance != null)
+		{
+			stateInstance.callOnScripts('onDestroy');
+
+			stateInstance.callOnScripts('postDestroy');
+
+			stateInstance.destroyScripts();
+		}
+
+		var subInstance:ScriptSubState = ScriptSubState.instance;
+
+		if (subInstance != null)
+		{
+			subInstance.callOnScripts('onDestroy');
+
+			subInstance.callOnScripts('postDestroy');
+
+			subInstance.destroyScripts();
+		}
 
 		if (FlxG.state.subState != null)
 			FlxG.state.subState.close();
