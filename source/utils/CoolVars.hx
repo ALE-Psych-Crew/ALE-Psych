@@ -33,6 +33,6 @@ class CoolVars
 
 	public static final BUILD_TARGET:String = #if windows 'windows' #elseif linux 'linux' #elseif mac 'mac' #elseif ios 'ios' #elseif android 'android' #else 'unknown' #end;
 
-	@:unreflective public static final Function_Stop:String = '##_ALE_PSYCH_LUA_FUNCTION_STOP_##';
-	@:unreflective public static final Function_Continue:String = '##_ALE_PSYCH_LUA_FUNCTION_CONTINUE_##';
+	public static final Function_Stop:String = '##_ALE_PSYCH_LUA_FUNCTION_STOP_##';
+	public static final Function_Continue:String = '##_ALE_PSYCH_LUA_FUNCTION_CONTINUE_##';
 }
