@@ -238,10 +238,25 @@ class Controls
     public static var BACK(get, never):Bool;
     static function get_BACK():Bool
     {
-        #if !mobile if (CoolVars.data.mobileDebug && CoolVars.data.developerMode) #end
-            return MobileControls.anyJustPressed(ClientPrefs.controls.ui.back);
+    var backKeys = ClientPrefs.controls.ui.back;
 
-        #if !mobile return FlxG.keys.anyJustPressed(ClientPrefs.controls.ui.back); #end
+    if (backKeys == null || backKeys.length == 0)
+        return false;
+
+    backKeys = backKeys.filter(k -> k > 0);
+
+    if (backKeys.length == 0)
+        return false;
+
+    #if mobile
+        #if (CoolVars.data.mobileDebug && CoolVars.data.developerMode)
+            return MobileControls.anyJustPressed(backKeys);
+        #else
+            return false;
+        #end
+    #else
+        return FlxG.keys.anyJustPressed(backKeys);
+    #end
     }
 
     public static var RESET(get, never):Bool;
