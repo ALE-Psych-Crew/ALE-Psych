@@ -22,16 +22,16 @@ import cpp.WindowsAPI;
 class MainState extends MusicBeatState
 {
 	public static var debugCounter:DebugCounter;
-	
-    #if mobile
+
+	#if mobile
 	@:allow(core.backend.Mods)
-    @:unreflective private static var showedModMenu:Bool = false;
-    #end
+	@:unreflective private static var showedModMenu:Bool = false;
+	#end
 
 	@:unreflective private static var showedOutdatedNotification:Bool = false;
 
 	public static var debugPrintPlugin:DebugPrintPlugin;
-	
+
 	public static var notificationsPlugin:NotificationsPlugin;
 
 	@:allow(core.backend.Mods)
@@ -54,7 +54,7 @@ class MainState extends MusicBeatState
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
-	
+
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
@@ -67,21 +67,21 @@ class MainState extends MusicBeatState
 			badWindow: 135
 		};
 
-    	ALEUIUtils.OBJECT_SIZE = 25;
-    	ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
-    	ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
-      	ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
+		ALEUIUtils.OBJECT_SIZE = 25;
+		ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
+		ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
+		ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
 
 		#if LUA_ALLOWED
 		LuaError.errorHandler = (e:String) -> {
 			debugTrace(e, ERROR);
 		};
-		
-        Sys.putEnv('LUA_PATH', Sys.getCwd() + '/' + Paths.modFolder() + '/scripts/modules/?.lua;');
+
+		Sys.putEnv('LUA_PATH', Sys.getCwd() + '/' + Paths.modFolder() + '/scripts/modules/?.lua;');
 		#end
 
-        WindowsAPI.setWindowTitle();
-		
+		WindowsAPI.setWindowTitle();
+
 		#if WINDOWS_API
 		WindowsAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
 		#end
@@ -111,50 +111,50 @@ class MainState extends MusicBeatState
 			missingLibraries = null;
 		}
 
-        DiscordRPC.initialize(CoolVars.data.discordID);
-    
-        if (CoolUtil.save != null)
+		if (CoolUtil.save != null)
 			CoolUtil.save.destroy();
 
-        CoolUtil.save = new utils.ALESave();
+		CoolUtil.save = new utils.ALESave();
 
 		CoolUtil.save.load();
 
+		DiscordRPC.initialize(CoolVars.data.discordID);
+      
 		FlxG.mouse.unload();
 
 		FlxG.mouse.useSystemCursor = true;
-		
+
 		#if HSCRIPT_ALLOWED
 		scripting.haxe.HScriptConfig.config();
 		#end
-		
+
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 
 		FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
 
-        #if mobile
-        if (showedModMenu || Mods.UNIQUE_MOD != null)
-        {
-        	CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true);
-        } else {
-            MainState.showedModMenu = true;
+		#if mobile
+		if (showedModMenu || Mods.UNIQUE_MOD != null)
+		{
+			CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true);
+		} else {
+			MainState.showedModMenu = true;
 
-            CoolUtil.openSubState(new funkin.substates.ModsMenuSubState());
+			CoolUtil.openSubState(new funkin.substates.ModsMenuSubState());
 		}
-        #else
-        CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true);
-        #end
-		
+		#else
+		CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true);
+		#end
+
 		openalFix();
-		
+
 		debugCounter = new DebugCounter(Paths.json('debug').fields == null ? [] : cast Paths.json('debug').fields);
-		
+
 		FlxG.game.addChild(debugCounter);
 	}
 
-    function openalFix()
-    {
+	function openalFix()
+	{
 		#if desktop
 		var origin:String = #if hl Sys.getCwd() #else Sys.programPath() #end;
 
@@ -169,6 +169,6 @@ class MainState extends MusicBeatState
 		#end
 
 		Sys.putEnv("ALSOFT_CONF", configPath);
-		#end	
-    }
+		#end
+	}
 }
