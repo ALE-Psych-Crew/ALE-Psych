@@ -120,6 +120,8 @@ class MainState extends MusicBeatState
 
 		CoolUtil.save.load();
 
+		FlxG.mouse.unload();
+
 		FlxG.mouse.useSystemCursor = true;
 		
 		#if HSCRIPT_ALLOWED
