@@ -366,7 +366,8 @@ class NeoPlayState extends ScriptState
 
     override function update(elapsed:Float)
     {
-        Conductor.songPosition = FlxG.sound.music.time;
+        if (FlxG.sound.music.playing)
+            Conductor.songPosition += elapsed * 1000;
 
         super.update(elapsed);
 
@@ -377,6 +378,13 @@ class NeoPlayState extends ScriptState
         );
 
         scoreText.text = ClientPrefs.data.botplay ? 'BOTPLAY' : 'Score: ' + score + '    Misses: ' + misses + '    Accuracy: ' + CoolUtil.floorDecimal(accuracy, 2) + '%';
+
+        if (Controls.RESET)
+        {
+            FlxG.sound.music?.pause();
+
+            FlxG.resetState();
+        }
     }
 
     function addCharacter(character:Character)
@@ -529,6 +537,49 @@ class NeoPlayState extends ScriptState
                 camFollow.y += offset.y ?? 0;
             }
         }
+    }
+
+    final vocalsToSync:Array<FlxSound> = [];
+
+	function resyncVocals():Void
+	{
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
+        
+        for (vocal in vocalsToSync)
+            if (vocal != null)
+            {
+                vocal.pause();
+
+                if (Conductor.songPosition <= vocal.length)
+                    vocal.time = Conductor.songPosition;
+
+                vocal.play();
+            }
+	}
+
+    override function stepHit()
+    {
+		if (FlxG.sound.music != null && FlxG.sound.music.time >= -ClientPrefs.data.noteOffset)
+        {
+            final timeSub:Float = Conductor.songPosition - Conductor.offset;
+            final syncTime:Float = 20;
+
+            for (audio in [FlxG.sound.music].concat(vocalsToSync))
+            {
+                if (audio != null)
+                {
+                    if (audio.length > 0 && Math.abs(audio.time - timeSub) > syncTime)
+                    {
+                        resyncVocals();
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        super.stepHit();
     }
 
     override function beatHit()
