@@ -8,4 +8,5 @@ typedef ALESong = {
     var stepsPerBeat:Int;
     var beatsPerSection:Int;
     var speed:Float;
+    var stage:String;
 }

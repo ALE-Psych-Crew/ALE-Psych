@@ -1,7 +1,7 @@
 package funkin.visuals.game;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 import flixel.input.keyboard.FlxKey;
 
