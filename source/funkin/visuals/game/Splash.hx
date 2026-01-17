@@ -1,7 +1,7 @@
 package funkin.visuals.game;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 import flixel.input.keyboard.FlxKey;
 
@@ -47,7 +47,7 @@ class Splash extends FlxSprite
 
         exists = false;
 
-        animation.onFinish.add((anim) -> {
+        animation.onFinish.add((_) -> {
             exists = false;
         });
     }

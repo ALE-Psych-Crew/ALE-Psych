@@ -1,15 +1,18 @@
 package funkin.visuals.game;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
+
+import funkin.visuals.game.NeoCharacter as Character;
 
 import flixel.math.FlxAngle;
+import flixel.math.FlxRect;
 
 import core.structures.ALEStrum;
 
 import core.enums.NoteType;
 
-class ALENote extends FlxSprite
+class NeoNote extends FlxSprite
 {
     public var textureShader:RGBShaderReference;
 
@@ -22,7 +25,18 @@ class ALENote extends FlxSprite
     public var length:Float;
     public var noteType:String;
 
-    public function new(config:ALEStrum, time:Float, data:Int, length:Float, noteType:String, type:NoteType, space:Float, scale:Float, skins:Array<String>)
+    public var hit:Bool = false;
+
+    public var miss:Bool = false;
+
+    public var parent:NeoNote;
+
+    public var character:Character;
+
+    public var singAnimation:String;
+    public var missAnimation:String;
+
+    public function new(config:ALEStrum, time:Float, data:Int, length:Float, noteType:String, type:NoteType, space:Float, scale:Float, skins:Array<String>, palette:RGBPalette, character:Character)
     {
         super();
 
@@ -35,15 +49,20 @@ class ALENote extends FlxSprite
         this.length = length;
         this.noteType = noteType;
 
+        this.character = character;
+
+        this.singAnimation = config.sing;
+        this.missAnimation = config.miss;
+
         frames = Paths.getMultiAtlas([for (skin in skins) 'noteSkins/' + skin]);
 
         switch (type)
         {
-            case NOTE:
+            case 'note':
                 animation.addByPrefix('idle', config.note, 0, false);
-            case SUSTAIN:
+            case 'sustain':
                 animation.addByPrefix('idle', config.sustain, 0, false);
-            case END:
+            case 'end':
                 animation.addByPrefix('idle', config.end, 0, false);
         }
 
@@ -52,19 +71,14 @@ class ALENote extends FlxSprite
         this.scale.x = this.scale.y = scale;
         
         updateHitbox();
+        centerOrigin();
+        centerOffsets();
 
         x = data * space;
         
-		textureShader = new RGBShaderReference(this, new RGBPalette());
+		textureShader = new RGBShaderReference(this, palette);
 
         allowShader = config.shader != null;
-
-        if (allowShader)
-        {
-            textureShader.r = CoolUtil.colorFromString(config.shader[0]);
-            textureShader.g = CoolUtil.colorFromString(config.shader[1]);
-            textureShader.b = CoolUtil.colorFromString(config.shader[2]);
-        }
 
         multSpeed = 1;
     }
@@ -81,7 +95,7 @@ class ALENote extends FlxSprite
 
     public function resizeByRatio(value:Float)
     {
-        if (type == SUSTAIN && animation.curAnim != null)
+        if (type == 'sustain' && animation.curAnim != null)
         {
             scale.y *= value;
 
@@ -102,15 +116,14 @@ class ALENote extends FlxSprite
     public var offsetAngle:Float = 0;
     public var offsetDirection:Float = 0;
 
+	public var hitHealth:Float = 0.025;
+	public var missHealth:Float = 0.0475;
+
     public var multAlpha:Float = 1;
 
     public final speedMult:Float = ClientPrefs.data.downScroll ? -0.45 : 0.45;
 
-    public var timeDistance(get, never):Float;
-    function get_timeDistance():Float
-    {
-        return time - Conductor.songPosition;
-    }
+    public var timeDistance:Float = 0;
 
     public function followStrum(strum:Strum, crochet:Float, ?speed:Float)
     {
@@ -135,6 +148,23 @@ class ALENote extends FlxSprite
             x = strum.x + offsetX + Math.cos(finalDirection) * distance;
 
         if (copyY)
-            y = strum.y + offsetY + Math.sin(finalDirection) * distance;
+            y = strum.y + offsetY + Math.sin(finalDirection) * distance - (ClientPrefs.data.downScroll && type != 'note' ? height : 0);
+        
+        if (type != 'note' && hit)
+        {
+            if (this.clipRect == null)
+                clipRect = FlxRect.get();
+
+            var clipY:Float = 0;
+
+            if (ClientPrefs.data.downScroll)
+                clipY = ((y + height) - (strum.y + offsetY)) / scale.y;
+            else
+                clipY = ((strum.y + offsetY) - y) / scale.y;
+
+            clipRect.set(0, clipY, frameWidth, frameHeight - clipY);
+        } else {
+            clipRect = null;
+        }
     }
 }

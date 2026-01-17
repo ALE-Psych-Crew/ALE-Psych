@@ -3,7 +3,7 @@ package funkin.visuals.game;
 import utils.PsychAnimationController;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 class StrumNote extends FlxSprite
 {

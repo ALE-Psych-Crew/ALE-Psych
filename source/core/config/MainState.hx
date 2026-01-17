@@ -119,6 +119,8 @@ class MainState extends MusicBeatState
 		CoolUtil.save.load();
 
 		DiscordRPC.initialize(CoolVars.data.discordID);
+      
+		FlxG.mouse.unload();
 
 		FlxG.mouse.useSystemCursor = true;
 

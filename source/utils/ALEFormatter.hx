@@ -1,20 +1,24 @@
 package utils;
 
 import core.structures.ALESong;
-import core.structures.ALESongSection;
-import core.structures.ALEStrumLine;
 import core.structures.PsychSong;
+import core.structures.ALESongSection;
 import core.structures.PsychSongSection;
+import core.structures.ALEStrumLine;
+import core.structures.ALECharacter;
+import core.structures.PsychCharacter;
+import core.structures.ALEStage;
+import core.structures.PsychStage;
 
 import core.enums.CharacterType;
 
 import utils.cool.FileUtil;
 
-typedef ALECharacter = Dynamic;
+using StringTools;
 
 class ALEFormatter
 {
-    public static final FORMAT:String = 'ale-format-v0.1';
+    public static final CHART_FORMAT:String = 'ale-chart-v0.1';
 
     public static function getSong(name:String, difficulty:String):ALESong
     {
@@ -26,7 +30,7 @@ class ALEFormatter
 
         var result:ALESong = null;
 
-        if (json.format == FORMAT)
+        if (json.format == CHART_FORMAT)
             result = cast json;
 
         if (result == null)
@@ -43,26 +47,27 @@ class ALEFormatter
                                 x: 92,
                                 y: 50
                             },
-                            rightToLeft: i == 0,
-                            visible: i != 2,
-                            characters: [[psychSong.player2, psychSong.player1, psychSong.gfVersion][i]],
-                            type: [CharacterType.OPPONENT, CharacterType.PLAYER, CharacterType.EXTRA][i]
+                            rightToLeft: i == 1,
+                            visible: i != 0,
+                            characters: [[psychSong.gfVersion, psychSong.player2, psychSong.player1][i]],
+                            type: cast ['extra', 'opponent', 'player'][i]
                         }
                     }
                 ],
                 sections: [],
                 speed: psychSong.speed,
                 bpm: psychSong.bpm,
-                format: FORMAT,
+                format: CHART_FORMAT,
                 stepsPerBeat: 4,
-                beatsPerSection: 4
+                beatsPerSection: 4,
+                stage: psychSong.stage
             };
 
             for (section in psychSong.notes)
             {
                 var curSection:ALESongSection = {
                     notes: [],
-                    camera: [section.gfSection ? 2 : section.mustHitSection ? 1 : 0, 0],
+                    camera: [section.gfSection ? 0 : section.mustHitSection ? 2 : 1, 0],
                     bpm: section.changeBPM == true ? section.bpm : psychSong.bpm,
                     changeBPM: section.changeBPM ?? false
                 };
@@ -76,7 +81,7 @@ class ALEFormatter
                             note[1] % 4,
                             note[2],
                             note[3] == 'GF Sing' && section.gfSection && note[1] < 4 ? '' : (note[3] ?? ''),
-                            [note[3] == 'GF Sing' || section.gfSection && note[1] < 4 ? 2 : (section.mustHitSection && note[1] < 4) || (!section.mustHitSection && note[1] > 3) ? 1 : 0, 0]
+                            [note[3] == 'GF Sing' || section.gfSection && note[1] < 4 ? 0 : (section.mustHitSection && note[1] < 4) || (!section.mustHitSection && note[1] > 3) ? 2 : 1, 0]
                         ];
 
                         curSection.notes.push(arrayNote);
@@ -148,9 +153,127 @@ class ALEFormatter
 		return cast json;
     }
     
-    public static function getCharacter(char:String):ALECharacter
+    public static final CHARACTER_FORMAT:String = 'ale-character-v0.1';
+
+    public static function getCharacter(char:String, type:CharacterType):ALECharacter
     {
-        return Paths.json('characters/' + char);
+        var json:Dynamic = Paths.json('characters/' + char);
+
+        if (json == null)
+            return null;
+
+        if (json.format == CHARACTER_FORMAT)
+            return cast json;
+
+        var psychJson:PsychCharacter = cast json;
+
+        var result:ALECharacter = {
+            animations: [],
+            scale: psychJson.scale,
+            animationLength: psychJson.sing_duration / 10,
+            icon: psychJson.healthicon,
+            position: {
+                x: psychJson.position[0],
+                y: psychJson.position[1]
+            },
+            cameraPosition: {
+                x: psychJson.camera_position[0],
+                y: psychJson.camera_position[1]
+            },
+            textures: [for (image in psychJson.image.split(',')) image.trim()],
+            flipX: psychJson.flip_x,
+            flipY: false,
+            antialiasing: !psychJson.no_antialiasing,
+            barColor: StringTools.hex(CoolUtil.colorFromArray(psychJson.healthbar_colors)),
+            death: psychJson.deadVariant ?? 'bf-dead',
+            sustainAnimation: false,
+            danceModulo: char.contains('gf') && !char.contains('bf') ? 1 : 2,
+            format: CHARACTER_FORMAT
+        };
+
+        if (type == 'player')
+        {
+            result.cameraPosition.x += 100;
+            result.cameraPosition.y -= 100;
+        } else {
+            result.cameraPosition.x += 150;
+            result.cameraPosition.y -= 100;
+        }
+
+        for (anim in psychJson.animations)
+            result.animations.push({
+                prefix: anim.name,
+                animation: anim.anim,
+                framerate: anim.fps,
+                loop: anim.loop,
+                indices: anim.indices,
+                offset: {
+                    x: anim.offsets[0],
+                    y: anim.offsets[1]
+                }
+            });
+
+        return result;
+    }
+
+    public static final STAGE_FORMAT:String = 'ale-stage-v0.1';
+
+    public static function getStage(id:String):ALEStage
+    {
+        var json:Dynamic = Paths.json('stages/' + id);
+
+        if (json.format == STAGE_FORMAT)
+            return cast json;
+
+        json.camera_speed ??= 1;
+        json.defaultZoom ??= 1;
+        json.isPixelStage ??= false;
+
+        json.boyfriend ??= [0, 0];
+        json.opponent ??= [0, 0];
+        json.girlfriend ??= [0, 0];
+        
+        json.camera_boyfriend ??= [0, 0];
+        json.camera_opponent ??= [0, 0];
+        json.camera_girlfriend ??= [0, 0];
+
+        return {
+            speed: json.camera_speed,
+            zoom: json.defaultZoom,
+            ui: json.isPixelStage ? 'pixel' : 'default',
+            characterOffset: {
+                type: {
+                    player: {
+                        x: json.boyfriend[0],
+                        y: json.boyfriend[1]
+                    },
+                    opponent: {
+                        x: json.opponent[0],
+                        y: json.opponent[1]
+                    },
+                    extra: {
+                        x: json.girlfriend[0],
+                        y: json.girlfriend[1]
+                    }
+                }
+            },
+            cameraOffset: {
+                type: {
+                    player: {
+                        x: json.camera_boyfriend[0],
+                        y: json.camera_boyfriend[1]
+                    },
+                    opponent: {
+                        x: json.camera_opponent[0],
+                        y: json.camera_opponent[1]
+                    },
+                    extra: {
+                        x: json.camera_girlfriend[0],
+                        y: json.camera_girlfriend[1]
+                    }
+                }
+            }
+        };
     }
 
     public static function getStrumLine(strl:String):ALEStrumLine

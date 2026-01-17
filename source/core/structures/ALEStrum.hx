@@ -9,4 +9,6 @@ typedef ALEStrum = {
     var end:String;
     var shader:Array<String>;
     var splash:Array<String>;
+    var sing:String;
+    var miss:String;
 }

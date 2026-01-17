@@ -4,7 +4,7 @@ import utils.PsychAnimationController;
 import utils.NoteTypesConfig;
 
 import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBPalette.RGBShaderReference;
+import funkin.visuals.shaders.RGBShaderReference;
 
 import funkin.visuals.game.StrumNote;
 
