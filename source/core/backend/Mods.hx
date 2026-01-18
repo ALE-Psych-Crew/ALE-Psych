@@ -144,7 +144,7 @@ class Mods
 
         libraryRoots.push('assets');
 
-        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(libraryRoots));
+		OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(libraryRoots));
 
 		if (Paths.exists(CoolVars.data.icon + '.png'))
 			Lib.current.stage.window.setIcon(Image.fromFile(Paths.getPath(CoolVars.data.icon + '.png')));

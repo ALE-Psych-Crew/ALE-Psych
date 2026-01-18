@@ -103,6 +103,8 @@ class CopyState extends MusicBeatState
 				
 				canUpdate = false;
                 
+				core.backend.Mods.init();
+
 			    CoolUtil.switchState(new MainState(), true, true);
 			}
 

@@ -7,6 +7,7 @@ import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
 import openfl.utils.AssetType;
 import openfl.media.Sound;
+import openfl.text.Font as OpenFLFont;
 
 import lime.media.AudioBuffer;
 import lime.graphics.Image;
@@ -79,7 +80,18 @@ class ALEAssetLibrary extends AssetLibrary
     {
         final bytes:Bytes = getBytes(id);
 
-        return bytes == null ? null : Font.fromBytes(bytes);
+        if (bytes == null)
+            return null;
+
+        final font:Font = Font.fromBytes(bytes);
+
+        final openFLFont:OpenFLFont = new OpenFLFont();
+        
+        @:privateAccess openFLFont.__fromLimeFont(font);
+
+        OpenFLFont.registerFont(openFLFont);
+
+        return font;
     }
 
     override public function getAsset(id:String, type:String):Dynamic
@@ -97,7 +109,7 @@ class ALEAssetLibrary extends AssetLibrary
             case FONT:
                 getFont(id);
             default:
-                super.getAsset(id, type);
+                null;
         }
     }
 }

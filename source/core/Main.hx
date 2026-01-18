@@ -203,7 +203,9 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
+		#if !mobile
 		core.backend.Mods.init();
+		#end
 
 		addChild(new ALEGame(game.width, game.height, game.initialState, game.framerate));
 
