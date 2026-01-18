@@ -2,21 +2,23 @@ package utils;
 
 import haxe.ds.StringMap;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.util.FlxSave;
 
 import utils.cool.FileUtil;
-
 import utils.Score;
 
 class ALESave
 {
-    public var preferences:FlxSave;
-
     public var score:FlxSave;
+
+    public var preferences:FlxSave;
 
     public var custom:FlxSave;
 
     public var controls:FlxSave;
+
+    public var customControls:FlxSave;
 
     public function new()
     {
@@ -31,44 +33,9 @@ class ALESave
 
         controls = new FlxSave();
         controls.bind('controls', FileUtil.getSavePath());
-    }
 
-    public function loadPreferences()
-    {
-		if (preferences.data.settings != null)
-		{
-			for (field in Reflect.fields(preferences.data.settings))
-				if (Reflect.field(ClientPrefs.data, field) != null)
-					Reflect.setField(ClientPrefs.data, field, Reflect.field(preferences.data.settings, field));
-		}
-
-        if (custom.data.settings != null)
-        {
-            ClientPrefs.custom = custom.data.settings;
-                    
-            if (Paths.exists('options.json'))
-            {
-                var jsonData:Dynamic = Paths.json('options');
-
-                if (jsonData.categories is Array)
-                    for (cat in cast(jsonData.categories, Array<Dynamic>))
-                        if (cat.options != null)
-                            for (option in cast(cat.options, Array<Dynamic>))
-                                if (option.variable != null && Reflect.field(ClientPrefs.data, option.variable) == null)
-                                    Reflect.setField(ClientPrefs.custom, option.variable, Reflect.field(CoolUtil.save.custom.data.settings, option.variable) ?? option.initialValue);
-            }
-        } else {
-            ClientPrefs.custom = {};
-        }
-
-		if (ClientPrefs.data.framerate > FlxG.drawFramerate)
-		{
-			FlxG.updateFramerate = ClientPrefs.data.framerate;
-			FlxG.drawFramerate = ClientPrefs.data.framerate;
-		} else {
-			FlxG.drawFramerate = ClientPrefs.data.framerate;
-			FlxG.updateFramerate = ClientPrefs.data.framerate;
-		}
+        customControls = new FlxSave();
+        customControls.bind('customControls', FileUtil.getSavePath());
     }
 
     public function loadScore()
@@ -90,12 +57,75 @@ class ALESave
         Score.completed = CoolUtil.save.score.data.completed;
     }
 
+    public function loadPreferences()
+    {
+		if (preferences.data.settings != null)
+		{
+			for (field in Reflect.fields(preferences.data.settings))
+				if (Reflect.field(ClientPrefs.data, field) != null)
+					Reflect.setField(ClientPrefs.data, field, Reflect.field(preferences.data.settings, field));
+		}
+
+        if (custom.data.settings == null)
+            ClientPrefs.custom = {};
+        else
+            ClientPrefs.custom = custom.data.settings;
+
+        if (Paths.exists('options.json'))
+        {
+            var jsonData:Dynamic = Paths.json('options');
+
+            if (jsonData.categories is Array)
+                for (cat in cast(jsonData.categories, Array<Dynamic>))
+                    if (cat.options != null)
+                        for (option in cast(cat.options, Array<Dynamic>))
+                            if (option.variable != null && Reflect.field(ClientPrefs.data, option.variable) == null)
+                                Reflect.setField(ClientPrefs.custom, option.variable, Reflect.field(CoolUtil.save.custom.data.settings, option.variable) ?? option.initialValue);
+        }
+
+		if (ClientPrefs.data.framerate > FlxG.drawFramerate)
+		{
+			FlxG.updateFramerate = ClientPrefs.data.framerate;
+			FlxG.drawFramerate = ClientPrefs.data.framerate;
+		} else {
+			FlxG.drawFramerate = ClientPrefs.data.framerate;
+			FlxG.updateFramerate = ClientPrefs.data.framerate;
+		}
+    }
+
     public function loadControls()
     {
         if (controls.data.settings != null)
 			for (field in Reflect.fields(controls.data.settings))
 				if (Reflect.field(ClientPrefs.controls, field) != null)
 					Reflect.setField(ClientPrefs.controls, field, Reflect.field(controls.data.settings, field));
+
+
+        if (custom.data.settings == null)
+            ClientPrefs.custom = {};
+        else            
+            ClientPrefs.customControls = custom.data.settings;
+
+        if (Paths.exists('controls.json'))
+        {
+            var jsonControls:Array<Dynamic> = cast Paths.json('controls').categories;
+
+            for (jsonGroup in jsonControls)
+            {
+                var group = Reflect.field(ClientPrefs.controls, jsonGroup.name) ?? Reflect.field(ClientPrefs.customControls, jsonGroup.name);
+
+                if (group == null)
+                {
+                    Reflect.setProperty(ClientPrefs.customControls, jsonGroup.name, {});
+
+                    group = Reflect.field(ClientPrefs.customControls, jsonGroup.name);
+                }
+
+                for (jsonOption in cast(jsonGroup.options, Array<Dynamic>))
+                    if (Reflect.field(group, jsonOption.variable) == null)
+                        Reflect.setField(group, jsonOption.variable, [for (def in cast(jsonOption.initialValue, Array<Dynamic>)) FlxKey.fromString(def)]);
+            }
+        }
     }
 
     public function savePreferences()
@@ -124,6 +154,9 @@ class ALESave
     {
         controls.data.settings = ClientPrefs.controls;
         controls.flush();
+        
+        customControls.data.settings = ClientPrefs.customControls;
+        customControls.flush();
     }
 
     public function load()
@@ -169,17 +202,22 @@ class ALESave
         ClientPrefs.data = {};
         
         ClientPrefs.custom = {};
-
-        preferences.destroy();
-        preferences = null;
+        
+        ClientPrefs.customControls = {};
 
         score.destroy();
         score = null;
 
-        controls.destroy();
-        controls = null;
+        preferences.destroy();
+        preferences = null;
 
         custom.destroy();
         custom = null;
+
+        controls.destroy();
+        controls = null;
+
+        customControls.destroy();
+        customControls = null;
     }
 }

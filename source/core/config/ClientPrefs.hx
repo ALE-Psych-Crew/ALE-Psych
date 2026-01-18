@@ -34,6 +34,8 @@ class ClientPrefs
 		}
 	};
 
+	public static var customControls:Dynamic = {};
+
     public static var data:SaveData = {};
 
 	public static var custom:Dynamic = {};

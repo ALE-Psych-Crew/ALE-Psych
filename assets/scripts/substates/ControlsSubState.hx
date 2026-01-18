@@ -4,56 +4,15 @@ import funkin.visuals.objects.Alphabet;
 
 using StringTools;
 
-inline function multiProp(obj:Dynamic, path:String)
-{
-    for (field in path.split('.'))
-        if (field != '')
-            obj = Reflect.field(obj, field);
-
-    return obj;
-}
-
-
-function priorSort(priorities:Array<String>, ?field:String)
-{
-    return function(a, b)
-    {
-        var an = multiProp(a, field ?? '');
-        var bn = multiProp(b, field ?? '');
-
-        var ai = priorities.indexOf(an);
-        var bi = priorities.indexOf(bn);
-
-        if (ai == -1 && bi == -1)
-            return Reflect.compare(an, bn);
-
-        if (ai == -1)
-            return 1;
-
-        if (bi == -1)
-            return -1;
-
-        return Reflect.compare(ai, bi);
-    }
-}
-
 var options:Array<Dynamic> = [
-    for (group in Reflect.fields(ClientPrefs.controls))
+    for (group in Paths.json('controls').categories)
     {
         {
-            name: group,
-            options: [
-                for (id in Reflect.fields(Reflect.field(ClientPrefs.controls, group)))
-                    id
-            ]
+            name: group.name,
+            options: [for (option in group.options) option.variable]
         }
     }
 ];
-
-options.sort(priorSort(['notes', 'ui'], 'name'));
-
-for (group in options)
-    group.options.sort(priorSort(['left', 'down', 'up', 'right']));
 
 FlxG.camera.bgColor = FlxColor.WHITE;
 

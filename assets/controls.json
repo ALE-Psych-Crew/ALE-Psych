@@ -1,0 +1,145 @@
+{
+	"categories": [
+		{
+			"name": "notes",
+			"options": [
+				{
+					"variable": "left",
+					"initialValue": [
+						"A",
+						"LEFT"
+					]
+				},
+				{
+					"variable": "down",
+					"initialValue": [
+						"S",
+						"DOWN"
+					]
+				},
+				{
+					"variable": "up",
+					"initialValue": [
+						"W",
+						"UP"
+					]
+				},
+				{
+					"variable": "right",
+					"initialValue": [
+						"D",
+						"RIGHT"
+					]
+				}
+			]
+		},
+		{
+			"name": "ui",
+			"options": [
+				{
+					"variable": "left",
+					"initialValue": [
+						"A",
+						"LEFT"
+					]
+				},
+				{
+					"variable": "down",
+					"initialValue": [
+						"S",
+						"DOWN"
+					]
+				},
+				{
+					"variable": "up",
+					"initialValue": [
+						"W",
+						"UP"
+					]
+				},
+				{
+					"variable": "right",
+					"initialValue": [
+						"D",
+						"RIGHT"
+					]
+				},
+				{
+					"variable": "accept",
+					"initialValue": [
+						"ENTER",
+						"SPACE"
+					]
+				},
+				{
+					"variable": "back",
+					"initialValue": [
+						"ESCAPE",
+						null
+					]
+				},
+				{
+					"variable": "pause",
+					"initialValue": [
+						"ENTER",
+						"ESCAPE"
+					]
+				},
+				{
+					"variable": "reset",
+					"initialValue": [
+						"R",
+						"F5"
+					]
+				}
+			]
+		},
+		{
+			"name": "engine",
+			"options": [
+				{
+					"variable": "character",
+					"initialValue": [
+						"EIGHT",
+						null
+					]
+				},
+				{
+					"variable": "chart",
+					"initialValue": [
+						"SEVEN",
+						null
+					]
+				},
+				{
+					"variable": "fps_counter",
+					"initialValue": [
+						"F3",
+						null
+					]
+				},
+				{
+					"variable": "master_menu",
+					"initialValue": [
+						"SEVEN",
+						null
+					]
+				},
+				{
+					"variable": "reset_game",
+					"initialValue": [
+						"N",
+						null
+					]
+				},
+				{
+					"variable": "switch_mod",
+					"initialValue": [
+						"M",
+						null
+					]
+				}
+			]
+		}
+	]
+}

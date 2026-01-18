@@ -9,6 +9,7 @@ import flixel.input.keyboard.FlxKey;
 		'utils.cool.FileUtil',
 		'utils.cool.LogUtil',
 		'utils.cool.MathUtil',
+		'utils.cool.OptionsUtil',
 		'utils.cool.PlayStateUtil',
 		'utils.cool.ShaderUtil',
 		'utils.cool.StateUtil',

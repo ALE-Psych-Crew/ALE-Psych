@@ -54,7 +54,7 @@ class ControlsOption extends ScriptSpriteGroup
         this.variable = variable;
         this.groupIndex = groupIndex;
 
-        keys = Reflect.field(Reflect.field(ClientPrefs.controls, group), variable);
+        keys = CoolUtil.getControl(group, variable);
 
         bg = new FlxSprite().makeGraphic(FlxG.width * 0.8, 50, FlxColor.fromRGB(35, 35, 50));
         add(bg);
