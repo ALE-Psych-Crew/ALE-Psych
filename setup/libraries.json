@@ -35,7 +35,7 @@
             "libraries": [
                 {
                     "name": "flixel",
-                    "version": "6.1.1",
+                    "version": "6.1.2",
                     "skipDependencies": true
                 },
                 {
@@ -60,7 +60,9 @@
             "libraries": [
                 {
                     "name": "flixel-animate",
-                    "version": "1.4.0"
+                    "git": "https://github.com/MaybeMaru/flixel-animate",
+                    "commit": "ad424c76cb76cfda5622cce47837a4698e1a284c",
+                    "skipDependencies": true
                 },
                 {
                     "name": "flxsoundfilters",

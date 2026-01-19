@@ -16,7 +16,7 @@ jobs:
           - platform: Windows
             os: windows-latest
             build_cmd: haxelib run lime build windows
-            setup_libs: setup/install-haxelibs.bat
+            setup_libs: install-haxelibs.bat
             extra_libs:
             pre_build_commands:
             post_build_commands:
@@ -25,7 +25,7 @@ jobs:
           - platform: Windows x32
             os: windows-latest
             build_cmd: haxelib run lime build windows -32 -D 32bits -D HXCPP_M32
-            setup_libs: setup/install-haxelibs.bat
+            setup_libs: install-haxelibs.bat
             extra_libs:
             pre_build_commands:
             post_build_commands:
@@ -34,7 +34,7 @@ jobs:
           - platform: Android
             os: ubuntu-latest
             build_cmd: haxelib run lime build android
-            setup_libs: sh ./setup/install-haxelibs.sh
+            setup_libs: sh ./install-haxelibs.sh
             extra_libs:
             pre_build_commands: |
               haxelib run lime config ANDROID_SDK $ANDROID_HOME
@@ -47,7 +47,7 @@ jobs:
           - platform: Linux
             os: ubuntu-latest
             build_cmd: haxelib run lime build linux
-            setup_libs: sh ./setup/install-haxelibs.sh
+            setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
               sudo apt-get install libvlc-dev
               sudo apt-get install libvlccore-dev
@@ -58,7 +58,7 @@ jobs:
           - platform: iOS
             os: macos-15
             build_cmd: haxelib run lime build ios -nosign -final
-            setup_libs: sh ./setup/install-haxelibs.sh
+            setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
             post_build_commands: |
               cd export/release/ios/build/Release-iphoneos
@@ -70,7 +70,7 @@ jobs:
           - platform: MacOS
             os: macos-15
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
-            setup_libs: sh ./setup/install-haxelibs.sh
+            setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
             post_build_commands:
             artifact_path: export/release/macos/bin
@@ -78,7 +78,7 @@ jobs:
           - platform: MacOS x64
             os: macos-15-intel
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
-            setup_libs: sh ./setup/install-haxelibs.sh
+            setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
             post_build_commands:
             artifact_path: export/release/macos/bin
