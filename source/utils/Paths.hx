@@ -17,6 +17,8 @@ import lime.utils.Bytes;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
 
+import animate.FlxAnimateFrames;
+
 import utils.ALEAssetLibrary;
 
 import haxe.ds.StringMap;
@@ -56,6 +58,9 @@ class Paths
     public static var cachedMultiAtlas:StringMap<FlxAtlasFrames> = new StringMap();
     public static var permanentMultiAtlas:Array<String> = [];
 
+    public static var cachedAnimateAtlas:StringMap<FlxAnimateFrames> = new StringMap();
+    public static var permanentAnimateAtlas:Array<String> = [];
+
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
         return cast OpenFLAssets.getLibrary('default');
@@ -85,7 +90,8 @@ class Paths
             {cache: cachedAtlas, permanent: permanentAtlas},
             {cache: cachedMultiAtlas, permanent: permanentMultiAtlas},
             {cache: cachedJson, permanent: permanentJson},
-            {cache: cachedYaml, permanent: permanentYaml}
+            {cache: cachedYaml, permanent: permanentYaml},
+            {cache: cachedAnimateAtlas, permanent: permanentAnimateAtlas}
         ];
         
         if (clearPermanent)
@@ -329,6 +335,34 @@ class Paths
     public static function getMultiAsepriteAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
         return getMultiAtlasBase(Paths.getAsepriteAtlas, files, permanent, missingPrint);
 
+    public static function getAnimateAtlas(folder:String, permanent:Bool = false, missingPrint:Bool = true):FlxAnimateFrames
+    {
+        final path:String = 'images/' + folder;
+
+        if (cachedAnimateAtlas.exists(path))
+            return cachedAnimateAtlas.get(path);
+
+        if (!Paths.exists(path))
+        {
+            if (missingPrint)
+                debugTrace(path, MISSING_FOLDER);
+
+            return null;
+        }
+
+        final frames:FlxAnimateFrames = FlxAnimateFrames.fromAnimate(Paths.getPath(path));
+
+        if (frames != null)
+        {
+            cachedAnimateAtlas.set(path, frames);
+
+            if (permanent)
+                permanentAnimateAtlas.push(path);
+        }
+
+        return frames;
+    }
+
     // SOUND
 
 	inline static public function voices(route:String, postfix:String = null, permanent:Bool = false, missingPrint:Bool = true)
@@ -362,6 +396,8 @@ class Paths
 
         var json:Dynamic = Json.parse(getContent(path));
 
+        cachedJson.set(path, json);
+
         if (permanent)
             permanentJson.push(path);
 
@@ -384,6 +420,8 @@ class Paths
         }
 
         var yaml:Dynamic = Yaml.parse(getContent(path));
+
+        cachedYaml.set(path, yaml);
 
         if (permanent)
             permanentYaml.push(path);
