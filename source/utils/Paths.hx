@@ -58,9 +58,6 @@ class Paths
     public static var cachedMultiAtlas:StringMap<FlxAtlasFrames> = new StringMap();
     public static var permanentMultiAtlas:Array<String> = [];
 
-    public static var cachedAnimateAtlas:StringMap<FlxAnimateFrames> = new StringMap();
-    public static var permanentAnimateAtlas:Array<String> = [];
-
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
         return cast OpenFLAssets.getLibrary('default');
@@ -90,8 +87,7 @@ class Paths
             {cache: cachedAtlas, permanent: permanentAtlas},
             {cache: cachedMultiAtlas, permanent: permanentMultiAtlas},
             {cache: cachedJson, permanent: permanentJson},
-            {cache: cachedYaml, permanent: permanentYaml},
-            {cache: cachedAnimateAtlas, permanent: permanentAnimateAtlas}
+            {cache: cachedYaml, permanent: permanentYaml}
         ];
         
         if (clearPermanent)
@@ -335,12 +331,9 @@ class Paths
     public static function getMultiAsepriteAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
         return getMultiAtlasBase(Paths.getAsepriteAtlas, files, permanent, missingPrint);
 
-    public static function getAnimateAtlas(folder:String, permanent:Bool = false, missingPrint:Bool = true):FlxAnimateFrames
+    public static function getAnimateAtlas(folder:String, missingPrint:Bool = true):FlxAnimateFrames
     {
         final path:String = 'images/' + folder;
-
-        if (cachedAnimateAtlas.exists(path))
-            return cachedAnimateAtlas.get(path);
 
         if (!Paths.exists(path))
         {
@@ -350,17 +343,7 @@ class Paths
             return null;
         }
 
-        final frames:FlxAnimateFrames = FlxAnimateFrames.fromAnimate(Paths.getPath(path));
-
-        if (frames != null)
-        {
-            cachedAnimateAtlas.set(path, frames);
-
-            if (permanent)
-                permanentAnimateAtlas.push(path);
-        }
-
-        return frames;
+        return FlxAnimateFrames.fromAnimate(Paths.getPath(path));
     }
 
     // SOUND
