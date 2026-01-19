@@ -17,8 +17,6 @@ import lime.utils.Bytes;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
 
-import funkin.visuals.objects.PsychFlxAnimate;
-
 import utils.ALEAssetLibrary;
 
 import haxe.ds.StringMap;
@@ -330,78 +328,6 @@ class Paths
 
     public static function getMultiAsepriteAtlas(files:Array<String>, permanent:Bool = false, missingPrint:Bool = true):FlxAtlasFrames
         return getMultiAtlasBase(Paths.getAsepriteAtlas, files, permanent, missingPrint);
-
-	public static function loadAnimateAtlas(spr:PsychFlxAnimate, folderOrImg:Dynamic, spriteJson:Dynamic = null, animationJson:Dynamic = null, permanent:Bool = false, missingPrint:Bool = true)
-	{
-		var changedAnimJson = false;
-		var changedAtlasJson = false;
-		var changedImage = false;
-		
-		if (spriteJson != null)
-		{
-			changedAtlasJson = true;
-
-			spriteJson = getContent(spriteJson);
-		}
-
-		if(animationJson != null) 
-		{
-			changedAnimJson = true;
-
-			animationJson = getContent(animationJson);
-		}
-
-		if (Std.isOfType(folderOrImg, String))
-		{
-			var originalPath:String = folderOrImg;
-
-			for (i in 0...10)
-			{
-				var st:String = '$i';
-
-				if (i == 0)
-                    st = '';
-
-				if (!changedAtlasJson)
-				{
-					spriteJson = getContent('images/$originalPath/spritemap$st.json');
-
-					if (spriteJson != null)
-					{
-						changedImage = true;
-
-						changedAtlasJson = true;
-
-						folderOrImg = image('$originalPath/spritemap$st', permanent, missingPrint);
-                        
-						break;
-					}
-				} else if (exists('images/$originalPath/spritemap$st.png')) {
-					changedImage = true;
-
-					folderOrImg = image('$originalPath/spritemap$st', permanent, missingPrint);
-
-					break;
-				}
-			}
-
-			if (!changedImage)
-			{
-				changedImage = true;
-
-				folderOrImg = image(originalPath, permanent, missingPrint);
-			}
-
-			if (!changedAnimJson)
-			{
-				changedAnimJson = true;
-
-				animationJson = getContent('images/$originalPath/Animation.json');
-			}
-		}
-
-		spr.loadAtlasEx(folderOrImg, spriteJson, animationJson);
-	}
 
     // SOUND
 

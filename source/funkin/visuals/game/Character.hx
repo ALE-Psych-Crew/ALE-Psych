@@ -11,8 +11,6 @@ import openfl.utils.Assets;
 import utils.Song;
 import utils.Section;
 
-import funkin.visuals.objects.PsychFlxAnimate;
-
 typedef CharacterFile = {
 	var animations:Array<AnimArray>;
 	var image:String;
@@ -133,31 +131,11 @@ class Character extends FlxSprite
 	{
 		isAnimateAtlas = false;
 
-		#if flxanimate
-		var animToFind:String = 'images/' + json.image + '/Animation.json';
-		if (Paths.exists(animToFind))
-			isAnimateAtlas = true;
-		#end
-
 		scale.set(1, 1);
 		updateHitbox();
 
 		if(!isAnimateAtlas)
 			frames = Paths.getAtlas(json.image);
-
-		#if flxanimate
-		else
-		{
-			atlas = new PsychFlxAnimate();
-			atlas.showPivot = false;
-			try
-			{
-				Paths.loadAnimateAtlas(atlas, json.image);
-			} catch(e:Dynamic) {
-				debugTrace('Could not load atlas ${json.image}: $e', ERROR);
-			}
-		}
-		#end
 
 		imageFile = json.image;
 		jsonScale = json.scale;
@@ -200,32 +178,18 @@ class Character extends FlxSprite
 					else
 						animation.addByPrefix(animAnim, animName, animFps, animLoop);
 				}
-				#if flxanimate
-				else
-				{
-					if(animIndices != null && animIndices.length > 0)
-						atlas.anim.addBySymbolIndices(animAnim, animName, animIndices, animFps, animLoop);
-					else
-						atlas.anim.addBySymbol(animAnim, animName, animFps, animLoop);
-				}
-				#end
 
 				if(anim.offsets != null && anim.offsets.length > 1) addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
 				else addOffset(anim.anim, 0, 0);
 			}
 		}
-		#if flxanimate
-		if(isAnimateAtlas) copyAtlasValues();
-		#end
 		
 		deadVariant = json.deadVariant ?? 'bf-dead';
 	}
 
 	override function update(elapsed:Float)
 	{
-		if(isAnimateAtlas) atlas.update(elapsed);
-
-		if(debugMode || (!isAnimateAtlas && animation.curAnim == null) || (isAnimateAtlas && atlas.anim.curSymbol == null))
+		if(debugMode || (!isAnimateAtlas && animation.curAnim == null))
 		{
 			super.update(elapsed);
 			return;
@@ -289,7 +253,7 @@ class Character extends FlxSprite
 	}
 
 	inline public function isAnimationNull():Bool
-		return !isAnimateAtlas ? (animation.curAnim == null) : (atlas.anim.curSymbol == null);
+		return animation.curAnim == null;
 
 	var __lastAnim:String;
 
@@ -301,7 +265,7 @@ class Character extends FlxSprite
 	public function isAnimationFinished():Bool
 	{
 		if(isAnimationNull()) return false;
-		return !isAnimateAtlas ? animation.curAnim.finished : atlas.anim.finished;
+		return animation.curAnim.finished;
 	}
 
 	public function finishAnimation():Void
@@ -309,24 +273,18 @@ class Character extends FlxSprite
 		if(isAnimationNull()) return;
 
 		if(!isAnimateAtlas) animation.curAnim.finish();
-		else atlas.anim.curFrame = atlas.anim.length - 1;
 	}
 
 	public var animPaused(get, set):Bool;
 	private function get_animPaused():Bool
 	{
 		if(isAnimationNull()) return false;
-		return !isAnimateAtlas ? animation.curAnim.paused : atlas.anim.isPlaying;
+		return animation.curAnim.paused;
 	}
 	private function set_animPaused(value:Bool):Bool
 	{
 		if(isAnimationNull()) return value;
 		if(!isAnimateAtlas) animation.curAnim.paused = value;
-		else
-		{
-			if(value) atlas.anim.pause();
-			else atlas.anim.resume();
-		} 
 
 		return value;
 	}
@@ -359,7 +317,6 @@ class Character extends FlxSprite
 	{
 		specialAnim = false;
 		if(!isAnimateAtlas) animation.play(AnimName, Force, Reversed, Frame);
-		else atlas.anim.play(AnimName, Force, Reversed, Frame);
 
 		if (animOffsets.exists(AnimName))
 		{
@@ -436,55 +393,6 @@ class Character extends FlxSprite
 		animation.addByPrefix(name, anim, 24, false);
 	}
 
-	// Atlas support
 	// special thanks ne_eo for the references, you're the goat!!
 	public var isAnimateAtlas:Bool = false;
-	#if flxanimate
-	public var atlas:PsychFlxAnimate;
-	public override function draw()
-	{
-		if(isAnimateAtlas)
-		{
-			copyAtlasValues();
-			atlas.draw();
-			return;
-		}
-		super.draw();
-	}
-
-	public function copyAtlasValues()
-	{
-		@:privateAccess
-		{
-			atlas.cameras = cameras;
-			atlas.scrollFactor = scrollFactor;
-			atlas.scale = scale;
-			atlas.offset = offset;
-			atlas.origin = origin;
-			atlas.x = x;
-			atlas.y = y;
-			atlas.angle = angle;
-			atlas.alpha = alpha;
-			atlas.visible = visible;
-			atlas.flipX = flipX;
-			atlas.flipY = flipY;
-			atlas.shader = shader;
-			atlas.antialiasing = antialiasing;
-			atlas.colorTransform = colorTransform;
-			atlas.color = color;
-		}
-	}
-
-	public override function destroy()
-	{
-		super.destroy();
-		destroyAtlas();
-	}
-
-	public function destroyAtlas()
-	{
-		if (atlas != null)
-			atlas = FlxDestroyUtil.destroy(atlas);
-	}
-	#end
 }

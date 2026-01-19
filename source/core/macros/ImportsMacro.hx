@@ -45,9 +45,9 @@ class ImportsMacro
             'flixel.sound.filters',
             'flixel.sound.filters.effects',
 
-            'ale.ui',
-
             'flixel.away3d',
+
+            'animate',
 
             'away3d.animators',
             'away3d.animators.data',
@@ -81,6 +81,8 @@ class ImportsMacro
             'away3d.primitives',
             'away3d.textures',
             'away3d.tools.helpers',
+
+            'ale.ui',
 
             'haxe.crypto',
             'haxe.display',

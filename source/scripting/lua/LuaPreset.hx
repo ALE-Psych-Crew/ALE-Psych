@@ -34,8 +34,6 @@ class LuaPreset
 
         new LuaDiscord(lua);
 
-        new LuaAnimate(lua);
-
         new LuaText(lua);
 
         new LuaShader(lua);

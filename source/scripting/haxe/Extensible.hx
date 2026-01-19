@@ -11,6 +11,8 @@ import flixel.ui.*;
 import flixel.graphics.*;
 import flixel.addons.display.*;
 
+import animate.*;
+
 import openfl.display.*;
 import openfl.utils.*;
 import openfl.text.*;
@@ -50,6 +52,7 @@ class ScriptBar extends FlxBar implements RuleScriptedClass {}
 class ScriptGraphic extends FlxGraphic implements RuleScriptedClass {}
 
 class ScriptSprite extends FlxSprite implements RuleScriptedClass {}
+class ScriptAnimate extends FlxAnimate implements RuleScriptedClass {}
 class ScriptBackdrop extends FlxBackdrop implements RuleScriptedClass {}
 class ScriptRuntimeShader extends FlxRuntimeShader implements RuleScriptedClass {}
 

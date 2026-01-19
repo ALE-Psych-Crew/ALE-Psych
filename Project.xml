@@ -65,7 +65,7 @@
 
 	<haxelib name="ale-ui"/>
 
-	<haxelib name="flxanimate"/>
+	<haxelib name="flixel-animate"/>
 
 	<haxelib name="flxsoundfilters"/>
 	<haxelib name="funkin.vis"/>
