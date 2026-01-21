@@ -45,9 +45,6 @@ class Paths
     public static var cachedAtlas:StringMap<FlxAtlasFrames> = new StringMap();
     public static var permanentAtlas:Array<String> = [];
 
-    public static var cachedJson:StringMap<Dynamic> = new StringMap();
-    public static var permanentJson:Array<String> = [];
-
     public static var cachedMultiAtlas:StringMap<FlxAtlasFrames> = new StringMap();
     public static var permanentMultiAtlas:Array<String> = [];
 
@@ -113,8 +110,7 @@ class Paths
             {cache: cachedGraphics, permanent: permanentGraphics},
             {cache: cachedSounds, permanent: permanentSounds},
             {cache: cachedAtlas, permanent: permanentAtlas},
-            {cache: cachedMultiAtlas, permanent: permanentMultiAtlas},
-            {cache: cachedJson, permanent: permanentJson}
+            {cache: cachedMultiAtlas, permanent: permanentMultiAtlas}
         ];
         
         if (clearPermanent)
@@ -393,9 +389,6 @@ class Paths
     {
         var path:String = file + '.json';
 
-        if (cachedJson.exists(path))
-            return cachedJson.get(path);
-
         if (!exists(path))
         {
             if (missingPrint)
@@ -405,11 +398,6 @@ class Paths
         }
 
         var json:Dynamic = Json.parse(getContent(path));
-
-        cachedJson.set(path, json);
-
-        if (permanent)
-            permanentJson.push(path);
 
         return json;
     }
