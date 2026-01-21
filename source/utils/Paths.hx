@@ -14,13 +14,15 @@ import lime.utils.Bytes;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
+import flixel.util.FlxSave;
 
 import animate.FlxAnimateFrames;
 
 import haxe.ds.StringMap;
 
-import sys.FileStat;
 import sys.FileSystem;
+import sys.FileStat;
+import sys.io.File;
 
 class Paths
 {
@@ -49,15 +51,46 @@ class Paths
     public static var cachedMultiAtlas:StringMap<FlxAtlasFrames> = new StringMap();
     public static var permanentMultiAtlas:Array<String> = [];
 
-    public static var mod:Null<String> = null;
-
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
         return cast OpenFLAssets.getLibrary('default');
 
+    @:unreflective public static var UNIQUE_MOD:Null<String> = null;
+
+    public static final assets:String = 'assets';
+    public static final mods:String = 'mods';
+    public static var mod:Null<String> = UNIQUE_MOD;
+
     @:unreflective public static function init()
     {
-        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(['assets']));
+        final roots:Array<String> = [];
+
+        if (mod != null)
+            roots.push(mods + '/' + mod);
+
+        roots.push(assets);
+
+        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(roots));
+    }
+
+    @:unreflective public static function initMod()
+    {
+        if (FileSystem.exists('mods/UNIQUE_MOD.txt'))
+        {
+            UNIQUE_MOD = mod = File.getContent('mods/UNIQUE_MOD.txt').split('\n')[0].trim();
+        } else {
+            UNIQUE_MOD = null;
+
+            var save:FlxSave = new FlxSave();
+
+            save.bind('ALEEngineData', utils.cool.FileUtil.getSavePath(false));
+
+            if (save != null)
+                mod = save.data.currentMod;
+
+            if (!FileSystem.exists(mods + '/' + mod))
+                mod = null;
+        }
     }
 
     // UTILS

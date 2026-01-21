@@ -2,8 +2,9 @@ package utils.cool;
 
 import flixel.tweens.FlxEase.EaseFunction;
 
-import core.config.MainState;
 import core.enums.PrintType;
+
+import core.Main;
 
 class LogUtil
 {
@@ -18,7 +19,7 @@ class LogUtil
 			return;
 		
 		if (CoolVars.data.allowDebugPrint && type.printable())
-			MainState.debugPrintPlugin?.print(text, type == CUSTOM ? customType : type.toString(), type == CUSTOM ? customColor : type.toColor());
+			Main.debugPrintPlugin?.print(text, type == CUSTOM ? customType : type.toString(), type == CUSTOM ? customColor : type.toColor());
 	}
 
 	public static function ansiColorString(text:String, color:FlxColor):String

@@ -44,6 +44,8 @@
 
 	<haxelib name="flixel-animate"/>
 
+	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
+
 	<!-- _________________________________ Macros ________________________________ -->
 
 	<!-- ______________________________ Haxe Defines _____________________________ -->

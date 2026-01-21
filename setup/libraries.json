@@ -51,6 +51,16 @@
                     "skipDependencies": true
                 }
             ]
+        },
+        {
+            "name": "Platform",
+            "libraries": [
+                {
+                    "name": "sl-windows-api",
+                    "git": "https://github.com/Slushi-Github/SL-Windows-API",
+                    "commit": "854312e9a3e7af678309113543082224b42c2a16"
+                }
+            ]
         }
     ]
 }

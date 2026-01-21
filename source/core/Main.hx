@@ -9,7 +9,11 @@ import flixel.FlxGame;
 
 import openfl.display.Sprite;
 
+import funkin.debug.DebugCounter;
+
 import core.config.MainState;
+
+import core.plugins.*;
 
 #if WINDOWS_API
 @:buildXml('
@@ -43,10 +47,11 @@ class Main extends Sprite
 	{
 		super();
 
-		//checkVersion();
+		onceConfig();
+	}
 
-		openalFix();
-
+	@:unreflective function onceConfig()
+	{
 		addChild(new FlxGame(0, 0, MainState, 120, 120, true));
 
 		#if WINDOWS_API
@@ -58,10 +63,23 @@ class Main extends Sprite
 		Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
 		Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
 		#end
-	}
 
-	@:unreflective function checkVersion()
-	{
+		#if desktop
+		var origin:String = #if hl Sys.getCwd() #else Sys.programPath() #end;
+
+		var configPath:String = Path.directory(Path.withoutExtension(origin));
+
+		#if mac
+		configPath = Path.directory(configPath) + "/Resources/plugins/alsoft.conf";
+		#else
+		configPath += "/plugins/alsoft.conf";
+		#end
+
+		Sys.putEnv("ALSOFT_CONF", configPath);
+		#end
+
+		return;
+		
 		try
 		{
 			var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
@@ -81,20 +99,38 @@ class Main extends Sprite
 		}
 	}
 
-	@:unreflective function openalFix()
-	{
-		#if desktop
-		var origin:String = #if hl Sys.getCwd() #else Sys.programPath() #end;
+	public static var debugCounter:DebugCounter;
+	
+	public static var debugPrintPlugin:DebugPrintPlugin;
 
-		var configPath:String = Path.directory(Path.withoutExtension(origin));
+    @:unreflective public static function preResetConfig()
+    {
+        Conductor.destroy();
 
-		#if mac
-		configPath = Path.directory(configPath) + "/Resources/plugins/alsoft.conf";
-		#else
-		configPath += "/plugins/alsoft.conf";
-		#end
+        CoolUtil.destroy();
 
-		Sys.putEnv("ALSOFT_CONF", configPath);
-		#end
-	}
+		debugCounter?.destroy();
+		
+		debugPrintPlugin?.destroy();
+    }
+
+    @:unreflective public static function postResetConfig()
+    {
+        FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
+
+        CoolUtil.init();
+
+		Paths.initMod();
+
+        CoolVars.loadMetadata();
+
+        Paths.init();
+
+        Conductor.init();
+
+		FlxG.game.addChild(debugCounter = new DebugCounter(Paths.exists('data/debug') ? cast Paths.json('data/debug').fields : []));
+		
+		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
+			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+    }
 }

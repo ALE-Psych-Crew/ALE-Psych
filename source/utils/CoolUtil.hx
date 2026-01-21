@@ -12,6 +12,7 @@ import core.config.ALESave;
 		'utils.cool.ReflectUtil',
 		'utils.cool.StringUtil',
 		'utils.cool.OptionsUtil',
+		'utils.cool.KeyUtil',
 		'utils.cool.ColorUtil',
 		'utils.cool.EngineUtil'
 	]

@@ -3,13 +3,14 @@ package utils;
 import core.structures.ALEData;
 import core.Main;
 
+import sys.FileSystem;
+import sys.io.File;
+
 import openfl.Lib;
 
 @:build(core.macros.CoolVarsMacro.build())
 class CoolVars
 {
-	public static var data:ALEData = null;
-
 	public static var engineVersion(get, never):String;
 
 	public static function get_engineVersion():String
@@ -26,4 +27,65 @@ class CoolVars
 
 	public static final Function_Stop:String = '##_ALE_PSYCH_LUA_FUNCTION_STOP_##';
 	public static final Function_Continue:String = '##_ALE_PSYCH_LUA_FUNCTION_CONTINUE_##';
+
+	public static var data:ALEData = null;
+	
+	public static function loadMetadata()
+	{
+		data = {
+			developerMode: false,
+			mobileDebug: false,
+			scriptsHotReloading: false,
+
+			verbose: false,
+			allowDebugPrint: true,
+
+			initialState: 'TitleState',
+			freeplayState: 'FreeplayState',
+			storyMenuState: 'StoryMenuState',
+			masterEditorState: 'MasterEditorState',
+			mainMenuState: 'MainMenuState',
+			optionsState: 'OptionsState',
+
+			loadDefaultWeeks: true,
+
+			pauseSubState: 'PauseSubState',
+			gameOverScreen: 'GameOverSubState',
+			transition: 'FadeTransition',
+
+			title: 'Friday Night Funkin\': ALE Psych',
+			icon: 'appIcon',
+			width: 1280,
+			height: 720,
+
+            paths: [],
+
+            dependencies: [],
+
+			windowColor: [33, 33, 33],
+
+			bpm: 102.0,
+
+			discordID: '1309982575368077416',
+
+			discordButtons: [
+				{
+					label: 'ALE Psych Website',
+					url: 'https://ale-psych-crew.github.io/ALE-Psych-Website/'
+				}
+			],
+
+			modID: null
+		};
+
+		var json:Null<ALEData> = null;
+
+		for (path in [Paths.mods + '/' + Paths.mod, Paths.assets])
+			if (FileSystem.exists(path + '/data/data.json'))
+				json = cast Json.parse(File.getContent(path + '/data/data.json'));
+
+		for (field in Reflect.fields(json))
+			if (Reflect.field(data, field) != null)
+				Reflect.setField(data, field, Reflect.field(json, field));
+	}
 }
