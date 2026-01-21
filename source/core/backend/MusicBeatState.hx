@@ -29,15 +29,15 @@ class MusicBeatState extends ALEState
     override function create()
     {
         super.create();
-        
-        Conductor.stepHit.add(hitCallbackHandler(stepHit));
-        Conductor.safeStepHit.add(hitCallbackHandler(safeStepHit));
 
-        Conductor.beatHit.add(hitCallbackHandler(beatHit));
-        Conductor.safeBeatHit.add(hitCallbackHandler(safeBeatHit));
+        Conductor.stepHit.add(onStepHit);
+        Conductor.safeStepHit.add(onSafeStepHit);
 
-        Conductor.sectionHit.add(hitCallbackHandler(sectionHit));
-        Conductor.safeSectionHit.add(hitCallbackHandler(safeSectionHit));
+        Conductor.beatHit.add(onBeatHit);
+        Conductor.safeBeatHit.add(onSafeBeatHit);
+
+        Conductor.sectionHit.add(onSectionHit);
+        Conductor.safeSectionHit.add(onSafeSectionHit);
     }
 
     public var shouldUpdateMusic:Bool = false;
@@ -54,26 +54,64 @@ class MusicBeatState extends ALEState
 
     override function destroy()
     {
-        Conductor.stepHit.remove(hitCallbackHandler(stepHit));
-        Conductor.safeStepHit.remove(hitCallbackHandler(safeStepHit));
+        Conductor.stepHit.remove(onStepHit);
+        Conductor.safeStepHit.remove(onSafeStepHit);
 
-        Conductor.beatHit.remove(hitCallbackHandler(beatHit));
-        Conductor.safeBeatHit.remove(hitCallbackHandler(safeBeatHit));
+        Conductor.beatHit.remove(onBeatHit);
+        Conductor.safeBeatHit.remove(onSafeBeatHit);
 
-        Conductor.sectionHit.remove(hitCallbackHandler(sectionHit));
-        Conductor.safeSectionHit.remove(hitCallbackHandler(safeSectionHit));
+        Conductor.sectionHit.remove(onSectionHit);
+        Conductor.safeSectionHit.remove(onSafeSectionHit);
 
         super.destroy();
     }
 
-    function hitCallbackHandler(callback:Int -> Void):Int -> Void
+    function onStepHit(step:Int):Void
     {
-        return (value) -> {
-            if (subState != null && !persistentUpdate)
-                return;
+        if (subState != null && !persistentUpdate)
+            return;
 
-            callback(value);
-        }
+        stepHit(step);
+    }
+
+    function onSafeStepHit(step:Int):Void
+    {
+        if (subState != null && !persistentUpdate)
+            return;
+
+        safeStepHit(step);
+    }
+
+    function onBeatHit(beat:Int):Void
+    {
+        if (subState != null && !persistentUpdate)
+            return;
+
+        beatHit(beat);
+    }
+
+    function onSafeBeatHit(beat:Int):Void
+    {
+        if (subState != null && !persistentUpdate)
+            return;
+
+        safeBeatHit(beat);
+    }
+
+    function onSectionHit(section:Int):Void
+    {
+        if (subState != null && !persistentUpdate)
+            return;
+
+        sectionHit(section);
+    }
+
+    function onSafeSectionHit(section:Int):Void
+    {
+        if (subState != null && !persistentUpdate)
+            return;
+
+        safeSectionHit(section);
     }
 
     function stepHit(curStep:Int) {}

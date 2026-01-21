@@ -130,6 +130,8 @@ class PlayState extends MusicBeatState
 
         if (Controls.RESET)
         {
+            shouldClearMemory = false;
+
             pauseMusic();
             
             FlxG.resetState();
