@@ -1,7 +1,11 @@
 package utils;
 
+import cpp.WindowsAPI;
+
 import core.structures.ALEData;
 import core.Main;
+
+import utils.cool.EngineUtil;
 
 import sys.FileSystem;
 import sys.io.File;
@@ -87,5 +91,13 @@ class CoolVars
 		for (field in Reflect.fields(json))
 			if (Reflect.field(data, field) != null)
 				Reflect.setField(data, field, Reflect.field(json, field));
+		
+		FlxG.stage.window.title = CoolVars.data.title;
+
+		WindowsAPI.setWindowTitle();
+
+		WindowsAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
+
+		EngineUtil.resizeGame(CoolVars.data.width, CoolVars.data.height);
 	}
 }

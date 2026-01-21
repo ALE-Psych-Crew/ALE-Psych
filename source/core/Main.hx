@@ -118,6 +118,20 @@ class Main extends Sprite
     {
         FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
 
+		FlxG.fixedTimestep = false;
+		FlxG.game.focusLostFramerate = 60;
+		FlxG.keys.preventDefaultKeys = [TAB];
+
+		#if android
+		FlxG.android.preventDefaultKeys = [BACK];
+		#end
+      
+		FlxG.mouse.unload();
+
+		FlxG.mouse.useSystemCursor = true;
+
+		Paths.clearEngineCache(true);
+
         CoolUtil.init();
 
 		Paths.initMod();
