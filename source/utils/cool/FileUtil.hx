@@ -47,7 +47,7 @@ class FileUtil
 
     public static function searchFile(parent:String, file:String)
     {
-        for (folder in [Paths.modFolder(), 'assets'])
+        for (folder in [Paths.mod ?? '', 'assets'])
         {
             var path:String = folder + '/' + parent;
 
@@ -83,7 +83,5 @@ class FileUtil
     
 	@:access(flixel.util.FlxSave.validate)
 	public static function getSavePath(modSupport:Bool = true):String
-	{
-		return FlxG.stage.application.meta.get('company') + '/' + flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file')) + (modSupport ? ((Mods.folder.trim() == '' ? '' : '/' + (CoolVars.data.modID ?? Mods.folder))) : '');
-	}
+		return FlxG.stage.application.meta.get('company') + '/' + flixel.util.FlxSave.validate(FlxG.stage.application.meta.get('file')) + (modSupport ? ((Paths.mod == null ? '' : '/' + (CoolVars.data.modID ?? Paths.mod))) : '');
 }

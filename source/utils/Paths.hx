@@ -1,10 +1,8 @@
 package utils;
 
 import core.structures.CacheArray;
-
 import core.enums.ReadDirectoryType;
-
-import core.backend.Mods;
+import core.assets.ALEAssetLibrary;
 
 import openfl.utils.Assets as OpenFLAssets;
 import openfl.display3D.textures.RectangleTexture;
@@ -19,14 +17,10 @@ import flixel.graphics.FlxGraphic;
 
 import animate.FlxAnimateFrames;
 
-import utils.ALEAssetLibrary;
-
 import haxe.ds.StringMap;
 
 import sys.FileStat;
 import sys.FileSystem;
-
-import yaml.Yaml;
 
 class Paths
 {
@@ -52,15 +46,19 @@ class Paths
     public static var cachedJson:StringMap<Dynamic> = new StringMap();
     public static var permanentJson:Array<String> = [];
 
-    public static var cachedYaml:StringMap<Dynamic> = new StringMap();
-    public static var permanentYaml:Array<String> = [];
-
     public static var cachedMultiAtlas:StringMap<FlxAtlasFrames> = new StringMap();
     public static var permanentMultiAtlas:Array<String> = [];
+
+    public static var mod:Null<String> = null;
 
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
         return cast OpenFLAssets.getLibrary('default');
+
+    @:unreflective public static function init()
+    {
+        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(['assets']));
+    }
 
     // UTILS
 
@@ -74,9 +72,6 @@ class Paths
         return path;
     }
 
-    public static function modFolder():String
-        return 'mods/' + Mods.folder;
-    
     public static function clearEngineCache(?clearPermanent:Bool = false)
     {
         var cachedObjects:Array<CacheArray> = [
@@ -86,8 +81,7 @@ class Paths
             {cache: cachedSounds, permanent: permanentSounds},
             {cache: cachedAtlas, permanent: permanentAtlas},
             {cache: cachedMultiAtlas, permanent: permanentMultiAtlas},
-            {cache: cachedJson, permanent: permanentJson},
-            {cache: cachedYaml, permanent: permanentYaml}
+            {cache: cachedJson, permanent: permanentJson}
         ];
         
         if (clearPermanent)
@@ -385,31 +379,6 @@ class Paths
             permanentJson.push(path);
 
         return json;
-    }
-
-    public static function yaml(file:String, permanent:Bool = false, missingPrint:Bool = true):Dynamic
-    {
-        var path:String = file + '.yaml';
-
-        if (cachedYaml.exists(path))
-            return cachedYaml.get(path);
-
-        if (!exists(path))
-        {
-            if (missingPrint)
-                debugTrace(path, MISSING_FILE);
-
-            return null;
-        }
-
-        var yaml:Dynamic = Yaml.parse(getContent(path));
-
-        cachedYaml.set(path, yaml);
-
-        if (permanent)
-            permanentYaml.push(path);
-
-        return yaml;
     }
 
     public static function ndll(fileName:String, funcName:String, ?args:Int = 0, missingPrint:Bool = true):Dynamic

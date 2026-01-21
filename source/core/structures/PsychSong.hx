@@ -3,7 +3,7 @@ package core.structures;
 typedef PsychSong = {
 	var song:String;
 	var notes:Array<PsychSongSection>;
-	var events:Array<Dynamic>;
+	var events:Array<Array<Dynamic>>;
 	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;

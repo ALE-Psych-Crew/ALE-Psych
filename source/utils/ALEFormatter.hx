@@ -1,14 +1,6 @@
 package utils;
 
-import core.structures.ALESong;
-import core.structures.PsychSong;
-import core.structures.ALESongSection;
-import core.structures.PsychSongSection;
-import core.structures.ALEStrumLine;
-import core.structures.ALECharacter;
-import core.structures.PsychCharacter;
-import core.structures.ALEStage;
-import core.structures.PsychStage;
+import core.structures.*;
 
 import core.enums.CharacterType;
 
@@ -36,8 +28,9 @@ class ALEFormatter
         if (result == null)
         {
             var psychSong:PsychSong = getPsychSong(json);
-   
+
             result = {
+                events: psychSong.events,
                 strumLines: [
                     for (i in 0...3)
                     {
@@ -157,7 +150,7 @@ class ALEFormatter
 
     public static function getCharacter(char:String, type:CharacterType):ALECharacter
     {
-        var json:Dynamic = Paths.json('characters/' + char);
+        var json:Dynamic = Paths.json('data/characters/' + char);
 
         if (json == null)
             return null;
@@ -165,9 +158,62 @@ class ALEFormatter
         if (json.format == CHARACTER_FORMAT)
             return cast json;
 
-        var psychJson:PsychCharacter = cast json;
+        if (json.version == "1.0.0")
+        {
+            final funkinJson:FunkinCharacter = cast json;
 
-        var result:ALECharacter = {
+            final result:ALECharacter = {
+                type: switch (funkinJson.renderType)
+                {
+                    case 'animateatlas', 'multianimateatlas':
+                        'map';
+
+                    default:
+                        'sheet';
+                },
+                animations: [],
+                scale: 1,
+                animationLength: 0.4,
+                icon: funkinJson.healthIcon.id,
+                position: funkinJson.offsets == null ? {x: 0, y: 0} : {
+                    x: funkinJson.offsets[0],
+                    y: funkinJson.offsets[1]
+                },
+                cameraPosition: funkinJson.cameraOffsets == null ? {x: 0, y: 0} : {
+                    x: funkinJson.cameraOffsets[0],
+                    y: funkinJson.cameraOffsets[1]
+                },
+                textures: [funkinJson.assetPath.contains(':') ? funkinJson.assetPath.split(':')[1] : funkinJson.assetPath],
+                flipX: funkinJson.flipX,
+                flipY: false,
+                antialiasing: true,
+                barColor: type == 'opponent' ? '0xFFFF0000' : '0xFF00FF00',
+                death: 'bf-dead',
+                sustainAnimation: false,
+                danceModulo: char.contains('gf') && !char.contains('bf') ? 1 : 2,
+                format: CHARACTER_FORMAT
+            }
+
+            for (anim in funkinJson.animations)
+                result.animations.push({
+                    name: anim.name,
+                    prefix: anim.prefix,
+                    framerate: 24,
+                    loop: false,
+                    indices: anim.indices,
+                    offset: {
+                        x: anim.offsets[0],
+                        y: anim.offsets[1]
+                    }
+                });
+
+            return result;
+        }
+
+        final psychJson:PsychCharacter = cast json;
+
+        final result:ALECharacter = {
+            type: 'sheet',
             animations: [],
             scale: psychJson.scale,
             animationLength: psychJson.sing_duration / 10,
@@ -184,9 +230,9 @@ class ALEFormatter
             flipX: psychJson.flip_x,
             flipY: false,
             antialiasing: !psychJson.no_antialiasing,
-            barColor: StringTools.hex(CoolUtil.colorFromArray(psychJson.healthbar_colors)),
+            barColor: CoolUtil.intToHex(CoolUtil.colorFromArray(psychJson.healthbar_colors)),
             death: psychJson.deadVariant ?? 'bf-dead',
-            sustainAnimation: false,
+            sustainAnimation: true,
             danceModulo: char.contains('gf') && !char.contains('bf') ? 1 : 2,
             format: CHARACTER_FORMAT
         };
@@ -202,14 +248,14 @@ class ALEFormatter
 
         for (anim in psychJson.animations)
             result.animations.push({
+                name: anim.anim,
                 prefix: anim.name,
-                animation: anim.anim,
                 framerate: anim.fps,
                 loop: anim.loop,
                 indices: anim.indices,
                 offset: {
-                    x: anim.offsets[0],
-                    y: anim.offsets[1]
+                    x: anim.offsets[0] / psychJson.scale,
+                    y: anim.offsets[1] / psychJson.scale
                 }
             });
 
@@ -220,7 +266,7 @@ class ALEFormatter
 
     public static function getStage(id:String):ALEStage
     {
-        var json:Dynamic = Paths.json('stages/' + id);
+        var json:Dynamic = Paths.json('data/stages/' + id);
 
         if (json.format == STAGE_FORMAT)
             return cast json;
@@ -240,7 +286,7 @@ class ALEFormatter
         return {
             speed: json.camera_speed,
             zoom: json.defaultZoom,
-            ui: json.isPixelStage ? 'pixel' : 'default',
+            hud: json.isPixelStage ? 'pixel' : 'default',
             characterOffset: {
                 type: {
                     player: {
@@ -276,8 +322,77 @@ class ALEFormatter
         };
     }
 
+    public static final STRUMLINE_FORMAT:String = 'ale-strumline-v0.1';
+
     public static function getStrumLine(strl:String):ALEStrumLine
     {
-        return cast Paths.json('strumLines/' + strl);
+        final json:Dynamic = Paths.json('data/strumLines/' + strl);
+
+        if (json != null && json.format == STRUMLINE_FORMAT)
+            return cast json;
+
+        return null;
+    }
+
+    public static final ICON_FORMAT:String = 'ale-icon-v0.1';
+
+    public static function getIcon(id:String):ALEIcon
+    {
+        final json:Dynamic = Paths.json('data/icons/' + id, false, false);
+
+        if (json != null && json.format == ICON_FORMAT)
+            return cast json;
+
+        return {
+            texture: id,
+            type: "frames",
+            frames: 2,
+            animations: [
+                {
+                    percent: 0,
+                    name: 'lose',
+                    indices: [1],
+                    framerate: 0,
+                    loop: false
+                },
+                {
+                    percent: 20,
+                    name: 'neutral',
+                    indices: [0],
+                    framerate: 0,
+                    loop: false
+                }
+            ],
+            scale: {
+                x: 1,
+                y: 1
+            },
+            bopScale: {
+                x: 1.2,
+                y: 1.2
+            },
+            offset: {
+                x: 20,
+                y: 0
+            },
+            bopModulo: 1,
+            lerp: 0.33,
+            flipX: false,
+            flipY: false,
+            antialiasing: !id.contains('pixel'),
+            format: ICON_FORMAT
+        };
+    }
+
+    public static final HUD_FORMAT:String = 'ale-hud-v0.1';
+
+    public static function getHud(id:String):ALEHud
+    {
+        final json:Dynamic = Paths.json('data/huds/' + id);
+
+        if (json.format == HUD_FORMAT)
+            return cast json;
+
+        return null;
     }
 }

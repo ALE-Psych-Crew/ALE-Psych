@@ -1,153 +1,76 @@
 package funkin.visuals.objects;
 
+import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 
 class Bar extends FlxSpriteGroup
 {
-	public var leftBar:FlxSprite;
-	public var rightBar:FlxSprite;
-	public var bg:FlxSprite;
-	public var valueFunction:Void->Float = null;
-	public var percent(default, set):Float = 0;
-	public var bounds:Dynamic = {min: 0, max: 1};
-	public var leftToRight(default, set):Bool = true;
-	public var barCenter(default, null):Float = 0;
+    public var percent(default, set):Null<Float>;
+    function set_percent(value:Float):Null<Float>
+    {
+        value = FlxMath.bound(value, 0, 100);
 
-	// you might need to change this if you want to use a custom bar
-	public var barWidth(default, set):Int = 1;
-	public var barHeight(default, set):Int = 1;
-	public var barOffset:FlxPoint = new FlxPoint(3, 3);
+        if (percent == value)
+            return value;
 
-	public function new(x:Float, y:Float, image:String = 'healthBar', valueFunction:Void->Float = null, boundX:Float = 0, boundY:Float = 1)
-	{
-		super(x, y);
-		
-		this.valueFunction = valueFunction;
-		setBounds(boundX, boundY);
-		
-		bg = new FlxSprite().loadGraphic(Paths.image('ui/' + image));
-		bg.antialiasing = ClientPrefs.data.antialiasing;
-		barWidth = Std.int(bg.width - 6);
-		barHeight = Std.int(bg.height - 6);
+        percent = value;
 
-		leftBar = new FlxSprite().makeGraphic(Std.int(bg.width), Std.int(bg.height), FlxColor.WHITE);
-		//leftBar.color = FlxColor.WHITE;
-		leftBar.antialiasing = antialiasing = ClientPrefs.data.antialiasing;
+        var bgScale:Float = bg.width * percent / 100;
 
-		rightBar = new FlxSprite().makeGraphic(Std.int(bg.width), Std.int(bg.height), FlxColor.WHITE);
-		rightBar.color = FlxColor.BLACK;
-		rightBar.antialiasing = ClientPrefs.data.antialiasing;
+        var bgSpace:Float = bg.width - bgScale;
 
-		add(leftBar);
-		add(rightBar);
-		add(bg);
-		regenerateClips();
-	}
+        leftBar.clipRect.x = rightToLeft ? bgSpace : 0;
+        leftBar.clipRect.width = rightToLeft ? bgScale : bgSpace;
 
-	public var enabled:Bool = true;
-	override function update(elapsed:Float) {
-		if(!enabled)
-		{
-			super.update(elapsed);
-			return;
-		}
+        rightBar.clipRect.x = rightToLeft ? 0 : bgSpace;
+        rightBar.clipRect.width = rightToLeft ? bgSpace : bgScale;
 
-		if(valueFunction != null)
-		{
-			var value:Null<Float> = FlxMath.remapToRange(FlxMath.bound(valueFunction(), bounds.min, bounds.max), bounds.min, bounds.max, 0, 100);
-			percent = (value != null ? value : 0);
-		}
-		else percent = 0;
-		super.update(elapsed);
-	}
-	
-	public function setBounds(min:Float, max:Float)
-	{
-		bounds.min = min;
-		bounds.max = max;
-	}
+        return percent;
+    }
 
-	public function setColors(left:FlxColor = null, right:FlxColor = null)
-	{
-		if (left != null)
-			leftBar.color = left;
-		if (right != null)
-			rightBar.color = right;
-	}
+    public var bg:FlxSprite;
+    public var leftBar:FlxSprite;
+    public var rightBar:FlxSprite;
 
-	public function updateBar()
-	{
-		if(leftBar == null || rightBar == null) return;
+    public var rightToLeft(default, set):Bool;
+    function set_rightToLeft(value:Bool)
+    {
+        if (rightToLeft == value)
+            return value;
 
-		leftBar.setPosition(bg.x, bg.y);
-		rightBar.setPosition(bg.x, bg.y);
+        rightToLeft = value;
 
-		var leftSize:Float = 0;
-		if(leftToRight) leftSize = FlxMath.lerp(0, barWidth, percent / 100);
-		else leftSize = FlxMath.lerp(0, barWidth, 1 - percent / 100);
+        if (percent != null)
+            percent = percent;
+        
+        return rightToLeft;
+    }
 
-		leftBar.clipRect.width = leftSize;
-		leftBar.clipRect.height = barHeight;
-		leftBar.clipRect.x = barOffset.x;
-		leftBar.clipRect.y = barOffset.y;
+    public function new(image:String, ?x:Float, ?y:Float, ?percent:Float, ?rightToLeft:Bool, ?leftColor:FlxColor, ?rightColor:FlxColor)
+    {
+        super(x, y);
 
-		rightBar.clipRect.width = barWidth - leftSize;
-		rightBar.clipRect.height = barHeight;
-		rightBar.clipRect.x = barOffset.x + leftSize;
-		rightBar.clipRect.y = barOffset.y;
+        bg = new FlxSprite().loadGraphic(Paths.image(image));
 
-		barCenter = leftBar.x + leftSize + barOffset.x;
+        leftBar = new FlxSprite().makeGraphic(Std.int(bg.width), Std.int(bg.height));
+        leftBar.color = leftColor ?? FlxColor.LIME;
+        leftBar.clipRect = FlxRect.get(0, 0, leftBar.frameWidth, leftBar.frameHeight);
+        add(leftBar);
 
-		// flixel is retarded
-		leftBar.clipRect = leftBar.clipRect;
-		rightBar.clipRect = rightBar.clipRect;
-	}
+        rightBar = new FlxSprite().makeGraphic(Std.int(bg.width), Std.int(bg.height));
+        rightBar.color = rightColor ?? FlxColor.RED;
+        rightBar.clipRect = FlxRect.get(0, 0, rightBar.frameWidth, rightBar.frameHeight);
+        add(rightBar);
 
-	public function regenerateClips()
-	{
-		if(leftBar != null)
-		{
-			leftBar.setGraphicSize(Std.int(bg.width), Std.int(bg.height));
-			leftBar.updateHitbox();
-			leftBar.clipRect = new FlxRect(0, 0, Std.int(bg.width), Std.int(bg.height));
-		}
-		if(rightBar != null)
-		{
-			rightBar.setGraphicSize(Std.int(bg.width), Std.int(bg.height));
-			rightBar.updateHitbox();
-			rightBar.clipRect = new FlxRect(0, 0, Std.int(bg.width), Std.int(bg.height));
-		}
-		updateBar();
-	}
+        add(bg);
 
-	private function set_percent(value:Float)
-	{
-		var doUpdate:Bool = false;
-		if(value != percent) doUpdate = true;
-		percent = value;
+        this.rightToLeft = rightToLeft ?? false;
 
-		if(doUpdate) updateBar();
-		return value;
-	}
+        this.percent = percent ?? 50;
+    }
 
-	private function set_leftToRight(value:Bool)
-	{
-		leftToRight = value;
-		updateBar();
-		return value;
-	}
-
-	private function set_barWidth(value:Int)
-	{
-		barWidth = value;
-		regenerateClips();
-		return value;
-	}
-
-	private function set_barHeight(value:Int)
-	{
-		barHeight = value;
-		regenerateClips();
-		return value;
-	}
+    public function getMiddle():FlxPoint
+    {
+        return FlxPoint.get(x + (rightToLeft ? rightBar.clipRect.width : leftBar.clipRect.width), y + bg.height / 2);
+    }
 }

@@ -1,254 +1,87 @@
 package core.backend;
 
-import core.structures.BPMChange;
-
-import core.interfaces.IMusicState;
-
-import utils.Song.SwagSong;
-
-import flixel.FlxState;
-
-#if cpp
-import cpp.vm.Gc;
-#elseif hl
-import hl.Gc;
-#end
-
-class MusicBeatState extends FlxState implements IMusicState
+class MusicBeatState extends ALEState
 {
-	public static var instance:MusicBeatState;
+    public var curStep(get, never):Int;
+    function get_curStep():Int
+        return Conductor.curStep;
 
-	public var camGame:ALECamera;
+    public var safeStep(get, never):Int;
+    function get_safeStep():Int
+        return Conductor.safeStep;
+    
+    public var curBeat(get, never):Int;
+    function get_curBeat():Int
+        return Conductor.curBeat;
+    
+    public var safeBeat(get, never):Int;
+    function get_safeBeat():Int
+        return Conductor.safeBeat;
+    
+    public var curSection(get, never):Int;
+    function get_curSection():Int
+        return Conductor.curSection;
+    
+    public var safeSection(get, never):Int;
+    function get_safeSection():Int
+        return Conductor.safeSection;
 
-	override function create()
-	{
-		MusicBeatState.instance = this;
-		
-		camGame = new ALECamera();
-		
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.setDefaultDrawTarget(camera, true);
-
-        if (CoolVars.skipTransOut)
-        {
-            CoolVars.skipTransOut = false;
-        } else {
-            #if cpp
-            CoolUtil.openSubState(new CustomSubState(
-                CoolVars.data.transition,
-                [false, null],
-                [false],
-				null,
-                ['finishCallback' => null]
-            ));
-            #end
-        }
-
-		super.create();
-	}
-
-    public var shouldClearMemory:Bool = true;
-
-	override function destroy()
-	{
-		MusicBeatState.instance = null;
-
-        if (shouldClearMemory)
-            cleanMemory();
-        
-		super.destroy();
-	}
-
-    function cleanMemory()
+    override function create()
     {
-        Paths.clearEngineCache();
+        super.create();
+        
+        Conductor.stepHit.add(hitCallbackHandler(stepHit));
+        Conductor.safeStepHit.add(hitCallbackHandler(safeStepHit));
 
-        #if cpp
-        var killZombies:Bool = true;
-        
-        while (killZombies)
-		{
-            var zombie = Gc.getNextZombie();
-        
-            if (zombie == null)
-			{
-                killZombies = false;
-            } else {
-                var closeMethod = Reflect.field(zombie, "close");
-        
-                if (closeMethod != null && Reflect.isFunction(closeMethod))
-                    closeMethod.call(zombie, []);
-            }
-        }
-        
-        Gc.run(true);
-        Gc.compact();
-        #end
+        Conductor.beatHit.add(hitCallbackHandler(beatHit));
+        Conductor.safeBeatHit.add(hitCallbackHandler(safeBeatHit));
 
-        #if hl
-        Gc.major();
-        #end
-        
-        FlxG.bitmap.clearUnused();
-        FlxG.bitmap.clearCache();
+        Conductor.sectionHit.add(hitCallbackHandler(sectionHit));
+        Conductor.safeSectionHit.add(hitCallbackHandler(safeSectionHit));
     }
-	
-	var bpmChangeMap:Null<Array<BPMChange>>;
 
-	public function calculateBPMChanges(?song:Null<SwagSong>)
-	{
-		if (song == null)
-		{
-			bpmChangeMap = null;
+    public var shouldUpdateMusic:Bool = false;
 
-			return;
-		}
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
 
-		var curTime:Float = 0;
-		var curStep:Int = 0;
+        if (subState != null && !persistentUpdate)
+            return;
 
-		Conductor.bpm = song.bpm;
-		
-		bpmChangeMap = [
-			{
-				bpm: Conductor.bpm,
-				time: 0,
-				step: 0
-			}
-		];
+        Conductor.update();
+    }
 
-		for (section in song.notes)
-		{
-			if (section.changeBPM && section.bpm != Conductor.bpm)
-			{
-				Conductor.bpm = section.bpm;
+    override function destroy()
+    {
+        Conductor.stepHit.remove(hitCallbackHandler(stepHit));
+        Conductor.safeStepHit.remove(hitCallbackHandler(safeStepHit));
 
-				bpmChangeMap.push(
-					{
-						bpm: Conductor.bpm,
-						time: curTime,
-						step: curStep
-					}
-				);
-			}
-			
-			curTime += Conductor.sectionCrochet;
-			curStep += Conductor.beatsPerSection * Conductor.stepsPerBeat;
-		}
+        Conductor.beatHit.remove(hitCallbackHandler(beatHit));
+        Conductor.safeBeatHit.remove(hitCallbackHandler(safeBeatHit));
 
-		Conductor.bpm = song.bpm;
-	}
+        Conductor.sectionHit.remove(hitCallbackHandler(sectionHit));
+        Conductor.safeSectionHit.remove(hitCallbackHandler(safeSectionHit));
 
-	var curBPMIndex:Int = 0;
+        super.destroy();
+    }
 
-    public var curStep:Int = -1;
+    function hitCallbackHandler(callback:Int -> Void):Int -> Void
+    {
+        return (value) -> {
+            if (subState != null && !persistentUpdate)
+                return;
 
-    public var curBeat:Int = -1;
+            callback(value);
+        }
+    }
 
-    public var curSection:Int = -1;
+    function stepHit(curStep:Int) {}
+    function safeStepHit(safeStep:Int) {}
 
-	public var shouldUpdateMusic:Bool = true;
+    function beatHit(curBeat:Int) {}
+    function safeBeatHit(safeBeat:Int) {}
 
-	public function updateMusic()
-	{
-		if (!shouldUpdateMusic || FlxG.sound.music == null || Conductor.songPosition < 0)
-			return;
-
-		var newStep:Int = -1;
-
-		if (bpmChangeMap == null)
-		{
-			newStep = Math.floor(Conductor.songPosition / Conductor.stepCrochet);
-		} else {
-			while (curBPMIndex + 1 < bpmChangeMap.length && Conductor.songPosition >= bpmChangeMap[curBPMIndex + 1].time)
-				curBPMIndex++;
-
-			while (curBPMIndex >= 0 && Conductor.songPosition < bpmChangeMap[curBPMIndex].time)
-				curBPMIndex--;
-
-			var change:BPMChange = bpmChangeMap[curBPMIndex];
-
-			if (Conductor.bpm != change.bpm)
-				Conductor.bpm = change.bpm;
-
-			newStep = change.step + Math.floor((Conductor.songPosition - change.time) / Conductor.stepCrochet);
-		}
-
-		if (curStep != newStep)
-		{
-			curStep = newStep;
-			
-			stepHit();
-		}
-	}
-
-	override function update(elapsed:Float)
-	{
-		updateMusic();
-		
-		super.update(elapsed);
-	}
-
-	var lastSafeStep:Int = 0;
-
-	public function stepHit():Void
-	{
-		var prev:Int = lastSafeStep;
-
-		for (i in 0...(curStep - prev))
-			safeStepHit(Math.floor(lastSafeStep + 1));
-
-		var newBeat:Int = Math.floor(curStep / Conductor.stepsPerBeat);
-
-		if (curBeat != newBeat)
-		{
-			curBeat = newBeat;
-
-			beatHit();
-		}
-	}
-
-	var lastSafeBeat:Int = 0;
-
-	public function beatHit():Void
-	{
-		var prev:Int = lastSafeBeat;
-
-		for (i in 0...(curBeat - prev))
-			safeBeatHit(Math.floor(lastSafeBeat + 1));
-
-		var newSection = Math.floor(curBeat / Conductor.beatsPerSection);
-
-		if (curSection != newSection)
-		{
-			curSection = newSection;
-
-			sectionHit();
-		}
-	}
-
-	var lastSafeSection:Int = 0;
-
-	public function sectionHit():Void
-	{
-		var prev:Int = lastSafeSection;
-
-		for (i in 0...(curSection - prev))
-			safeSectionHit(Math.floor(lastSafeSection + 1));
-	}
-
-	public function safeStepHit(safeStep:Int)
-	{
-		lastSafeStep = safeStep;
-	}
-
-	public function safeBeatHit(safeBeat:Int)
-	{
-		lastSafeBeat = safeBeat;
-	}
-
-	public function safeSectionHit(safeSection:Int)
-	{
-		lastSafeSection = safeSection;
-	}
+    function sectionHit(curSection:Int) {}
+    function safeSectionHit(safeSection:Int) {}
 }

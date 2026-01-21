@@ -1,0 +1,86 @@
+{
+	"zoom": 0.9,
+	"speed": 1,
+	"hud": "default",
+	"characterOffset": {
+		"type": {
+			"opponent": {
+				"x": 100,
+				"y": 100
+			},
+			"player": {
+				"x": 770,
+				"y": 100
+			},
+			"extra": {
+				"x": 400,
+				"y": 130
+			}
+		}
+	},
+	"format": "ale-stage-v0.1",
+	"objectsConfig": {
+		"directory": "stage",
+		"properties": {
+			"scale": {
+				"x": 1.1,
+				"y": 1.1
+			}
+		},
+		"objects": [
+			{
+				"id": "back",
+				"properties": {
+					"x": -600,
+					"y": -200,
+					"scale": {
+						"x": 1,
+						"y": 1
+					}
+				}
+			},
+			{
+				"id": "front",
+				"properties": {
+					"x": -650,
+					"y": 620
+				}
+			},
+			{
+				"id": "leftLight",
+				"path": "light",
+				"properties": {
+					"x": -125,
+					"y": -100
+				},
+				"addMethod": "add"
+			},
+			{
+				"id": "rightLight",
+				"path": "light",
+				"properties": {
+					"x": 1225,
+					"y": -100,
+					"flipX": true
+				},
+				"addMethod": "add"
+			},
+			{
+				"id": "curtains",
+				"properties": {
+					"x": -500,
+					"y": -300,
+					"scale": {
+						"x": 0.9,
+						"y": 0.9
+					},
+					"scrollFactor": {
+						"x": 1.3,
+						"y": 1.3
+					}
+				},
+				"addMethod": "add"
+			}
+		]
+	}
+}

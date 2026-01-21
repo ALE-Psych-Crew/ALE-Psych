@@ -2,11 +2,6 @@ package funkin.visuals.game;
 
 import utils.ALEFormatter;
 
-import funkin.visuals.game.Strum;
-import funkin.visuals.game.Splash;
-import funkin.visuals.game.NeoCharacter as Character;
-import funkin.visuals.game.NeoNote as Note;
-
 import flixel.input.keyboard.FlxKey;
 
 import haxe.ds.GenericStack;
@@ -29,7 +24,7 @@ class StrumLine extends FlxSpriteGroup
 
     public var botplay:Bool;
 
-    public var unspawnNotes:GenericStack<Note> = new GenericStack<Note>();
+    public var notesStack:GenericStack<Note> = new GenericStack<Note>();
 
     public final config:ALEStrumLine;
 
@@ -62,11 +57,15 @@ class StrumLine extends FlxSpriteGroup
 
     public final type:CharacterType;
 
+    public var characters:Array<Character>;
+
     public function new(chartData:ALESongStrumLine, arrayNotes:Array<Dynamic>, speed:Float, characters:Array<Character>, ?onStackNote:Note -> Dynamic, ?postStackNote:Note -> Void)
     {
         super();
 
         this.scrollSpeed = speed;
+
+        this.characters = characters;
 
         config = ALEFormatter.getStrumLine(chartData.file);
 
@@ -84,16 +83,14 @@ class StrumLine extends FlxSpriteGroup
 
         var inputs = ClientPrefs.controls.notes;
 
-        var inputsArray:Array<Array<FlxKey>> = [inputs.left, inputs.down, inputs.up, inputs.right];
-
-        for (arrayIndex => array in inputsArray)
-            for (key in array)
-                inputMap.set(key, arrayIndex);
+        var inputsArray:Array<Array<FlxKey>> = [];
 
         var strumHeight:Float = 0;
 
         for (strumIndex => strumConfig in config.strums)
         {
+            inputsArray.push(CoolUtil.getControl(strumConfig.keybind[0], strumConfig.keybind[1]));
+
             final strum:Strum = new Strum(strumConfig, strumIndex, config.strumFramerate, config.strumTextures, config.strumScale, config.space);
             strums.add(strum);
             strum.returnToIdle = botplay;
@@ -104,19 +101,23 @@ class StrumLine extends FlxSpriteGroup
             strumHeight = Math.max(strumHeight, strum.height);
         }
 
+        for (arrayIndex => array in inputsArray)
+            for (key in array)
+                inputMap.set(key, arrayIndex);
+
         x = chartData.rightToLeft ? config.position.x : FlxG.width - config.position.x - (config.strums.length - 1) * config.space - strums.members[strums.members.length - 1].width;
         y = ClientPrefs.data.downScroll ? FlxG.height - config.position.y - strumHeight : config.position.y;
 
         var tempNotes:Array<Note> = [];
 
-        for (note in arrayNotes)
+        for (chartNote in arrayNotes)
         {
-            final time:Float = note[0];
-            final data:Int = note[1];
-            final length:Float = note[2];
-            final character:Character = characters[note[4]];
-            final type:String = note[3];
-            final crochet:Float = note[5];
+            final time:Float = chartNote[0];
+            final data:Int = chartNote[1];
+            final length:Float = chartNote[2];
+            final type:String = chartNote[3];
+            final character:Int = chartNote[4];
+            final crochet:Float = chartNote[5];
 
             final space:Float = config.space;
             final scale:Float = config.noteScale;
@@ -138,17 +139,12 @@ class StrumLine extends FlxSpriteGroup
 
                 for (i in 0...(floorLength + 1))
                 {
-                    final sustain:Note = new Note(strumConfig, time + i * crochet, data, crochet, type, i == floorLength ? 'end' : 'sustain', space, scale, textures, getNoteShader(strumConfig.shader, data), character);
+                    final sustain:Note = new Note(strumConfig, time + i * crochet, data, crochet, type, i == floorLength ? 'end' : 'sustain', space, scale, textures, getNoteShader(strumConfig.shader, data), character, i == floorLength ? null : crochet * 0.455, i == floorLength ? null : speed);
                     sustain.offsetY = strum.height / 2;
                     sustain.offsetX = strum.width / 2 - sustain.width / 2;
                     sustain.parent = parent;
                     sustain.multAlpha = 0.5;
                     sustain.flipY = ClientPrefs.data.downScroll;
-
-                    if (i != floorLength)
-                        sustain.setGraphicSize(sustain.width, crochet * speed * 0.46);
-                    
-                    sustain.updateHitbox();
 
                     tempNotes.push(sustain);
 
@@ -176,7 +172,7 @@ class StrumLine extends FlxSpriteGroup
                 note.update(0);
                 note.draw();
 
-                unspawnNotes.add(note);
+                notesStack.add(note);
             }
 
             if (postStackNote != null)
@@ -246,9 +242,9 @@ class StrumLine extends FlxSpriteGroup
 
         super.update(elapsed);
 
-        while (!unspawnNotes.isEmpty() && unspawnNotes.first().time <= Conductor.songPosition + spawnWindow)
+        while (!notesStack.isEmpty() && notesStack.first().time <= Conductor.songPosition + spawnWindow)
         {
-            final note:Note = unspawnNotes.pop();
+            final note:Note = notesStack.pop();
 
             final callbackResult:Dynamic = onSpawnNote == null ? null : onSpawnNote(note);
 
@@ -280,8 +276,11 @@ class StrumLine extends FlxSpriteGroup
 
             if (botplay)
             {
-                if (!note.hit && note.timeDistance <= 0)
+                if (!note.hit && note.timeDistance <= 0 && !note.ignore)
                     hitNote(note, note.type == 'note');
+
+                if (note.botplayMiss && note.timeDistance < -shitWindow && !note.miss && !note.hit && note.ignore)
+                    missNote(note);
             } else {
                 if (note.type == 'note')
                 {
@@ -294,9 +293,13 @@ class StrumLine extends FlxSpriteGroup
                         hitNote(note, false);
                 }
 
-                if (note.timeDistance < -shitWindow && !note.miss && !note.hit)
+                if (note.timeDistance < -shitWindow && !note.miss && !note.hit && !note.ignore)
                     missNote(note);
             }
+
+            if (note.type == 'sustain')
+                if (note.sustainSpeed != scrollSpeed)
+                    note.sustainSpeed = scrollSpeed;
 
             if (note.timeDistance < -despawnWindow)
                 removeNote(note);
@@ -336,32 +339,36 @@ class StrumLine extends FlxSpriteGroup
             note.followStrum(strums.members[note.data], Conductor.stepCrochet, scrollSpeed);
     }
 
-    public var onHitNote:Note -> Rating -> Bool -> Dynamic;
-    public var postHitNote:Note -> Bool -> Void;
+    public var onHitNote:Note -> Rating -> Character -> Bool -> Dynamic;
+    public var postHitNote:Note -> Rating -> Character -> Bool -> Void;
 
     public function hitNote(note:Note, ?remove:Bool)
     {
+        remove ??= true;
+
         final rating:Rating = judgeNote(note.timeDistance);
 
-        final callbackResult:Dynamic = onHitNote == null ? null : onHitNote(note, rating, remove);
+        final character:Character = this.characters[note.characterPosition];
+
+        final callbackResult:Dynamic = onHitNote == null ? null : onHitNote(note, rating, character, remove);
 
         if (callbackResult != CoolVars.Function_Stop)
         {
             note.hit = true;
 
-            note.character.sing(note.type != 'note' && !note.character.data.sustainAnimation ? null : note.singAnimation);
+            character?.sing(note.type != 'note' && !character.data.sustainAnimation ? null : note.singAnimation);
 
             if (note.type == 'note' && rating == 'sick' && !botplay)
                 splashes.members[note.data].splash();
 
             strums.members[note.data].playAnim('hit');
 
-            if (remove ?? true)
+            if (remove)
                 removeNote(note);
         }
 
         if (postHitNote != null)
-            postHitNote(note, remove ?? true);
+            postHitNote(note, rating, character, remove);
     }
 
     public var sickWindow:Int = 45;
@@ -385,30 +392,34 @@ class StrumLine extends FlxSpriteGroup
         return 'shit';
     }
 
-    public var onMissNote:Note -> Dynamic;
-    public var postMissNote:Note -> Void;
+    public var onMissNote:Note -> Character -> Dynamic;
+    public var postMissNote:Note -> Character -> Void;
 
     public function missNote(note:Note)
     {
-        final callbackResult:Dynamic = onMissNote == null ? null : onMissNote(note);
+        final character:Character = this.characters[note.characterPosition];
+
+        final callbackResult:Dynamic = onMissNote == null ? null : onMissNote(note, character);
 
         if (callbackResult != CoolVars.Function_Stop)
         {
             note.miss = true;
 
-            note.character.sing(note.type != 'note' && !note.character.data.sustainAnimation ? null : note.missAnimation);
+            character?.miss(note.type != 'note' && !character.data.sustainAnimation ? null : note.missAnimation);
         }
 
         if (postMissNote != null)
-            postMissNote(note);
+            postMissNote(note, character);
     }
 
-    public var onRemoveNote:Note -> Dynamic;
-    public var postRemoveNote:Note -> Void;
+    public var onRemoveNote:Note -> Character -> Dynamic;
+    public var postRemoveNote:Note -> Character -> Void;
 
     public function removeNote(note:Note)
     {
-        final callbackResult:Dynamic = onRemoveNote == null ? null : onRemoveNote(note);
+        final character:Character = this.characters[note.characterPosition];
+
+        final callbackResult:Dynamic = onRemoveNote == null ? null : onRemoveNote(note, character);
 
         if (callbackResult != CoolVars.Function_Stop)
         {
@@ -418,13 +429,13 @@ class StrumLine extends FlxSpriteGroup
         }
 
         if (postRemoveNote != null)
-            postRemoveNote(note);
+            postRemoveNote(note, character);
     }
 
     override function destroy()
     {
-        while (!unspawnNotes.isEmpty())
-            unspawnNotes.pop().destroy();
+        while (!notesStack.isEmpty())
+            notesStack.pop().destroy();
 
         notesToHit = null;
         keyPressed = null;

@@ -5,8 +5,6 @@ import flixel.tweens.FlxEase.EaseFunction;
 import core.config.MainState;
 import core.enums.PrintType;
 
-import ale.ui.ALETab;
-
 class LogUtil
 {
 	public static function debugTrace(text:Dynamic, ?type:PrintType = TRACE, ?customType:String = '', ?customColor:FlxColor = FlxColor.GRAY, ?pos:haxe.PosInfos)
@@ -23,9 +21,6 @@ class LogUtil
 			MainState.debugPrintPlugin?.print(text, type == CUSTOM ? customType : type.toString(), type == CUSTOM ? customColor : type.toColor());
 	}
 
-	public static inline function notify(title:String, content:String, ?moveTime:Float, ?waitTime:Float, ?inEase:EaseFunction, ?outEase:EaseFunction):ALETab
-		return MainState.notificationsPlugin.notify(title, content, moveTime, waitTime, inEase, outEase);
-
 	public static function ansiColorString(text:String, color:FlxColor):String
 		return '\x1b[38;2;' + color.red + ';' + color.green + ';' + color.blue + 'm' + text + '\x1b[0m';
 
@@ -33,10 +28,6 @@ class LogUtil
 	{
 		debugTrace(title + ' | ' + message, POP_UP);
 
-		#if (windows && cpp)
-		cpp.WindowsAPI.showMessageBox(title, message, INFORMATION);
-		#else
 		FlxG.stage.window.alert(message, title);
-		#end
 	}
 }

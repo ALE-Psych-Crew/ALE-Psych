@@ -1,0 +1,40 @@
+{
+    "combo": {
+        "scale": 0.75,
+        "numberScale": 0.4,
+        "alpha": 1,
+        "numberAlpha": 1,
+        "space": 35,
+        "position": {
+            "x": 550,
+            "y": 300
+        },
+        "numberPosition": {
+            "x": 20,
+            "y": 70
+        },
+        "endPosition": {
+            "x": 10,
+            "y": 50
+        },
+        "numberEndPosition": {
+            "x": 5,
+            "y": 25
+        },
+        "duration": 0.5,
+        "numberDuration": 0.6,
+        "ease": "backIn",
+        "numberEase": "backIn"
+    },
+    "countdown": {
+        "scale": 1,
+        "endScale": 0.9,
+        "scaleEase": "backOut",
+        "alpha": 1,
+        "endAlpha": 0,
+        "alphaEase": "cubeIn",
+        "beats": 0.8
+    },
+    "antialiasing": true,
+    "format": "ale-hud-v0.1"
+}

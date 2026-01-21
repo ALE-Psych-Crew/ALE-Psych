@@ -788,14 +788,14 @@ class FlxSprite extends FlxObject
 	function checkEmptyFrame()
 	{
 		if (_frame == null)
-			loadGraphic(Paths.image('flixel/NO_IMAGE'));
+			loadGraphic(Paths.image('NO_IMAGE'));
 		else if (graphic != null && graphic.isDestroyed)
 		{
 			// switch graphic but log and preserve size
 			final width = this.width;
 			final height = this.height;
 			FlxG.log.error('Cannot render a destroyed graphic, the placeholder image will be used instead');
-			loadGraphic(Paths.image('flixel/NO_IMAGE'));
+			loadGraphic(Paths.image('NO_IMAGE'));
 			this.width = width;
 			this.height = height;
 		}
@@ -810,7 +810,7 @@ class FlxSprite extends FlxObject
 		
 		checkEmptyFrame();
 		
-		if (alpha == 0 || _frame == null || _frame.type == FlxFrameType.EMPTY)
+		if (alpha == 0 || _frame.type == FlxFrameType.EMPTY)
 			return;
 		
 		if (dirty) // rarely
@@ -875,9 +875,6 @@ class FlxSprite extends FlxObject
 	
 	function drawFrameComplex(frame:FlxFrame, camera:FlxCamera):Void
 	{
-		if (frame == null)
-			return;
-
 		final matrix = this._matrix; // TODO: Just use local?
 		frame.prepareMatrix(matrix, FlxFrameAngle.ANGLE_0, checkFlipX(), checkFlipY());
 		matrix.translate(-origin.x, -origin.y);

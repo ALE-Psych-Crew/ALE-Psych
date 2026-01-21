@@ -1,6 +1,0 @@
-Plays an animation on a Character,
-once the animation is completed,
-the animation changes to Idle
-
-Value 1: Animation to play.
-Value 2: Character (Dad, BF, GF)

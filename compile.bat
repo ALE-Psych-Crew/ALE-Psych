@@ -1,5 +1,4 @@
 @echo off
-
 title Compile the ALE Psych Source Code
 
 :choose_platform

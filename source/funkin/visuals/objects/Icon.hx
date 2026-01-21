@@ -2,10 +2,16 @@ package funkin.visuals.objects;
 
 import flixel.graphics.FlxGraphic;
 
+import utils.ALEFormatter;
+
+import core.structures.ALEIcon;
+
 import core.enums.CharacterType;
 
-class Icon extends FlxSprite
+class Icon extends FunkinSprite
 {
+    public var bar:Bar;
+
     public function new(type:CharacterType, ?id:String, ?x:Float, ?y:Float)
     {
         super(x, y);
@@ -13,12 +19,14 @@ class Icon extends FlxSprite
         change(id, type);
     }
 
-    public var id:String;
-
     public var type:CharacterType;
 
     public var offsetX:Float = 0;
     public var offsetY:Float = 0;
+
+    public var id:String;
+
+    public var data:ALEIcon;
 
     public function change(?id:String, ?type:CharacterType)
     {
@@ -30,16 +38,83 @@ class Icon extends FlxSprite
 
         this.id = id;
 
-        final graphic:FlxGraphic = Paths.image('icons/icon-' + id, false, false) ?? Paths.image('icons/' + id, false, false) ?? Paths.image('icons/face');
+        data = ALEFormatter.getIcon(id);
 
-        loadGraphic(graphic, true, Math.floor(graphic.width / 2));
+        data.animations.sort((a, b) -> Math.floor(a.percent - b.percent));
 
-        animation.add('neutral', [0], 0, false);
-        animation.add('lose', [1], 0, false);
+        loadFrames(cast data.type, ['icons/' + data.texture], data.frames);
 
-        animation.play('neutral');
+        for (animData in data.animations)
+            addAnimation(cast data.type, animData.name, animData.prefix, animData.framerate, animData.loop, animData.indices);
 
-        updateHitbox();
-        centerOrigin();
+        offsetX = data.offset.x;
+        offsetY = data.offset.y;
+
+        flipX = type != 'player' == data.flipX;
+
+        flipY = data.flipY;
+
+        checkAnimation();
+    }
+
+    public function bop(curBeat:Int)
+    {
+        if (data.bopModulo > 0 && curBeat % data.bopModulo == 0)
+        {
+            scale.x = data.bopScale.x;
+            scale.y = data.bopScale.y;
+
+            updateHitbox();
+
+            update(0);
+        }
+    }
+
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+
+        if (data.lerp > 0)
+        {
+            scale.x = CoolUtil.fpsLerp(scale.x, data.scale.x, data.lerp);
+            scale.y = CoolUtil.fpsLerp(scale.y, data.scale.y, data.lerp);
+
+            updateHitbox();
+        }
+
+        if (bar != null)
+        {
+            final isRight:Bool = type == 'player' == bar.rightToLeft;
+
+            final barMiddle:FlxPoint = bar.getMiddle();
+
+            x = isRight ? (barMiddle.x - offsetX) : (barMiddle.x - width + offsetX);
+            y = barMiddle.y - height / 2 + offsetY;
+
+            flipX = type != 'player' == data.flipX;
+        }
+
+        checkAnimation();
+    }
+
+    var animationIndex:Int = -1;
+
+    public function checkAnimation()
+    {
+        if (bar == null)
+            return;
+
+        final percent:Float = type == 'player' ? bar.percent : (100 - bar.percent);
+
+        while (animationIndex + 1 < data.animations.length && percent >= data.animations[animationIndex + 1].percent)
+            animationIndex++;
+
+        while (animationIndex >= 0 && percent < data.animations[animationIndex].percent)
+            animationIndex--;
+
+        final curAnimation = data.animations[animationIndex].name;
+
+        if (animation.name != curAnimation)
+            playAnim(curAnimation);
     }
 }

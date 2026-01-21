@@ -1,85 +1,13 @@
 package utils.cool;
 
-import core.Main;
 import core.config.MainState;
-import core.plugins.ALEPluginsHandler;
 
-import openfl.ui.Mouse;
 import openfl.Lib;
 
 import lime.graphics.Image;
 
 class EngineUtil
 {
-	public static function resetEngine():Void
-	{
-		if (MainState.debugCounter != null)
-		{
-			MainState.debugCounter.destroy();
-
-			FlxG.game.removeChild(MainState.debugCounter);
-		}
-
-		DiscordRPC.shutdown();
-
-		CoolVars.skipTransIn = CoolVars.skipTransOut = true;
-
-		var stateInstance:ScriptState = ScriptState.instance;
-
-		if (stateInstance != null)
-		{
-			stateInstance.callOnScripts('onDestroy');
-
-			stateInstance.callOnScripts('postDestroy');
-
-			stateInstance.destroyScripts();
-		}
-
-		var subInstance:ScriptSubState = ScriptSubState.instance;
-
-		if (subInstance != null)
-		{
-			subInstance.callOnScripts('onDestroy');
-
-			subInstance.callOnScripts('postDestroy');
-
-			subInstance.destroyScripts();
-		}
-
-		if (FlxG.state.subState != null)
-			FlxG.state.subState.close();
-
-		for (key in CoolVars.globalVars.keys())
-			CoolVars.globalVars.remove(key);
-
-		#if WINDOWS_API
-		winapi.WindowsAPI.resetWindowsFuncs();
-		#end
-
-		FlxG.mouse.visible = true;
-
-		FlxTween.globalManager.clear();
-
-		FlxG.camera.bgColor = FlxColor.BLACK;
-
-		if (FlxG.sound.music != null)
-		{
-			FlxG.sound.music.stop();
-
-			FlxG.sound.music = null;
-		}
-
-		core.backend.Mods.init();
-
-		FlxG.resetGame();
-
-		#if desktop
-		Mouse.cursor = ARROW;
-		#end
-		
-        ALEPluginsHandler.finish();
-	}
-
 	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true, ?scale:Float = 1)
 	{
 		for (camera in FlxG.cameras.list)
@@ -109,5 +37,54 @@ class EngineUtil
 			camera.width = width;
 			camera.height = height;
 		}
+	}
+
+	public static function loadMetadata()
+	{
+		CoolVars.data = {
+			developerMode: false,
+			mobileDebug: false,
+			scriptsHotReloading: false,
+
+			verbose: false,
+			allowDebugPrint: true,
+
+			initialState: 'TitleState',
+			freeplayState: 'FreeplayState',
+			storyMenuState: 'StoryMenuState',
+			masterEditorState: 'MasterEditorState',
+			mainMenuState: 'MainMenuState',
+			optionsState: 'OptionsState',
+
+			loadDefaultWeeks: true,
+
+			pauseSubState: 'PauseSubState',
+			gameOverScreen: 'GameOverSubState',
+			transition: 'FadeTransition',
+
+			title: 'Friday Night Funkin\': ALE Psych',
+			icon: 'appIcon',
+			width: 1280,
+			height: 720,
+
+            paths: [],
+
+            dependencies: [],
+
+			windowColor: [33, 33, 33],
+
+			bpm: 102.0,
+
+			discordID: '1309982575368077416',
+
+			discordButtons: [
+				{
+					label: 'ALE Psych Website',
+					url: 'https://ale-psych-crew.github.io/ALE-Psych-Website/'
+				}
+			],
+
+			modID: null
+		};
 	}
 }

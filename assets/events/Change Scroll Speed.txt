@@ -1,2 +1,0 @@
-Value 1: Scroll Speed Multiplier (1 is default)
-Value 2: Time it takes to change fully in seconds.

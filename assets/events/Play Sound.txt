@@ -1,2 +1,0 @@
-Value 1: Sound file name
-Value 2: Volume (Default: 1), ranges from 0 to 1

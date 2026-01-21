@@ -1,5 +1,0 @@
-Plays the "Hey!" animation,
-Value 1: BF = Only Boyfriend, GF = Only Girlfriend,
-Something else = Both.
-Value 2: Custom animation duration,
-leave it blank for 0.6s

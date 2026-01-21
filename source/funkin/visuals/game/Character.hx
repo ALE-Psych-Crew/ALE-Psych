@@ -1,398 +1,119 @@
 package funkin.visuals.game;
 
-import utils.PsychAnimationController;
+import utils.ALEFormatter;
 
-import flixel.util.FlxSort;
-import flixel.util.FlxDestroyUtil;
+import core.structures.ALECharacter;
 
-import openfl.utils.AssetType;
-import openfl.utils.Assets;
+import core.enums.CharacterType;
 
-import utils.Song;
-import utils.Section;
-
-typedef CharacterFile = {
-	var animations:Array<AnimArray>;
-	var image:String;
-	var scale:Float;
-	var sing_duration:Float;
-	var healthicon:String;
-
-	var position:Array<Float>;
-	var camera_position:Array<Float>;
-
-	var flip_x:Bool;
-	var no_antialiasing:Bool;
-	var healthbar_colors:Array<Int>;
-	var vocals_file:String;
-	@:optional var _editor_isPlayer:Null<Bool>;
-	@:optional var deadVariant:String;
-}
-
-typedef AnimArray = {
-	var anim:String;
-	var name:String;
-	var fps:Int;
-	var loop:Bool;
-	var indices:Array<Int>;
-	var offsets:Array<Int>;
-}
-
-class Character extends FlxSprite
+class Character extends FunkinSprite
 {
-	/**
-	 * In case a character is missing, it will use this on its place
-	**/
-	public static final DEFAULT_CHARACTER:String = 'bf';
+    public var type:CharacterType;
 
-	public var animOffsets:Map<String, Array<Dynamic>>;
-	public var debugMode:Bool = false;
-	public var extraData:Map<String, Dynamic> = new Map<String, Dynamic>();
+    public function new(initial:String, type:CharacterType)
+    {
+        super();
 
-	public var isPlayer:Bool = false;
-	public var curCharacter:String = DEFAULT_CHARACTER;
+        this.type = type;
 
-	public var holdTimer:Float = 0;
-	public var heyTimer:Float = 0;
-	public var specialAnim:Bool = false;
-	public var animationNotes:Array<Dynamic> = [];
-	public var stunned:Bool = false;
-	public var singDuration:Float = 4; //Multiplier of how long a character holds the sing pose
-	public var idleSuffix:String = '';
-	public var danceIdle:Bool = false; //Character use "danceLeft" and "danceRight" instead of "idle"
-	public var skipDance:Bool = false;
+        change(initial);
 
-	public var healthIcon:String = 'face';
-	public var animationsArray:Array<AnimArray> = [];
+        anim.onFinish.add((name) -> {
+            if (offsets.exists(name + '-loop'))
+                playAnim(name + '-loop');
+        });
+    }
 
-	public var positionArray:Array<Float> = [0, 0];
-	public var cameraPosition:Array<Float> = [0, 0];
-	public var healthColorArray:Array<Int> = [255, 0, 0];
+    public var data:ALECharacter;
 
-	public var hasMissAnimations:Bool = false;
-	public var vocalsFile:String = '';
+    public var id:String;
 
-	//Used on Character Editor
-	public var imageFile:String = '';
-	public var jsonScale:Float = 1;
-	public var noAntialiasing:Bool = false;
-	public var originalFlipX:Bool = false;
-	public var editorIsPlayer:Null<Bool> = null;
+    public var vocals:Array<FlxSound> = [];
 
-	public var deadVariant:String = '';
+    public function change(id:String, ?type:CharacterType)
+    {
+        if (type != null)
+            this.type = type;
 
-	public function new(x:Float, y:Float, ?character:String = 'bf', ?isPlayer:Bool = false)
-	{
-		super(x, y);
+        final jsonData:ALECharacter = ALEFormatter.getCharacter(id, this.type);
 
-		animation = new PsychAnimationController(this);
+        if (jsonData == null)
+            return;
 
-		animOffsets = new Map<String, Array<Dynamic>>();
-		curCharacter = character;
-		this.isPlayer = isPlayer;
-		switch (curCharacter)
-		{
-			//case 'your character name in case you want to hardcode them instead':
+        this.id = id;
 
-			default:
-				var characterPath:String = 'characters/$curCharacter.json';
+        data = jsonData;
+        
+        scale.x = scale.y = data.scale;
 
-				if (!Paths.exists(characterPath))
-				{
-					characterPath = 'characters/' + DEFAULT_CHARACTER + '.json';
-					color = FlxColor.BLACK;
-					alpha = 0.6;
-				}
+        flipX = data.flipX != (this.type == 'player');
 
-				try
-				{
-					loadCharacterFile(Paths.json(characterPath.substring(0, characterPath.length - 5)));
-				}
-				catch(e:Dynamic)
-				{
-					trace('Error loading character file of "$character": $e');
-				}
-		}
+        flipY = data.flipY;
 
-		if(animOffsets.exists('singLEFTmiss') || animOffsets.exists('singDOWNmiss') || animOffsets.exists('singUPmiss') || animOffsets.exists('singRIGHTmiss')) hasMissAnimations = true;
-		recalculateDanceIdle();
-		dance();
+        antialiasing = data.antialiasing && ClientPrefs.data.antialiasing;
 
-		switch(curCharacter)
-		{
-			case 'pico-speaker':
-				skipDance = true;
-				loadMappedAnims();
-				playAnim("shoot1");
-		}
-	}
+        offsets.clear();
 
-	public function loadCharacterFile(json:Dynamic)
-	{
-		isAnimateAtlas = false;
+        loadFrames(cast data.type, data.textures, data.frames);
 
-		scale.set(1, 1);
-		updateHitbox();
+        for (animData in data.animations)
+        {
+            addAnimation(cast data.type, animData.name, animData.prefix, animData.framerate, animData.loop, animData.indices);
 
-		if(!isAnimateAtlas)
-			frames = Paths.getAtlas(json.image);
+            offsets.set(animData.name, animData.offset);
+        }
 
-		imageFile = json.image;
-		jsonScale = json.scale;
-		if(json.scale != 1) {
-			scale.set(jsonScale, jsonScale);
-			updateHitbox();
-		}
+        if (offsets.exists('danceLeft') && offsets.exists('danceRight'))
+            playAnim('danceLeft');
+        else
+            playAnim('idle');
 
-		// positioning
-		positionArray = json.position;
-		cameraPosition = json.camera_position;
+        updateHitbox();
+    }
 
-		// data
-		healthIcon = json.healthicon;
-		singDuration = json.sing_duration;
-		flipX = (json.flip_x != isPlayer);
-		healthColorArray = (json.healthbar_colors != null && json.healthbar_colors.length > 2) ? json.healthbar_colors : [161, 161, 161];
-		vocalsFile = json.vocals_file != null ? json.vocals_file : '';
-		originalFlipX = (json.flip_x == true);
-		editorIsPlayer = json._editor_isPlayer;
+    public var danceTimer:Float = 0;
 
-		// antialiasing
-		noAntialiasing = (json.no_antialiasing == true);
-		antialiasing = ClientPrefs.data.antialiasing ? !noAntialiasing : false;
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
 
-		// animations
-		animationsArray = json.animations;
-		if(animationsArray != null && animationsArray.length > 0) {
-			for (anim in animationsArray) {
-				var animAnim:String = '' + anim.anim;
-				var animName:String = '' + anim.name;
-				var animFps:Int = anim.fps;
-				var animLoop:Bool = !!anim.loop; //Bruh
-				var animIndices:Array<Int> = anim.indices;
+        if (danceTimer > 0)
+            danceTimer -= elapsed;
+    }
 
-				if(!isAnimateAtlas)
-				{
-					if(animIndices != null && animIndices.length > 0)
-						animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
-					else
-						animation.addByPrefix(animAnim, animName, animFps, animLoop);
-				}
+    public function playTimerAnim(?anim:String, ?applyTimer:Bool, ?force:Bool)
+    {
+        if (anim != null)
+            playAnim(anim, force);
 
-				if(anim.offsets != null && anim.offsets.length > 1) addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
-				else addOffset(anim.anim, 0, 0);
-			}
-		}
-		
-		deadVariant = json.deadVariant ?? 'bf-dead';
-	}
+        if (applyTimer ?? true)
+            danceTimer = data.animationLength;
+    }
 
-	override function update(elapsed:Float)
-	{
-		if(debugMode || (!isAnimateAtlas && animation.curAnim == null))
-		{
-			super.update(elapsed);
-			return;
-		}
+    public function sing(?anim:String, ?applyTimer:Bool, ?force:Bool)
+    {
+        playTimerAnim(anim, applyTimer, force);
 
-		if(heyTimer > 0)
-		{
-			var rate:Float = (PlayState.instance != null ? PlayState.instance.playbackRate : 1.0);
-			heyTimer -= elapsed * rate;
-			if(heyTimer <= 0)
-			{
-				var anim:String = getAnimationName();
-				if(specialAnim && (anim == 'hey' || anim == 'cheer'))
-				{
-					specialAnim = false;
-					dance();
-				}
-				heyTimer = 0;
-			}
-		}
-		else if(specialAnim && isAnimationFinished())
-		{
-			specialAnim = false;
-			dance();
-		}
-		else if (getAnimationName().endsWith('miss') && isAnimationFinished())
-		{
-			dance();
-			finishAnimation();
-		}
+        for (vocal in vocals)
+            if (vocal != null)
+                vocal.volume = 1;
+    }
 
-		switch(curCharacter)
-		{
-			case 'pico-speaker':
-				if(animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
-				{
-					var noteData:Int = 1;
-					if(animationNotes[0][1] > 2) noteData = 3;
+    public function miss(?anim:String, ?applyTimer:Bool, ?force:Bool)
+    {
+        playTimerAnim(anim, applyTimer, force);
 
-					noteData += FlxG.random.int(0, 1);
-					playAnim('shoot' + noteData, true);
-					animationNotes.shift();
-				}
-				if(isAnimationFinished()) playAnim(getAnimationName(), false, false, animation.curAnim.frames.length - 3);
-		}
+        for (vocal in vocals)
+            if (vocal != null)
+                vocal.volume = 0;
+    }
 
-		if (getAnimationName().startsWith('sing')) holdTimer += elapsed;
-		else if(isPlayer) holdTimer = 0;
-
-		if (!isPlayer && holdTimer >= Conductor.stepCrochet * (0.0011 #if FLX_PITCH / (FlxG.sound.music != null ? FlxG.sound.music.pitch : 1) #end) * singDuration)
-		{
-			dance();
-			holdTimer = 0;
-		}
-
-		var name:String = getAnimationName();
-		if(isAnimationFinished() && animOffsets.exists('$name-loop'))
-			playAnim('$name-loop');
-
-		super.update(elapsed);
-	}
-
-	inline public function isAnimationNull():Bool
-		return animation.curAnim == null;
-
-	var __lastAnim:String;
-
-	inline public function getAnimationName():String
-	{
-		return __lastAnim ?? '';
-	}
-
-	public function isAnimationFinished():Bool
-	{
-		if(isAnimationNull()) return false;
-		return animation.curAnim.finished;
-	}
-
-	public function finishAnimation():Void
-	{
-		if(isAnimationNull()) return;
-
-		if(!isAnimateAtlas) animation.curAnim.finish();
-	}
-
-	public var animPaused(get, set):Bool;
-	private function get_animPaused():Bool
-	{
-		if(isAnimationNull()) return false;
-		return animation.curAnim.paused;
-	}
-	private function set_animPaused(value:Bool):Bool
-	{
-		if(isAnimationNull()) return value;
-		if(!isAnimateAtlas) animation.curAnim.paused = value;
-
-		return value;
-	}
-
-	public var danced:Bool = false;
-
-	/**
-	 * FOR GF DANCING SHIT
-	 */
-	public function dance()
-	{
-		if (!debugMode && !skipDance && !specialAnim)
-		{
-			if(danceIdle)
-			{
-				danced = !danced;
-
-				if (danced)
-					playAnim('danceRight' + idleSuffix);
-				else
-					playAnim('danceLeft' + idleSuffix);
-			}
-			else if(animOffsets.exists('idle' + idleSuffix)) {
-					playAnim('idle' + idleSuffix);
-			}
-		}
-	}
-
-	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
-	{
-		specialAnim = false;
-		if(!isAnimateAtlas) animation.play(AnimName, Force, Reversed, Frame);
-
-		if (animOffsets.exists(AnimName))
-		{
-			var daOffset = animOffsets.get(AnimName);
-			offset.set(daOffset[0], daOffset[1]);
-		}
-		
-		__lastAnim = AnimName;
-
-		if (curCharacter.startsWith('gf-') || curCharacter == 'gf')
-		{
-			if (AnimName == 'singLEFT')
-				danced = true;
-
-			else if (AnimName == 'singRIGHT')
-				danced = false;
-
-			if (AnimName == 'singUP' || AnimName == 'singDOWN')
-				danced = !danced;
-		}
-
-	}
-
-	function loadMappedAnims():Void
-	{
-		try
-		{
-			var noteData:Array<SwagSection> = CoolUtil.loadPlayStateSong(PlayState.SONG.song, 'picospeaker').json.notes;
-
-			for (section in noteData) {
-				for (songNotes in section.sectionNotes) {
-					animationNotes.push(songNotes);
-				}
-			}
-			animationNotes.sort(sortAnims);
-		} catch(e:Dynamic) {}
-	}
-
-	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
-	{
-		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
-	}
-
-	public var danceEveryNumBeats:Int = 2;
-	private var settingCharacterUp:Bool = true;
-	public function recalculateDanceIdle() {
-		var lastDanceIdle:Bool = danceIdle;
-		danceIdle = (animOffsets.exists('danceLeft' + idleSuffix) && animOffsets.exists('danceRight' + idleSuffix));
-
-		if(settingCharacterUp)
-		{
-			danceEveryNumBeats = (danceIdle ? 1 : 2);
-		}
-		else if(lastDanceIdle != danceIdle)
-		{
-			var calc:Float = danceEveryNumBeats;
-			if(danceIdle)
-				calc /= 2;
-			else
-				calc *= 2;
-
-			danceEveryNumBeats = Math.round(Math.max(calc, 1));
-		}
-		settingCharacterUp = false;
-	}
-
-	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
-		animOffsets[name] = [x, y];
-	}
-
-	public function quickAnimAdd(name:String, anim:String)
-	{
-		animation.addByPrefix(name, anim, 24, false);
-	}
-
-	// special thanks ne_eo for the references, you're the goat!!
-	public var isAnimateAtlas:Bool = false;
+    public function dance(curBeat:Int)
+    {
+        if (curBeat % data.danceModulo == 0 && danceTimer <= 0)
+            if (offsets.exists('danceLeft') && offsets.exists('danceRight'))
+                playAnim(curBeat % (data.danceModulo * 2) == 0 ? 'danceLeft' : 'danceRight');
+            else
+                playAnim('idle');
+    }
 }

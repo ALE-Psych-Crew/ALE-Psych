@@ -26,7 +26,7 @@ class Strum extends FlxSprite
 
         this.data = data;
 
-        frames = Paths.getMultiAtlas([for (skin in skins) 'noteSkins/' + skin]);
+        frames = Paths.getMultiAtlas([for (skin in skins) 'notes/' + skin]);
 
         animation.addByPrefix('idle', config.idle, framerate, false);
         animation.addByPrefix('hit', config.hit, framerate, false);

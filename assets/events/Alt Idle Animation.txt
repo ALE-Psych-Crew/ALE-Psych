@@ -1,6 +1,0 @@
-Sets a specified suffix after the idle animation name.
-You can use this to trigger 'idle-alt' if you set
-Value 2 to -alt
-
-Value 1: Character to set (Dad, BF or GF)
-Value 2: New suffix (Leave it blank to disable)

@@ -11,4 +11,5 @@ typedef ALEStrum = {
     var splash:Array<String>;
     var sing:String;
     var miss:String;
+    var keybind:Array<String>;
 }

@@ -25,7 +25,7 @@ class Splash extends FlxSprite
 
         this.animations = config.splash;
 
-        frames = Paths.getMultiAtlas([for (skin in skins) 'noteSplashes/' + skin]);
+        frames = Paths.getMultiAtlas([for (skin in skins) 'splashes/' + skin]);
 
         for (anim in animations)
             animation.addByPrefix(anim, anim, framerate, false);

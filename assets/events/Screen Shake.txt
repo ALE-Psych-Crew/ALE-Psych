@@ -1,5 +1,0 @@
-Value 1: Camera shake
-Value 2: HUD shake
-Every value works as the following example: "1, 0.05".
-The first number (1) is the duration.
-The second number (0.05) is the intensity.
