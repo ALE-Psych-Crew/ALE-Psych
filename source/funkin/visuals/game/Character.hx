@@ -6,7 +6,7 @@ import core.structures.ALECharacter;
 
 import core.enums.CharacterType;
 
-class Character extends FunkinSprite
+class Character extends Bopper
 {
     public var type:CharacterType;
 
@@ -108,8 +108,10 @@ class Character extends FunkinSprite
                 vocal.volume = 0;
     }
 
-    public function dance(curBeat:Int)
+    override public function beatHit(curBeat:Int)
     {
+        super.beatHit(curBeat);
+
         if (curBeat % data.danceModulo == 0 && danceTimer <= 0)
             if (offsets.exists('danceLeft') && offsets.exists('danceRight'))
                 playAnim(curBeat % (data.danceModulo * 2) == 0 ? 'danceLeft' : 'danceRight');

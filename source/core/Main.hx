@@ -43,7 +43,7 @@ class Main extends Sprite
 	{
 		super();
 
-		checkVersion();
+		//checkVersion();
 
 		openalFix();
 

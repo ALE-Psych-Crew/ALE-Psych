@@ -1,4 +1,6 @@
-package funkin.visuals.objects;
+package funkin.visuals.game;
+
+import funkin.visuals.objects.Bar;
 
 import flixel.graphics.FlxGraphic;
 
@@ -8,7 +10,7 @@ import core.structures.ALEIcon;
 
 import core.enums.CharacterType;
 
-class Icon extends FunkinSprite
+class Icon extends Bopper
 {
     public var bar:Bar;
 
@@ -57,8 +59,10 @@ class Icon extends FunkinSprite
         checkAnimation();
     }
 
-    public function bop(curBeat:Int)
+    override public function beatHit(curBeat:Int)
     {
+        super.beatHit(curBeat);
+
         if (data.bopModulo > 0 && curBeat % data.bopModulo == 0)
         {
             scale.x = data.bopScale.x;

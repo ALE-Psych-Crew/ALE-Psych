@@ -1,6 +1,9 @@
 package core.backend;
 
-class MusicBeatState extends ALEState
+import core.interfaces.IMusicState;
+import core.interfaces.IMusicObject;
+
+class MusicBeatState extends ALEState implements IMusicState
 {
     public var curStep(get, never):Int;
     function get_curStep():Int
@@ -26,20 +29,6 @@ class MusicBeatState extends ALEState
     function get_safeSection():Int
         return Conductor.safeSection;
 
-    override function create()
-    {
-        super.create();
-
-        Conductor.stepHit.add(onStepHit);
-        Conductor.safeStepHit.add(onSafeStepHit);
-
-        Conductor.beatHit.add(onBeatHit);
-        Conductor.safeBeatHit.add(onSafeBeatHit);
-
-        Conductor.sectionHit.add(onSectionHit);
-        Conductor.safeSectionHit.add(onSafeSectionHit);
-    }
-
     public var shouldUpdateMusic:Bool = false;
 
     override function update(elapsed:Float)
@@ -52,8 +41,57 @@ class MusicBeatState extends ALEState
         Conductor.update();
     }
 
+    public var shouldResetConductor:Bool = true;
+
     override function destroy()
     {
+        removeConductorListeners();
+
+        super.destroy();
+        
+        if (shouldResetConductor)
+            Conductor.reset();
+    }
+
+    override function create()
+    {
+        addConductorListeners();
+
+        super.create();
+    }
+
+    var addedConductorListeners:Bool = false;
+
+    public function addConductorListeners()
+    {
+        if (addedConductorListeners)
+            return;
+
+        addedConductorListeners = true;
+
+        removedConductorListeners = false;
+
+        Conductor.stepHit.add(onStepHit);
+        Conductor.safeStepHit.add(onSafeStepHit);
+
+        Conductor.beatHit.add(onBeatHit);
+        Conductor.safeBeatHit.add(onSafeBeatHit);
+
+        Conductor.sectionHit.add(onSectionHit);
+        Conductor.safeSectionHit.add(onSafeSectionHit);
+    }
+
+    var removedConductorListeners:Bool = false;
+
+    public function removeConductorListeners()
+    {
+        if (removedConductorListeners)
+            return;
+
+        removedConductorListeners = true;
+
+        addedConductorListeners = false;
+
         Conductor.stepHit.remove(onStepHit);
         Conductor.safeStepHit.remove(onSafeStepHit);
 
@@ -62,8 +100,6 @@ class MusicBeatState extends ALEState
 
         Conductor.sectionHit.remove(onSectionHit);
         Conductor.safeSectionHit.remove(onSafeSectionHit);
-
-        super.destroy();
     }
 
     function onStepHit(step:Int):Void
@@ -113,13 +149,56 @@ class MusicBeatState extends ALEState
 
         safeSectionHit(section);
     }
+    
+    function recursiveMusicHit(obj:Dynamic, handler:IMusicObject->Void)
+    {
+        if (obj is IMusicObject)
+            handler(cast obj);
+        else if (obj is FlxTypedGroup)
+            cast(obj, FlxTypedGroup<Dynamic>).forEachAlive((subObj) -> {
+                recursiveMusicHit(subObj, handler);
+            });
+    }
 
-    function stepHit(curStep:Int) {}
-    function safeStepHit(safeStep:Int) {}
+    public function stepHit(curStep:Int)
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, (m) -> m.stepHit(curStep));
+        });
+    }
 
-    function beatHit(curBeat:Int) {}
-    function safeBeatHit(safeBeat:Int) {}
+    public function safeStepHit(safeStep:Int)
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, (m) -> m.safeStepHit(safeStep));
+        });
+    }
 
-    function sectionHit(curSection:Int) {}
-    function safeSectionHit(safeSection:Int) {}
+    public function beatHit(curBeat:Int)
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, (m) -> m.beatHit(curBeat));
+        });
+    }
+
+    public function safeBeatHit(safeBeat:Int)
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, (m) -> m.safeBeatHit(safeBeat));
+        });
+    }
+
+    public function sectionHit(curSection:Int)
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, (m) -> m.sectionHit(curSection));
+        });
+    }
+
+    public function safeSectionHit(safeSection:Int)
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, (m) -> m.safeSectionHit(safeSection));
+        });
+    }
 }

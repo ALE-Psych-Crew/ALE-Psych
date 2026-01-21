@@ -27,7 +27,7 @@ import haxe.ds.GenericStack;
 import funkin.visuals.game.StrumLine;
 import funkin.visuals.game.Character;
 import funkin.visuals.game.Strum;
-import funkin.visuals.objects.Icon;
+import funkin.visuals.game.Icon;
 import funkin.visuals.objects.Bar;
 import funkin.visuals.FXCamera;
 
@@ -176,10 +176,6 @@ class PlayState extends MusicBeatState
     {
         super.beatHit(curBeat);
 
-        characters.forEachAlive(char -> char.dance(curBeat));
-
-        icons.forEachAlive(icon -> icon.bop(curBeat));
-
         for (camera in [camGame, camHUD])
             cast(camera, FXCamera).bop(curBeat);
     }
@@ -262,7 +258,7 @@ class PlayState extends MusicBeatState
                 FlxTween.tween(countdownSprite, {alpha: HUD.countdown.endAlpha}, Conductor.crochet / 1000 * HUD.countdown.beats, {ease: CoolUtil.easeFromString(HUD.countdown.alphaEase)});
 
                 characters.forEachAlive((char) -> {
-                    char.dance(loop - 1);
+                    char.beatHit(loop - 1);
                 });
             }
         }, 5);
