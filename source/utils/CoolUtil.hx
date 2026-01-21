@@ -19,4 +19,16 @@ import core.config.ALESave;
 class CoolUtil
 {
 	public static var save:ALESave;
+
+	public static function init()
+	{
+		save = new ALESave();
+
+		save.load();
+	}
+
+	public static function destroy()
+	{
+		save?.destroy();
+	}
 }

@@ -12,11 +12,15 @@ class MainState extends ALEState
 
     public static function preResetConfig()
     {
-        
+        CoolUtil.destroy();
     }
 
     public static function postResetConfig()
     {
+        CoolUtil.init();
+
+        FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
+
         Conductor.init();
 
         Paths.init();
