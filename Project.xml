@@ -34,8 +34,6 @@
 
 	<assets path="assets"/>
 
-	<assets path="mods"/>
-
 	<!-- _______________________________ Libraries ______________________________ -->
 	
 	<haxelib name="tjson"/>
