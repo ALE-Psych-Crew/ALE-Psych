@@ -112,6 +112,10 @@ class PlayState extends ScriptState
 
         Conductor.calculateBPMChanges(CHART);
 
+        add(comboGroup = new FlxTypedSpriteGroup<FlxSprite>(HUD.combo.position.x, HUD.combo.position.y));
+        add(uiGroup = new FlxTypedGroup<FlxBasic>());
+        add(strumLines = new FlxTypedGroup<StrumLine>());
+
         initCamera();
 
         initStrumLines();
@@ -464,8 +468,6 @@ class PlayState extends ScriptState
         players = new FlxTypedGroup<Character>();
         extras = new FlxTypedGroup<Character>();
 
-        add(strumLines = new FlxTypedGroup<StrumLine>());
-
         strumLines.cameras = [camHUD];
 
         strums = new FlxTypedGroup<Strum>();
@@ -620,7 +622,6 @@ class PlayState extends ScriptState
 
     function initHud()
     {
-        add(uiGroup = new FlxTypedGroup<FlxBasic>());
 
         uiGroup.cameras = [camHUD];
 
@@ -706,7 +707,6 @@ class PlayState extends ScriptState
         for (obj in ['sick', 'good', 'bad', 'sick'].concat([for (i in 0...10) '$i']))
             Paths.image('hud/' + STAGE.hud + '/combo/' + obj);
         
-        add(comboGroup = new FlxTypedSpriteGroup<FlxSprite>(HUD.combo.position.x, HUD.combo.position.y));
         comboGroup.cameras = [camHUD];
 
         comboSprite = new FlxSprite();
