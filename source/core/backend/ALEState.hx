@@ -10,15 +10,11 @@ import hl.Gc;
 
 class ALEState extends FlxState
 {
-    public var instance:ALEState;
-
     public var camGame:ALECamera;
     public var camHUD:ALECamera;
 
     override function create()
     {
-        instance = this;
-
         super.create();
 		
 		camGame = new ALECamera();
@@ -33,8 +29,6 @@ class ALEState extends FlxState
 
 	override function destroy()
 	{
-		instance = null;
-
         if (shouldClearMemory)
             cleanMemory();
         

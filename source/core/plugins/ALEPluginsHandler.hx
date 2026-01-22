@@ -57,7 +57,7 @@ class ALEPluginsHandler
 
 	static var initialized:Bool = false;
 
-	@:unreflective public static function initialize()
+	@:unreflective public static function init()
 	{
 		if (initialized)
 			return;
@@ -73,7 +73,7 @@ class ALEPluginsHandler
 		initialized = true;
 	}
 
-	@:unreflective public static function finish()
+	@:unreflective public static function destroy()
 	{
 		if (!initialized)
 			return;
@@ -89,14 +89,6 @@ class ALEPluginsHandler
 		pluginsCamera = null;
 		
 		initialized = false;
-	}
-
-	@:unreflective public static function reset()
-	{
-		if (initialized)
-			finish();
-
-		initialize();
 	}
 
 	public static function add(plugin:FlxBasic)

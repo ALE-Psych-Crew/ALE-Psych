@@ -117,11 +117,11 @@ class PlayState extends MusicBeatState
 
     override function update(elapsed:Float)
     {
-        super.update(elapsed);
-
         if ((FlxG.sound.music != null && FlxG.sound.music.playing) || allowSongPositionUpdate)
             Conductor.songPosition += elapsed * 1000;
 
+        super.update(elapsed);
+        
         while (!eventsListStack.isEmpty() && eventsListStack.first().time <= Conductor.songPosition)
             for (event in eventsListStack.pop().events)
                 eventHit(event);
@@ -134,7 +134,7 @@ class PlayState extends MusicBeatState
 
             pauseMusic();
             
-            FlxG.resetState();
+            CoolUtil.resetState();
         }
     }
 
@@ -152,7 +152,7 @@ class PlayState extends MusicBeatState
     {
         super.stepHit(curStep);
 
-        if (FlxG.sound.music != null && FlxG.sound.music.time >= -ClientPrefs.data.noteOffset)
+        if (FlxG.sound.music != null && FlxG.sound.music.time >= -ClientPrefs.data.offset)
         {
             final timeSub:Float = Conductor.songPosition - Conductor.offset;
             final syncTime:Float = 20;
@@ -538,6 +538,8 @@ class PlayState extends MusicBeatState
                 for (props in [config.properties, object.properties])
                     if (props != null)
                         CoolUtil.setMultiProperty(obj, props);
+
+                obj.exists = object.highQuality ?? false ? !ClientPrefs.data.lowQuality : true;
 
                 var addMethod:FlxBasic->Dynamic = null;
 

@@ -14,6 +14,6 @@ class MainState extends ALEState
 
         Main.postResetConfig();
 
-        FlxG.switchState(new PlayState());
+        CoolUtil.switchState(new PlayState());
     }
 }

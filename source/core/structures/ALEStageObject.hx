@@ -7,4 +7,5 @@ typedef ALEStageObject = {
     @:optional var path:String;
     @:optional var properties:Any;
     @:optional var addMethod:String;
+    @:optional var highQuality:Bool;
 }

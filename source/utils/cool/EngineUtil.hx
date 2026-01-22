@@ -1,7 +1,5 @@
 package utils.cool;
 
-import core.structures.ALEData;
-
 import openfl.Lib;
 
 class EngineUtil

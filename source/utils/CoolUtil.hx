@@ -4,6 +4,8 @@ import flixel.input.keyboard.FlxKey;
 
 import core.config.ALESave;
 
+import core.Main;
+
 @:build(core.macros.FunctionsMergeMacro.build(
 	[
 		'utils.cool.FileUtil',
@@ -13,6 +15,7 @@ import core.config.ALESave;
 		'utils.cool.StringUtil',
 		'utils.cool.OptionsUtil',
 		'utils.cool.KeyUtil',
+		'utils.cool.StateUtil',
 		'utils.cool.ColorUtil',
 		'utils.cool.EngineUtil'
 	]
@@ -30,6 +33,15 @@ class CoolUtil
 
 	public static function destroy()
 	{
-		save?.destroy();
+		save.save();
+		
+		save.destroy();
+	}
+
+	public static function resetGame()
+	{
+		Main.preResetConfig();
+
+		FlxG.resetGame();
 	}
 }

@@ -100,4 +100,9 @@ class CoolVars
 
 		EngineUtil.resizeGame(CoolVars.data.width, CoolVars.data.height);
 	}
+
+    public static function reset()
+    {
+		globalVars.clear();
+    }
 }

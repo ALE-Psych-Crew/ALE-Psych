@@ -107,7 +107,7 @@ class Conductor
 
 	public static function reset(?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
 	{
-		songPosition = 0;
+		songPosition = -1;
 
 		curStep = curBeat = curSection = safeStep = safeBeat = safeSection = -1;
 		
@@ -132,12 +132,13 @@ class Conductor
 		for (signal in [stepHit, beatHit, sectionHit, safeStepHit, safeBeatHit, safeSectionHit])
 			signal?.removeAll();
 	}
+	
+	public static var allowUpdate:Bool = true;
 
-	@:allow(core.backend.MusicBeatState)
-	@:allow(core.backend.MusicBeatSubState)
+	@:allow(core.ALEGame)
 	private static function update()
 	{
-		if (songPosition < 0)
+		if (songPosition < 0 || !allowUpdate)
 			return;
 
 		var newStep:Int = -1;

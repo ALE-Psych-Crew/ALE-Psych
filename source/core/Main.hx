@@ -5,15 +5,16 @@ import haxe.Http;
 
 import lime.app.Application;
 
-import flixel.FlxGame;
-
 import openfl.display.Sprite;
+import openfl.ui.Mouse;
 
 import funkin.debug.DebugCounter;
 
 import core.config.MainState;
 
+import core.backend.ALESoundTray;
 import core.plugins.*;
+import core.ALEGame;
 
 #if WINDOWS_API
 @:buildXml('
@@ -46,14 +47,14 @@ class Main extends Sprite
 	@:unreflective public function new()
 	{
 		super();
+		
+		addChild(new ALEGame(MainState));
 
 		onceConfig();
 	}
 
 	@:unreflective function onceConfig()
 	{
-		addChild(new FlxGame(0, 0, MainState, 120, 120, true));
-
 		#if WINDOWS_API
 		untyped __cpp__("SetProcessDPIAware();");
 
@@ -105,13 +106,37 @@ class Main extends Sprite
 
     @:unreflective public static function preResetConfig()
     {
-        Conductor.destroy();
+		#if WINDOWS_API
+		winapi.WindowsAPI.resetWindowsFuncs();
+		#end
+
+		#if desktop
+		Mouse.cursor = ARROW;
+		#end
+
+		if (FlxG.state.subState != null)
+			FlxG.state.subState.close();
+
+		FlxTween.globalManager.clear();
+
+		if (FlxG.sound.music != null)
+		{
+			FlxG.sound.music.stop();
+
+			FlxG.sound.music = null;
+		}
 
         CoolUtil.destroy();
+		
+        Conductor.destroy();
+		
+		ALEPluginsHandler.destroy();
+
+		CoolVars.reset();
 
 		debugCounter?.destroy();
-		
-		debugPrintPlugin?.destroy();
+
+		FlxG.game.removeChild(debugCounter);
     }
 
     @:unreflective public static function postResetConfig()
@@ -125,6 +150,8 @@ class Main extends Sprite
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
+
+		FlxG.mouse.visible = true;
       
 		FlxG.mouse.unload();
 
@@ -141,6 +168,11 @@ class Main extends Sprite
         Paths.init();
 
         Conductor.init();
+
+		final soundTray:ALESoundTray = cast FlxG.game.soundTray;
+
+		soundTray.font = Paths.font('jetbrains.ttf');
+		soundTray.sound = Paths.sound('tick');
 
 		FlxG.game.addChild(debugCounter = new DebugCounter(Paths.exists('data/debug') ? cast Paths.json('data/debug').fields : []));
 		

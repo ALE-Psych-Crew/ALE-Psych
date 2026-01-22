@@ -3,7 +3,7 @@ package core.backend;
 import core.interfaces.IMusicState;
 import core.interfaces.IMusicObject;
 
-class MusicBeatState extends ALEState implements IMusicState
+class MusicBeatSubState extends ALESubState implements IMusicState
 {
     public var curStep(get, never):Int;
     function get_curStep():Int
@@ -29,16 +29,11 @@ class MusicBeatState extends ALEState implements IMusicState
     function get_safeSection():Int
         return Conductor.safeSection;
 
-    public var shouldResetConductor:Bool = true;
-
     override function destroy()
     {
         removeConductorListeners();
 
         super.destroy();
-        
-        if (shouldResetConductor)
-            Conductor.reset();
     }
 
     override function create()
@@ -92,49 +87,31 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onStepHit(step:Int):Void
     {
-        if (subState != null && !persistentUpdate)
-            return;
-
         stepHit(step);
     }
 
     function onSafeStepHit(step:Int):Void
     {
-        if (subState != null && !persistentUpdate)
-            return;
-
         safeStepHit(step);
     }
 
     function onBeatHit(beat:Int):Void
     {
-        if (subState != null && !persistentUpdate)
-            return;
-
         beatHit(beat);
     }
 
     function onSafeBeatHit(beat:Int):Void
     {
-        if (subState != null && !persistentUpdate)
-            return;
-
         safeBeatHit(beat);
     }
 
     function onSectionHit(section:Int):Void
     {
-        if (subState != null && !persistentUpdate)
-            return;
-
         sectionHit(section);
     }
 
     function onSafeSectionHit(section:Int):Void
     {
-        if (subState != null && !persistentUpdate)
-            return;
-
         safeSectionHit(section);
     }
     

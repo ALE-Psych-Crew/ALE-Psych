@@ -29,7 +29,11 @@ import utils.Controls;
 
 import utils.cool.LogUtil.debugTrace;
 
+import core.backend.ALEState;
+import core.backend.ALESubState;
+
 import core.backend.MusicBeatState;
+import core.backend.MusicBeatSubState;
 
 using StringTools;
 #end
