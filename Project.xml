@@ -12,9 +12,21 @@
 	
 	<!-- _____________________________ ALE Defines _______________________________ -->
 
-	<define name="MODS_ALLOWED" if="cpp"/>
+	<define name="HSCRIPT_ALLOWED"/>
+
+	<define name="LUA_ALLOWED" if="cpp"/>
+
+	<define name="DISCORD_ALLOWED" if="desktop cpp"/>
+
+	<define name="VIDEOS_ALLOWED" if="windows || linux || android" unless="32bits"/> 
+
+	<define name="CRASH_HANDLER"/>
+
+	<define name="COMPILE_ALL_CLASSES" unless="debug"/>
 
 	<define name="WINDOWS_API" if="windows cpp"/>
+	
+	<define name="MOBILE_API" if="android || ios"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -34,26 +46,54 @@
 
 	<assets path="assets"/>
 
-	<assets path="mods" embed="false"/>
+	<assets path="mods" embed="false" unless="mobile"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 	
 	<haxelib name="tjson"/>
 
-	<haxelib name="flixel"/>
+	<haxelib name="away3d"/>
 
+	<haxelib name="flixel"/>
+	<haxelib name="flixel-ui"/>
 	<haxelib name="flixel-addons"/>
+
+	<haxelib name="ale-ui"/>
 
 	<haxelib name="flixel-animate"/>
 
-	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
+	<haxelib name="flxsoundfilters"/>
+	<haxelib name="funkin.vis"/>
+	<haxelib name="grig.audio"/>
 
+	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
+
+	<haxelib name="rulescript" if="HSCRIPT_ALLOWED"/>
+
+	<haxelib name="hxluajit" if="LUA_ALLOWED"/>
+	<haxelib name="hxluajit-wrapper" if="LUA_ALLOWED"/>
+
+	<haxelib name="flixel-away3d"/>
+
+	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
+
+	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
+	<haxelib name="extension-haptics" if="MOBILE_API"/>
+	
 	<!-- _________________________________ Macros ________________________________ -->
+	
+	<haxeflag name="--macro" value="core.macros.ImportsMacro.include()"/>
 
 	<!-- ______________________________ Haxe Defines _____________________________ -->
 
+	<haxeflag name="-dce" value="no"/>
+
 	<haxedef name='lime_disable_assets_version'/>	
 
+	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="DISCORD_ALLOWED"/>
+
+	<haxedef name="HXC_LIBVLC_LOGGING" if="VIDEOS_ALLOWED debug"/>
+	
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
 	
 	<haxedef name="HXC_DEBUG_TRACE" if="debug"/>
@@ -79,10 +119,10 @@
 
 	<haxedef name="DISABLED_MACRO_SUPERLATIVE" if="android"/>
 
+	<haxedef name="hscriptPos"/>
+	
 	<!-- ______________________________ Application Icon ______________________________ -->
 
-	<assets path='art/iconOG.png' rename='icon.png' if="linux"/>
-	
 	<icon path="art/icon16.png" size='16'/>
 	<icon path="art/icon32.png" size='32'/>
 	<icon path="art/icon64.png" size='64'/>

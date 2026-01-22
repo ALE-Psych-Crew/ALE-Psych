@@ -8,6 +8,8 @@ import flixel.math.FlxPoint.FlxCallbackPoint;
 import flixel.tweens.FlxTween.*;
 import flixel.tweens.FlxEase.*;
 
+import utils.cool.MathUtil;
+
 class FXCamera extends ALECamera
 {
 	public var speed(default, set):Float;
@@ -44,7 +46,7 @@ class FXCamera extends ALECamera
 		super.update(elapsed);
 
 		if (_zoomTween == null && zoomSpeed > 0)
-			zoom = CoolUtil.fpsLerp(zoom, targetZoom, 0.05 * zoomSpeed);
+			zoom = MathUtil.fpsLerp(zoom, targetZoom, 0.05 * zoomSpeed);
 	}
 
 	public function updateTarget(_:FlxPoint)

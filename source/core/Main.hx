@@ -7,6 +7,13 @@ import lime.app.Application;
 
 import openfl.display.Sprite;
 import openfl.ui.Mouse;
+import openfl.Lib;
+
+import ale.ui.ALEUIUtils;
+
+#if LUA_ALLOWED
+import hxluajit.wrapper.LuaError;
+#end
 
 import funkin.debug.DebugCounter;
 
@@ -15,6 +22,10 @@ import core.config.MainState;
 import core.backend.ALESoundTray;
 import core.plugins.*;
 import core.ALEGame;
+
+import scripting.haxe.HScriptConfig;
+
+import lime.graphics.Image;
 
 #if WINDOWS_API
 @:buildXml('
@@ -169,10 +180,29 @@ class Main extends Sprite
 
         Conductor.init();
 
+		HScriptConfig.config();
+
+		ALEPluginsHandler.init();
+
+		Lib.current.stage.window.setIcon(Paths.library.getImage(CoolVars.data.icon + '.png'));
+
 		final soundTray:ALESoundTray = cast FlxG.game.soundTray;
 
 		soundTray.font = Paths.font('jetbrains.ttf');
 		soundTray.sound = Paths.sound('tick');
+
+		ALEUIUtils.OBJECT_SIZE = 25;
+		ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
+		ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
+		ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
+
+		#if LUA_ALLOWED
+		LuaError.errorHandler = (e:String) -> {
+			debugTrace(e, ERROR);
+		};
+
+		Sys.putEnv('LUA_PATH', Sys.getCwd() + '/' + Paths.mods + '/' + Paths.mod + '/scripts/modules/?.lua;');
+		#end
 
 		FlxG.game.addChild(debugCounter = new DebugCounter(Paths.exists('data/debug') ? cast Paths.json('data/debug').fields : []));
 		

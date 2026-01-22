@@ -4,6 +4,8 @@ import core.structures.*;
 
 import core.enums.CharacterType;
 
+import utils.cool.StringUtil;
+import utils.cool.ColorUtil;
 import utils.cool.FileUtil;
 
 using StringTools;
@@ -230,7 +232,7 @@ class ALEFormatter
             flipX: psychJson.flip_x,
             flipY: false,
             antialiasing: !psychJson.no_antialiasing,
-            barColor: CoolUtil.intToHex(CoolUtil.colorFromArray(psychJson.healthbar_colors)),
+            barColor: StringUtil.intToHex(ColorUtil.colorFromArray(psychJson.healthbar_colors)),
             death: psychJson.deadVariant ?? 'bf-dead',
             sustainAnimation: true,
             danceModulo: char.contains('gf') && !char.contains('bf') ? 1 : 2,

@@ -30,10 +30,17 @@ import utils.Controls;
 import utils.cool.LogUtil.debugTrace;
 
 import core.backend.ALEState;
-import core.backend.ALESubState;
-
+import core.backend.ScriptState;
 import core.backend.MusicBeatState;
+
+import core.backend.ALESubState;
+import core.backend.ScriptSubState;
 import core.backend.MusicBeatSubState;
+
+import core.config.Discord;
+
+import funkin.states.CustomState;
+import funkin.substates.CustomSubState;
 
 using StringTools;
 #end

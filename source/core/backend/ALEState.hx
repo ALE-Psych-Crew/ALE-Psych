@@ -25,6 +25,21 @@ class ALEState extends FlxState
 		camHUD = new ALECamera();
 		
 		FlxG.cameras.add(camHUD, false);
+
+        if (CoolVars.skipTransOut)
+        {
+            CoolVars.skipTransOut = false;
+        } else {
+            #if cpp
+            CoolUtil.openSubState(new CustomSubState(
+                CoolVars.data.transition,
+                [false, null],
+                [false],
+				null,
+                ['finishCallback' => null]
+            ));
+            #end
+        }
     }
 
 	override function destroy()

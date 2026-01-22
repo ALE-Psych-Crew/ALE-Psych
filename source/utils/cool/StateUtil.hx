@@ -4,14 +4,13 @@ class StateUtil
 {
 	public static function resetState()
 	{
+		CoolVars.skipTransOut = true;
+		
 		FlxG.resetState();
 	}
 
     public static function switchState(state:flixel.FlxState, skipTransIn:Bool = null, skipTransOut:Bool = null)
     {
-		FlxG.switchState(state);
-
-		/*
         if (state is CustomState)
         {
 			var scriptName = cast(state, CustomState).scriptName;
@@ -23,12 +22,10 @@ class StateUtil
         } else {
 			transitionSwitch(state, skipTransIn, skipTransOut);
 		}
-		*/
     }
 
 	private static function transitionSwitch(state:flixel.FlxState, skipTransIn:Bool = null, skipTransOut:Bool = null)
 	{
-		/*
 		if (skipTransIn != null)
 			CoolVars.skipTransIn = skipTransIn;
 
@@ -51,12 +48,10 @@ class StateUtil
 			));
 			#end
 		}
-		*/
 	}
 
 	public static function openSubState(subState:flixel.FlxSubState = null)
 	{
-		/*
 		if (subState == null)
 			return;
 
@@ -71,7 +66,6 @@ class StateUtil
 
             return;
         }
-		*/
 
 		FlxG.state.openSubState(subState);
 	}

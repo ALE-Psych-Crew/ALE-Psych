@@ -17,6 +17,7 @@ import core.structures.ALEStage;
 import core.structures.ALESong;
 import core.structures.ALEHud;
 import core.structures.Point;
+import core.enums.SongType;
 import core.enums.Rating;
 
 import utils.ALEFormatter;
@@ -31,15 +32,20 @@ import funkin.visuals.game.Icon;
 import funkin.visuals.objects.Bar;
 import funkin.visuals.FXCamera;
 
-class PlayState extends MusicBeatState
+class PlayState extends ScriptState
 {
+    public static var instance:PlayState;
+
     public var CHART:ALESong;
     public var STAGE:ALEStage;
     public var HUD:ALEHud;
 
     public final song:String;
-
+    public final playlist:Array<String>;
     public final difficulty:String;
+    public final songIndex:Int;
+
+    public final type:SongType;
 
     public var score:Float = 0;
     public var totalPlayed:Int = 0;
@@ -72,18 +78,20 @@ class PlayState extends MusicBeatState
         return health;
     }
 
-    public function new(?songName:String, ?diff:String)
+    public function new(?type:SongType, ?playlist:Array<String>, ?difficulty:String, ?songIndex:Int)
     {
         super();
 
-        song = songName ?? 'bopeebo';
-        difficulty = diff ?? 'hard';
+        this.type = type ?? FREEPLAY;
 
-        CHART ??= ALEFormatter.getSong(song, difficulty);
+        this.playlist = playlist ?? ['bopeebo'];
+        this.difficulty = difficulty ?? 'hard';
+        this.songIndex = songIndex ?? 0;
+        this.song = this.playlist[this.songIndex];
+
+        CHART ??= ALEFormatter.getSong(this.song, this.difficulty);
         STAGE ??= ALEFormatter.getStage(CHART.stage);
         HUD ??= ALEFormatter.getHud(STAGE.hud);
-
-        Conductor.calculateBPMChanges(CHART);
     }
 
     public var shouldMoveCamera:Bool = true;
@@ -93,10 +101,16 @@ class PlayState extends MusicBeatState
     public var skipCountdown:Bool = false;
 
     public var spawnNotes:Bool = true;
+    
+    public var canPause:Bool = false;
 
     override function create()
     {
+        instance = this;
+
         super.create();
+
+        Conductor.calculateBPMChanges(CHART);
 
         initCamera();
 
@@ -128,6 +142,11 @@ class PlayState extends MusicBeatState
 
         scoreText.text = botplay ? 'BOTPLAY' : 'Score: ' + score + '    Misses: ' + misses + '    Accuracy: ' + CoolUtil.floorDecimal(accuracy, 2) + '%';
 
+        if (Controls.PAUSE && canPause)
+        {
+            CoolUtil.openSubState(new CustomSubState(CoolVars.data.pauseSubState));
+        }
+
         if (Controls.RESET)
         {
             shouldClearMemory = false;
@@ -146,6 +165,10 @@ class PlayState extends MusicBeatState
         pauseMusic();
 
         super.destroy();
+
+        destroyScripts();
+        
+        instance = null;
     }
 
     override function stepHit(curStep:Int)
@@ -267,6 +290,8 @@ class PlayState extends MusicBeatState
     function startSong()
     {
         FlxG.sound.playMusic(soundsMap.get('::MUSIC'), 0.85, false);
+        
+        FlxG.sound.music.onComplete = finishSong.bind();
 
         var voices:Null<FlxSound> = null;
 
@@ -338,6 +363,25 @@ class PlayState extends MusicBeatState
             voice.play();
 
         Conductor.songPosition = 0;
+        
+        canPause = true;
+    }
+
+    public function finishSong()
+    {
+        canPause = false;
+
+        pauseMusic();
+
+        exit();
+    }
+
+    public function exit()
+    {
+        if (songIndex + 1 < playlist.length)
+            CoolUtil.switchState(new PlayState(type, playlist, difficulty, songIndex + 1), true, true);
+        else
+            CoolUtil.switchState(new CustomState(type == STORY ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
     }
 
     // Config
@@ -814,9 +858,14 @@ class PlayState extends MusicBeatState
         healthBar.percent = health * 50;
 
         if (health <= 0)
-        {
-            pauseMusic();
-        }
+            death();
+    }
+
+    function death()
+    {
+        pauseMusic();
+
+        CoolUtil.openSubState(new CustomSubState(CoolVars.data.gameOverScreen));
     }
 
     function justPressedKey(event:KeyboardEvent)
@@ -868,6 +917,15 @@ class PlayState extends MusicBeatState
         for (sound in vocals)
             if (sound != null)
                 sound.pause();
+    }
+
+    function resumeMusic()
+    {
+        FlxG.sound.music?.resume();
+
+        for (sound in vocals)
+            if (sound != null)
+                sound.resume();
     }
 
     function displayCombo(rating:Rating)

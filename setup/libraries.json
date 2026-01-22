@@ -38,6 +38,16 @@
                     "name": "flixel-addons",
                     "version": "3.3.2",
                     "skipDependencies": true
+                },
+                {
+                    "name": "flixel-ui",
+                    "version": "2.6.4",
+                    "skipDependencies": true
+                },
+                {
+                    "name": "flixel-tools",
+                    "version": "1.5.1",
+                    "skipDependencies": true
                 }
             ]
         },
@@ -47,7 +57,70 @@
                 {
                     "name": "flixel-animate",
                     "git": "https://github.com/MaybeMaru/flixel-animate",
-                    "commit": "358358f8b9aae1298a8cee95f18399887c412637",
+                    "commit": "ad424c76cb76cfda5622cce47837a4698e1a284c",
+                    "skipDependencies": true
+                },
+                {
+                    "name": "flxsoundfilters",
+                    "git": "https://github.com/TheZoroForce240/FlxSoundFilters",
+                    "commit": "a89bb537684111a6ff85737981f4b2d8ef4b4f68"
+                },
+                {
+                    "name": "flixel-away3d",
+                    "git": "https://github.com/ALE-Psych-Crew/Flixel-Away-3D"
+                },
+                {
+                    "name": "away3d",
+                    "git": "https://github.com/ALE-Psych-Crew/away3d"
+                },
+                {
+                    "name": "ale-ui",
+                    "version": "1.0.4"
+                }
+            ]
+        },
+        {
+            "name": "Media",
+            "libraries": [
+                {
+                    "name": "grig.audio",
+                    "git": "https://github.com/FunkinCrew/grig.audio",
+                    "commit": "8567c4dad34cfeaf2ff23fe12c3796f5db80685e"
+                },
+                {
+                    "name": "funkin.vis",
+                    "git": "https://github.com/FunkinCrew/funkVis",
+                    "commit": "1966f8fbbbc509ed90d4b520f3c49c084fc92fd6"
+                },
+                {
+                    "name": "hxvlc",
+                    "version": "2.2.5",
+                    "skipDependencies": true
+                }
+            ]
+        },
+        {
+            "name": "Scripting",
+            "libraries": [
+                {
+                    "name": "hscript",
+                    "git": "https://github.com/HaxeFoundation/hscript",
+                    "commit": "31882f176a9deb4bda3aaba83f6ebc1981a060b3"
+                },
+                {
+                    "name": "rulescript",
+                    "git": "https://github.com/Kriptel/RuleScript",
+                    "commit": "33a3468c2a461731ed69dccc2f07c3a07a9e1495",
+                    "skipDependencies": true
+                },
+                {
+                    "name": "hxluajit",
+                    "version": "1.0.5",
+                    "skipDependencies": true
+                },
+                {
+                    "name": "hxluajit-wrapper",
+                    "version": "1.0.0",
                     "skipDependencies": true
                 }
             ]
@@ -56,9 +129,13 @@
             "name": "Platform",
             "libraries": [
                 {
+                    "name": "hxdiscord_rpc",
+                    "version": "1.3.0",
+                    "skipDependencies": true
+                },
+                {
                     "name": "sl-windows-api",
-                    "git": "https://github.com/Slushi-Github/SL-Windows-API",
-                    "commit": "854312e9a3e7af678309113543082224b42c2a16"
+                    "version": "1.2.0"
                 }
             ]
         }

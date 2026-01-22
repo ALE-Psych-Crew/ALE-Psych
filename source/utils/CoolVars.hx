@@ -15,6 +15,9 @@ import openfl.Lib;
 @:build(core.macros.CoolVarsMacro.build())
 class CoolVars
 {
+	public static var skipTransIn:Bool = false;
+	public static var skipTransOut:Bool = false;
+
 	public static var engineVersion(get, never):String;
 
 	public static function get_engineVersion():String
@@ -58,7 +61,7 @@ class CoolVars
 			transition: 'FadeTransition',
 
 			title: 'Friday Night Funkin\': ALE Psych',
-			icon: 'appIcon',
+			icon: 'images/appIcon',
 			width: 1280,
 			height: 720,
 

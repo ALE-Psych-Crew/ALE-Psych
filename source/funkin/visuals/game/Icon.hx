@@ -4,6 +4,7 @@ import funkin.visuals.objects.Bar;
 
 import flixel.graphics.FlxGraphic;
 
+import utils.cool.MathUtil;
 import utils.ALEFormatter;
 
 import core.structures.ALEIcon;
@@ -80,8 +81,8 @@ class Icon extends Bopper
 
         if (data.lerp > 0)
         {
-            scale.x = CoolUtil.fpsLerp(scale.x, data.scale.x, data.lerp);
-            scale.y = CoolUtil.fpsLerp(scale.y, data.scale.y, data.lerp);
+            scale.x = MathUtil.fpsLerp(scale.x, data.scale.x, data.lerp);
+            scale.y = MathUtil.fpsLerp(scale.y, data.scale.y, data.lerp);
 
             updateHitbox();
         }
