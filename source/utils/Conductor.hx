@@ -21,13 +21,25 @@ class Conductor
 	static function get_crochet():Float
 		return 60000 / bpm;
 
+	public static var secCrochet(get, never):Float;
+	static function get_secCrochet():Float
+		return 60 / bpm;
+
 	public static var stepCrochet(get, never):Float;
 	static function get_stepCrochet():Float
 		return crochet / stepsPerBeat;
 
+	public static var secStepCrochet(get, never):Float;
+	static function get_secStepCrochet():Float
+		return secCrochet / stepsPerBeat;
+
 	public static var sectionCrochet(get, never):Float;
 	static function get_sectionCrochet():Float
 		return crochet * beatsPerSection;
+
+	public static var secCectionCrochet(get, never):Float;
+	static function get_secCectionCrochet():Float
+		return secCrochet * beatsPerSection;
 
 	public static var curStep:Int = -1;
 	public static var stepHit:FlxTypedSignal<Int -> Void>;

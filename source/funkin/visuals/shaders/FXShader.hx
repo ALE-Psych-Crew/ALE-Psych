@@ -28,7 +28,7 @@ class FXShader extends ALERuntimeShader
         }
     }
 
-    public function tween(props:Any, ?beats:Float, ?ease:EaseFunction)
+    public function tween(props:Any, ?duration:Float, ?ease:EaseFunction)
     {
         if (!ClientPrefs.data.shaders)
             return;
@@ -40,7 +40,7 @@ class FXShader extends ALERuntimeShader
             _tweens.set(prop, FlxTween.num(
                 getFloat(prop),
                 Reflect.field(props, prop),
-                (beats ?? 1) * 60 / Conductor.bpm,
+                duration ?? 1,
                 {
                     ease: ease,
                     onComplete: (_) -> {

@@ -78,6 +78,8 @@ class PlayState extends ScriptState
         return health;
     }
 
+    public var startTime:Float = -1;
+
     public function new(?type:SongType, ?playlist:Array<String>, ?difficulty:String, ?songIndex:Int)
     {
         super();
@@ -112,6 +114,8 @@ class PlayState extends ScriptState
     override function create()
     {
         instance = this;
+        
+        Conductor.calculateBPMChanges(CHART);
 
         super.create();
 
@@ -127,8 +131,6 @@ class PlayState extends ScriptState
 
         if (scriptCallbackCall(ON, 'Create'))
         {
-            Conductor.calculateBPMChanges(CHART);
-
             add(comboGroup = new FlxTypedSpriteGroup<FlxSprite>(HUD.combo.position.x, HUD.combo.position.y));
             add(uiGroup = new FlxTypedGroup<FlxBasic>());
             add(strumLines = new FlxTypedGroup<StrumLine>());
@@ -541,6 +543,8 @@ class PlayState extends ScriptState
                 voice.play();
 
             Conductor.songPosition = -1;
+
+            FlxG.sound.music.time = startTime;
         }
 
         scriptCallbackCall(POST, 'SongStart');
@@ -642,7 +646,11 @@ class PlayState extends ScriptState
 
                     for (note in section.notes)
                     {
+                        if (note[0] < startTime)
+                            continue;
+
                         notes[note[4][0]] ??= [];
+
                         notes[note[4][0]].push([
                             note[0],
                             note[1],
@@ -1242,15 +1250,8 @@ class PlayState extends ScriptState
                 Conductor.songPosition = FlxG.sound.music.time;
 
             for (vocal in vocals)
-                if (vocal != null)
-                {
-                    vocal.pause();
-
-                    if (Conductor.songPosition <= vocal.length)
-                        vocal.time = Conductor.songPosition;
-                    
-                    vocal.play();
-                }
+                if (vocal != null && Conductor.songPosition <= vocal.length)
+                    vocal.time = Conductor.songPosition;
         }
 
         scriptCallbackCall(POST, 'VocalsResync');
@@ -1279,6 +1280,8 @@ class PlayState extends ScriptState
             for (sound in vocals)
                 if (sound != null)
                     sound.resume();
+
+            resyncVocals();
         }
 
         scriptCallbackCall(POST, 'MusicResume');

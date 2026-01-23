@@ -22,7 +22,16 @@ class StrumLine extends FlxSpriteGroup
     public var notes:FlxTypedSpriteGroup<Note>;
     public var splashes:FlxTypedSpriteGroup<Splash>;
 
-    public var botplay:Bool;
+    public var botplay(default, set):Bool;
+    function set_botplay(val:Bool):Bool
+    {
+        botplay = val;
+
+        for (str in strums)
+            str.returnToIdle = botplay;
+
+        return botplay;
+    }
 
     public var notesStack:GenericStack<Note> = new GenericStack<Note>();
 
@@ -73,8 +82,6 @@ class StrumLine extends FlxSpriteGroup
 
         type = chartData.type;
 
-        botplay = type != 'player' || ClientPrefs.data.botplay;
-
         add(strums = new FlxTypedSpriteGroup<Strum>());
         
         add(notes = new FlxTypedSpriteGroup<Note>());
@@ -93,7 +100,6 @@ class StrumLine extends FlxSpriteGroup
 
             final strum:Strum = new Strum(strumConfig, strumIndex, config.strumFramerate, config.strumTextures, config.strumScale, config.space);
             strums.add(strum);
-            strum.returnToIdle = botplay;
 
             final splash:Splash = new Splash(strumConfig, strum, config.splashScale, config.splashFramerate, config.splashTextures);
             splashes.add(splash);

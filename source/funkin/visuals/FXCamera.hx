@@ -72,11 +72,31 @@ class FXCamera extends ALECamera
 		_positionTween = safePointTween(_positionTween, position, x, y, () -> { _positionTween = null; }, duration, options);
 	}
 
+	public function cancelPositionTween()
+	{
+		if (_positionTween != null)
+		{
+			_positionTween.cancel();
+
+			_positionTween = null;
+		}
+	}
+			
 	var _offsetTween:FlxTween = null;
 
 	public function tweenOffset(x:Float, y:Float, ?duration:Float, ?options:TweenOptions)
 	{
 		_offsetTween = safePointTween(_offsetTween, offset, x, y, () -> { _offsetTween = null; }, duration, options);
+	}
+
+	public function cancelOffsetTween()
+	{
+		if (_offsetTween != null)
+		{
+			_offsetTween.cancel();
+
+			_offsetTween = null;
+		}
 	}
 
 	inline function safePointTween(initTween:Null<FlxTween>, point:FlxPoint, x:Float, y:Float, endFunc:Void -> Void, ?duration:Float, ?options:TweenOptions):FlxTween
@@ -99,6 +119,16 @@ class FXCamera extends ALECamera
 		}, () -> { _zoomTween = null; }, duration, options);
 	}
 
+	public function cancelZoomTween()
+	{
+		if (_zoomTween != null)
+		{
+			_zoomTween.cancel();
+
+			_zoomTween = null;
+		}
+	}
+
 	var _speedTween:FlxTween = null;
 
 	public function tweenSpeed(newSpeed:Float, ?duration:Float, ?options:TweenOptions)
@@ -106,11 +136,31 @@ class FXCamera extends ALECamera
 		_speedTween = safeUniqueTween(_speedTween, speed, newSpeed, (val) -> { speed = val; }, () -> { _speedTween = null; }, duration, options);
 	}
 
+	public function cancelSpeedTween()
+	{
+		if (_speedTween != null)
+		{
+			_speedTween.cancel();
+
+			_speedTween = null;
+		}
+	}
+
 	var _zoomSpeedTween:FlxTween = null;
 
 	public function tweenZoomSpeed(newZoomSpeed:Float, ?duration:Float, ?options:TweenOptions)
 	{
 		_zoomSpeedTween = safeUniqueTween(_zoomSpeedTween, zoomSpeed, newZoomSpeed, (val) -> { zoomSpeed = val; }, () -> { _zoomSpeedTween = null; }, duration, options);
+	}
+
+	public function cancelZoomSpeedTween()
+	{
+		if (_zoomSpeedTween != null)
+		{
+			_zoomSpeedTween.cancel();
+
+			_zoomSpeedTween = null;
+		}
 	}
 
 	inline function safeUniqueTween(initTween:Null<FlxTween>, startValue:Float, endValue:Float, updateFunc:Float -> Void, endFunc:Void -> Void, ?duration:Float, ?options:TweenOptions):FlxTween
