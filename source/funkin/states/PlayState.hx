@@ -707,13 +707,13 @@ class PlayState extends ScriptState
     {
         lastStackedNote = note;
 
-        if (scriptCallbackCall(ON, 'StackNote'))
+        if (scriptCallbackCall(ON, 'StackNote', null, [note], []))
         {
             if (!totalNoteTypes.contains(note.noteType))
                 totalNoteTypes.push(note.noteType);
         }
 
-        scriptCallbackCall(POST, 'StackNote');
+        scriptCallbackCall(POST, 'StackNote', null, [note], []);
     }
 
     var lastHitNote:Note = null;
