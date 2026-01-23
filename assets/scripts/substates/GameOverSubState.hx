@@ -86,9 +86,7 @@ function onUpdate(elapsed:Float)
             subCamera.fade(FlxColor.BLACK, 2.5, false, () -> {
                 close();
 
-                PlayState.instance.shouldClearMemory = false;
-
-                CoolUtil.resetState();
+                PlayState.instance.restart();
             });
 
             canSelect = false;
