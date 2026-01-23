@@ -16,6 +16,8 @@ import scripting.lua.LuaScript;
 import scripting.lua.LuaPresetBase;
 #end
 
+import core.enums.ScriptCallType;
+
 interface IScriptState
 {
     public var members(default, null):Array<FlxBasic>;
@@ -44,6 +46,8 @@ interface IScriptState
     public function callOnScripts(callback:String, ?arguments:Array<Dynamic> = null):Array<Dynamic>;
     public function callOnHScripts(callback:String, ?arguments:Array<Dynamic> = null):Array<Dynamic>;
     public function callOnLuaScripts(callback:String, ?arguments:Array<Dynamic> = null):Array<Dynamic>;
+
+    public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Bool;
 
     public function destroyScripts():Void;
     public function destroyHScripts():Void;

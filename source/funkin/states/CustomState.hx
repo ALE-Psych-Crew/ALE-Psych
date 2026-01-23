@@ -90,9 +90,7 @@ class CustomState extends ScriptState
         }
         #end
 
-        callOnScripts('onCreate');
-
-        callOnScripts('postCreate');
+        scriptCallbackCall(ON, 'Create');
     }
 
     public function addHotReloadingFile(path:String)
@@ -101,124 +99,113 @@ class CustomState extends ScriptState
 
     override public function update(elapsed:Float)
     {
-        callOnScripts('onUpdate', [elapsed]);
+        if (scriptCallbackCall(ON, 'Update', [elapsed]))
+        {
+            super.update(elapsed);
 
-        super.update(elapsed);
-        
-        if (Controls.RESET && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
-            resetCustomState();
-        
-        callOnScripts('postUpdate', [elapsed]);
+            if (Controls.RESET && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
+                resetCustomState();
+        }
+
+        scriptCallbackCall(POST, 'Update', [elapsed]);
     }
 
     override public function destroy()
     {
+        scriptCallbackCall(ON, 'Destroy');
+
+        super.destroy();
+
         #if cpp
         if (CoolVars.data.scriptsHotReloading && CoolVars.data.developerMode)
             reloadThread = false;
         #end
 
-        callOnScripts('onDestroy');
+        FlxG.autoPause = true;
 
-        super.destroy();
-
-        callOnScripts('postDestroy');
+        scriptCallbackCall(POST, 'Destroy');
 
         destroyScripts();
-
-        FlxG.autoPause = true;
     }
 
     override public function stepHit(curStep:Int)
     {
-        callOnScripts('onStepHit', [curStep]);
+        if (scriptCallbackCall(ON, 'StepHit', [curStep]))
+            super.stepHit(curStep);
 
-        super.stepHit(curStep);
-
-        callOnScripts('postStepHit', [curStep]);
+        scriptCallbackCall(POST, 'StepHit', [curStep]);
     }
 
     override public function beatHit(curBeat:Int)
     {
-        callOnScripts('onBeatHit', [curBeat]);
+        if (scriptCallbackCall(ON, 'BeatHit', [curBeat]))
+            super.beatHit(curBeat);
 
-        super.beatHit(curBeat);
-
-        callOnScripts('postBeatHit', [curBeat]);
+        scriptCallbackCall(POST, 'BeatHit', [curBeat]);
     }
 
     override public function sectionHit(curSection:Int)
     {
-        callOnScripts('onSectionHit', [curSection]);
+        if (scriptCallbackCall(ON, 'SectionHit', [curSection]))
+            super.sectionHit(curSection);
 
-        super.sectionHit(curSection);
-
-        callOnScripts('postSectionHit', [curSection]);
+        scriptCallbackCall(POST, 'SectionHit', [curSection]);
     }
 
     override public function safeStepHit(safeStep:Int)
     {
-        callOnScripts('onSafeStepHit', [safeStep]);
+        if (scriptCallbackCall(ON, 'SafeStepHit', [safeStep]))
+            super.safeStepHit(safeStep);
 
-        super.safeStepHit(safeStep);
-
-        callOnScripts('postSafeStepHit', [safeStep]);
+        scriptCallbackCall(POST, 'SafeStepHit', [safeStep]);
     }
 
     override public function safeBeatHit(safeBeat:Int)
     {
-        callOnScripts('onSafeBeatHit', [safeBeat]);
+        if (scriptCallbackCall(ON, 'SafeBeatHit', [safeBeat]))
+            super.safeBeatHit(safeBeat);
 
-        super.safeBeatHit(safeBeat);
-
-        callOnScripts('postSafeBeatHit', [safeBeat]);
+        scriptCallbackCall(POST, 'SafeBeatHit', [safeBeat]);
     }
 
     override public function safeSectionHit(safeSection:Int)
     {
-        callOnScripts('onSafeSectionHit', [safeSection]);
+        if (scriptCallbackCall(ON, 'SafeSectionHit', [safeSection]))
+            super.safeSectionHit(safeSection);
 
-        super.safeSectionHit(safeSection);
-
-        callOnScripts('postSafeSectionHit', [safeSection]);
+        scriptCallbackCall(POST, 'SafeSectionHit', [safeSection]);
     }
 
     override public function onFocus()
     {
-        callOnScripts('onOnFocus');
+        if (scriptCallbackCall(ON, 'OnFocus'))
+            super.onFocus();
 
-        super.onFocus();
-
-        callOnScripts('postOnFocus');
+        scriptCallbackCall(POST, 'OnFocus');
     }
 
     override public function onFocusLost()
     {
-        callOnScripts('onOnFocusLost');
+        if (scriptCallbackCall(ON, 'OnFocusLost'))
+            super.onFocusLost();
 
-        super.onFocusLost();
-
-        callOnScripts('postOnFocusLost');
+        scriptCallbackCall(POST, 'OnFocusLost');
     }
 
     override public function openSubState(substate:flixel.FlxSubState):Void
     {
-        callOnHScripts('onOpenSubState', [substate]);
-        callOnLuaScripts('onOpenSubState', [Type.getClassName(Type.getClass(substate))]);
+        if (scriptCallbackCall(ON, 'OpenSubState', null, [substate], [Type.getClassName(Type.getClass(substate))]))
+            super.openSubState(substate);
 
-        super.openSubState(substate);
-
-        callOnHScripts('postOpenSubState', [substate]);
-        callOnLuaScripts('postOpenSubState', [Type.getClassName(Type.getClass(substate))]);
+        scriptCallbackCall(POST, 'OpenSubState', null, [substate], [Type.getClassName(Type.getClass(substate))]);
     }
 
     override public function closeSubState():Void
     {
-        callOnScripts('onCloseSubState');
+        if (scriptCallbackCall(ON, 'CloseSubState'))
+            super.closeSubState();
 
-        super.closeSubState();
-
-        callOnScripts('postCloseSubState');
+        scriptCallbackCall(POST, 'CloseSubState');
     }
 
     public function resetCustomState()

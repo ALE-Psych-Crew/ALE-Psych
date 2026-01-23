@@ -15,6 +15,8 @@ import scripting.lua.LuaPresetBase;
 import scripting.haxe.HScriptPresetBase;
 #end
 
+import core.enums.ScriptCallType;
+
 import haxe.Exception;
 
 import core.interfaces.IScriptState;
@@ -216,6 +218,9 @@ class ScriptSubState extends MusicBeatSubState implements IScriptState
         return results;
     }
 
+    public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Bool
+        return !callOnHScripts(Std.string(type) + id, globalArgs ?? hxArgs).concat(callOnLuaScripts(Std.string(type), globalArgs ?? luaArgs)).contains(CoolVars.Function_Stop);
+    
     public inline function destroyScripts()
     {
         #if HSCRIPT_ALLOWED

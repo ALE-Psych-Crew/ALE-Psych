@@ -2,8 +2,6 @@ import funkin.visuals.objects.Alphabet;
 
 import flixel.math.FlxPoint;
 
-PlayState.instance.pauseMusic();
-
 final bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 bg.cameras = [subCamera];
 bg.alpha = 0;
@@ -90,7 +88,7 @@ function onUpdate(elapsed:Float)
             case 'exit to menu':
                 PlayState.instance.exit();
             case 'resume':
-                PlayState.instance.resumeMusic();
+                PlayState.instance.resume();
             default:
         }
     }
