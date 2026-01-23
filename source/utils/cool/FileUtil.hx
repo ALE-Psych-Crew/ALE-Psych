@@ -47,8 +47,11 @@ class FileUtil
 
     public static function searchFile(parent:String, file:String)
     {
-        for (folder in [Paths.mod ?? '', 'assets'])
+        for (folder in [Paths.mod == null ? '' : Paths.mods + '/' + Paths.mod, 'assets'])
         {
+            if (folder == null)
+                continue;
+
             var path:String = folder + '/' + parent;
 
             if (FileSystem.exists(path) && FileSystem.isDirectory(path))
