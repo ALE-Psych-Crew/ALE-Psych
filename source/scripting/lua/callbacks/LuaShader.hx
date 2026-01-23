@@ -4,6 +4,8 @@ import scripting.lua.LuaPresetBase;
 
 import funkin.visuals.shaders.ALERuntimeShader;
 
+import openfl.filters.ShaderFilter;
+
 class LuaShader extends LuaPresetBase
 {
     override public function new(lua:LuaScript)
@@ -12,19 +14,19 @@ class LuaShader extends LuaPresetBase
 
         set('initLuaShader', function(tag:String, name:String)
         {
-            setTag(tag, CoolUtil.createRuntimeShader(name));
+            setTag(tag, new ALERuntimeShader(name));
         });
 
         set('setCameraShaders', function(camera:String, shaderTags:Array<String>)
             {
-                var procShaders:Array<ALERuntimeShader> = [];
+                var procShaders:Array<ShaderFilter> = [];
 
                 for (tag in shaderTags)
                     if (tagIs(tag, ALERuntimeShader))
-                        procShaders.push(getTag(tag));
+                        procShaders.push(new ShaderFilter(getTag(tag)));
 
                 if (tagIs(camera, FlxCamera))
-                    CoolUtil.setCameraShaders(getTag(camera), procShaders);
+                    getTag(camera).filters = procShaders;
             }
         );
 

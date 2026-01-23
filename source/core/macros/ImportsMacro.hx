@@ -95,9 +95,9 @@ class ImportsMacro
             #end
 
             'funkin.visuals.objects',
+            'funkin.visuals.shaders',
             'funkin.states',
-            'funkin.substates',
-            //'funkin.editors'
+            'funkin.substates'
         ];
 
         for (pack in packs)

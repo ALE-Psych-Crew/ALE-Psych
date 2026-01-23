@@ -17,7 +17,6 @@ import core.Main;
 		'utils.cool.StateUtil',
 		'utils.cool.StringUtil',
 		'utils.cool.SystemUtil',
-		'utils.cool.ShaderUtil',
 		'utils.cool.KeyUtil',
 		'utils.cool.ReflectUtil'
 	]

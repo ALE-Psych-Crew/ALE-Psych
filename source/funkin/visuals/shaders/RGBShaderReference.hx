@@ -1,6 +1,5 @@
 package funkin.visuals.shaders;
 
-// automatic handler for easy usability
 class RGBShaderReference
 {
 	public var r(default, set):FlxColor;
@@ -68,7 +67,6 @@ class RGBShaderReference
 			parent.b = _original.b;
 			parent.mult = _original.mult;
 			_owner.shader = parent.shader;
-			//trace('created new shader');
 		}
 	}
 }

@@ -1,9 +1,11 @@
 package funkin.visuals;
 
+import flixel.addons.display.FlxRuntimeShader;
 import flixel.system.FlxAssets.FlxShader;
 import flixel.graphics.frames.FlxFrame;
 import flixel.math.FlxMatrix;
 
+import openfl.filters.ShaderFilter;
 import openfl.geom.ColorTransform;
 import openfl.display.BitmapData;
 import openfl.display.BlendMode;
@@ -38,4 +40,7 @@ class ALECamera extends FlxCamera
         
         super.drawPixels(frame, pixels, matrix, transform, blend, smoothing, shader);
     }
+
+	public function setShaders(shaders:Array<FlxRuntimeShader>):Void
+		filters = [for (shader in shaders) new ShaderFilter(shader)];
 }

@@ -24,7 +24,7 @@ import funkin.debug.*;
 import funkin.visuals.*;
 import funkin.visuals.game.*;
 import funkin.visuals.objects.*;
-import funkin.visuals.mobile.*;
+import funkin.visuals.shaders.*;
 
 import ale.ui.*;
 
@@ -60,6 +60,7 @@ class ScriptText extends FlxText implements RuleScriptedClass {}
 class ScriptBitmapText extends FlxBitmapText implements RuleScriptedClass {}
 class ScriptTextFormat extends FlxTextFormat implements RuleScriptedClass {}
 
+class ScriptALERuntimeShader extends ALERuntimeShader implements RuleScriptedClass {}
 class ScriptCamera extends FlxCamera implements RuleScriptedClass {}
 class ScriptFXCamera extends FXCamera implements RuleScriptedClass {}
 class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
