@@ -180,7 +180,10 @@ class PlayState extends ScriptState
                 pause();
 
             if (Controls.RESET)
-                restart();
+                if (CoolVars.data.developerMode)
+                    restart();
+                else
+                    health = 0;
         }
 
         scriptCallbackCall(POST, 'Update', [elapsed]);
@@ -232,7 +235,7 @@ class PlayState extends ScriptState
 
             pauseMusic();
             
-            CoolUtil.resetState();
+            CoolUtil.switchState(new PlayState(type, playlist, difficulty, songIndex), true, true);
         }
 
         scriptCallbackCall(POST, 'Restart');
@@ -537,7 +540,7 @@ class PlayState extends ScriptState
             for (voice in vocals)
                 voice.play();
 
-            Conductor.songPosition = 0;
+            Conductor.songPosition = -1;
         }
 
         scriptCallbackCall(POST, 'SongStart');
