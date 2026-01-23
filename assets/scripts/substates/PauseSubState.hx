@@ -82,9 +82,7 @@ function onUpdate(elapsed:Float)
         switch (options[selInt])
         {
             case 'restart song':
-                PlayState.instance.shouldClearMemory = false;
-            
-                CoolUtil.resetState();
+                PlayState.instance.restart();
             case 'exit to menu':
                 PlayState.instance.exit();
             case 'resume':

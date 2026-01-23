@@ -26,7 +26,7 @@ final filesPath:String = 'hud/' + PlayState.instance.STAGE.hud;
 
 function new(?char:Character)
 {
-    playStateChar = char ?? PlayState.instance.boyfriend;
+    playStateChar = char ?? PlayState.instance.lastMissNoteCharacter;
 
     playStateChar.exists = false;
 
