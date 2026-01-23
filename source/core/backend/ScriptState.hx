@@ -219,7 +219,7 @@ class ScriptState extends MusicBeatState implements IScriptState
     }
 
     public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Bool
-        return !callOnHScripts(Std.string(type) + id, globalArgs ?? hxArgs).concat(callOnLuaScripts(Std.string(type), globalArgs ?? luaArgs)).contains(CoolVars.Function_Stop);
+        return !callOnHScripts(Std.string(type) + id, globalArgs ?? hxArgs).concat(callOnLuaScripts(Std.string(type) + id, globalArgs ?? luaArgs)).contains(CoolVars.Function_Stop);
 
     public function destroyScripts()
     {

@@ -866,6 +866,8 @@ class PlayState extends ScriptState
             addMethod = Reflect.getProperty(this, 'variables').get(object.addMethod ?? 'addBehindExtras');
             #end
 
+            obj.updateHitbox();
+
             if (addMethod != null)
                 Reflect.callMethod(this, addMethod, [obj]);
 
