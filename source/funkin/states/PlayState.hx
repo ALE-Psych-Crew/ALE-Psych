@@ -78,7 +78,7 @@ class PlayState extends ScriptState
         return health;
     }
 
-    public var startTime:Float = -1;
+    public var startTime:Float = 0;
 
     public function new(?type:SongType, ?playlist:Array<String>, ?difficulty:String, ?songIndex:Int)
     {
@@ -114,6 +114,8 @@ class PlayState extends ScriptState
     override function create()
     {
         instance = this;
+
+        Conductor.reset(CHART.bpm, CHART.stepsPerBeat, CHART.beatsPerSection);
         
         Conductor.calculateBPMChanges(CHART);
 
@@ -395,7 +397,7 @@ class PlayState extends ScriptState
             return;
         }
 
-        if (scriptCallbackCall(ON, 'StartCountdown'))
+        if (scriptCallbackCall(ON, 'CountdownStart'))
         {
             countdownSprite = new FlxSprite();
             countdownSprite.alpha = 0;
@@ -419,7 +421,7 @@ class PlayState extends ScriptState
             }, 5);
         }
 
-        scriptCallbackCall(POST, 'StartCountdown');
+        scriptCallbackCall(POST, 'CountdownStart');
     }
 
     function tickCountdown(val:Int, graphic:FlxGraphic, sound:Sound)
@@ -541,8 +543,6 @@ class PlayState extends ScriptState
 
             for (voice in vocals)
                 voice.play();
-
-            Conductor.songPosition = -1;
 
             FlxG.sound.music.time = startTime;
         }

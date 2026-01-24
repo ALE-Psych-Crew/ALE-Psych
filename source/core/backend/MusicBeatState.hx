@@ -3,6 +3,8 @@ package core.backend;
 import core.interfaces.IMusicState;
 import core.interfaces.IMusicObject;
 
+import flixel.FlxState;
+
 class MusicBeatState extends ALEState implements IMusicState
 {
     public var curStep(get, never):Int;
@@ -92,7 +94,7 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onStepHit(step:Int):Void
     {
-        if (subState != null && !persistentUpdate)
+        if (subState != null && !persistentUpdate && !FlxState.transitioning)
             return;
 
         stepHit(step);
@@ -100,7 +102,7 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onSafeStepHit(step:Int):Void
     {
-        if (subState != null && !persistentUpdate)
+        if (subState != null && !persistentUpdate && !FlxState.transitioning)
             return;
 
         safeStepHit(step);
@@ -108,7 +110,7 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onBeatHit(beat:Int):Void
     {
-        if (subState != null && !persistentUpdate)
+        if (subState != null && !persistentUpdate && !FlxState.transitioning)
             return;
 
         beatHit(beat);
@@ -116,7 +118,7 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onSafeBeatHit(beat:Int):Void
     {
-        if (subState != null && !persistentUpdate)
+        if (subState != null && !persistentUpdate && !FlxState.transitioning)
             return;
 
         safeBeatHit(beat);
@@ -124,7 +126,7 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onSectionHit(section:Int):Void
     {
-        if (subState != null && !persistentUpdate)
+        if (subState != null && !persistentUpdate && !FlxState.transitioning)
             return;
 
         sectionHit(section);
@@ -132,7 +134,7 @@ class MusicBeatState extends ALEState implements IMusicState
 
     function onSafeSectionHit(section:Int):Void
     {
-        if (subState != null && !persistentUpdate)
+        if (subState != null && !persistentUpdate && !FlxState.transitioning)
             return;
 
         safeSectionHit(section);

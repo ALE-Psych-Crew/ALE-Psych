@@ -23,9 +23,9 @@ class ALEGame extends FlxGame
     {
         WindowsAPI.setWindowTitle();
 
-        Conductor.update();
-
         super.update();
+
+        Conductor.update();
 
         if (Controls.CONTROL && Controls.SHIFT)
         {

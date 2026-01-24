@@ -10,7 +10,7 @@ class Conductor
 {
 	public static var offset:Float = 0;
 	
-	public static var songPosition:Float = -1;
+	public static var songPosition:Float = 0;
 
 	public static var stepsPerBeat:Int = 4;
 	public static var beatsPerSection:Int = 4;
@@ -41,19 +41,19 @@ class Conductor
 	static function get_secCectionCrochet():Float
 		return secCrochet * beatsPerSection;
 
-	public static var curStep:Int = -1;
+	public static var curStep:Int = 0;
 	public static var stepHit:FlxTypedSignal<Int -> Void>;
-	public static var safeStep:Int = -1;
+	public static var safeStep:Int = 0;
 	public static var safeStepHit:FlxTypedSignal<Int -> Void>;
 
-	public static var curBeat:Int = -1;
+	public static var curBeat:Int = 0;
 	public static var beatHit:FlxTypedSignal<Int -> Void>;
-	public static var safeBeat:Int = -1;
+	public static var safeBeat:Int = 0;
 	public static var safeBeatHit:FlxTypedSignal<Int -> Void>;
 
-	public static var curSection:Int = -1;
+	public static var curSection:Int = 0;
 	public static var sectionHit:FlxTypedSignal<Int -> Void>;
-	public static var safeSection:Int = -1;
+	public static var safeSection:Int = 0;
 	public static var safeSectionHit:FlxTypedSignal<Int -> Void>;
 	
 	public static var bpmChangeMap:Null<Array<BPMChange>>;
@@ -119,9 +119,9 @@ class Conductor
 
 	public static function reset(?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
 	{
-		songPosition = -1;
+		songPosition = 0;
 
-		curStep = curBeat = curSection = safeStep = safeBeat = safeSection = -1;
+		curStep = curBeat = curSection = safeStep = safeBeat = safeSection = 0;
 		
 		if (bpm != null)
 			Conductor.bpm = bpm;
@@ -153,7 +153,7 @@ class Conductor
 		if (songPosition < 0 || !allowUpdate)
 			return;
 
-		var newStep:Int = -1;
+		var newStep:Int = 0;
 
 		if (bpmChangeMap == null)
 		{
@@ -181,63 +181,54 @@ class Conductor
 		}
 	}
 
-	@:unreflective static function stepHandler()
-	{
-		final prev:Int = safeStep;
+    @:unreflective static function stepHandler()
+    {
+        final prev:Int = safeStep;
 
-		for (i in 0...(curStep - prev))
-		{
-			safeStep++;
+        if (prev < curStep)
+            for (i in 0...(curStep - safeStep))
+                safeStepHit.dispatch(++safeStep);
 
-			safeStepHit.dispatch(safeStep);
-		}
+        final newBeat:Int = Math.floor(curStep / stepsPerBeat);
 
-		final newBeat:Int = Math.floor(curStep / stepsPerBeat);
+        if (newBeat != curBeat)
+        {
+            curBeat = newBeat;
 
-		if (curBeat != newBeat)
-		{
-			curBeat = newBeat;
+            beatHandler();
+        }
 
-			beatHandler();
-		}
+        stepHit.dispatch(curStep);
+    }
 
-		stepHit.dispatch(curStep);
-	}
+    @:unreflective static function beatHandler()
+    {
+        final prev:Int = safeBeat;
 
-	@:unreflective static function beatHandler()
-	{
-		final prev:Int = safeBeat;
+        if (prev < curBeat)
+            for (i in 0...(curBeat - safeBeat))
+                safeBeatHit.dispatch(++safeBeat);
 
-		for (i in 0...(curBeat - prev))
-		{
-			safeBeat++;
+        final newSection:Int = Math.floor(curBeat / beatsPerSection);
 
-			safeBeatHit.dispatch(safeBeat);
-		}
+        if (newSection != curSection)
+        {
+            curSection = newSection;
 
-		final newSection:Int = Math.floor(curBeat / beatsPerSection);
+            sectionHandler();
+        }
 
-		if (curSection != newSection)
-		{
-			curSection = newSection;
+        beatHit.dispatch(curBeat);
+    }
 
-			sectionHandler();
-		}
+    @:unreflective static function sectionHandler()
+    {
+        final prev:Int = safeSection;
 
-		beatHit.dispatch(curBeat);
-	}
+        if (prev < curSection)
+            for (i in 0...(curSection - prev))
+                safeSectionHit.dispatch(++safeSection);
 
-	@:unreflective static function sectionHandler()
-	{
-		final prev:Int = safeSection;
-
-		for (i in 0...(curSection - prev))
-		{
-			safeSection++;
-
-			safeSectionHit.dispatch(safeSection);
-		}
-
-		sectionHit.dispatch(curSection);
-	}
+        sectionHit.dispatch(curSection);
+    }
 }
