@@ -36,7 +36,6 @@ class PlayState extends ScriptState
     public static var instance:PlayState;
 
     public var CHART:ALESong;
-    public var STAGE:ALEStage;
     public var HUD:ALEHud;
 
     public final song:String;
@@ -52,6 +51,8 @@ class PlayState extends ScriptState
     public var accuracyMod:Float = 0;
     public var misses:Int = 0;
     public var combo:Int = 0;
+    
+    public var stage:Stage;
 
     public var accuracy(get, never):Float;
     function get_accuracy():Float
@@ -92,8 +93,10 @@ class PlayState extends ScriptState
         this.song = this.playlist[this.songIndex];
 
         CHART ??= ALEFormatter.getSong(this.song, this.difficulty);
-        STAGE ??= ALEFormatter.getStage(CHART.stage);
-        HUD ??= ALEFormatter.getHud(STAGE.hud);
+
+        stage = new Stage(this, ALEFormatter.getStage(CHART.stage));
+
+        HUD ??= ALEFormatter.getHud(stage.data.hud);
 
         songRoute = CoolUtil.searchComplexFile('songs/' + this.song);
     }
@@ -144,12 +147,13 @@ class PlayState extends ScriptState
             botplay = ClientPrefs.data.botplay;
 
             initEvents();
-            initStage();
             initControls();
             initHud();
 
             initSounds();
             initCombo();
+
+            stage.change(CHART.stage);
 
             startCountdown();
             
@@ -256,6 +260,8 @@ class PlayState extends ScriptState
         }
 
         super.destroy();
+
+        stage?.destroy();
 
         scriptCallbackCall(POST, 'Destroy');
 
@@ -408,9 +414,9 @@ class PlayState extends ScriptState
             
             final ids:Array<String> = [null, 'ready', 'set', 'go'];
 
-            final graphics:Array<FlxGraphic> = [for (spr in ids) spr == null ? null : Paths.image('hud/' + STAGE.hud + '/countdown/' + spr)];
+            final graphics:Array<FlxGraphic> = [for (spr in ids) spr == null ? null : Paths.image('hud/' + stage.data.hud + '/countdown/' + spr)];
 
-            final sounds:Array<Sound> = [for (spr in ['three', 'two', 'one', 'go']) spr == null ? null : Paths.sound('hud/' + STAGE.hud + '/countdown/' + spr)];
+            final sounds:Array<Sound> = [for (spr in ['three', 'two', 'one', 'go']) spr == null ? null : Paths.sound('hud/' + stage.data.hud + '/countdown/' + spr)];
 
             allowSongPositionUpdate = true;
             
@@ -589,13 +595,13 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'CamerasInit'))
         {
-            camGame = new FXCamera(STAGE.speed ?? 1);
+            camGame = new FXCamera(stage.data.speed ?? 1);
 
             final camGame:FXCamera = cast camGame;
 
             camGame.zoomSpeed = 1;
             camGame.bopModulo = 4;
-            camGame.targetZoom = STAGE.zoom;
+            camGame.targetZoom = stage.data.zoom;
 
             FlxG.cameras.reset(camGame);
                 
@@ -834,57 +840,6 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'EventListStack', [eventList]);
     }
 
-    var stageObjects:StringMap<FlxSprite> = new StringMap<FlxSprite>();
-
-    function initStage()
-    {
-        if (scriptCallbackCall(ON, 'StageInit'))
-        {
-            if (STAGE.objectsConfig != null)
-                for (object in STAGE.objectsConfig.objects)
-                    initStageObject(object, STAGE.objectsConfig);
-        }
-        
-        scriptCallbackCall(POST, 'StageInit');
-    }
-
-    function initStageObject(object:ALEStageObject, config:ALEStageObjectsConfig)
-    {
-        if (scriptCallbackCall(ON, 'StageObjectInit', [object, config]))
-        {
-            final obj:FlxSprite =
-                Type.createInstance(
-                    Type.resolveClass(object.classPath ?? 'flixel.FlxSprite'),
-                    object.classArguments ?? []
-                );
-
-            obj.loadGraphic(Paths.image('stages/' + config.directory + '/' + (object.path ?? object.id)));
-
-            for (props in [config.properties, object.properties])
-                if (props != null)
-                    CoolUtil.setMultiProperty(obj, props);
-
-            obj.exists = object.highQuality ?? false ? !ClientPrefs.data.lowQuality : true;
-
-            var addMethod:FlxBasic->Dynamic = null;
-
-            #if flixel
-            addMethod = Reflect.getProperty(this, object.addMethod ?? 'addBehindExtras');
-            #else
-            addMethod = Reflect.getProperty(this, 'variables').get(object.addMethod ?? 'addBehindExtras');
-            #end
-
-            obj.updateHitbox();
-
-            if (addMethod != null)
-                Reflect.callMethod(this, addMethod, [obj]);
-
-            stageObjects.set(object.id, obj);
-        }
-
-        scriptCallbackCall(POST, 'StageObjectInit', [object, config]);
-    }
-
     function initControls()
     {
         if (scriptCallbackCall(ON, 'ControlsInit'))
@@ -913,7 +868,7 @@ class PlayState extends ScriptState
         {
             uiGroup.cameras = [camHUD];
 
-            healthBar = new Bar('hud/' + STAGE.hud + '/bar', 0, FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9), 50, true);
+            healthBar = new Bar('hud/' + stage.data.hud + '/bar', 0, FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9), 50, true);
             healthBar.x = FlxG.width / 2 - healthBar.width / 2;
             uiGroup.add(healthBar);
 
@@ -1003,7 +958,7 @@ class PlayState extends ScriptState
         if (scriptCallbackCall(ON, 'ComboInit'))
         {
             for (obj in ['sick', 'good', 'bad', 'shit'].concat([for (i in 0...10) '$i']))
-                Paths.image('hud/' + STAGE.hud + '/combo/' + obj);
+                Paths.image('hud/' + stage.data.hud + '/combo/' + obj);
             
             comboGroup.cameras = [camHUD];
 
@@ -1064,8 +1019,6 @@ class PlayState extends ScriptState
 
                 default:
             }
-            
-            resetCharacterPosition(character);
 
             characters.add(character);
 
@@ -1082,15 +1035,15 @@ class PlayState extends ScriptState
             character.x = character.data.position.x;
             character.y = character.data.position.y;
 
-            if (STAGE.characterOffset != null)
+            if (stage.data.characterOffset != null)
             {
                 var offset:Point = null;
 
-                if (STAGE.characterOffset.type != null)
-                    offset = Reflect.getProperty(STAGE.characterOffset.type, cast character.type);
+                if (stage.data.characterOffset.type != null)
+                    offset = Reflect.getProperty(stage.data.characterOffset.type, cast character.type);
 
-                if (STAGE.characterOffset.id != null)
-                    offset = Reflect.getProperty(STAGE.characterOffset.id, character.id);
+                if (stage.data.characterOffset.id != null)
+                    offset = Reflect.getProperty(stage.data.characterOffset.id, character.id);
 
                 if (offset != null)
                 {
@@ -1144,15 +1097,15 @@ class PlayState extends ScriptState
             camGame.position.x = character.getMidpoint().x + character.data.cameraPosition.x * (character.type == 'player' ? -1 : 1);
             camGame.position.y = character.getMidpoint().y + character.data.cameraPosition.y;
 
-            if (STAGE.cameraOffset != null)
+            if (stage.data.cameraOffset != null)
             {
                 var offset:Point = null;
 
-                if (STAGE.cameraOffset.type != null)
-                    offset = Reflect.getProperty(STAGE.cameraOffset.type, cast character.type);
+                if (stage.data.cameraOffset.type != null)
+                    offset = Reflect.getProperty(stage.data.cameraOffset.type, cast character.type);
 
-                if (STAGE.cameraOffset.id != null)
-                    offset = Reflect.getProperty(STAGE.cameraOffset.id, character.id);
+                if (stage.data.cameraOffset.id != null)
+                    offset = Reflect.getProperty(stage.data.cameraOffset.id, character.id);
 
                 if (offset != null)
                 {
@@ -1291,7 +1244,7 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'ComboDisplay', [rating]))
         {
-            final path:String = 'hud/' + STAGE.hud + '/combo';
+            final path:String = 'hud/' + stage.data.hud + '/combo';
 
             FlxTween.cancelTweensOf(comboSprite);
 

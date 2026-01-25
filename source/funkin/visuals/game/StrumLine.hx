@@ -35,7 +35,7 @@ class StrumLine extends FlxSpriteGroup
 
     public var notesStack:GenericStack<Note> = new GenericStack<Note>();
 
-    public final config:ALEStrumLine;
+    public final data:ALEStrumLine;
 
     public var scrollSpeed:Float = 1;
 
@@ -76,7 +76,7 @@ class StrumLine extends FlxSpriteGroup
 
         this.characters = characters;
 
-        config = ALEFormatter.getStrumLine(chartData.file);
+        data = ALEFormatter.getStrumLine(chartData.file);
 
         visible = chartData.visible;
 
@@ -94,14 +94,14 @@ class StrumLine extends FlxSpriteGroup
 
         var strumHeight:Float = 0;
 
-        for (strumIndex => strumConfig in config.strums)
+        for (strumIndex => strumConfig in data.strums)
         {
             inputsArray.push(CoolUtil.getControl(strumConfig.keybind[0], strumConfig.keybind[1]));
 
-            final strum:Strum = new Strum(strumConfig, strumIndex, config.strumFramerate, config.strumTextures, config.strumScale, config.space);
+            final strum:Strum = new Strum(strumConfig, strumIndex, data.strumFramerate, data.strumTextures, data.strumScale, data.space);
             strums.add(strum);
 
-            final splash:Splash = new Splash(strumConfig, strum, config.splashScale, config.splashFramerate, config.splashTextures);
+            final splash:Splash = new Splash(strumConfig, strum, data.splashScale, data.splashFramerate, data.splashTextures);
             splashes.add(splash);
 
             strumHeight = Math.max(strumHeight, strum.height);
@@ -111,29 +111,29 @@ class StrumLine extends FlxSpriteGroup
             for (key in array)
                 inputMap.set(key, arrayIndex);
 
-        x = chartData.rightToLeft ? config.position.x : FlxG.width - config.position.x - (config.strums.length - 1) * config.space - strums.members[strums.members.length - 1].width;
-        y = ClientPrefs.data.downScroll ? FlxG.height - config.position.y - strumHeight : config.position.y;
+        x = chartData.rightToLeft ? data.position.x : FlxG.width - data.position.x - (data.strums.length - 1) * data.space - strums.members[strums.members.length - 1].width;
+        y = ClientPrefs.data.downScroll ? FlxG.height - data.position.y - strumHeight : data.position.y;
 
         var tempNotes:Array<Note> = [];
 
         for (chartNote in arrayNotes)
         {
             final time:Float = chartNote[0];
-            final data:Int = chartNote[1];
+            final noteData:Int = chartNote[1];
             final length:Float = chartNote[2];
             final type:String = chartNote[3];
             final character:Int = chartNote[4];
             final crochet:Float = chartNote[5];
 
-            final space:Float = config.space;
-            final scale:Float = config.noteScale;
-            final textures:Array<String> = config.noteTextures;
+            final space:Float = data.space;
+            final scale:Float = data.noteScale;
+            final textures:Array<String> = data.noteTextures;
 
-            final strum:Strum = strums.members[data];
+            final strum:Strum = strums.members[noteData];
 
-            final strumConfig:ALEStrum = config.strums[data];
+            final strumConfig:ALEStrum = data.strums[noteData];
 
-            final note:Note = new Note(strumConfig, time, data, length, type, 'note', space, scale, textures, getNoteShader(strumConfig.shader, data), character);
+            final note:Note = new Note(strumConfig, time, noteData, length, type, 'note', space, scale, textures, getNoteShader(strumConfig.shader, noteData), character);
 
             var parent:Note = note;
 
@@ -145,7 +145,7 @@ class StrumLine extends FlxSpriteGroup
 
                 for (i in 0...(floorLength + 1))
                 {
-                    final sustain:Note = new Note(strumConfig, time + i * crochet, data, crochet, type, i == floorLength ? 'end' : 'sustain', space, scale, textures, getNoteShader(strumConfig.shader, data), character, i == floorLength ? null : crochet * 0.455, i == floorLength ? null : speed);
+                    final sustain:Note = new Note(strumConfig, time + i * crochet, noteData, crochet, type, i == floorLength ? 'end' : 'sustain', space, scale, textures, getNoteShader(strumConfig.shader, noteData), character, i == floorLength ? null : crochet * 0.455, i == floorLength ? null : speed);
                     sustain.offsetY = strum.height / 2;
                     sustain.offsetX = strum.width / 2 - sustain.width / 2;
                     sustain.parent = parent;

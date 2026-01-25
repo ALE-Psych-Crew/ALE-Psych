@@ -19,11 +19,11 @@ class Splash extends FlxSprite
 
     public var strum:Strum;
 
-    public function new(config:ALEStrum, strum:Strum, scale:Float, framerate:Float, skins:Array<String>)
+    public function new(data:ALEStrum, strum:Strum, scale:Float, framerate:Float, skins:Array<String>)
     {
         super();
 
-        this.animations = config.splash;
+        this.animations = data.splash;
 
         frames = Paths.getMultiAtlas([for (skin in skins) 'splashes/' + skin]);
 
@@ -34,13 +34,13 @@ class Splash extends FlxSprite
         
 		textureShader = new RGBShaderReference(this, new RGBPalette());
 
-        allowShader = config.shader != null;
+        allowShader = data.shader != null;
 
         if (allowShader)
         {
-            textureShader.r = CoolUtil.colorFromString(config.shader[0]);
-            textureShader.g = CoolUtil.colorFromString(config.shader[1]);
-            textureShader.b = CoolUtil.colorFromString(config.shader[2]);
+            textureShader.r = CoolUtil.colorFromString(data.shader[0]);
+            textureShader.g = CoolUtil.colorFromString(data.shader[1]);
+            textureShader.b = CoolUtil.colorFromString(data.shader[2]);
         }
 
         this.strum = strum;
