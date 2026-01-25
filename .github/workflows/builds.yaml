@@ -32,21 +32,20 @@ jobs:
             artifact_path: export/32bit/windows/bin
 
           - platform: Linux
-            os: ubuntu-latest
+            os: ubuntu-22.04
             build_cmd: haxelib run lime build linux
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
               sudo apt-get update
-              sudo apt-get install -y libvlc-dev
-              sudo apt-get install -y libvlccore-dev
-              sudo apt-get install -y dpkg-dev
+              sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file
             pre_build_commands:
             post_build_commands: |
               set -euo pipefail
               APP_DIR="export/release/linux/bin"
+              [ -d "$APP_DIR" ] || { echo "Missing build output dir: $APP_DIR" >&2; exit 1; }
               DEB_ROOT="dist/deb"
-              DEB_NAME="alepsych_amd64.deb"
               VERSION="4.0.0+ci${{ github.run_id }}"
+              DEB_NAME="ale-psych_${VERSION}_amd64.deb"
               ELF_CANDIDATES=()
               OTHER_CANDIDATES=()
               pick_largest() {
@@ -81,19 +80,57 @@ jobs:
               EXE_NAME=$(basename "$EXE_PATH")
               mkdir -p dist
               rm -rf "$DEB_ROOT"
-              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/alepsych" "$DEB_ROOT/usr/bin" "$DEB_ROOT/usr/share/applications"
-              cp -a "$APP_DIR/." "$DEB_ROOT/opt/alepsych/"
-              cat <<'EOF' > "$DEB_ROOT/usr/bin/alepsych"
+              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/ale-psych" "$DEB_ROOT/usr/bin" "$DEB_ROOT/usr/share/applications" "$DEB_ROOT/usr/share/metainfo"
+              cp -a "$APP_DIR/." "$DEB_ROOT/opt/ale-psych/"
+              cat <<'EOF' > "$DEB_ROOT/usr/bin/ale-psych"
               #!/usr/bin/env sh
-              exec "/opt/alepsych/__EXE_NAME__" "$@"
+              BASE="/opt/ale-psych"
+              USER_BASE="${XDG_DATA_HOME:-$HOME/.local/share}/ale-psych"
+              RUNTIME="$USER_BASE/runtime"
+              VERSION_FILE="$USER_BASE/runtime.version"
+              VERSION="__VERSION__"
+              mkdir -p "$USER_BASE/mods" "$USER_BASE/assets"
+              if [ ! -d "$RUNTIME" ] || [ ! -f "$VERSION_FILE" ] || [ "$(cat "$VERSION_FILE" 2>/dev/null || true)" != "$VERSION" ]; then
+                rm -rf "$RUNTIME"
+                cp -a "$BASE/." "$RUNTIME/"
+                printf '%s' "$VERSION" > "$VERSION_FILE"
+              fi
+              if [ -z "$(ls -A "$USER_BASE/mods" 2>/dev/null)" ] && [ -d "$BASE/mods" ]; then
+                cp -a "$BASE/mods/." "$USER_BASE/mods/"
+              fi
+              if [ -z "$(ls -A "$USER_BASE/assets" 2>/dev/null)" ] && [ -d "$BASE/assets" ]; then
+                cp -a "$BASE/assets/." "$USER_BASE/assets/"
+              fi
+              rm -rf "$RUNTIME/mods"
+              ln -s "$USER_BASE/mods" "$RUNTIME/mods"
+              rm -rf "$RUNTIME/assets"
+              ln -s "$USER_BASE/assets" "$RUNTIME/assets"
+              cd "$RUNTIME" || exit 1
+              exec "./__EXE_NAME__" "$@"
               EOF
-              sed -i "s|__EXE_NAME__|$EXE_NAME|g" "$DEB_ROOT/usr/bin/alepsych"
-              chmod 0755 "$DEB_ROOT/usr/bin/alepsych"
-              cat <<'EOF' > "$DEB_ROOT/usr/share/applications/alepsych.desktop"
+              sed -i "s|__VERSION__|$VERSION|g" "$DEB_ROOT/usr/bin/ale-psych"
+              sed -i "s|__EXE_NAME__|$EXE_NAME|g" "$DEB_ROOT/usr/bin/ale-psych"
+              chmod 0755 "$DEB_ROOT/usr/bin/ale-psych"
+              cat <<'EOF' > "$DEB_ROOT/usr/share/metainfo/ale-psych.metainfo.xml"
+              <?xml version="1.0" encoding="UTF-8"?>
+              <component type="desktop-application">
+                <id>ale-psych.desktop</id>
+                <name>ALE Psych</name>
+                <summary>Friday Night Funkin' ALE Psych</summary>
+                <metadata_license>CC0-1.0</metadata_license>
+                <project_license>Proprietary</project_license>
+                <url type="homepage">https://alepsych.gamer.gd/</url>
+                <description>
+                  <p>Friday Night Funkin' ALE Psych mod and engine.</p>
+                </description>
+              </component>
+              EOF
+              cat <<'EOF' > "$DEB_ROOT/usr/share/applications/ale-psych.desktop"
               [Desktop Entry]
+              Type=Application
               Name=ALE Psych
-              Exec=alepsych
-              Icon=alepsych
+              Exec=ale-psych
+              Icon=ale-psych
               Terminal=false
               Categories=Game;
               EOF
@@ -107,17 +144,19 @@ jobs:
                 usr/share/icons/hicolor/256x256/apps/alepsych.png \
                 usr/share/icons/hicolor/512x512/apps/alepsych.png; do
                 if [ -f "$icon" ]; then
-                  mkdir -p "$DEB_ROOT/$(dirname "$icon")"
-                  cp "$icon" "$DEB_ROOT/$icon"
+                  dest_dir="$DEB_ROOT/$(dirname "$icon")"
+                  mkdir -p "$dest_dir"
+                  cp "$icon" "$dest_dir/ale-psych.png"
                 fi
               done
-              cat <<'EOF' > "$DEB_ROOT/DEBIAN/control"
-              Package: alepsych
-              Version: 4.0.0+ci${{ github.run_id }}
+              cat <<EOF > "$DEB_ROOT/DEBIAN/control"
+              Package: ale-psych
+              Version: $VERSION
               Section: games
               Priority: optional
               Architecture: amd64
-              Maintainer: ALEPsychCrew
+              Maintainer: ALE Psych Crew
+              Homepage: https://alepsych.gamer.gd/
               Description: Friday Night Funkin' ALE Psych
               EOF
               dpkg-deb --build --root-owner-group "$DEB_ROOT" "dist/$DEB_NAME"
@@ -179,5 +218,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Linux .deb
-          path: dist/alepsych_amd64.deb
+          path: dist/*.deb
           if-no-files-found: error
