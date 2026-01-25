@@ -12,7 +12,7 @@ import utils.cool.MathUtil;
 
 class FXCamera extends ALECamera
 {
-	public var speed(default, set):Float;
+	public var speed(default, set):Float = 0;
 	function set_speed(value:Float):Float
 	{
 		speed = value;
@@ -22,21 +22,59 @@ class FXCamera extends ALECamera
 		return speed;
 	}
 
+	public var bopModulo:Int = 4;
+
+	public var bopZoom:Float = 1;
+
 	public var zoomSpeed:Float = 0;
 	public var targetZoom:Float = 1;
 
 	public var offset:FlxCallbackPoint;
 	public var position:FlxCallbackPoint;
 
+	var _positionTween:FlxTween;
+
+	var _zoomSpeedTween:FlxTween;
+
+	var _offsetTween:FlxTween;
+
+	var _zoomTween:FlxTween;
+
+	var _speedTween:FlxTween;
+
+	public function reset()
+	{
+		speed = 1;
+
+		bopModulo = 4;
+		bopZoom = 1;
+		
+		zoomSpeed = 1;
+		targetZoom = 1;
+
+		offset.x = offset.y = 0;
+
+		position.x = width / 2;
+		position.y = height / 2;
+
+		cancelPositionTween();
+		cancelZoomSpeedTween();
+		cancelOffsetTween();
+		cancelZoomTween();
+		cancelSpeedTween();
+	}
+
 	public function new(?speed:Float)
 	{
 		super();
+
+		follow(new FlxObject(width / 2, height / 2));
 
 		offset = new FlxCallbackPoint(updateTarget);
 
 		position = new FlxCallbackPoint(updateTarget);
 
-		follow(new FlxObject(width / 2, height / 2));
+		reset();
 		
 		this.speed = speed ?? 0;
 	}
@@ -55,17 +93,11 @@ class FXCamera extends ALECamera
 		target.y = position.y + offset.y;
 	}
 
-	public var bopModulo:Int = 0;
-
-	public var bopZoom:Float = 1;
-
 	public function bop(curBeat:Int)
 	{
 		if (_zoomTween == null && bopModulo > 0 && curBeat % bopModulo == 0)
 			zoom += 0.015 * bopZoom;
 	}
-
-	var _positionTween:FlxTween = null;
 
 	public function tweenPosition(x:Float, y:Float, ?duration:Float, ?options:TweenOptions)
 	{
@@ -81,8 +113,6 @@ class FXCamera extends ALECamera
 			_positionTween = null;
 		}
 	}
-			
-	var _offsetTween:FlxTween = null;
 
 	public function tweenOffset(x:Float, y:Float, ?duration:Float, ?options:TweenOptions)
 	{
@@ -107,8 +137,6 @@ class FXCamera extends ALECamera
 		return FlxTween.tween(point, {x: x, y: y}, duration, callbackTweenOptions(endFunc, options));
 	}
 
-	var _zoomTween:FlxTween = null;
-
 	public function tweenZoom(newZoom:Float, ?duration:Float, ?options:TweenOptions, ?permanent:Bool)
 	{
 		_zoomTween = safeUniqueTween(_zoomTween, zoom, newZoom, (val) -> {
@@ -129,8 +157,6 @@ class FXCamera extends ALECamera
 		}
 	}
 
-	var _speedTween:FlxTween = null;
-
 	public function tweenSpeed(newSpeed:Float, ?duration:Float, ?options:TweenOptions)
 	{
 		_speedTween = safeUniqueTween(_speedTween, speed, newSpeed, (val) -> { speed = val; }, () -> { _speedTween = null; }, duration, options);
@@ -145,8 +171,6 @@ class FXCamera extends ALECamera
 			_speedTween = null;
 		}
 	}
-
-	var _zoomSpeedTween:FlxTween = null;
 
 	public function tweenZoomSpeed(newZoomSpeed:Float, ?duration:Float, ?options:TweenOptions)
 	{

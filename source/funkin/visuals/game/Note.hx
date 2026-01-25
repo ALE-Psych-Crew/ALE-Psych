@@ -199,4 +199,14 @@ class Note extends FlxSprite
             clipRect = null;
         }
     }
+    
+	override function set_clipRect(rect:FlxRect):FlxRect
+	{
+		clipRect = rect;
+
+		if (frames != null)
+			frame = frames.frames[animation.frameIndex];
+
+		return rect;
+	}
 }
