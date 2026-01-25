@@ -37,22 +37,83 @@ jobs:
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
               sudo apt-get update
-              sudo apt-get install libvlc-dev
-              sudo apt-get install libvlccore-dev
-              sudo apt-get install dpkg-dev
+              sudo apt-get install -y libvlc-dev
+              sudo apt-get install -y libvlccore-dev
+              sudo apt-get install -y dpkg-dev
             pre_build_commands:
             post_build_commands: |
               set -euo pipefail
               APP_DIR="export/release/linux/bin"
               DEB_ROOT="dist/deb"
               DEB_NAME="alepsych_amd64.deb"
+              VERSION="4.0.0+ci${{ github.run_id }}"
+              ELF_CANDIDATES=()
+              OTHER_CANDIDATES=()
+              pick_largest() {
+                local best=""
+                local best_size=0
+                local f size
+                for f in "$@"; do
+                  size=$(stat -c %s "$f")
+                  if [ "$size" -gt "$best_size" ]; then
+                    best="$f"
+                    best_size="$size"
+                  fi
+                done
+                printf '%s' "$best"
+              }
+              while IFS= read -r -d '' f; do
+                if file -b "$f" | grep -q "ELF"; then
+                  ELF_CANDIDATES+=("$f")
+                else
+                  OTHER_CANDIDATES+=("$f")
+                fi
+              done < <(find "$APP_DIR" -maxdepth 1 -type f -executable ! -name "*.so*" -print0)
+              EXE_PATH=$(pick_largest "${ELF_CANDIDATES[@]}")
+              if [ -z "$EXE_PATH" ]; then
+                EXE_PATH=$(pick_largest "${OTHER_CANDIDATES[@]}")
+              fi
+              if [ -z "$EXE_PATH" ]; then
+                echo "Error: No executable found in $APP_DIR" >&2
+                ls -la "$APP_DIR"
+                exit 1
+              fi
+              EXE_NAME=$(basename "$EXE_PATH")
               mkdir -p dist
               rm -rf "$DEB_ROOT"
-              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/alepsych"
+              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/alepsych" "$DEB_ROOT/usr/bin" "$DEB_ROOT/usr/share/applications"
               cp -a "$APP_DIR/." "$DEB_ROOT/opt/alepsych/"
+              cat <<'EOF' > "$DEB_ROOT/usr/bin/alepsych"
+              #!/usr/bin/env sh
+              exec "/opt/alepsych/__EXE_NAME__" "$@"
+              EOF
+              sed -i "s|__EXE_NAME__|$EXE_NAME|g" "$DEB_ROOT/usr/bin/alepsych"
+              chmod 0755 "$DEB_ROOT/usr/bin/alepsych"
+              cat <<'EOF' > "$DEB_ROOT/usr/share/applications/alepsych.desktop"
+              [Desktop Entry]
+              Name=ALE Psych
+              Exec=alepsych
+              Icon=alepsych
+              Terminal=false
+              Categories=Game;
+              EOF
+              for icon in \
+                usr/share/icons/hicolor/16x16/apps/alepsych.png \
+                usr/share/icons/hicolor/24x24/apps/alepsych.png \
+                usr/share/icons/hicolor/32x32/apps/alepsych.png \
+                usr/share/icons/hicolor/48x48/apps/alepsych.png \
+                usr/share/icons/hicolor/64x64/apps/alepsych.png \
+                usr/share/icons/hicolor/128x128/apps/alepsych.png \
+                usr/share/icons/hicolor/256x256/apps/alepsych.png \
+                usr/share/icons/hicolor/512x512/apps/alepsych.png; do
+                if [ -f "$icon" ]; then
+                  mkdir -p "$DEB_ROOT/$(dirname "$icon")"
+                  cp "$icon" "$DEB_ROOT/$icon"
+                fi
+              done
               cat <<'EOF' > "$DEB_ROOT/DEBIAN/control"
               Package: alepsych
-              Version: 0.1.${{ github.run_number }}
+              Version: 4.0.0+ci${{ github.run_id }}
               Section: games
               Priority: optional
               Architecture: amd64
@@ -103,6 +164,7 @@ jobs:
 
       - name: Post-Build Commands
         if: ${{ matrix.post_build_commands }}
+        shell: bash
         run: ${{ matrix.post_build_commands }}
 
       - name: Upload Game
