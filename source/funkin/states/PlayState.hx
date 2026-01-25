@@ -144,6 +144,10 @@ class PlayState extends ScriptState
 
             initStrumLines();
 
+            moveCamera(gf ?? dad ?? boyfriend);
+
+            camGame.snapToTarget();
+
             botplay = ClientPrefs.data.botplay;
 
             initEvents();
@@ -320,10 +324,8 @@ class PlayState extends ScriptState
 
             final songSection:ALESongSection = CHART.sections[curSection];
 
-            if (songSection == null)
-                return;
-
-            moveCamera(cameraCharacters[songSection.camera[0]][songSection.camera[1]]);
+            if (songSection != null)
+                moveCamera(cameraCharacters[songSection.camera[0]][songSection.camera[1]]);
         }
 
         scriptCallbackCall(POST, 'SectionHit', [curSection]);
@@ -441,32 +443,30 @@ class PlayState extends ScriptState
                 allowSongPositionUpdate = false;
 
                 startSong();
+            } else {
+                FlxG.sound.play(sound);
 
-                return;
-            }
+                if (graphic != null)
+                {
+                    countdownSprite.loadGraphic(graphic);
 
-            FlxG.sound.play(sound);
+                    FlxTween.cancelTweensOf(countdownSprite);
+                    FlxTween.cancelTweensOf(countdownSprite.scale);
 
-            if (graphic != null)
-            {
-                countdownSprite.loadGraphic(graphic);
+                    countdownSprite.scale.x = countdownSprite.scale.y = HUD.countdown.scale;
+                    countdownSprite.alpha = HUD.countdown.alpha;
 
-                FlxTween.cancelTweensOf(countdownSprite);
-                FlxTween.cancelTweensOf(countdownSprite.scale);
+                    countdownSprite.updateHitbox();
+                    countdownSprite.screenCenter();
 
-                countdownSprite.scale.x = countdownSprite.scale.y = HUD.countdown.scale;
-                countdownSprite.alpha = HUD.countdown.alpha;
+                    FlxTween.tween(countdownSprite.scale, {x: HUD.countdown.endScale, y: HUD.countdown.endScale}, Conductor.crochet / 1000 * HUD.countdown.beats, {ease: CoolUtil.easeFromString(HUD.countdown.scaleEase)});
 
-                countdownSprite.updateHitbox();
-                countdownSprite.screenCenter();
+                    FlxTween.tween(countdownSprite, {alpha: HUD.countdown.endAlpha}, Conductor.crochet / 1000 * HUD.countdown.beats, {ease: CoolUtil.easeFromString(HUD.countdown.alphaEase)});
 
-                FlxTween.tween(countdownSprite.scale, {x: HUD.countdown.endScale, y: HUD.countdown.endScale}, Conductor.crochet / 1000 * HUD.countdown.beats, {ease: CoolUtil.easeFromString(HUD.countdown.scaleEase)});
-
-                FlxTween.tween(countdownSprite, {alpha: HUD.countdown.endAlpha}, Conductor.crochet / 1000 * HUD.countdown.beats, {ease: CoolUtil.easeFromString(HUD.countdown.alphaEase)});
-
-                characters.forEachAlive((char) -> {
-                    char.beatHit(val);
-                });
+                    characters.forEachAlive((char) -> {
+                        char.beatHit(val);
+                    });
+                }
             }
         }
         
@@ -601,7 +601,7 @@ class PlayState extends ScriptState
 
             camGame.zoomSpeed = 1;
             camGame.bopModulo = 4;
-            camGame.targetZoom = stage.data.zoom;
+            camGame.zoom = camGame.targetZoom = stage.data.zoom;
 
             FlxG.cameras.reset(camGame);
                 
@@ -1086,31 +1086,28 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'CameraMove', null, [character], []))
         {
-            if (!shouldMoveCamera)
-                return;
-
-            if (character == null)
-                return;
-
-            final camGame:FXCamera = cast camGame;
-
-            camGame.position.x = character.getMidpoint().x + character.data.cameraPosition.x * (character.type == 'player' ? -1 : 1);
-            camGame.position.y = character.getMidpoint().y + character.data.cameraPosition.y;
-
-            if (stage.data.cameraOffset != null)
+            if (shouldMoveCamera && character != null)
             {
-                var offset:Point = null;
+                final camGame:FXCamera = cast camGame;
 
-                if (stage.data.cameraOffset.type != null)
-                    offset = Reflect.getProperty(stage.data.cameraOffset.type, cast character.type);
+                camGame.position.x = character.getMidpoint().x + character.data.cameraPosition.x * (character.type == 'player' ? -1 : 1);
+                camGame.position.y = character.getMidpoint().y + character.data.cameraPosition.y;
 
-                if (stage.data.cameraOffset.id != null)
-                    offset = Reflect.getProperty(stage.data.cameraOffset.id, character.id);
-
-                if (offset != null)
+                if (stage.data.cameraOffset != null)
                 {
-                    camGame.position.x += offset.x ?? 0;
-                    camGame.position.y += offset.y ?? 0;
+                    var offset:Point = null;
+
+                    if (stage.data.cameraOffset.type != null)
+                        offset = Reflect.getProperty(stage.data.cameraOffset.type, cast character.type);
+
+                    if (stage.data.cameraOffset.id != null)
+                        offset = Reflect.getProperty(stage.data.cameraOffset.id, character.id);
+
+                    if (offset != null)
+                    {
+                        camGame.position.x += offset.x ?? 0;
+                        camGame.position.y += offset.y ?? 0;
+                    }
                 }
             }
         }
@@ -1161,10 +1158,8 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'JustPressedKey', null, [event], [event.keyCode]))
         {
-            if (FlxG.keys.firstJustPressed() <= -1)
-                return;
-
-            strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
+            if (FlxG.keys.firstJustPressed() > -1)
+                strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
         }
 
         scriptCallbackCall(POST, 'JustPressedKey', null, [event], [event.keyCode]);
@@ -1184,12 +1179,12 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'VocalAdd', null, [vocal], []))
         {
-            if (vocal == null)
-                return;
+            if (vocal != null)
+            {
+                vocals.push(vocal);
 
-            vocals.push(vocal);
-
-            FlxG.sound.list.add(vocal);
+                FlxG.sound.list.add(vocal);
+            }
         }
         
         scriptCallbackCall(POST, 'VocalAdd', null, [vocal], []);

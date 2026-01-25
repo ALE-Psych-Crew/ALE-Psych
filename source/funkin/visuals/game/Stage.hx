@@ -43,7 +43,7 @@ class Stage
         if (current != null)
         {
             for (obj in current.objects)
-                obj.alive = false;
+                obj.object.exists = false;
 
             cached.set(current.id, current);
 
@@ -55,7 +55,7 @@ class Stage
         cached.remove(id);
 
         for (obj in current.objects)
-            obj.alive = true;
+            obj.object.exists = obj.highQuality ? !ClientPrefs.data.lowQuality : true;
 
         this.id = id;
         
@@ -65,6 +65,13 @@ class Stage
             if (game.characters != null)
                 for (char in game.characters)
                     game.resetCharacterPosition(char);
+        }
+
+        if (game.camGame is FXCamera)
+        {
+            final camGame:FXCamera = cast game.camGame;
+
+            camGame.zoom = camGame.targetZoom = data.zoom;
         }
     }
 
@@ -96,8 +103,7 @@ class Stage
                     if (props != null)
                         CoolUtil.setMultiProperty(obj, props);
 
-                obj.exists = object.highQuality ?? false ? !ClientPrefs.data.lowQuality : true;
-                obj.alive = false;
+                obj.exists = false;
 
                 obj.updateHitbox();
 
@@ -106,7 +112,7 @@ class Stage
                 if (addMethod != null)
                     Reflect.callMethod(game, addMethod, [obj]);
 
-                result.objects.set(object.id, obj);
+                result.objects.set(object.id, {object: obj, highQuality: object.highQuality ?? false});
             }
         }
 
@@ -116,7 +122,7 @@ class Stage
     }
 
     public function get(id:String):FlxSprite
-        return current == null ? null : current.objects.get(id);
+        return current == null ? null : current.objects.get(id).object;
 
     public function destroy():Void
     {
