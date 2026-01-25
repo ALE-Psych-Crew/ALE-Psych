@@ -229,26 +229,17 @@ class StrumLine extends FlxSpriteGroup
         }
     }
 
-    public var spawnWindow:Float = 0;
+    public var spawnWindow:Float = 2000;
     public var despawnWindow:Float = 650;
-
-    var _lastScrollSpeed:Float = 0;
 
     public var onSpawnNote:Note -> Dynamic;
     public var postSpawnNote:Note -> Void;
 
     override public function update(elapsed:Float)
     {
-        if (_lastScrollSpeed != scrollSpeed)
-        {
-            _lastScrollSpeed = scrollSpeed;
-
-            spawnWindow = 2000 / scrollSpeed;
-        }
-
         super.update(elapsed);
 
-        while (!notesStack.isEmpty() && notesStack.first().time <= Conductor.songPosition + spawnWindow)
+        while (!notesStack.isEmpty() && notesStack.first().time <= Conductor.songPosition + spawnWindow / scrollSpeed)
         {
             final note:Note = notesStack.pop();
 
