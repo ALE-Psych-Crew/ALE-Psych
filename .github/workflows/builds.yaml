@@ -36,10 +36,30 @@ jobs:
             build_cmd: haxelib run lime build linux
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
+              sudo apt-get update
               sudo apt-get install libvlc-dev
               sudo apt-get install libvlccore-dev
+              sudo apt-get install dpkg-dev
             pre_build_commands:
-            post_build_commands:
+            post_build_commands: |
+              set -euo pipefail
+              APP_DIR="export/release/linux/bin"
+              DEB_ROOT="dist/deb"
+              DEB_NAME="alepsych_amd64.deb"
+              mkdir -p dist
+              rm -rf "$DEB_ROOT"
+              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/alepsych"
+              cp -a "$APP_DIR/." "$DEB_ROOT/opt/alepsych/"
+              cat <<'EOF' > "$DEB_ROOT/DEBIAN/control"
+              Package: alepsych
+              Version: 0.1.${{ github.run_number }}
+              Section: games
+              Priority: optional
+              Architecture: amd64
+              Maintainer: ALEPsychCrew
+              Description: Friday Night Funkin' ALE Psych
+              EOF
+              dpkg-deb --build --root-owner-group "$DEB_ROOT" "dist/$DEB_NAME"
             artifact_path: export/release/linux/bin
             
           - platform: MacOS
@@ -90,4 +110,12 @@ jobs:
         with:
           name: ${{ matrix.platform }} Build
           path: ${{ matrix.artifact_path }}
+          if-no-files-found: error
+
+      - name: Upload Linux .deb
+        if: ${{ matrix.platform == 'Linux' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux .deb
+          path: dist/alepsych_amd64.deb
           if-no-files-found: error
