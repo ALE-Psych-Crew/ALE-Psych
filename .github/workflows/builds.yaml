@@ -32,7 +32,7 @@ jobs:
             artifact_path: export/32bit/windows/bin
 
           - platform: Linux
-            os: ubuntu-latest
+            os: ubuntu-22.04
             build_cmd: haxelib run lime build linux
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
@@ -81,7 +81,7 @@ jobs:
               EXE_NAME=$(basename "$EXE_PATH")
               mkdir -p dist
               rm -rf "$DEB_ROOT"
-              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/alepsych" "$DEB_ROOT/usr/bin" "$DEB_ROOT/usr/share/applications"
+              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/alepsych" "$DEB_ROOT/usr/bin" "$DEB_ROOT/usr/share/applications" "$DEB_ROOT/usr/share/metainfo"
               cp -a "$APP_DIR/." "$DEB_ROOT/opt/alepsych/"
               cat <<'EOF' > "$DEB_ROOT/usr/bin/alepsych"
               #!/usr/bin/env sh
@@ -89,6 +89,15 @@ jobs:
               EOF
               sed -i "s|__EXE_NAME__|$EXE_NAME|g" "$DEB_ROOT/usr/bin/alepsych"
               chmod 0755 "$DEB_ROOT/usr/bin/alepsych"
+              cat <<'EOF' > "$DEB_ROOT/usr/share/metainfo/ale-psych.metainfo.xml"
+              <?xml version="1.0" encoding="UTF-8"?>
+              <component type="desktop">
+                <id>ale-psych.desktop</id>
+                <name>ALE Psych</name>
+                <summary>Friday Night Funkin' ALE Psych</summary>
+                <url type="homepage">https://alepsych.gamer.gd/</url>
+              </component>
+              EOF
               cat <<'EOF' > "$DEB_ROOT/usr/share/applications/alepsych.desktop"
               [Desktop Entry]
               Name=ALE Psych
@@ -111,13 +120,27 @@ jobs:
                   cp "$icon" "$DEB_ROOT/$icon"
                 fi
               done
-              cat <<'EOF' > "$DEB_ROOT/DEBIAN/control"
+              DEPENDS_LINE=""
+              DEPEND_PACKAGES=()
+              while IFS= read -r lib; do
+                pkg=$(dpkg -S "$lib" 2>/dev/null | head -n1 | cut -d: -f1 || true)
+                if [ -n "$pkg" ]; then
+                  DEPEND_PACKAGES+=("$pkg")
+                fi
+              done < <(ldd "$EXE_PATH" | awk '($2=="=>"){print $3} ($1 ~ /^\//){print $1}')
+              if [ ${#DEPEND_PACKAGES[@]} -gt 0 ]; then
+                mapfile -t DEPEND_PACKAGES < <(printf '%s\n' "${DEPEND_PACKAGES[@]}" | sort -u)
+                DEPENDS_LINE="Depends: $(printf '%s, ' "${DEPEND_PACKAGES[@]}")"
+                DEPENDS_LINE="${DEPENDS_LINE%, }"
+              fi
+              cat <<EOF > "$DEB_ROOT/DEBIAN/control"
               Package: alepsych
-              Version: 4.0.0+ci${{ github.run_id }}
+              Version: $VERSION
               Section: games
               Priority: optional
               Architecture: amd64
               Maintainer: ALEPsychCrew
+              ${DEPENDS_LINE}
               Description: Friday Night Funkin' ALE Psych
               EOF
               dpkg-deb --build --root-owner-group "$DEB_ROOT" "dist/$DEB_NAME"
