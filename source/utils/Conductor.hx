@@ -106,6 +106,42 @@ class Conductor
 		bpm = song.bpm;
 	}
 
+	public static function beatsToTime(beat:Int)
+	{
+		if (bpmChangeMap == null || bpmChangeMap.length <= 0)
+			return beat * crochet;
+
+		final prevBPM:Float = bpm;
+
+		var time:Float = 0;
+		var lastChange:BPMChange = bpmChangeMap[0];
+
+		for (i in 1...bpmChangeMap.length)
+		{
+			final change:BPMChange = bpmChangeMap[i];
+
+			final changeBeat:Int = Math.floor(change.step / stepsPerBeat);
+			final lastBeat:Int = Math.floor(lastChange.step / stepsPerBeat);
+
+			if (changeBeat > beat)
+				break;
+
+			bpm = lastChange.bpm;
+
+			time += (changeBeat - lastBeat) * crochet;
+
+			lastChange = change;
+		}
+
+		bpm = lastChange.bpm;
+
+		time += (beat - Math.floor(lastChange.step / stepsPerBeat)) * crochet;
+
+		bpm = prevBPM;
+
+		return time;
+	}
+
 	public static function init()
 	{
 		stepHit = new FlxTypedSignal<Int -> Void>();
