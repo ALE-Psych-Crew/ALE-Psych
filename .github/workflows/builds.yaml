@@ -98,7 +98,6 @@ jobs:
 
               cp -a "$APP_DIR/." "$DEB_ROOT/opt/ale-psych/"
 
-              # Launcher script (keeps writable runtime/mods/assets in user dir)
               cat <<'EOF' > "$DEB_ROOT/usr/bin/ale-psych"
               #!/usr/bin/env sh
               BASE="/opt/ale-psych"
@@ -129,9 +128,8 @@ jobs:
               sed -i "s|__EXE_NAME__|$EXE_NAME|g" "$DEB_ROOT/usr/bin/ale-psych"
               chmod 0755 "$DEB_ROOT/usr/bin/ale-psych"
 
-              # Desktop entry: StartupWMClass should match the actual window class.
-              # Using EXE_NAME works for many Lime/OpenFL builds (helps GNOME/Zorin dock grouping + icon).
-              cat <<EOF > "$DEB_ROOT/usr/share/applications/ale-psych.desktop"
+              # Zorin/GNOME: match WM_CLASS from `xprop WM_CLASS` => "ALEPsych"
+              cat <<'EOF' > "$DEB_ROOT/usr/share/applications/ale-psych.desktop"
               [Desktop Entry]
               Type=Application
               Name=ALE Psych
@@ -141,10 +139,9 @@ jobs:
               Icon=ale-psych
               Terminal=false
               Categories=Game;
-              StartupWMClass=$EXE_NAME
+              StartupWMClass=ALEPsych
               EOF
 
-              # AppStream metadata (nice-to-have)
               cat <<'EOF' > "$DEB_ROOT/usr/share/metainfo/ale-psych.metainfo.xml"
               <?xml version="1.0" encoding="UTF-8"?>
               <component type="desktop-application">
@@ -160,7 +157,6 @@ jobs:
               </component>
               EOF
 
-              # Install icons into the package (hicolor). We look for icons in the repo workspace.
               WORKSPACE="${GITHUB_WORKSPACE:-$PWD}"
               for size in 16 24 32 48 64 128 256 512; do
                 dest_dir="$DEB_ROOT/usr/share/icons/hicolor/${size}x${size}/apps"
@@ -176,7 +172,6 @@ jobs:
                 fi
               done
 
-              # Maintainer scripts: refresh caches after install/remove
               cat <<'EOF' > "$DEB_ROOT/DEBIAN/postinst"
               #!/bin/sh
               set -e
@@ -195,7 +190,6 @@ jobs:
               EOF
               chmod 0755 "$DEB_ROOT/DEBIAN/postrm"
 
-              # Control file
               cat <<EOF > "$DEB_ROOT/DEBIAN/control"
               Package: ale-psych
               Version: $VERSION
