@@ -37,22 +37,27 @@ jobs:
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
               sudo apt-get update
-              sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file
+              sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
             pre_build_commands:
             post_build_commands: |
               set -euo pipefail
+
               APP_DIR="export/release/linux/bin"
               [ -d "$APP_DIR" ] || { echo "Missing build output dir: $APP_DIR" >&2; exit 1; }
+
               DEB_ROOT="dist/deb"
               VERSION="4.0.0+ci${{ github.run_id }}"
               DEB_NAME="ale-psych_${VERSION}_amd64.deb"
+
               ELF_CANDIDATES=()
               OTHER_CANDIDATES=()
+
               pick_largest() {
                 local best=""
                 local best_size=0
                 local f size
                 for f in "$@"; do
+                  [ -f "$f" ] || continue
                   size=$(stat -c %s "$f")
                   if [ "$size" -gt "$best_size" ]; then
                     best="$f"
@@ -61,6 +66,7 @@ jobs:
                 done
                 printf '%s' "$best"
               }
+
               while IFS= read -r -d '' f; do
                 if file -b "$f" | grep -q "ELF"; then
                   ELF_CANDIDATES+=("$f")
@@ -68,6 +74,7 @@ jobs:
                   OTHER_CANDIDATES+=("$f")
                 fi
               done < <(find "$APP_DIR" -maxdepth 1 -type f -executable ! -name "*.so*" -print0)
+
               EXE_PATH=$(pick_largest "${ELF_CANDIDATES[@]}")
               if [ -z "$EXE_PATH" ]; then
                 EXE_PATH=$(pick_largest "${OTHER_CANDIDATES[@]}")
@@ -77,11 +84,20 @@ jobs:
                 ls -la "$APP_DIR"
                 exit 1
               fi
+
               EXE_NAME=$(basename "$EXE_PATH")
+
               mkdir -p dist
               rm -rf "$DEB_ROOT"
-              mkdir -p "$DEB_ROOT/DEBIAN" "$DEB_ROOT/opt/ale-psych" "$DEB_ROOT/usr/bin" "$DEB_ROOT/usr/share/applications" "$DEB_ROOT/usr/share/metainfo"
+              mkdir -p \
+                "$DEB_ROOT/DEBIAN" \
+                "$DEB_ROOT/opt/ale-psych" \
+                "$DEB_ROOT/usr/bin" \
+                "$DEB_ROOT/usr/share/applications" \
+                "$DEB_ROOT/usr/share/metainfo"
+
               cp -a "$APP_DIR/." "$DEB_ROOT/opt/ale-psych/"
+
               cat <<'EOF' > "$DEB_ROOT/usr/bin/ale-psych"
               #!/usr/bin/env sh
               BASE="/opt/ale-psych"
@@ -111,6 +127,21 @@ jobs:
               sed -i "s|__VERSION__|$VERSION|g" "$DEB_ROOT/usr/bin/ale-psych"
               sed -i "s|__EXE_NAME__|$EXE_NAME|g" "$DEB_ROOT/usr/bin/ale-psych"
               chmod 0755 "$DEB_ROOT/usr/bin/ale-psych"
+
+              # Zorin/GNOME: match WM_CLASS from `xprop WM_CLASS` => "ALEPsych"
+              cat <<'EOF' > "$DEB_ROOT/usr/share/applications/ale-psych.desktop"
+              [Desktop Entry]
+              Type=Application
+              Name=ALE Psych
+              Comment=Friday Night Funkin' ALE Psych
+              Exec=ale-psych
+              TryExec=ale-psych
+              Icon=ale-psych
+              Terminal=false
+              Categories=Game;
+              StartupWMClass=ALEPsych
+              EOF
+
               cat <<'EOF' > "$DEB_ROOT/usr/share/metainfo/ale-psych.metainfo.xml"
               <?xml version="1.0" encoding="UTF-8"?>
               <component type="desktop-application">
@@ -125,30 +156,40 @@ jobs:
                 </description>
               </component>
               EOF
-              cat <<'EOF' > "$DEB_ROOT/usr/share/applications/ale-psych.desktop"
-              [Desktop Entry]
-              Type=Application
-              Name=ALE Psych
-              Exec=ale-psych
-              Icon=ale-psych
-              Terminal=false
-              Categories=Game;
-              EOF
-              for icon in \
-                usr/share/icons/hicolor/16x16/apps/alepsych.png \
-                usr/share/icons/hicolor/24x24/apps/alepsych.png \
-                usr/share/icons/hicolor/32x32/apps/alepsych.png \
-                usr/share/icons/hicolor/48x48/apps/alepsych.png \
-                usr/share/icons/hicolor/64x64/apps/alepsych.png \
-                usr/share/icons/hicolor/128x128/apps/alepsych.png \
-                usr/share/icons/hicolor/256x256/apps/alepsych.png \
-                usr/share/icons/hicolor/512x512/apps/alepsych.png; do
-                if [ -f "$icon" ]; then
-                  dest_dir="$DEB_ROOT/$(dirname "$icon")"
-                  mkdir -p "$dest_dir"
-                  cp "$icon" "$dest_dir/ale-psych.png"
+
+              WORKSPACE="${GITHUB_WORKSPACE:-$PWD}"
+              for size in 16 24 32 48 64 128 256 512; do
+                dest_dir="$DEB_ROOT/usr/share/icons/hicolor/${size}x${size}/apps"
+                mkdir -p "$dest_dir"
+
+                src1="$WORKSPACE/usr/share/icons/hicolor/${size}x${size}/apps/alepsych.png"
+                src2="$WORKSPACE/usr/share/icons/hicolor/${size}x${size}/apps/ale-psych.png"
+
+                if [ -f "$src2" ]; then
+                  cp "$src2" "$dest_dir/ale-psych.png"
+                elif [ -f "$src1" ]; then
+                  cp "$src1" "$dest_dir/ale-psych.png"
                 fi
               done
+
+              cat <<'EOF' > "$DEB_ROOT/DEBIAN/postinst"
+              #!/bin/sh
+              set -e
+              update-desktop-database -q /usr/share/applications || true
+              gtk-update-icon-cache -q /usr/share/icons/hicolor || true
+              exit 0
+              EOF
+              chmod 0755 "$DEB_ROOT/DEBIAN/postinst"
+
+              cat <<'EOF' > "$DEB_ROOT/DEBIAN/postrm"
+              #!/bin/sh
+              set -e
+              update-desktop-database -q /usr/share/applications || true
+              gtk-update-icon-cache -q /usr/share/icons/hicolor || true
+              exit 0
+              EOF
+              chmod 0755 "$DEB_ROOT/DEBIAN/postrm"
+
               cat <<EOF > "$DEB_ROOT/DEBIAN/control"
               Package: ale-psych
               Version: $VERSION
@@ -159,9 +200,10 @@ jobs:
               Homepage: https://alepsych.gamer.gd/
               Description: Friday Night Funkin' ALE Psych
               EOF
+
               dpkg-deb --build --root-owner-group "$DEB_ROOT" "dist/$DEB_NAME"
             artifact_path: export/release/linux/bin
-            
+
           - platform: MacOS
             os: macos-15
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
@@ -169,7 +211,7 @@ jobs:
             pre_build_commands:
             post_build_commands:
             artifact_path: export/release/macos/bin
-            
+
           - platform: MacOS x64
             os: macos-15-intel
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
@@ -177,7 +219,7 @@ jobs:
             pre_build_commands:
             post_build_commands:
             artifact_path: export/release/macos/bin
-            
+
     steps:
       - name: Pull the New Commit
         uses: actions/checkout@v4.1.7
