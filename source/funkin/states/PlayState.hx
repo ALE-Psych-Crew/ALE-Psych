@@ -564,7 +564,10 @@ class PlayState extends ScriptState
 
             pauseMusic();
 
-            exit();
+            if (songIndex + 1 < playlist.length)
+                CoolUtil.switchState(new PlayState(type, playlist, difficulty, songIndex + 1), true, true);
+            else
+                exit();
         }
 
         scriptCallbackCall(POST, 'SongEnd');
@@ -578,10 +581,7 @@ class PlayState extends ScriptState
 
 			FlxTween.globalManager.forEach((twn) ->  if (!twn.finished) twn.active = false);
 
-            if (songIndex + 1 < playlist.length)
-                CoolUtil.switchState(new PlayState(type, playlist, difficulty, songIndex + 1), true, true);
-            else
-                CoolUtil.switchState(new CustomState(type == STORY ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
+            CoolUtil.switchState(new CustomState(type == STORY ? CoolVars.data.storyMenuState : CoolVars.data.freeplayState));
         }
 
         scriptCallbackCall(POST, 'Exit');
