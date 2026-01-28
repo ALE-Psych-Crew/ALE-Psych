@@ -189,11 +189,12 @@ class ALESave
 
     public function reset()
     {
+        save();
+        
         ClientPrefs.data = {};
         
         ClientPrefs.custom = {};
 
-        save();
         load();
     }
 

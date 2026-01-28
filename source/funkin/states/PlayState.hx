@@ -4,6 +4,7 @@ import openfl.events.KeyboardEvent;
 import openfl.media.Sound;
 
 import flixel.text.FlxText.FlxTextBorderStyle;
+import flixel.util.typeLimit.OneOfTwo;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
@@ -23,6 +24,7 @@ import core.enums.SongType;
 import core.enums.Rating;
 
 import utils.ALEFormatter;
+import utils.Score;
 
 import haxe.ds.StringMap;
 import haxe.ds.GenericStack;
@@ -39,6 +41,7 @@ class PlayState extends ScriptState
     public var HUD:ALEHud;
 
     public final song:String;
+    public final week:String;
     public final playlist:Array<String>;
     public final difficulty:String;
     public final songIndex:Int;
@@ -46,6 +49,8 @@ class PlayState extends ScriptState
 
     public final type:SongType;
 
+    public var weekScore:Float = 0;
+    
     public var score:Float = 0;
     public var totalPlayed:Int = 0;
     public var accuracyMod:Float = 0;
@@ -81,16 +86,19 @@ class PlayState extends ScriptState
 
     public var startTime:Float = 0;
 
-    public function new(?type:SongType, ?playlist:Array<String>, ?difficulty:String, ?songIndex:Int)
+    public function new(?type:SongType = FREEPLAY, ?playlist:Array<String>, ?difficulty:String = 'normal', ?week:String, ?weekScore:Float = 0, ?songIndex:Int = 0)
     {
         super();
 
         this.type = type ?? FREEPLAY;
 
-        this.playlist = playlist ?? ['bopeebo'];
-        this.difficulty = difficulty ?? 'hard';
-        this.songIndex = songIndex ?? 0;
+        this.playlist = playlist ??= ['bopeebo'];
+        this.difficulty = difficulty;
+        this.songIndex = songIndex;
         this.song = this.playlist[this.songIndex];
+
+        this.week = week;
+        this.weekScore = weekScore;
 
         CHART ??= ALEFormatter.getSong(this.song, this.difficulty);
 
@@ -144,10 +152,6 @@ class PlayState extends ScriptState
 
             initStrumLines();
 
-            moveCamera(gf ?? dad ?? boyfriend);
-
-            camGame.snapToTarget();
-
             botplay = ClientPrefs.data.botplay;
 
             initEvents();
@@ -158,6 +162,10 @@ class PlayState extends ScriptState
             initCombo();
 
             stage.change(CHART.stage);
+
+            moveCamera(0);
+
+            camGame.snapToTarget();
 
             startCountdown();
             
@@ -247,7 +255,7 @@ class PlayState extends ScriptState
 
             pauseMusic();
             
-            CoolUtil.switchState(new PlayState(type, playlist, difficulty, songIndex), true, true);
+            CoolUtil.switchState(new PlayState(type, playlist, difficulty, week, weekScore, songIndex), true, true);
         }
 
         scriptCallbackCall(POST, 'Restart');
@@ -551,6 +559,8 @@ class PlayState extends ScriptState
                 voice.play();
 
             FlxG.sound.music.time = startTime;
+
+            shouldResumeMusic = true;
         }
 
         scriptCallbackCall(POST, 'SongStart');
@@ -564,13 +574,28 @@ class PlayState extends ScriptState
 
             pauseMusic();
 
+            saveScore();
+
             if (songIndex + 1 < playlist.length)
-                CoolUtil.switchState(new PlayState(type, playlist, difficulty, songIndex + 1), true, true);
+                CoolUtil.switchState(new PlayState(type, playlist, difficulty, week, weekScore + score, songIndex + 1), true, true);
             else
                 exit();
         }
 
         scriptCallbackCall(POST, 'SongEnd');
+    }
+
+    public function saveScore()
+    {
+        if (scriptCallbackCall(ON, 'ScoreSave'))
+        {
+            Score.saveSong(song, difficulty, score, accuracy);
+            
+            if (type == STORY && songIndex >= playlist.length - 1 && !ClientPrefs.data.practice && !ClientPrefs.data.botplay)
+                Score.saveWeek(week, difficulty, weekScore + score);
+        }
+
+        scriptCallbackCall(POST, 'ScoreSave');
     }
 
     public function exit()
@@ -1082,8 +1107,20 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'CharacterChange', null, [char, newChar], [newChar]);
     }
 
-    function moveCamera(character:Character)
+    function moveCamera(char:OneOfTwo<Character, Int>)
     {
+        var character:Character = null;
+
+        if (char is Character)
+        {
+            character = cast char;
+        } else {
+            final songSection:ALESongSection = CHART.sections[char];
+
+            if (songSection != null)
+                character = cameraCharacters[songSection.camera[0]][songSection.camera[1]];
+        }
+
         if (scriptCallbackCall(ON, 'CameraMove', null, [character], []))
         {
             if (shouldMoveCamera && character != null)
@@ -1219,17 +1256,22 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'MusicPause');
     }
 
+    var shouldResumeMusic:Bool = false;
+
     function resumeMusic()
     {
         if (scriptCallbackCall(ON, 'MusicResume'))
         {
-            FlxG.sound.music?.resume();
+            if (shouldResumeMusic)
+            {
+                FlxG.sound.music?.resume();
 
-            for (sound in vocals)
-                if (sound != null)
-                    sound.resume();
+                for (sound in vocals)
+                    if (sound != null)
+                        sound.resume();
 
-            resyncVocals();
+                resyncVocals();
+            }
         }
 
         scriptCallbackCall(POST, 'MusicResume');

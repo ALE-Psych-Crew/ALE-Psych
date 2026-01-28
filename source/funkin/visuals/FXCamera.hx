@@ -22,7 +22,7 @@ class FXCamera extends ALECamera
 		return speed;
 	}
 
-	public var bopModulo:Int = 4;
+	public var bopModulo:Int = Conductor.beatsPerSection;
 
 	public var bopZoom:Float = 1;
 
@@ -46,7 +46,7 @@ class FXCamera extends ALECamera
 	{
 		speed = 1;
 
-		bopModulo = 4;
+		bopModulo = Conductor.beatsPerSection;
 		bopZoom = 1;
 		
 		zoomSpeed = 1;

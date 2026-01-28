@@ -12,13 +12,6 @@
 					"scripted": true
 				},
 				{
-					"name": "Note Offset",
-					"description": "Adjust the delay for the game audio.",
-					"type": "state",
-					"path": "NoteOffsetState",
-					"scripted": true
-				},
-				{
 					"name": "Reset Options",
 					"description": "Restore Default Settings",
 					"type": "substate",
