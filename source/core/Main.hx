@@ -15,6 +15,12 @@ import ale.ui.ALEUIUtils;
 import hxluajit.wrapper.LuaError;
 #end
 
+#if CRASH_HANDLER
+import openfl.events.UncaughtErrorEvent;
+
+import haxe.CallStack;
+#end
+
 import funkin.debug.DebugCounter;
 
 import core.config.MainState;
@@ -88,6 +94,14 @@ class Main extends Sprite
 		#end
 
 		Sys.putEnv("ALSOFT_CONF", configPath);
+		#end
+		
+		#if CRASH_HANDLER
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
+
+		#if VIDEOS_ALLOWED
+		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
 		#end
 
 		return;
@@ -209,4 +223,39 @@ class Main extends Sprite
 		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
 			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
     }
+
+	function onCrash(e:UncaughtErrorEvent):Void
+	{
+		var errMsg:String = "";
+		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+
+		for (stackItem in callStack)
+		{
+			switch (stackItem)
+			{
+				case FilePos(s, file, line, column):
+					errMsg += file + " (line " + line + ")\n";
+				default:
+					Sys.println(stackItem);
+			}
+		}
+
+		errMsg += "\nUncaught Error: " + e.error;
+	
+		#if WINDOWS_API
+		cpp.WindowsAPI.showMessageBox('ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
+		#else
+		Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
+		#end
+
+		debugTrace(errMsg, ERROR);
+
+		Discord.destroy();
+
+		#if WINDOWS_API
+		winapi.WindowsAPI.resetWindowsFuncs();
+		#end
+
+		Sys.exit(1);
+	}
 }

@@ -19,6 +19,8 @@ class ALEGame extends FlxGame
         _customSoundTray = ALESoundTray;
     }
 
+    @:unreflective var visibleConsole:Bool = false;
+
     override public function update()
     {
         WindowsAPI.setWindowTitle();
@@ -40,5 +42,15 @@ class ALEGame extends FlxGame
                 CoolUtil.openSubState(new funkin.substates.ModsMenuSubState());
             }
         }
+
+        #if WINDOWS_API
+        if (FlxG.keys.justPressed.F2)
+        {
+            if (!visibleConsole)
+                cpp.WindowsAPI.showConsole();
+
+            visibleConsole = true;
+        }
+        #end
     }
 }
