@@ -192,11 +192,14 @@ class ALEFormatter
                 barColor: type == 'opponent' ? '0xFFFF0000' : '0xFF00FF00',
                 death: 'bf-dead',
                 sustainAnimation: false,
-                danceModulo: char.contains('gf') && !char.contains('bf') ? 1 : 2,
+                danceModulo: 2,
                 format: CHARACTER_FORMAT
             }
 
+            var anims:Array<String> = [];
+
             for (anim in funkinJson.animations)
+            {
                 result.animations.push({
                     name: anim.name,
                     prefix: anim.prefix,
@@ -208,6 +211,11 @@ class ALEFormatter
                         y: anim.offsets[1]
                     }
                 });
+
+                anims.push(anim.name);
+            }
+
+            result.danceModulo = anims.contains('danceLeft') && anims.contains('danceRight') ? 1 : 2;
 
             return result;
         }
@@ -235,7 +243,7 @@ class ALEFormatter
             barColor: StringUtil.intToHex(ColorUtil.colorFromArray(psychJson.healthbar_colors)),
             death: psychJson.deadVariant ?? 'bf-dead',
             sustainAnimation: true,
-            danceModulo: char.contains('gf') && !char.contains('bf') ? 1 : 2,
+            danceModulo: 2,
             format: CHARACTER_FORMAT
         };
 
@@ -248,7 +256,10 @@ class ALEFormatter
             result.cameraPosition.y -= 100;
         }
 
+        var anims:Array<String> = [];
+
         for (anim in psychJson.animations)
+        {
             result.animations.push({
                 name: anim.anim,
                 prefix: anim.name,
@@ -260,6 +271,11 @@ class ALEFormatter
                     y: anim.offsets[1] / psychJson.scale
                 }
             });
+
+            anims.push(anim.anim);
+        }
+
+        result.danceModulo = anims.contains('danceLeft') && anims.contains('danceRight') ? 1 : 2;
 
         return result;
     }
