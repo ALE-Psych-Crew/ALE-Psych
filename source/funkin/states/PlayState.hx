@@ -200,10 +200,7 @@ class PlayState extends ScriptState
                 pause();
 
             if (Controls.RESET)
-                if (CoolVars.data.developerMode)
-                    restart();
-                else
-                    health = 0;
+                restart();
         }
 
         scriptCallbackCall(POST, 'Update', [elapsed]);
@@ -1182,11 +1179,7 @@ class PlayState extends ScriptState
     function gameOver()
     {
         if (scriptCallbackCall(ON, 'GameOver'))
-        {
-            pauseMusic();
-
             CoolUtil.openSubState(new CustomSubState(CoolVars.data.gameOverScreen));
-        }
 
         scriptCallbackCall(POST, 'GameOver');
     }

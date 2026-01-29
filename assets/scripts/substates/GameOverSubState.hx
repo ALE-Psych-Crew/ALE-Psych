@@ -1,6 +1,10 @@
 import funkin.visuals.game.Character;
 
-var playStateCam:ALECamera = PlayState.instance.camGame;
+final playState:PlayState = PlayState.instance;
+
+var playStateCam:ALECamera = playState.camGame;
+
+playState.pauseMusic();
 
 subCamera.scroll.x = playStateCam.scroll.x;
 subCamera.scroll.y = playStateCam.scroll.y;
@@ -22,11 +26,19 @@ var deadCharacter:Character;
 
 var playStateChar:Character;
 
-final filesPath:String = 'hud/' + PlayState.instance.STAGE.hud;
+final filesPath:String = 'hud/' + playState.stage.data.hud;
 
 function new(?char:Character)
 {
-    playStateChar = char ?? PlayState.instance.lastMissNoteCharacter;
+    playStateChar = char;
+    
+    for (obj in [playState.lastMissNoteCharacter].concat(playState.characters.members))
+        if (obj != null)
+        {
+            playStateChar = obj;
+
+            break;
+        }
 
     playStateChar.exists = false;
 
@@ -48,9 +60,9 @@ function new(?char:Character)
 
     music = new FlxSound().loadEmbedded(Paths.music(filesPath + '/gameOverMusic'), true);
 
-    PlayState.instance.resetCharacterPosition(deadCharacter);
+    playState.resetCharacterPosition(deadCharacter);
 
-    PlayState.instance.moveCamera(deadCharacter);
+    playState.moveCamera(deadCharacter);
 }
 
 final startedMusic:Bool = false;
@@ -86,7 +98,7 @@ function onUpdate(elapsed:Float)
             subCamera.fade(FlxColor.BLACK, 2.5, false, () -> {
                 close();
 
-                PlayState.instance.restart();
+                playState.restart();
             });
 
             canSelect = false;
