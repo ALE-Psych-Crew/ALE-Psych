@@ -30,16 +30,8 @@ final filesPath:String = 'hud/' + playState.stage.data.hud;
 
 function new(?char:Character)
 {
-    playStateChar = char;
+    playStateChar = char ?? playState.lastMissNoteCharacter;
     
-    for (obj in [playState.lastMissNoteCharacter].concat(playState.characters.members))
-        if (obj != null)
-        {
-            playStateChar = obj;
-
-            break;
-        }
-
     playStateChar.exists = false;
 
     deadCharacter = new Character(playStateChar.data.death, playStateChar.type);
