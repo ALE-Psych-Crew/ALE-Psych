@@ -31,40 +31,10 @@ class FlixelField extends DebugField
         );
 
         labels[1].valueFunction = () -> 
-            getState() +
-            '\n' + getSubState() +
-            '\nObjects: ' + getObjects() +
+            (FlxG.state is CustomState ? 'Custom State: ' + cast(FlxG.state, CustomState).scriptName : 'State: ' +  Type.getClassName(Type.getClass(FlxG.state))) +
+            '\n' + (FlxG.state.subState is CustomSubState ? 'Custom SubState: ' + cast(FlxG.state.subState, CustomSubState).scriptName : 'SubState: ' + Type.getClassName(Type.getClass(FlxG.state.subState))) +
+            '\nObjects: ' + (FlxG.state.members.length + (FlxG.state.subState == null ? 0 : FlxG.state.subState.members.length)) +
             '\nCameras: ' + FlxG.cameras.list.length +
             '\nChilds: ' + FlxG.game.numChildren;
-    }
-
-    function getState():String
-    {
-        /*
-        if (FlxG.state is CustomState)
-            return 'Custom State: ' + cast(FlxG.state, CustomState).scriptName;
-        */
-        
-        return 'State: ' +  Type.getClassName(Type.getClass(FlxG.state));
-    }
-
-    function getSubState():String
-    {
-        /*
-        if (FlxG.state.subState is CustomSubState)
-            return 'Custom SubState: ' + cast(FlxG.state.subState, CustomSubState).scriptName;
-        */
-        
-        return 'SubState: ' + Type.getClassName(Type.getClass(FlxG.state.subState));
-    }
-
-    function getObjects():Int
-    {
-        var res:Int = FlxG.state.members.length;
-
-        if (FlxG.state.subState != null)
-            res += FlxG.state.subState.members.length;
-
-        return res;
     }
 }

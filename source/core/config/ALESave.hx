@@ -195,6 +195,10 @@ class ALESave
         
         ClientPrefs.custom = {};
 
+        ClientPrefs.controls = {};
+        
+        ClientPrefs.customControls = {};
+
         load();
     }
 
@@ -203,6 +207,8 @@ class ALESave
         ClientPrefs.data = {};
         
         ClientPrefs.custom = {};
+
+        ClientPrefs.controls = {};
         
         ClientPrefs.customControls = {};
 

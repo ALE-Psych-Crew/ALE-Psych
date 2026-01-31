@@ -186,7 +186,7 @@ class Conductor
 	@:allow(core.ALEGame)
 	private static function update()
 	{
-		if (songPosition < 0 || !allowUpdate)
+		if (songPosition <= 0 || !allowUpdate)
 			return;
 
 		var newStep:Int = 0;

@@ -34,9 +34,11 @@ class CoolUtil
 
 	public static function destroy()
 	{
-		save.save();
+		save?.save();
 		
-		save.destroy();
+		save?.destroy();
+
+		save = null;
 	}
 
 	public static function resetGame()

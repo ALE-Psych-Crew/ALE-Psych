@@ -151,8 +151,6 @@ class Main extends Sprite
 			FlxG.sound.music = null;
 		}
 
-        CoolUtil.destroy();
-		
         Conductor.destroy();
 		
 		ALEPluginsHandler.destroy();
@@ -166,6 +164,8 @@ class Main extends Sprite
 
     @:unreflective public static function postResetConfig()
     {
+		CoolUtil.destroy();
+
         FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
 
 		FlxG.fixedTimestep = false;
@@ -184,13 +184,13 @@ class Main extends Sprite
 
 		Paths.clearEngineCache(true);
 
-        CoolUtil.init();
-
 		Paths.initMod();
 
         CoolVars.loadMetadata();
 
         Paths.init();
+
+        CoolUtil.init();
 
         Conductor.init();
 

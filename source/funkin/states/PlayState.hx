@@ -586,10 +586,13 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'ScoreSave'))
         {
-            Score.saveSong(song, difficulty, score, accuracy);
-            
-            if (type == STORY && songIndex >= playlist.length - 1 && !ClientPrefs.data.practice && !ClientPrefs.data.botplay)
-                Score.saveWeek(week, difficulty, weekScore + score);
+            if (!botplay)
+            {
+                Score.saveSong(song, difficulty, score, accuracy);
+                
+                if (type == STORY && songIndex >= playlist.length - 1 && !ClientPrefs.data.practice && !ClientPrefs.data.botplay)
+                    Score.saveWeek(week, difficulty, weekScore + score);
+            }
         }
 
         scriptCallbackCall(POST, 'ScoreSave');
