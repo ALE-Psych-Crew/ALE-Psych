@@ -91,6 +91,8 @@ class CustomState extends ScriptState
         #end
 
         scriptCallbackCall(ON, 'Create');
+        
+        scriptCallbackCall(POST, 'Create');
     }
 
     public function addHotReloadingFile(path:String)
