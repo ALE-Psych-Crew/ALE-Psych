@@ -67,8 +67,6 @@ class Character extends Bopper
             playAnim('danceLeft');
         else
             playAnim('idle');
-
-        updateHitbox();
     }
 
     public var danceTimer:Float = 0;
