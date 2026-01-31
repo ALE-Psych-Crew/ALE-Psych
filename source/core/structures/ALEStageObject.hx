@@ -6,6 +6,7 @@ typedef ALEStageObject = {
     @:optional var classArguments:Array<Dynamic>;
     @:optional var path:String;
     @:optional var properties:Any;
+    @:optional var cameras:Array<String>;
     @:optional var addMethod:String;
     @:optional var highQuality:Bool;
 }

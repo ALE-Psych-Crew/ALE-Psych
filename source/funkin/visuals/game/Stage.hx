@@ -2,6 +2,7 @@ package funkin.visuals.game;
 
 import utils.ALEFormatter;
 
+import flixel.FlxCamera;
 import flixel.FlxBasic;
 
 import core.structures.StageArray;
@@ -102,6 +103,19 @@ class Stage
                 for (props in [json.objectsConfig.properties, object.properties])
                     if (props != null)
                         CoolUtil.setMultiProperty(obj, props);
+
+                if (object.cameras != null)
+                {
+                    obj.cameras = [];
+
+                    for (camera in object.cameras)
+                    {
+                        final result:Dynamic = Reflect.getProperty(game, camera);
+
+                        if (result != null && result is FlxCamera)
+                            obj.cameras.push(result);
+                    }
+                }
 
                 obj.exists = false;
 
