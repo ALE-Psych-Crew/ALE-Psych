@@ -4,9 +4,11 @@ import haxe.Constraints.Function;
 
 import haxe.ds.StringMap;
 
-typedef CacheConfig = {
-    var prefix:String;
-    var postfix:String;
-    var method:Function;
-    var cache:StringMap<{permanent:Bool, content:Dynamic}>;
+@:structInit class CacheConfig
+{
+    public var prefix:String = '';
+    public var postfix:String = '';
+    public var method:Function = () -> {};
+    public var verifyExistence:Bool = true;
+    public var cache:StringMap<{permanent:Bool, content:Dynamic}> = new StringMap();
 }

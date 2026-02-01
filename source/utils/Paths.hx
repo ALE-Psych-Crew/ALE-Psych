@@ -57,14 +57,14 @@ class Paths
                 mod = null;
         }
     }
-
-    public static var config:StringMap<CacheConfig> = new StringMap();
     
     public static final SEPARATOR:String = '::';
 
     public static var library(get, never):ALEAssetLibrary;
     static function get_library():ALEAssetLibrary
         return cast OpenFLAssets.getLibrary('default');
+
+    public static var config:StringMap<CacheConfig> = new StringMap();
 
     public static function init()
     {
@@ -79,20 +79,14 @@ class Paths
 
         config = [
             FileType.CONTENT => {
-                prefix: '',
-                postfix: '',
                 method: (id, permanent, missingPrint) -> {
                     return OpenFLAssets.getText(id);
-                },
-                cache: new StringMap()
+                }
             },
             FileType.BYTES => {
-                prefix: '',
-                postfix: '',
                 method: (id, permanent, missingPrint) -> {
                     return OpenFLAssets.getBytes(id);
-                },
-                cache: new StringMap()
+                }
             },
             FileType.IMAGE => {
                 prefix: 'images/',
@@ -119,20 +113,15 @@ class Paths
                     graphic.destroyOnNoUse = false;
                     
                     return graphic;
-                },
-                cache: new StringMap()
+                }
             },
             FileType.AUDIO => {
-                prefix: '',
                 postfix: '.ogg',
                 method: (id, permanent, missingPrint) -> {
                     return Sound.fromAudioBuffer(AudioBuffer.fromBytes(OpenFLAssets.getBytes(id)));
-                },
-                cache: new StringMap()
+                }
             },
             FileType.ATLAS => {
-                prefix: '',
-                postfix: '',
                 method: (idType, permanent, missingPrint) -> {
                     final split:Array<String> = idType.split(SEPARATOR);
 
@@ -167,11 +156,9 @@ class Paths
 
                     return method(graphic, data);
                 },
-                cache: new StringMap()
+                verifyExistence: false
             },
             FileType.MULTI_ATLAS => {
-                prefix: '',
-                postfix: '',
                 method: (idType, permanent, missingPrint) -> {
                     final splitData:Array<String> = idType.split(SEPARATOR + SEPARATOR);
 
@@ -212,7 +199,7 @@ class Paths
 
                     return parentFrames;
                 },
-                cache: new StringMap()
+                verifyExistence: false
             }
         ];
     }
@@ -244,7 +231,7 @@ class Paths
 
     // Utils
 
-    public static function get(file:String, configID:String, permanent:Bool, missingPrint:Bool, ?verifyExistence:Bool = true, ?cache:Bool = true):Dynamic
+    public static function get(file:String, configID:String, permanent:Bool, missingPrint:Bool, ?cache:Bool = true):Dynamic
     {
         final data:CacheConfig = config.get(configID);
 
@@ -256,9 +243,9 @@ class Paths
         if (data.cache.exists(path))
             return data.cache.get(path).content;
 
-        if (!exists(path) && verifyExistence ?? true)
+        if (!exists(path) && data.verifyExistence)
         {
-            if (missingPrint ?? true)
+            if (missingPrint)
                 debugTrace(path, 'missing_file');
 
             return null;
@@ -269,7 +256,7 @@ class Paths
         if (result == null)
             return null;
 
-        if (cache ?? true)
+        if (cache)
             data.cache.set(path, {content: result, permanent: permanent});
 
         return result;
@@ -338,10 +325,10 @@ class Paths
     // File
 
     public static function getBytes(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):String
-        return get(file, FileType.BYTES, permanent, missingPrint, true, false);
+        return get(file, FileType.BYTES, permanent, missingPrint, false);
 
     public static function getContent(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):String
-        return get(file, FileType.CONTENT, permanent, missingPrint, true, false);
+        return get(file, FileType.CONTENT, permanent, missingPrint, false);
 
     // Graphics
 
@@ -349,13 +336,13 @@ class Paths
         return get(file, FileType.IMAGE, permanent, missingPrint);
 
     public static function getSparrowAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(file + SEPARATOR + AtlasType.SPARROW, FileType.ATLAS, permanent, missingPrint, false);
+        return get(file + SEPARATOR + AtlasType.SPARROW, FileType.ATLAS, permanent, missingPrint);
 
     public static function getPackerAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(file + SEPARATOR + AtlasType.PACKER, FileType.ATLAS, permanent, missingPrint, false);
+        return get(file + SEPARATOR + AtlasType.PACKER, FileType.ATLAS, permanent, missingPrint);
 
     public static function getAsepriteAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(file + SEPARATOR + AtlasType.ASEPRITE, FileType.ATLAS, permanent, missingPrint, false);
+        return get(file + SEPARATOR + AtlasType.ASEPRITE, FileType.ATLAS, permanent, missingPrint);
 
     public static function getAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
         return getSparrowAtlas(file, permanent, false) ?? getPackerAtlas(file, permanent, false) ?? getAsepriteAtlas(file, permanent, missingPrint);
@@ -376,16 +363,16 @@ class Paths
     }
 
     public static function getMultiSparrowAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.SPARROW, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.SPARROW, FileType.MULTI_ATLAS, permanent, missingPrint);
 
     public static function getMultiPackerAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.PACKER, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.PACKER, FileType.MULTI_ATLAS, permanent, missingPrint);
 
     public static function getMultiAsepriteAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.ASEPRITE, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.ASEPRITE, FileType.MULTI_ATLAS, permanent, missingPrint);
 
     public static function getMultiAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR, FileType.MULTI_ATLAS, permanent, missingPrint);
 
     // Sound
 
@@ -422,12 +409,12 @@ class Paths
 
     // Path
     
-    public static function model(file:String, missingPrint:Bool = true):String
-        return getPath('models/' + file + '.obj');
+    public static function model(file:String, ?missingPrint:Bool = true):String
+        return getPath('models/' + file + '.obj', missingPrint);
 
-    public static function video(file:String, missingPrint:Bool = true):String
-        return getPath('videos/' + file + '.mp4');
+    public static function video(file:String, ?missingPrint:Bool = true):String
+        return getPath('videos/' + file + '.mp4', missingPrint);
 
-    public static function font(file:String, missingPrint:Bool = true):String
-        return getPath('fonts/' + file);
+    public static function font(file:String, ?missingPrint:Bool = true):String
+        return getPath('fonts/' + file, missingPrint);
 }
