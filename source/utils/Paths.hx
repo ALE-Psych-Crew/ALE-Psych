@@ -136,21 +136,6 @@ class Paths
                 method: (idType, permanent, missingPrint) -> {
                     final split:Array<String> = idType.split(SEPARATOR);
 
-                    if (split[1] == AtlasType.ANIMATE)
-                    {
-                        final path:String = 'images/' + split[0];
-
-                        if (!exists(path))
-                        {
-                            if (missingPrint)
-                                debugTrace(path, MISSING_FOLDER);
-
-                            return null;
-                        }
-
-                        return cast FlxAnimateFrames.fromAnimate(getPath(path));
-                    }
-
                     final graphic:FlxGraphic = image(split[0], permanent, missingPrint);
 
                     var data:String = null;
@@ -353,47 +338,59 @@ class Paths
     // File
 
     public static function getBytes(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):String
-        return cast get(file, FileType.BYTES, permanent, missingPrint, true, false);
+        return get(file, FileType.BYTES, permanent, missingPrint, true, false);
 
     public static function getContent(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):String
-        return cast get(file, FileType.CONTENT, permanent, missingPrint, true, false);
+        return get(file, FileType.CONTENT, permanent, missingPrint, true, false);
 
     // Graphics
 
     public static function image(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxGraphic
-        return cast get(file, FileType.IMAGE, permanent, missingPrint);
+        return get(file, FileType.IMAGE, permanent, missingPrint);
 
     public static function getSparrowAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(file + SEPARATOR + AtlasType.SPARROW, FileType.ATLAS, permanent, missingPrint, false);
+        return get(file + SEPARATOR + AtlasType.SPARROW, FileType.ATLAS, permanent, missingPrint, false);
 
     public static function getPackerAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(file + SEPARATOR + AtlasType.PACKER, FileType.ATLAS, permanent, missingPrint, false);
+        return get(file + SEPARATOR + AtlasType.PACKER, FileType.ATLAS, permanent, missingPrint, false);
 
     public static function getAsepriteAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(file + SEPARATOR + AtlasType.ASEPRITE, FileType.ATLAS, permanent, missingPrint, false);
+        return get(file + SEPARATOR + AtlasType.ASEPRITE, FileType.ATLAS, permanent, missingPrint, false);
 
     public static function getAtlas(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
         return getSparrowAtlas(file, permanent, false) ?? getPackerAtlas(file, permanent, false) ?? getAsepriteAtlas(file, permanent, missingPrint);
 
     public static function getAnimateAtlas(folder:String, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAnimateFrames
-        return cast get(folder + SEPARATOR + AtlasType.ANIMATE, FileType.ATLAS, permanent, missingPrint, false, false);
+    {
+        final path:String = 'images/' + folder;
+
+        if (!exists(path) && missingPrint)
+        {
+            if (missingPrint)
+                debugTrace(path, MISSING_FOLDER);
+
+            return null;
+        }
+
+        return FlxAnimateFrames.fromAnimate(getPath(path));
+    }
 
     public static function getMultiSparrowAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.SPARROW, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.SPARROW, FileType.MULTI_ATLAS, permanent, missingPrint, false);
 
     public static function getMultiPackerAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.PACKER, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.PACKER, FileType.MULTI_ATLAS, permanent, missingPrint, false);
 
     public static function getMultiAsepriteAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.ASEPRITE, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR + AtlasType.ASEPRITE, FileType.MULTI_ATLAS, permanent, missingPrint, false);
 
     public static function getMultiAtlas(files:Array<String>, ?permanent:Bool = false, ?missingPrint:Bool = true):FlxAtlasFrames
-        return cast get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR, FileType.MULTI_ATLAS, permanent, missingPrint, false);
+        return get(files.join(SEPARATOR) + SEPARATOR + SEPARATOR, FileType.MULTI_ATLAS, permanent, missingPrint, false);
 
     // Sound
 
     public static function audio(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):Sound
-        return cast get(file, FileType.AUDIO, permanent, missingPrint);
+        return get(file, FileType.AUDIO, permanent, missingPrint);
 
     public static function music(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):Sound
         return audio('music/' + file, permanent, missingPrint);
