@@ -11,11 +11,6 @@ class LuaPaths extends LuaPresetBase
     {
         super(lua);
 
-        set('clearEngineCache', function(?clearPermanent:Bool)
-        {
-            Paths.clearEngineCache(clearPermanent);
-        });
-
         set('precacheImage', function(file:String, ?permanent:Bool, ?missingPrint:Bool)
         {
             Paths.image(file, permanent, missingPrint);

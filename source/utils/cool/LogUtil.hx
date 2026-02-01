@@ -13,7 +13,7 @@ class LogUtil
 		if ((type.unnecessary() && !CoolVars.data.verbose))
 			return;
 
-		Sys.println(ansiColorString(type == CUSTOM ? customType : type.toString(), type == CUSTOM ? customColor : type.toColor()) + ansiColorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : ansiColorString(pos.fileName + ': ', 0xFF888888)) + text);
+		Sys.println(ansiColorString(type == CUSTOM ? customType : type.toString(), type == CUSTOM ? customColor : type.toColor()) + ansiColorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : ansiColorString(pos.fileName + ':' + pos.lineNumber + ': ', 0xFF888888)) + text);
 
 		if (CoolVars.data == null || !CoolVars.data.developerMode)
 			return;

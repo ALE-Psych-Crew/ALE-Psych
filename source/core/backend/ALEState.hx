@@ -54,7 +54,7 @@ class ALEState extends FlxState
 
     function cleanMemory()
     {
-        Paths.clearEngineCache();
+        Paths.clear();
 
         #if cpp
         var killZombies:Bool = true;
