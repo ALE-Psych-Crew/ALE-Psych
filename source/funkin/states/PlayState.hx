@@ -1125,31 +1125,37 @@ class PlayState extends ScriptState
         {
             if (shouldMoveCamera && character != null)
             {
-                final camGame:FXCamera = cast camGame;
+                final pos:FlxPoint = getCharacterCamera(character);
 
-                camGame.position.x = character.getMidpoint().x + character.data.cameraPosition.x * (character.type == 'player' ? -1 : 1);
-                camGame.position.y = character.getMidpoint().y + character.data.cameraPosition.y;
-
-                if (stage.data.cameraOffset != null)
-                {
-                    var offset:Point = null;
-
-                    if (stage.data.cameraOffset.type != null)
-                        offset = Reflect.getProperty(stage.data.cameraOffset.type, cast character.type);
-
-                    if (stage.data.cameraOffset.id != null)
-                        offset = Reflect.getProperty(stage.data.cameraOffset.id, character.id);
-
-                    if (offset != null)
-                    {
-                        camGame.position.x += offset.x ?? 0;
-                        camGame.position.y += offset.y ?? 0;
-                    }
-                }
+                cast(camGame, FXCamera).position.set(pos.x, pos.y);
             }
         }
 
         scriptCallbackCall(POST, 'CameraMove', null, [character], []);
+    }
+
+    function getCharacterCamera(character:Character):FlxPoint
+    {
+        final result:FlxPoint = FlxPoint.get(character.getMidpoint().x + character.data.cameraPosition.x * (character.type == 'player' ? -1 : 1), character.getMidpoint().y + character.data.cameraPosition.y);
+
+        if (stage.data.cameraOffset != null)
+        {
+            var offset:Point = null;
+
+            if (stage.data.cameraOffset.type != null)
+                offset = Reflect.getProperty(stage.data.cameraOffset.type, cast character.type);
+
+            if (stage.data.cameraOffset.id != null)
+                offset = Reflect.getProperty(stage.data.cameraOffset.id, character.id);
+
+            if (offset != null)
+            {
+                result.x += offset.x ?? 0;
+                result.y += offset.y ?? 0;
+            }
+        }
+
+        return result;
     }
 
     function addIcon(icon:Icon)
