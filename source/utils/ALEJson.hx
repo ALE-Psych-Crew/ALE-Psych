@@ -1,6 +1,6 @@
 package utils;
 
-import tjson.TJSON as Json;
+import jsonmod.Json;
 
 import haxe.format.JsonPrinter;
 

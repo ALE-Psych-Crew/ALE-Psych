@@ -50,7 +50,7 @@
 
 	<!-- _______________________________ Libraries ______________________________ -->
 	
-	<haxelib name="tjson"/>
+	<haxelib name="jsonmod"/>
 
 	<haxelib name="away3d"/>
 
