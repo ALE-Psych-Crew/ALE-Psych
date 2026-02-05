@@ -18,11 +18,11 @@
                 },
                 {
                     "name": "lime",
-                    "git": "https://github.com/AlejoGDOfficial/Lime"
+                    "git": "8.3.0"
                 },
                 {
                     "name": "openfl",
-                    "version": "9.4.1"
+                    "version": "9.5.0"
                 }
             ]
         },

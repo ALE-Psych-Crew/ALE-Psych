@@ -2,7 +2,7 @@
 <project xmlns="http://lime.openfl.org/project/1.0.4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/xsd/project-1.0.4.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': ALE Psych" file="ALEPsych" packageName="com.alepsychcrew.alepsych" package="com.alepsychcrew.alepsych" main="core.Main" version="0.1 Alpha" company="ALEPsychCrew"/>
+	<app title="Friday Night Funkin': ALE Psych" file="ALEPsych" packageName="com.alepsychcrew.alepsych" package="com.alepsychcrew.alepsych" main="core.Main" version="0.0.1" company="ALEPsychCrew"/>
 
 	<set name="APP_ID" value="0x0100f6c013bbc000"/>
 
@@ -78,7 +78,6 @@
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 
 	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
-	<haxelib name="extension-haptics" if="MOBILE_API"/>
 	
 	<!-- _________________________________ Macros ________________________________ -->
 	
