@@ -18,7 +18,7 @@
                 },
                 {
                     "name": "lime",
-                    "git": "8.3.0"
+                    "version": "8.3.0"
                 },
                 {
                     "name": "openfl",
