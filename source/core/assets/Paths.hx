@@ -1,4 +1,4 @@
-package utils;
+package core.assets;
 
 import haxe.Constraints.Function;
 import haxe.ds.StringMap;

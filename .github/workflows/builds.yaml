@@ -42,6 +42,19 @@ jobs:
             post_build_commands:
             artifact_path: export/release/linux/bin
 
+          - platform: Android
+            os: ubuntu-latest
+            build_cmd: haxelib run lime build android
+            setup_libs: sh ./install-haxelibs.sh
+            extra_libs:
+            pre_build_commands: |
+              haxelib run lime config ANDROID_SDK $ANDROID_HOME
+              haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_LATEST_HOME
+              haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
+              haxelib run lime config ANDROID_SETUP true
+            post_build_commands:
+            artifact_path: export/release/android/bin/app/build/outputs/apk/release/*.apk
+
           - platform: MacOS
             os: macos-15
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"

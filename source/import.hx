@@ -18,11 +18,12 @@ import funkin.visuals.objects.Bopper;
 import funkin.visuals.ALECamera;
 import funkin.states.PlayState;
 
+import core.assets.Paths;
+
 import core.config.ClientPrefs;
 
 import utils.CoolUtil;
 import utils.CoolVars;
-import utils.Paths;
 import utils.ALEJson as Json;
 import utils.Conductor;
 import utils.Controls;

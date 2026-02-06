@@ -33,6 +33,24 @@ import scripting.haxe.HScriptConfig;
 
 import lime.graphics.Image;
 
+#if android
+import extension.androidtools.os.Environment as AndroidEnvironment;
+import extension.androidtools.Permissions as AndroidPermissions;
+import extension.androidtools.os.Build.VERSION as AndroidVersion;
+import extension.androidtools.Settings as AndroidSettings;
+import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
+#end
+
+#if mobile
+import openfl.Assets as OpenFLAssets;
+import openfl.utils.ByteArray;
+
+import sys.FileSystem;
+import sys.io.File;
+
+import haxe.Exception;
+#end
+
 #if WINDOWS_API
 @:buildXml('
 <target id="haxe">
@@ -64,13 +82,42 @@ class Main extends Sprite
 	@:unreflective public function new()
 	{
 		super();
+
+		preOnceConfig();
 		
 		addChild(new ALEGame(MainState));
 
-		onceConfig();
+		postOnceConfig();
 	}
 
-	@:unreflective function onceConfig()
+	@:unreflective function preOnceConfig()
+	{
+		#if CRASH_HANDLER
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#end
+
+		#if android
+		if (AndroidVersion.SDK_INT >= AndroidVersionCode.M)
+		{
+			if (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU)
+				AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+
+			if (!AndroidEnvironment.isExternalStorageManager())
+				AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+		}
+
+		Sys.sleep(1);
+		
+		final androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/.' + Lib.application?.meta?.get('file');
+
+		if (!FileSystem.exists(androidPath))
+			FileSystem.createDirectory(androidPath);
+
+		Sys.setCwd(Path.addTrailingSlash(androidPath));
+		#end
+	}
+
+	@:unreflective function postOnceConfig()
 	{
 		#if WINDOWS_API
 		untyped __cpp__("SetProcessDPIAware();");
@@ -94,10 +141,6 @@ class Main extends Sprite
 		#end
 
 		Sys.putEnv("ALSOFT_CONF", configPath);
-		#end
-		
-		#if CRASH_HANDLER
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
 
 		#if VIDEOS_ALLOWED
@@ -162,8 +205,42 @@ class Main extends Sprite
 		FlxG.game.removeChild(debugCounter);
     }
 
+	@:unreflective static var allowMobileConfig:Bool = true;
+
     @:unreflective public static function postResetConfig()
     {
+		if (allowMobileConfig)
+		{
+			#if mobile
+			final textExtensions:Array<String> = ['ini', 'txt', 'xml', 'hx', 'lua', 'json', 'frag', 'vert'];
+
+			final localFiles:Array<String> = OpenFLAssets.list().filter(file -> !FileSystem.exists(file));
+
+			for (file in localFiles)
+			{
+				final directory:String = Path.directory(file);
+
+				try
+				{
+					if (OpenFLAssets.exists(file))
+					{
+						if (!FileSystem.exists(directory))
+							FileSystem.createDirectory(directory);
+
+						if (textExtensions.contains(Path.extension(file)))
+							File.saveContent(file, OpenFLAssets.getText(file));
+						else
+							File.saveBytes(file, ['otf', 'ttf'].contains(Path.extension(file)) ? ByteArray.fromFile(file) : OpenFLAssets.getBytes(file));
+					} else {
+						debugTrace(file, MISSING_FILE);
+					}
+				} catch (e:Exception) {}
+			}
+			#end
+
+			allowMobileConfig = false;
+		}
+
 		CoolUtil.destroy();
 
         FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
@@ -202,8 +279,11 @@ class Main extends Sprite
 
 		final soundTray:ALESoundTray = cast FlxG.game.soundTray;
 
-		soundTray.font = Paths.font('jetbrains.ttf');
-		soundTray.sound = Paths.sound('tick');
+		if (soundTray != null)
+		{
+			soundTray.font = Paths.font('jetbrains.ttf');
+			soundTray.sound = Paths.sound('tick');
+		}
 
 		ALEUIUtils.OBJECT_SIZE = 25;
 		ALEUIUtils.FONT = Paths.font('jetbrains.ttf');

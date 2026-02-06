@@ -14,6 +14,6 @@ class MainState extends FlxState
 
         Main.postResetConfig();
         
-		CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true);
+		FlxTimer.wait(0.0001, () -> CoolUtil.switchState(new CustomState(CoolVars.data.initialState), true, true));
     }
 }
