@@ -140,6 +140,10 @@
 
 	<config type="android" gradle-version="8.10.2" gradle-plugin="8.8.0" ndkVersion="27.0"  minimum-sdk-version="26" target-sdk-version="35"/>
 
+	<config:android>
+        <gradle-properties org.gradle.jvmargs="-Xmx2048m -XX:MaxMetaspaceSize=512m"/>
+    </config:android>
+		
 	<config:android permission="android.permission.READ_EXTERNAL_STORAGE" if="android"/>
 	<config:android permission="android.permission.WRITE_EXTERNAL_STORAGE" if="android"/>
 
