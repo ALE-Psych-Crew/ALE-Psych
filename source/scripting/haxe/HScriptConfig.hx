@@ -90,6 +90,8 @@ class HScriptConfig
         };
 
         // Imports
+
+		RuleScript.defaultImports[''] = new Map();
 		
         final curPackage:Map<String, Dynamic> = RuleScript.defaultImports[''];
 
@@ -154,7 +156,8 @@ class HScriptConfig
 
 			Paths,
 
-			cpp.WindowsAPI
+			api.DesktopAPI,
+			api.MobileAPI
 		];
 
         for (theClass in presetClasses)
@@ -172,7 +175,10 @@ class HScriptConfig
 			'Json' => utils.ALEJson,
             'debugTrace' => debugTrace,
             'Function_Stop' => CoolVars.Function_Stop,
-            'Function_Continue' => CoolVars.Function_Continue
+            'Function_Continue' => CoolVars.Function_Continue,
+			'Int' => Int,
+			'Float' => Float,
+			'Bool' => Bool
 		];
 
 		for (preVar in presetVariables.keys())

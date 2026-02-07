@@ -4,7 +4,7 @@ import flixel.util.typeLimit.NextState.InitialState;
 
 import flixel.FlxGame;
 
-import cpp.WindowsAPI;
+import api.DesktopAPI;
 
 import core.backend.ALESoundTray;
 
@@ -23,7 +23,7 @@ class ALEGame extends FlxGame
 
     override public function update()
     {
-        WindowsAPI.setWindowTitle();
+        DesktopAPI.setWindowTitle();
 
         super.update();
 
@@ -47,7 +47,7 @@ class ALEGame extends FlxGame
         if (FlxG.keys.justPressed.F2)
         {
             if (!visibleConsole)
-                cpp.WindowsAPI.showConsole();
+                DesktopAPI.showConsole();
 
             visibleConsole = true;
         }

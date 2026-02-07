@@ -1,4 +1,4 @@
-package cpp;
+package api;
 
 #if WINDOWS_API
 import winapi.WindowsCPP;
@@ -7,7 +7,7 @@ import winapi.WindowsAPI.MessageBoxIcon;
 import winapi.WindowsTerminalCPP;
 #end
 
-class WindowsAPI
+class DesktopAPI
 {
 	public static function screenCapture(path:String)
 	{

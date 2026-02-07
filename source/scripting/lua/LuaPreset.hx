@@ -54,7 +54,7 @@ class LuaPreset
         new LuaRuleScript(lua);
         #end
 
-        new LuaWindowsAPI(lua);
+        new LuaDesktopAPI(lua);
 
         #if VIDEOS_ALLOWED
         new LuaVideoSprite(lua);

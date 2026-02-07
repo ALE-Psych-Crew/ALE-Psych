@@ -51,6 +51,9 @@ import sys.io.File;
 import haxe.Exception;
 #end
 
+import api.DesktopAPI;
+import api.MobileAPI;
+
 #if WINDOWS_API
 @:buildXml('
 <target id="haxe">
@@ -302,6 +305,8 @@ class Main extends Sprite
 		
 		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
 			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+
+		MobileAPI.setOrientation(LANDSCAPE);
     }
 
 	function onCrash(e:UncaughtErrorEvent):Void
@@ -323,7 +328,7 @@ class Main extends Sprite
 		errMsg += "\nUncaught Error: " + e.error;
 	
 		#if WINDOWS_API
-		cpp.WindowsAPI.showMessageBox('ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
+		DesktopAPI.showMessageBox('ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
 		#else
 		Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
 		#end

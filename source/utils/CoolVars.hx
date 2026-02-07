@@ -1,6 +1,6 @@
 package utils;
 
-import cpp.WindowsAPI;
+import api.DesktopAPI;
 
 import core.structures.ALEData;
 import core.Main;
@@ -97,9 +97,9 @@ class CoolVars
 		
 		FlxG.stage.window.title = CoolVars.data.title;
 
-		WindowsAPI.setWindowTitle();
+		DesktopAPI.setWindowTitle();
 
-		WindowsAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
+		DesktopAPI.setWindowBorderColor(CoolVars.data.windowColor[0], CoolVars.data.windowColor[1], CoolVars.data.windowColor[2]);
 
 		EngineUtil.resizeGame(CoolVars.data.width, CoolVars.data.height);
 	}

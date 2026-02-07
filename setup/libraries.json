@@ -139,6 +139,11 @@
                     "skipDependencies": true
                 },
                 {
+                    "name": "extension-orientation",
+                    "git": "https://github.com/ALE-Psych-Crew/extension-orientation",
+                    "skipDependencies": true
+                },
+                {
                     "name": "sl-windows-api",
                     "version": "1.2.0"
                 }

@@ -416,5 +416,8 @@ class Paths
         return getPath('videos/' + file + '.mp4', missingPrint);
 
     public static function font(file:String, ?missingPrint:Bool = true):String
-        return getPath('fonts/' + file, missingPrint);
+        return addCwd(getPath('fonts/' + file, missingPrint));
+
+    public static function addCwd(path:String):String
+        return path == null ? null : #if android Sys.getCwd() + '/' + #end path;
 }
