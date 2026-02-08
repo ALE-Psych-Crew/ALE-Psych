@@ -223,7 +223,7 @@ class ALEFormatter
         final psychJson:PsychCharacter = cast json;
 
         final result:ALECharacter = {
-            type: 'sheet',
+            type: Paths.isDirectory('images/' + psychJson.image.split(',')[0].trim()) ? 'map' : 'sheet',
             animations: [],
             scale: psychJson.scale,
             animationLength: psychJson.sing_duration / 10,
