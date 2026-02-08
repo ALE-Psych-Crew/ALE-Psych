@@ -13,6 +13,8 @@ import haxe.Exception;
 
 import rulescript.Context;
 
+import haxe.CallStack;
+
 typedef ALEInterp = RuleScriptInterp;
 
 class ALERuleScript extends RuleScript
@@ -34,7 +36,11 @@ class ALERuleScript extends RuleScript
 	{
 		failedParsing = true;
 
-		debugTrace(error.message, ERROR);
+		debugTrace(error.message, ERROR, null, null, false);
+
+		debugTrace(error.details(), ERROR, null, null, null, false);
+
+		debugTrace(CallStack.toString(CallStack.callStack()), ERROR, null, null, null, false);
 		
 		return error.details();
 	}
@@ -49,7 +55,7 @@ class ALERuleScript extends RuleScript
 			{
 				return Reflect.callMethod(null, func, args ?? []);
 			} catch(error:Exception) {
-				debugTrace(error.message, ERROR);
+				debugTrace(error.details(), ERROR);
 			}
 		}
 
