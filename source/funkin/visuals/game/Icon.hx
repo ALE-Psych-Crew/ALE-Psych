@@ -89,14 +89,14 @@ class Icon extends Bopper
 
         if (bar != null)
         {
-            final isRight:Bool = type == 'player' == bar.rightToLeft;
+            final isRight:Bool = (type == 'player') == bar.rightToLeft;
 
             final barMiddle:FlxPoint = bar.getMiddle();
 
             x = isRight ? (barMiddle.x - offsetX) : (barMiddle.x - width + offsetX);
             y = barMiddle.y - height / 2 + offsetY;
 
-            flipX = type != 'player' == data.flipX;
+            flipX = ((type != 'player') == data.flipX) == bar.rightToLeft;
         }
 
         checkAnimation();

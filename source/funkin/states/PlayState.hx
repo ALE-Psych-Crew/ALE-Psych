@@ -769,7 +769,7 @@ class PlayState extends ScriptState
         {
             if (character.type == 'player')
             {
-                health = health + note.hitHealth;
+                health += note.hitHealth;
 
                 score += rating.toScore();
 
@@ -809,7 +809,7 @@ class PlayState extends ScriptState
                 {
                     combo = 0;
 
-                    health = health - note.missHealth;
+                    health -= note.missHealth;
 
                     misses++;
 
@@ -893,7 +893,7 @@ class PlayState extends ScriptState
         {
             uiGroup.cameras = [camHUD];
 
-            healthBar = new Bar('hud/' + stage.data.hud + '/bar', 0, FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9), 50, true);
+            healthBar = new Bar('hud/' + stage.data.hud + '/bar', 0, FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9), health * 50, true);
             healthBar.x = FlxG.width / 2 - healthBar.width / 2;
             uiGroup.add(healthBar);
 

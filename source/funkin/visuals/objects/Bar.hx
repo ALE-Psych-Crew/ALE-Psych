@@ -15,15 +15,7 @@ class Bar extends FlxSpriteGroup
 
         percent = value;
 
-        var bgScale:Float = bg.width * percent / 100;
-
-        var bgSpace:Float = bg.width - bgScale;
-
-        leftBar.clipRect.x = rightToLeft ? bgSpace : 0;
-        leftBar.clipRect.width = rightToLeft ? bgScale : bgSpace;
-
-        rightBar.clipRect.x = rightToLeft ? 0 : bgSpace;
-        rightBar.clipRect.width = rightToLeft ? bgSpace : bgScale;
+        updateClip();
 
         return percent;
     }
@@ -40,8 +32,7 @@ class Bar extends FlxSpriteGroup
 
         rightToLeft = value;
 
-        if (percent != null)
-            percent = percent;
+        updateClip();
         
         return rightToLeft;
     }
@@ -67,6 +58,19 @@ class Bar extends FlxSpriteGroup
         this.rightToLeft = rightToLeft ?? false;
 
         this.percent = percent ?? 50;
+    }
+
+    public function updateClip()
+    {
+        var bgScale:Float = bg.width * ((rightToLeft ? percent : 100 - percent)) / 100;
+
+        var bgSpace:Float = bg.width - bgScale;
+
+        leftBar.clipRect.x = rightToLeft ? bgSpace : 0;
+        leftBar.clipRect.width = rightToLeft ? bgScale : bgSpace;
+
+        rightBar.clipRect.x = rightToLeft ? 0 : bgSpace;
+        rightBar.clipRect.width = rightToLeft ? bgSpace : bgScale;
     }
 
     public function getMiddle():FlxPoint

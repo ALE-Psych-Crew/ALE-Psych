@@ -174,12 +174,7 @@ class StrumLine extends FlxSpriteGroup
             final callbackResult:Dynamic = onStackNote == null ? null : onStackNote(note);
             
             if (callbackResult != CoolVars.Function_Stop)
-            {
-                note.update(0);
-                note.draw();
-
                 notesStack.add(note);
-            }
 
             if (postStackNote != null)
                 postStackNote(note);
