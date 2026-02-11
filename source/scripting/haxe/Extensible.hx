@@ -10,6 +10,8 @@ import flixel.group.*;
 import flixel.ui.*;
 import flixel.graphics.*;
 import flixel.addons.display.*;
+import flixel.input.keyboard.*;
+import flixel.input.*;
 
 import animate.*;
 
@@ -60,10 +62,10 @@ class ScriptText extends FlxText implements RuleScriptedClass {}
 class ScriptBitmapText extends FlxBitmapText implements RuleScriptedClass {}
 class ScriptTextFormat extends FlxTextFormat implements RuleScriptedClass {}
 
-class ScriptALERuntimeShader extends ALERuntimeShader implements RuleScriptedClass {}
 class ScriptCamera extends FlxCamera implements RuleScriptedClass {}
-class ScriptFXCamera extends FXCamera implements RuleScriptedClass {}
-class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
+
+class ScriptKeyList extends FlxKeyList implements RuleScriptedClass {}
+class ScriptBaseKeyList extends FlxBaseKeyList implements RuleScriptedClass {}
 
 // OpenFL
 
@@ -84,6 +86,11 @@ class ScriptHScriptPresetBase extends HScriptPresetBase implements RuleScriptedC
 class ScriptIcon extends Icon implements RuleScriptedClass {}
 
 class ScriptCharacter extends Character implements RuleScriptedClass {}
+
+class ScriptFXCamera extends FXCamera implements RuleScriptedClass {}
+class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
+
+class ScriptALERuntimeShader extends ALERuntimeShader implements RuleScriptedClass {}
 
 // ALE UI
 
