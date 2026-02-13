@@ -101,7 +101,7 @@ jobs:
       - name: Setup Haxe
         if: ${{ matrix.haxe_setup }}
         run: ${{ matrix.haxe_setup }}
-        else:
+        if: ${{ !matrix.haxe_setup }}
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
