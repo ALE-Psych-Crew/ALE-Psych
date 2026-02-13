@@ -1,6 +1,6 @@
 package scripting.haxe;
 
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 import haxe.ds.StringMap;
 import haxe.Exception;
@@ -21,9 +21,9 @@ import scripting.haxe.HScriptPresetBase;
 
 class HScript extends ALERuleScript
 {
-	public final type:ScriptType;
+	public final type:StateType;
 
-	override public function new(filePath:String, context:Context, ?args:Array<Dynamic>, type:ScriptType, scriptName:String, ?customCallbacks:Array<Class<HScriptPresetBase>>)
+	override public function new(filePath:String, context:Context, ?args:Array<Dynamic>, type:StateType, scriptName:String, ?customCallbacks:Array<Class<HScriptPresetBase>>)
 	{
 		this.type = type;
 

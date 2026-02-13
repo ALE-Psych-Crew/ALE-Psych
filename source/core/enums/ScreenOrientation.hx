@@ -1,6 +1,8 @@
 package core.enums;
 
+#if mobile
 import extension.eightsines.EsOrientation;
+#end
 
 enum abstract ScreenOrientation(String) from String to String
 {
@@ -10,6 +12,7 @@ enum abstract ScreenOrientation(String) from String to String
 
     public function toEsOrientation():Int
     {
+        #if mobile
         return switch (cast(this, ScreenOrientation))
         {
             case PORTRAIT:
@@ -19,5 +22,8 @@ enum abstract ScreenOrientation(String) from String to String
             case UNSPECIFIED:
                 EsOrientation.ORIENTATION_UNSPECIFIED;
         }
+        #else
+        return -1;
+        #end
     }
 }

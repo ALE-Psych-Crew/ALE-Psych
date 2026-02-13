@@ -16,6 +16,8 @@ class ALEState extends FlxState
     override function create()
     {
         super.create();
+
+        FlxG.stage.window.onTextInput.add(onTextInput);
 		
 		camGame = new ALECamera();
 		
@@ -42,13 +44,35 @@ class ALEState extends FlxState
         }
     }
 
+	override function tryUpdate(elapsed:Float):Void
+	{
+        final allowSubStateUpdate:Bool = subState != null;
+
+		if (persistentUpdate || (subState == null || FlxState.transitioning))
+			update(elapsed);
+
+		if (_requestSubStateReset)
+		{
+			_requestSubStateReset = false;
+
+			resetSubState();
+		}
+
+        if (subState != null && allowSubStateUpdate)
+            subState.tryUpdate(elapsed);
+	}
+
 	override function destroy()
 	{
+        FlxG.stage.window.onTextInput.remove(onTextInput);
+        
         if (shouldClearMemory)
             cleanMemory();
         
 		super.destroy();
 	}
+
+    public function onTextInput(text:String) {}
 
     public var shouldClearMemory:Bool = true;
 

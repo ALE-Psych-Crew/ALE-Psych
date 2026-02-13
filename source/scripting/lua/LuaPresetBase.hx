@@ -3,7 +3,7 @@ package scripting.lua;
 
 import haxe.ds.StringMap;
 
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 import core.interfaces.IScriptState;
 
@@ -17,8 +17,8 @@ class LuaPresetBase
     function get_variables():StringMap<Dynamic>
         return lua.variables;
 
-    public var type(get, never):ScriptType;
-    function get_type():ScriptType
+    public var type(get, never):StateType;
+    function get_type():StateType
         return lua.type;
 
     public function new(lua:LuaScript)

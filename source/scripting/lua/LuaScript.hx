@@ -13,13 +13,13 @@ import hxluajit.Types;
 
 import haxe.ds.StringMap;
 
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 class LuaScript
 {
     public var state:Null<RawPointer<Lua_State>>;
 
-    public var type:ScriptType;
+    public var type:StateType;
 
     public var name:String;
 
@@ -27,7 +27,7 @@ class LuaScript
 
     public var variables:StringMap<Dynamic> = new StringMap();
 
-    public function new(name:String, type:ScriptType, ?args:Array<Dynamic>, ?customCallbacks:Array<Class<LuaPresetBase>>)
+    public function new(name:String, type:StateType, ?args:Array<Dynamic>, ?customCallbacks:Array<Class<LuaPresetBase>>)
     {
         variables.set('this', this);
 

@@ -79,8 +79,8 @@
 
 	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
 
-	<haxelib name="extension-androidtools"/>
-	<haxelib name="extension-orientation"/>
+	<haxelib name="extension-androidtools" if="android"/>
+	<haxelib name="extension-orientation" if="mobile"/>
 	
 	<!-- _________________________________ Macros ________________________________ -->
 	

@@ -147,4 +147,12 @@ class CustomSubState extends ScriptSubState
 
         scriptCallbackCall(POST, 'OnFocusLost');
     }
+
+    override public function onTextInput(text:String)
+    {
+        if (scriptCallbackCall(ON, 'OnTextInput'))
+            super.onTextInput(text);
+
+        scriptCallbackCall(POST, 'OnTextInput');
+    }
 }

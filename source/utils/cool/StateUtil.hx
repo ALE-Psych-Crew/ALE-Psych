@@ -1,5 +1,7 @@
 package utils.cool;
 
+import api.MobileAPI;
+
 class StateUtil
 {
 	public static function resetState()
@@ -38,7 +40,6 @@ class StateUtil
 
 			FlxG.switchState(state);
 		} else {
-            #if cpp
 			openSubState(new CustomSubState(
 				CoolVars.data.transition,
                 [true, () -> { FlxG.switchState(state); }],
@@ -46,7 +47,6 @@ class StateUtil
 				null,
 				['finishCallback' => () -> { FlxG.switchState(state); }]
 			));
-			#end
 		}
 	}
 

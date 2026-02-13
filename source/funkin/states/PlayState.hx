@@ -206,6 +206,14 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'Update', [elapsed]);
     }
 
+    override public function onTextInput(text:String)
+    {
+        if (scriptCallbackCall(ON, 'OnTextInput'))
+            super.onTextInput(text);
+
+        scriptCallbackCall(POST, 'OnTextInput');
+    }
+
     function updateScoreText()
     {
         if (scriptCallbackCall(ON, 'ScoreTextUpdate'))

@@ -223,4 +223,12 @@ class CustomState extends ScriptState
 
         debugTrace('Current State: ' + scriptName, RESET_STATE);
     }
+
+    override public function onTextInput(text:String)
+    {
+        if (scriptCallbackCall(ON, 'OnTextInput'))
+            super.onTextInput(text);
+
+        scriptCallbackCall(POST, 'OnTextInput');
+    }
 }

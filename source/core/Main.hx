@@ -171,10 +171,6 @@ class Main extends Sprite
 		}
 	}
 
-	public static var debugCounter:DebugCounter;
-	
-	public static var debugPrintPlugin:DebugPrintPlugin;
-
     @:unreflective public static function preResetConfig()
     {
 		#if WINDOWS_API
@@ -207,6 +203,12 @@ class Main extends Sprite
 
 		FlxG.game.removeChild(debugCounter);
     }
+
+	public static var debugCounter:DebugCounter;
+	
+	public static var debugPrintPlugin:DebugPrintPlugin;
+
+	public static var mobileControlsPlugin:MobileControlsPlugin;
 
 	@:unreflective static var allowMobileConfig:Bool = true;
 
@@ -305,6 +307,9 @@ class Main extends Sprite
 		
 		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
 			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+
+		if (CoolVars.mobile)
+			ALEPluginsHandler.add(mobileControlsPlugin = new MobileControlsPlugin());
 
 		MobileAPI.setOrientation(LANDSCAPE);
     }

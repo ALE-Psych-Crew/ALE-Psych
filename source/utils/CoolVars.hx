@@ -36,6 +36,14 @@ class CoolVars
 	public static final Function_Continue:String = '##_ALE_PSYCH_LUA_FUNCTION_CONTINUE_##';
 
 	public static var data:ALEData = null;
+
+	#if mobile
+	public static final mobile:Bool = true;
+	#else
+	public static var mobile(get, never):Bool;
+	static function get_mobile():Bool
+		return data == null ? false : data.mobileDebug && data.developerMode;
+	#end
 	
 	public static function loadMetadata()
 	{
@@ -105,7 +113,5 @@ class CoolVars
 	}
 
     public static function reset()
-    {
 		globalVars.clear();
-    }
 }
