@@ -100,6 +100,8 @@ jobs:
 
       - name: Setup Haxe
         run: ${{ matrix.haxe_setup }}
+        with:
+          haxe-version: 4.3.7
 
       - name: Install Extra Libraries
         if: ${{ matrix.extra_libs }}
