@@ -41,6 +41,17 @@ jobs:
             pre_build_commands:
             post_build_commands:
             artifact_path: export/release/linux/bin
+            
+          - platform: Linux x64
+            os: ubuntu-22.04-arm
+            build_cmd: haxelib run lime build linux
+            setup_libs: sh ./install-haxelibs.sh
+            extra_libs: |
+              sudo apt-get update
+              sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
+            pre_build_commands:
+            post_build_commands:
+            artifact_path: export/release/linux/bin
 
           - platform: Android
             os: ubuntu-latest
