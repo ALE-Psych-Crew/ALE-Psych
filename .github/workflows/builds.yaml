@@ -99,7 +99,10 @@ jobs:
         uses: actions/checkout@v4.1.7
 
       - name: Setup Haxe
+        if: ${{ matrix.haxe_setup }}
         run: ${{ matrix.haxe_setup }}
+        else:
+        uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
 
