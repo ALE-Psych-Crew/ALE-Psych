@@ -45,7 +45,7 @@ jobs:
             post_build_commands:
             artifact_path: export/release/linux/bin
             
-          - platform: Linux x64
+          - platform: Linux ARM64
             os: ubuntu-22.04-arm
             haxe_setup: |
               sudo add-apt-repository ppa:haxe/releases -y
@@ -99,7 +99,7 @@ jobs:
         uses: actions/checkout@v4.1.7
 
       - name: Setup Haxe
-        uses: ${{ matrix.haxe_setup }}
+        run: ${{ matrix.haxe_setup }}
 
       - name: Install Extra Libraries
         if: ${{ matrix.extra_libs }}
