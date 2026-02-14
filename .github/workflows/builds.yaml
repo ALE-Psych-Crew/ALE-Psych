@@ -15,7 +15,7 @@ jobs:
         include:
           - platform: Windows
             os: windows-latest
-            haxe_setup: krdlab/setup-haxe@master
+            haxe_setup:
             build_cmd: haxelib run lime build windows
             setup_libs: ./install-haxelibs.bat
             extra_libs:
@@ -25,7 +25,7 @@ jobs:
 
           - platform: Windows x32
             os: windows-latest
-            haxe_setup: krdlab/setup-haxe@master
+            haxe_setup:
             build_cmd: haxelib run lime build windows -32 -D 32bits -D HXCPP_M32
             setup_libs: ./install-haxelibs.bat
             extra_libs:
@@ -35,7 +35,7 @@ jobs:
 
           - platform: Linux
             os: ubuntu-22.04
-            haxe_setup: krdlab/setup-haxe@master
+            haxe_setup:
             build_cmd: haxelib run lime build linux
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
@@ -64,7 +64,7 @@ jobs:
 
           - platform: Android
             os: ubuntu-latest
-            haxe_setup: krdlab/setup-haxe@master
+            haxe_setup:
             build_cmd: haxelib run lime build android
             setup_libs: sh ./install-haxelibs.sh
             extra_libs:
@@ -78,7 +78,7 @@ jobs:
 
           - platform: MacOS
             os: macos-15
-            haxe_setup: krdlab/setup-haxe@master
+            haxe_setup:
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
@@ -87,7 +87,7 @@ jobs:
 
           - platform: MacOS x64
             os: macos-15-intel
-            haxe_setup: krdlab/setup-haxe@master
+            haxe_setup:
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
