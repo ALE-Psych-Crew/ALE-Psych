@@ -38,6 +38,47 @@ jobs:
               sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
             pre_build_commands:
             artifact_path: export/release/linux/bin
+
+          - platform: Nintendo Switch
+            os: ubuntu-latest
+            haxe_setup: |
+              sudo apt-get update
+              sudo apt-get install -y wget git neko libgc-dev
+              wget https://github.com/HaxeFoundation/haxe/releases/download/4.3.4/haxe-4.3.4-linux64.tar.gz
+              mkdir haxe_temp
+              tar -xf haxe-4.3.4-linux64.tar.gz -C haxe_temp
+              cp -r haxe_temp/haxe_*/* /usr/local/bin/
+              mkdir -p ~/haxelib
+              haxelib --always --quiet setup ~/haxelib
+              haxelib --global --always --quiet update haxelib
+            build_cmd: haxelib run lime build Project.xml switch --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
+            extra_libs: |
+              dkp-pacman -Sy --noconfirm
+                  
+              dkp-pacman -S --needed --noconfirm \
+                
+              switch-bzip2 switch-cmake switch-curl switch-flac \
+              switch-freetype switch-glad switch-glm switch-harfbuzz \
+              switch-libdrm_nouveau switch-libjpeg-turbo switch-libmodplug \
+              switch-libogg switch-libopus switch-libpng switch-libvorbis \
+              switch-libvorbisidec switch-libwebp switch-mesa switch-mpg123 \
+              switch-openal-soft switch-opusfile switch-pkg-config switch-sdl2 \
+              switch-sdl2_gfx switch-sdl2_image switch-sdl2_mixer \
+              switch-sdl2_net switch-sdl2_ttf switch-tools switch-zlib \
+              switch-liblua51
+                  
+              haxelib --always --quiet install format
+              haxelib --always --quiet install hxp
+              haxelib --always --quiet git lime https://github.com/Slushi-Github/lime-nx.git
+              haxelib --always --quiet git hxcpp https://github.com/Slushi-Github/hxcpp-nx.git
+              haxelib --always --quiet git hx_libnx https://github.com/Slushi-Github/hx_libnx.git
+            pre_build_commands: |
+              cd ~/haxelib/hxcpp/git/tools/hxcpp
+              haxe compile.hxml
+              cd -
+                  
+              haxelib run lime rebuild switch
+            artifact_path: export/release/switch/bin/*.nro
             
           - platform: Android
             os: ubuntu-latest
