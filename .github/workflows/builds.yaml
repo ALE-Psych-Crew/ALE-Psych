@@ -47,7 +47,7 @@ jobs:
               wget https://github.com/HaxeFoundation/haxe/releases/download/4.3.4/haxe-4.3.4-linux64.tar.gz
               mkdir haxe_temp
               tar -xf haxe-4.3.4-linux64.tar.gz -C haxe_temp
-              cp -r haxe_temp/haxe_*/* /usr/local/bin/
+              sudo cp -r haxe_temp/haxe_*/* /usr/local/bin/
               mkdir -p ~/haxelib
               haxelib --always --quiet setup ~/haxelib
               haxelib --global --always --quiet update haxelib
