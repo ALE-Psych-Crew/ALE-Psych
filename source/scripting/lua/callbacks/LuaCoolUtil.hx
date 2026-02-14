@@ -134,11 +134,6 @@ class LuaCoolUtil extends LuaPresetBase
             return CoolUtil.capitalize(str);
         });
 
-        set('listFromString', function(str:String):Array<String>
-        {
-            return CoolUtil.listFromString(str);
-        });
-
 
         set('browserLoad', function(site:String)
         {

@@ -5,25 +5,11 @@ import sys.io.File;
 
 class FileUtil
 {
-	inline public static function coolTextFile(path:String):Array<String>
-	{
-		var daList:String = null;
-		
-		var formatted:Array<String> = path.split(':');
-
-		path = formatted[formatted.length-1];
-
-		if (FileSystem.exists(path))
-			daList = File.getContent(path);
-
-		return daList != null ? StringUtil.listFromString(daList) : [];
-	}
-	
     public static function searchComplexFile(path:String, missingPrint:Bool = true)
     {
         var parts = path.split('/');
 
-        var parent = "";
+        var parent = '';
 
         var result:String = null;
 
@@ -47,11 +33,8 @@ class FileUtil
 
     public static function searchFile(parent:String, file:String)
     {
-        for (folder in [Paths.mod == null ? '' : Paths.mods + '/' + Paths.mod, 'assets'])
+        for (folder in Paths.library.roots)
         {
-            if (folder == null)
-                continue;
-
             var path:String = folder + '/' + parent;
 
             if (FileSystem.exists(path) && FileSystem.isDirectory(path))
@@ -63,22 +46,23 @@ class FileUtil
         return null;
     }
 
-	inline public static function openFolder(folder:String, absolute:Bool = false) {
-		#if sys
-			if(!absolute) folder =  Sys.getCwd() + '$folder';
+	inline public static function openFolder(folder:String, absolute:Bool = false)
+    {
+        if (!absolute)
+            folder = Sys.getCwd() + '$folder';
 
-			folder = folder.replace('/', '\\');
-			if(folder.endsWith('/')) folder.substr(0, folder.length - 1);
+        folder = folder.replace('/', '\\');
 
-			#if linux
-			var command:String = '/usr/bin/xdg-open';
-			#else
-			var command:String = 'explorer.exe';
-			#end
-			Sys.command(command, [folder]);
-		#else
-			FlxG.error("Platform is not supported for CoolUtil.openFolder");
-		#end
+        if (folder.endsWith('/'))
+            folder.substr(0, folder.length - 1);
+
+        #if linux
+        var command:String = '/usr/bin/xdg-open';
+        #else
+        var command:String = 'explorer.exe';
+        #end
+
+        Sys.command(command, [folder]);
 	}
 
 	public static function formatToSongPath(string:String):String

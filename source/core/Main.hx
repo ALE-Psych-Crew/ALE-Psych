@@ -86,6 +86,34 @@ class Main extends Sprite
 	{
 		super();
 
+		var shouldStop:Bool = false;
+
+		if (AndroidVersion.SDK_INT >= AndroidVersionCode.M)
+		{
+			if (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU)
+			{
+				AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
+
+				shouldStop = true;
+			}
+
+			if (!AndroidEnvironment.isExternalStorageManager())
+			{
+				AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+				
+				shouldStop = true;
+			}
+		}
+
+		if (shouldStop)
+		{
+			CoolUtil.showPopUp('Notice', 'The game starts automatically when requesting permissions without them having been granted yet\n\nPlease start the game again once the permissions have been granted');
+
+			Sys.exit(0);
+
+			return;
+		}
+
 		preOnceConfig();
 		
 		addChild(new ALEGame(MainState));
@@ -100,17 +128,6 @@ class Main extends Sprite
 		#end
 
 		#if android
-		if (AndroidVersion.SDK_INT >= AndroidVersionCode.M)
-		{
-			if (AndroidVersion.SDK_INT < AndroidVersionCode.TIRAMISU)
-				AndroidPermissions.requestPermissions(['READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE']);
-
-			if (!AndroidEnvironment.isExternalStorageManager())
-				AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
-		}
-
-		Sys.sleep(1);
-		
 		final androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/.' + Lib.application?.meta?.get('file');
 
 		if (!FileSystem.exists(androidPath))
