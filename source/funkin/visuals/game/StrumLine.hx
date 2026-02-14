@@ -39,7 +39,7 @@ class StrumLine extends FlxSpriteGroup
 
     public var scrollSpeed:Float = 1;
 
-    public var inputMap:IntMap<Int> = new IntMap();
+    public var inputMap:IntMap<Array<Int>> = new IntMap();
 
     public final totalStrums:Int;
 
@@ -108,8 +108,15 @@ class StrumLine extends FlxSpriteGroup
         }
 
         for (arrayIndex => array in inputsArray)
+        {
             for (key in array)
-                inputMap.set(key, arrayIndex);
+            {
+                if (!inputMap.exists(key))
+                    inputMap.set(key, []);
+
+                inputMap.get(key).push(arrayIndex);
+            }
+        }
 
         x = chartData.rightToLeft ? data.position.x : FlxG.width - data.position.x - (data.strums.length - 1) * data.space - strums.members[strums.members.length - 1].width;
         y = ClientPrefs.data.downScroll ? FlxG.height - data.position.y - strumHeight : data.position.y;
@@ -201,12 +208,15 @@ class StrumLine extends FlxSpriteGroup
         if (botplay)
             return;
 
-        var strumIndex:Null<Int> = inputMap.get(key);
+        var strumIndex:Null<Array<Null<Int>>> = inputMap.get(key);
 
         if (strumIndex != null)
         {
-            keyPressed[strumIndex] = true;
-            keyJustPressed[strumIndex] = true;
+            for (indices in strumIndex)
+            {
+                keyPressed[indices] = true;
+                keyJustPressed[indices] = true;
+            }
         }
     }
 
@@ -215,12 +225,15 @@ class StrumLine extends FlxSpriteGroup
         if (botplay)
             return;
 
-        var strumIndex:Null<Int> = inputMap.get(key);
+        var strumIndex:Null<Array<Null<Int>>> = inputMap.get(key);
 
         if (strumIndex != null)
         {
-            keyPressed[strumIndex] = false;
-            keyJustReleased[strumIndex] = true;
+            for (indices in strumIndex)
+            {
+                keyPressed[indices] = false;
+                keyJustReleased[indices] = true;
+            }
         }
     }
 
