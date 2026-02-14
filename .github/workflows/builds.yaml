@@ -9,6 +9,7 @@ jobs:
     name: Build ${{ matrix.platform }}
     permissions: write-all
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
 
     strategy:
       matrix:
@@ -115,7 +116,6 @@ jobs:
 
     steps:
       - name: Pull the New Commit
-        container: ${{ matrix.container }}
         uses: actions/checkout@v4.1.7
 
       - name: Setup Haxe
