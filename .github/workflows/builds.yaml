@@ -59,9 +59,7 @@ jobs:
             build_cmd: haxelib run lime build Project.xml switch --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
             extra_libs: |
               dkp-pacman -Sy --noconfirm
-                  
               dkp-pacman -S --needed --noconfirm \
-                
               switch-bzip2 switch-cmake switch-curl switch-flac \
               switch-freetype switch-glad switch-glm switch-harfbuzz \
               switch-libdrm_nouveau switch-libjpeg-turbo switch-libmodplug \
