@@ -83,7 +83,7 @@ jobs:
         run: |
           haxelib --global git hmm https://github.com/ALE-Psych-Crew/hmm
           haxelib --global run hmm setup
-          hmm install
+          haxelib --global run hmm install
 
       - name: Install Extra Libraries
         if: ${{ matrix.extra_libs }}
