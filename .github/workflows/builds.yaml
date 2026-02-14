@@ -99,12 +99,14 @@ jobs:
         uses: actions/checkout@v4.1.7
 
       - name: Setup Haxe
-        if: ${{ matrix.haxe_setup }}
-        run: ${{ matrix.haxe_setup }}
         if: ${{ !matrix.haxe_setup }}
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
+
+      - name: Custom Haxe Setup
+        if: ${{ matrix.haxe_setup }}
+        run: ${{ matrix.haxe_setup }}
 
       - name: Install Extra Libraries
         if: ${{ matrix.extra_libs }}
