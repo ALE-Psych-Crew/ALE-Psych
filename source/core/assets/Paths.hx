@@ -73,7 +73,7 @@ class Paths
         if (mod != null)
             roots.push(mods + '/' + mod);
 
-        roots.push(assets);
+        roots.push(#if switch 'romfs:/' + #end assets);
 
         OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(roots));
 

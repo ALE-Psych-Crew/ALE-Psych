@@ -26,7 +26,7 @@ class ALEAssetLibrary extends AssetLibrary
 
         super();
 
-        __fromManifest(AssetManifest.fromFile('manifest/default.json'));
+        __fromManifest(AssetManifest.fromFile(#if switch 'romfs:/' + #end 'manifest/default.json'));
     }
 
     public function assetExists(id:String):Bool

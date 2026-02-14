@@ -172,6 +172,8 @@ class PlayState extends ScriptState
 
             camGame.snapToTarget();
 
+            initMobileControls();
+
             startCountdown();
             
             #if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -184,15 +186,6 @@ class PlayState extends ScriptState
         }
 
         scriptCallbackCall(POST, 'Create');
-            
-        if (CoolVars.mobile)
-        {
-            MobileAPI.createButtons(100, 100, [{label: 'P', keys: ClientPrefs.controls.ui.pause}]);
-
-            add(hitboxes = new FlxTypedGroup<Hitbox>());
-
-            createMobileHitboxes(playersStrumLines.members[0] ?? extrasStrumLines.members[0] ?? opponentsStrumLines.members[0]);
-        }
     }
 
     public function createMobileHitboxes(strumLine:StrumLine)
@@ -935,6 +928,23 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'ControlsInit');
     }
 
+    function initMobileControls()
+    {
+        if (scriptCallbackCall(ON, 'MobileControlsInit'))
+        {
+            if (CoolVars.mobile)
+            {
+                MobileAPI.createButtons(100, 100, [{label: 'P', keys: ClientPrefs.controls.ui.pause}]);
+
+                add(hitboxes = new FlxTypedGroup<Hitbox>());
+
+                createMobileHitboxes(playersStrumLines.members[0] ?? extrasStrumLines.members[0] ?? opponentsStrumLines.members[0]);
+            }
+        }
+
+        scriptCallbackCall(POST, 'MobileControlsInit');
+    }
+    
     public var uiGroup:FlxTypedGroup<FlxBasic>;
 
     public var healthBar:Bar;

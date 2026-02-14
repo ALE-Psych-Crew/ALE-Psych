@@ -361,7 +361,7 @@ class Main extends Sprite
 		Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
 		#end
 
-		debugTrace(errMsg, ERROR);
+		Sys.println(errMsg);
 
 		Discord.destroy();
 

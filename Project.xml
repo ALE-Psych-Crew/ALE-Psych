@@ -26,7 +26,9 @@
 
 	<define name="WINDOWS_API" if="windows cpp"/>
 	
-	<define name="MOBILE_API" if="android || ios"/>
+	<define name="MOBILE_API" if="mobile"/>
+
+	<define name="TOUCH_CONTROLS" if="mobile || switch"/>
 
 	<!-- ____________________________ Window Settings ___________________________ -->
 
@@ -46,7 +48,7 @@
 
 	<assets path="assets"/>
 
-	<assets path="mods" embed="false" unless="mobile"/>
+	<assets path="mods" embed="false"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 	
@@ -63,8 +65,6 @@
 	<haxelib name="flixel-animate"/>
 
 	<haxelib name="flxsoundfilters"/>
-	<haxelib name="funkin.vis"/>
-	<haxelib name="grig.audio"/>
 
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
@@ -121,6 +121,8 @@
 
 	<haxedef name="DISABLED_MACRO_SUPERLATIVE" if="android"/>
 
+	<haxedef name="NO_PRECOMPILED_HEADERS" if="switch"/>
+
 	<haxedef name="hscriptPos"/>
 	
 	<!-- ______________________________ Application Icon ______________________________ -->
@@ -135,6 +137,23 @@
 	<section if="desktop">
 		<assets path="alsoft.txt" rename="plugins/alsoft.ini" type="text" if="windows"/>
 		<assets path="alsoft.txt" rename="plugins/alsoft.conf" type="text" unless="windows"/>
+	</section>
+
+	<!-- ______________________________ Switch Config ______________________________ -->
+
+	<section if="switch">
+		<haxedef name="lime-opengl" if="switch" />
+		<haxedef name="lime-cairo" value="false" if="switch" />
+
+		<set name="LIME_CAIRO" value="0" if="switch" />
+		<set name="LIME_OPENGL" value="1" if="switch" />
+
+		<config:switch libs="lua5.1" if="switch LUA_ALLOWED"/>
+
+		<haxelib name="hx_libnx"/>
+
+		<!-- CHANGE THIS TO YOUR SWITCH IP -->
+		<config:switch ip="192.168.1.140"/>
 	</section>
 
 	<!-- ______________________________ Android Configs _____________________________ -->

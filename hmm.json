@@ -1,0 +1,118 @@
+{
+    "dependencies": [
+        {
+            "name": "jsonmod",
+            "type": "haxelib",
+            "version": "1.2.0"
+        },
+        {
+            "name": "hxcpp",
+            "type": "git",
+            "url": "https://github.com/AlejoGDOfficial/MobilePorting-hxcpp"
+        },
+        {
+            "name": "lime",
+            "type": "haxelib",
+            "version": "8.3.0"
+        },
+        {
+            "name": "openfl",
+            "type": "haxelib",
+            "version": "9.5.0"
+        },
+        {
+            "name": "flixel",
+            "type": "haxelib",
+            "version": "6.1.2"
+        },
+        {
+            "name": "flixel-addons",
+            "type": "haxelib",
+            "version": "3.3.2"
+        },
+        {
+            "name": "flixel-ui",
+            "type": "haxelib",
+            "version": "2.6.4"
+        },
+        {
+            "name": "flixel-tools",
+            "type": "haxelib",
+            "version": "1.5.1"
+        },
+        {
+            "name": "flixel-animate",
+            "type": "git",
+            "url": "https://github.com/MaybeMaru/flixel-animate",
+            "ref": "ad424c76cb76cfda5622cce47837a4698e1a284c"
+        },
+        {
+            "name": "flxsoundfilters",
+            "type": "git",
+            "url": "https://github.com/TheZoroForce240/FlxSoundFilters",
+            "ref": "a89bb537684111a6ff85737981f4b2d8ef4b4f68"
+        },
+        {
+            "name": "flixel-away3d",
+            "type": "git",
+            "url": "https://github.com/ALE-Psych-Crew/Flixel-Away-3D"
+        },
+        {
+            "name": "away3d",
+            "type": "git",
+            "url": "https://github.com/ALE-Psych-Crew/away3d"
+        },
+        {
+            "name": "ale-ui",
+            "type": "haxelib",
+            "version": "1.0.4"
+        },
+        {
+            "name": "hxvlc",
+            "type": "haxelib",
+            "version": "2.2.5"
+        },
+        {
+            "name": "hscript",
+            "type": "git",
+            "url": "https://github.com/HaxeFoundation/hscript",
+            "ref": "0c7f99dbacd5382d9266cf8dfa6192ef80e58ea4"
+        },
+        {
+            "name": "rulescript",
+            "type": "git",
+            "url": "https://github.com/Kriptel/RuleScript",
+            "ref": "221050fbc10819fd22a3528e8cbc36ccc7c61b1d"
+        },
+        {
+            "name": "hxluajit",
+            "type": "haxelib",
+            "version": "1.0.5"
+        },
+        {
+            "name": "hxluajit-wrapper",
+            "type": "haxelib",
+            "version": "1.0.0"
+        },
+        {
+            "name": "hxdiscord_rpc",
+            "type": "haxelib",
+            "version": "1.3.0"
+        },
+        {
+            "name": "extension-androidtools",
+            "type": "haxelib",
+            "version": "2.2.2"
+        },
+        {
+            "name": "extension-orientation",
+            "type": "git",
+            "url": "https://github.com/ALE-Psych-Crew/extension-orientation"
+        },
+        {
+            "name": "sl-windows-api",
+            "type": "haxelib",
+            "version": "1.2.0"
+        }
+    ]
+}
