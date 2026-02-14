@@ -8,7 +8,9 @@ import flixel.util.FlxSave;
 
 import sys.FileSystem;
 
-class ModsMenuSubState extends MusicBeatSubState
+import api.MobileAPI;
+
+@:unreflective class ModsMenuSubState extends MusicBeatSubState
 {
     var sprites:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
 
@@ -69,6 +71,15 @@ class ModsMenuSubState extends MusicBeatSubState
         }
 
         changeShit();
+
+        MobileAPI.toggleButtons(false, false);
+
+        MobileAPI.createButtons(FlxG.width - 100, FlxG.height - 100, [{label: 'A', keys: ClientPrefs.controls.ui.accept}], null, true);
+
+        MobileAPI.createButtons(100, FlxG.height - 200, [
+            {label: 'D', keys: ClientPrefs.controls.ui.down},
+            {label: 'U', keys: ClientPrefs.controls.ui.up},
+        ], null, true);
     }
 
     override function update(elapsed:Float)

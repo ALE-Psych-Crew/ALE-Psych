@@ -117,5 +117,7 @@ class ALEPluginsHandler
 			plugin.cameras = [FlxG.camera];
 
 		plugins.remove(plugin);
+
+		plugin.destroy();
 	}
 }

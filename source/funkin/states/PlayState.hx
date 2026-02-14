@@ -20,6 +20,7 @@ import core.structures.ALEStageObjectsConfig;
 import core.structures.ALESong;
 import core.structures.ALEHud;
 import core.structures.Point;
+import core.plugins.ALEPluginsHandler;
 import core.enums.SongType;
 import core.enums.Rating;
 
@@ -32,6 +33,8 @@ import haxe.ds.GenericStack;
 import funkin.visuals.game.*;
 import funkin.visuals.objects.Bar;
 import funkin.visuals.FXCamera;
+
+import api.MobileAPI;
 
 class PlayState extends ScriptState
 {
@@ -122,6 +125,8 @@ class PlayState extends ScriptState
     var totalNoteTypes:Array<String> = [];
     var totalEvents:Array<String> = [];
 
+    @:unreflective var hitboxes:FlxTypedGroup<Hitbox>;
+
     override function create()
     {
         instance = this;
@@ -179,6 +184,44 @@ class PlayState extends ScriptState
         }
 
         scriptCallbackCall(POST, 'Create');
+            
+        if (CoolVars.mobile)
+        {
+            MobileAPI.createButtons(100, 100, [{label: 'P', keys: ClientPrefs.controls.ui.pause}]);
+
+            add(hitboxes = new FlxTypedGroup<Hitbox>());
+
+            createMobileHitboxes(playersStrumLines.members[0] ?? extrasStrumLines.members[0] ?? opponentsStrumLines.members[0]);
+        }
+    }
+
+    public function createMobileHitboxes(strumLine:StrumLine)
+    {
+        if (!CoolVars.mobile)
+            return;
+
+        hitboxes.clear();
+
+        for (index => strum in strumLine.data.strums)
+        {
+            final keysArray:Array<Null<FlxKey>> = CoolUtil.getControl(strum.keybind[0], strum.keybind[1]);
+
+            final hitbox:Hitbox = new Hitbox(strumLine.data.strums.length, index,
+                () -> {
+                    for (key in keysArray)
+                        if (key != null)
+                            justPressedKey(new KeyboardEvent('keyDown', false, true, 0, key));
+                },
+                () -> {
+                    for (key in keysArray)
+                        if (key != null)
+                            justReleasedKey(new KeyboardEvent('keyUp', false, true, 0, key));
+                }
+            );
+            hitbox.cameras = [ALEPluginsHandler.pluginsCamera];
+            
+            hitboxes.add(hitbox);
+        }
     }
 
     override function update(elapsed:Float)
@@ -658,6 +701,10 @@ class PlayState extends ScriptState
 
     var strumLines:FlxTypedGroup<StrumLine>;
 
+    var opponentsStrumLines:FlxTypedGroup<StrumLine>;
+    var playersStrumLines:FlxTypedGroup<StrumLine>;
+    var extrasStrumLines:FlxTypedGroup<StrumLine>;
+
     var strums:FlxTypedGroup<Strum>;
     
     var characters:FlxTypedGroup<Character>;
@@ -711,6 +758,10 @@ class PlayState extends ScriptState
             players = new FlxTypedGroup<Character>();
             extras = new FlxTypedGroup<Character>();
 
+            opponentsStrumLines = new FlxTypedGroup<StrumLine>();
+            playersStrumLines = new FlxTypedGroup<StrumLine>();
+            extrasStrumLines = new FlxTypedGroup<StrumLine>();
+
             strumLines.cameras = [camHUD];
 
             strums = new FlxTypedGroup<Strum>();
@@ -738,7 +789,7 @@ class PlayState extends ScriptState
 
                 strumLine.onMissNote = missNote;
 
-                strumLines.add(strumLine);
+                addStrumLine(strumLine);
 
                 for (strum in strumLine.strums)
                     strums.add(strum);
@@ -1035,6 +1086,30 @@ class PlayState extends ScriptState
     function addBehindGroup(group:FlxTypedGroup<Dynamic>, obj:FlxBasic)
         insert(members.indexOf(group.members[0]), obj);
 
+    function addStrumLine(strumLine:StrumLine)
+    {
+        if (scriptCallbackCall(ON, 'StrumLineAdd', null, [strumLine], []))
+        {
+            switch (strumLine.type)
+            {
+                case 'opponent':
+                    opponentsStrumLines.add(strumLine);
+
+                case 'player':
+                    playersStrumLines.add(strumLine);
+
+                case 'extra':
+                    extrasStrumLines.add(strumLine);
+
+                default:
+            }
+
+            strumLines.add(strumLine);
+        }
+
+        scriptCallbackCall(POST, 'StrumLineAdd', null, [strumLine], []);
+    }
+
     function addCharacter(character:Character)
     {
         if (scriptCallbackCall(ON, 'CharacterAdd', null, [character], []))
@@ -1204,10 +1279,7 @@ class PlayState extends ScriptState
     function justPressedKey(event:KeyboardEvent)
     {
         if (scriptCallbackCall(ON, 'JustPressedKey', null, [event], [event.keyCode]))
-        {
-            if (FlxG.keys.firstJustPressed() > -1)
-                strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
-        }
+            strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
 
         scriptCallbackCall(POST, 'JustPressedKey', null, [event], [event.keyCode]);
     }

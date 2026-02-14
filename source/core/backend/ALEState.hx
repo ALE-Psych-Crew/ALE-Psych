@@ -8,6 +8,8 @@ import cpp.vm.Gc;
 import hl.Gc;
 #end
 
+import api.MobileAPI;
+
 class ALEState extends FlxState
 {
     public var camGame:ALECamera;
@@ -46,8 +48,6 @@ class ALEState extends FlxState
 
 	override function tryUpdate(elapsed:Float):Void
 	{
-        final allowSubStateUpdate:Bool = subState != null;
-
 		if (persistentUpdate || (subState == null || FlxState.transitioning))
 			update(elapsed);
 
@@ -58,7 +58,9 @@ class ALEState extends FlxState
 			resetSubState();
 		}
 
-        if (subState != null && allowSubStateUpdate)
+        MobileAPI.controls?.update(FlxG.elapsed);
+
+        if (subState != null)
             subState.tryUpdate(elapsed);
 	}
 

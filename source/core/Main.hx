@@ -171,6 +171,12 @@ class Main extends Sprite
 		}
 	}
 
+	public static var debugCounter:DebugCounter;
+	
+	public static var debugPrintPlugin:DebugPrintPlugin;
+
+	public static var mobileControlsPlugin:MobileControlsPlugin;
+
     @:unreflective public static function preResetConfig()
     {
 		#if WINDOWS_API
@@ -197,18 +203,16 @@ class Main extends Sprite
 		
 		ALEPluginsHandler.destroy();
 
+		debugPrintPlugin = null;
+
+		mobileControlsPlugin = null;
+
 		CoolVars.reset();
 
 		debugCounter?.destroy();
 
 		FlxG.game.removeChild(debugCounter);
     }
-
-	public static var debugCounter:DebugCounter;
-	
-	public static var debugPrintPlugin:DebugPrintPlugin;
-
-	public static var mobileControlsPlugin:MobileControlsPlugin;
 
 	@:unreflective static var allowMobileConfig:Bool = true;
 
