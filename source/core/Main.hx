@@ -86,6 +86,7 @@ class Main extends Sprite
 	{
 		super();
 
+		#if android
 		var shouldStop:Bool = false;
 
 		if (AndroidVersion.SDK_INT >= AndroidVersionCode.M)
@@ -113,6 +114,7 @@ class Main extends Sprite
 
 			return;
 		}
+		#end
 
 		preOnceConfig();
 		
