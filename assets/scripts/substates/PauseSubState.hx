@@ -91,3 +91,19 @@ function onUpdate(elapsed:Float)
         }
     }
 }
+
+MobileAPI.toggleButtons(false, false);
+
+MobileAPI.createButtons(FlxG.width - 100, FlxG.height - 100, [{label: 'A', keys: ClientPrefs.controls.ui.accept}], null, true);
+
+MobileAPI.createButtons(100, FlxG.height - 200, [
+    {label: 'D', keys: ClientPrefs.controls.ui.down},
+    {label: 'U', keys: ClientPrefs.controls.ui.up},
+], null, true);
+
+function onDestroy()
+{
+    MobileAPI.destroyButtons(true);
+
+    MobileAPI.toggleButtons(false, true);
+}

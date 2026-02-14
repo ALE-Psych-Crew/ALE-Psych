@@ -217,3 +217,15 @@ function onDestroy()
     CoolUtil.save.custom.data.freeplaySelection = selInt;
     CoolUtil.save.custom.data.freeplayDifficultySelection = diffSelInt;
 }
+
+MobileAPI.createButtons(FlxG.width - 300, FlxG.height - 200, [
+    {label: 'A', keys: ClientPrefs.controls.ui.accept},
+    {label: 'B', keys: ClientPrefs.controls.ui.back},
+]);
+
+MobileAPI.createButtons(100, FlxG.height - 300, [
+    {label: 'R', keys: ClientPrefs.controls.ui.right},
+    {label: 'D', keys: ClientPrefs.controls.ui.down},
+    {label: 'L', keys: ClientPrefs.controls.ui.left},
+    {label: 'U', keys: ClientPrefs.controls.ui.up},
+]);

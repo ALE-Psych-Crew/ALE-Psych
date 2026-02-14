@@ -127,7 +127,7 @@ if (CoolUtil.onlineVersion != null && CoolUtil.onlineVersion != CoolVars.engineV
 
 changeSelection();
 
-function onUpdate(elapsed:Float)
+function postUpdate(elapsed:Float)
 {
     game.camGame.scroll.y = CoolUtil.fpsLerp(game.camGame.scroll.y, selInt * OPTION_SPACE - FlxG.height * (0.25 + 0.5 * selInt / options.length), CAMERA_SPEED);
 
@@ -165,13 +165,6 @@ function onUpdate(elapsed:Float)
             if (!data.overrideDefaultBehavior)
                 selectMenu(data);
         }
-
-        if (Controls.ENGINE_CHART)
-        {
-            canSelect = false;
-
-            CoolUtil.switchState(new CustomState('MasterEditorState'));
-        }
     }
 }
 
@@ -179,3 +172,13 @@ function onDestroy()
 {
     CoolUtil.save.custom.data.mainMenuSelection = selInt;
 }
+
+MobileAPI.createButtons(FlxG.width - 300, FlxG.height - 200, [
+    {label: 'A', keys: ClientPrefs.controls.ui.accept},
+    {label: 'B', keys: ClientPrefs.controls.ui.back},
+]);
+
+MobileAPI.createButtons(100, FlxG.height - 200, [
+    {label: 'D', keys: ClientPrefs.controls.ui.down},
+    {label: 'U', keys: ClientPrefs.controls.ui.up},
+]);

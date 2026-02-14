@@ -157,32 +157,4 @@ function onUpdate(elapsed:Float)
     }
 }
 
-var mobileCamera:FlxCamera;
-
-function postCreate()
-{
-    if (CoolVars.mobileControls)
-    {
-        mobileCamera = new ALECamera();
-        
-        FlxG.cameras.add(mobileCamera, false);
-
-        var buttonMap:Array<Dynamic> = [
-            [1105, 485, ClientPrefs.controls.ui.accept, 'a uppercase']
-        ];
-
-        for (button in buttonMap)
-        {
-            var obj:MobileButton = new MobileButton(button[0], button[1], button[2], button[3]);
-            add(obj);
-            obj.label.angle = button[4] ?? 0;
-            obj.cameras = [mobileCamera];
-        }
-    }
-}
-
-function onDestroy()
-{
-    if (CoolVars.mobileControls)
-        FlxG.cameras.remove(mobileCamera);
-}
+MobileAPI.createButtons(FlxG.width - 100, FlxG.height - 100, [{label: 'A', keys: ClientPrefs.controls.ui.accept}]);

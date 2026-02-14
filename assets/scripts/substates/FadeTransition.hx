@@ -41,7 +41,6 @@ function onUpdate(elapsed:Float)
 
 		if (transIn)
 			finishCallback();
-
 	}
 }
 

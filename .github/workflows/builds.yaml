@@ -15,7 +15,6 @@ jobs:
         include:
           - platform: Windows
             os: windows-latest
-            haxe_setup:
             build_cmd: haxelib run lime build windows
             setup_libs: ./install-haxelibs.bat
             extra_libs:
@@ -25,7 +24,6 @@ jobs:
 
           - platform: Windows x32
             os: windows-latest
-            haxe_setup:
             build_cmd: haxelib run lime build windows -32 -D 32bits -D HXCPP_M32
             setup_libs: ./install-haxelibs.bat
             extra_libs:
@@ -35,7 +33,6 @@ jobs:
 
           - platform: Linux
             os: ubuntu-22.04
-            haxe_setup:
             build_cmd: haxelib run lime build linux
             setup_libs: sh ./install-haxelibs.sh
             extra_libs: |
@@ -45,26 +42,8 @@ jobs:
             post_build_commands:
             artifact_path: export/release/linux/bin
             
-          - platform: Linux ARM64
-            os: ubuntu-22.04-arm
-            haxe_setup: |
-              sudo add-apt-repository ppa:haxe/releases -y
-              sudo apt-get update
-              sudo apt-get install -y haxe
-              mkdir $HOME/haxelib
-              haxelib setup $HOME/haxelib
-            build_cmd: haxelib run lime build linux
-            setup_libs: sh ./install-haxelibs.sh
-            extra_libs: |
-              sudo apt-get update
-              sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
-            pre_build_commands:
-            post_build_commands:
-            artifact_path: export/release/linux/bin
-
           - platform: Android
             os: ubuntu-latest
-            haxe_setup:
             build_cmd: haxelib run lime build android
             setup_libs: sh ./install-haxelibs.sh
             extra_libs:
@@ -78,7 +57,6 @@ jobs:
 
           - platform: MacOS
             os: macos-15
-            haxe_setup:
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
@@ -87,7 +65,6 @@ jobs:
 
           - platform: MacOS x64
             os: macos-15-intel
-            haxe_setup:
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             setup_libs: sh ./install-haxelibs.sh
             pre_build_commands:
@@ -99,14 +76,9 @@ jobs:
         uses: actions/checkout@v4.1.7
 
       - name: Setup Haxe
-        if: ${{ !matrix.haxe_setup }}
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.7
-
-      - name: Custom Haxe Setup
-        if: ${{ matrix.haxe_setup }}
-        run: ${{ matrix.haxe_setup }}
 
       - name: Install Extra Libraries
         if: ${{ matrix.extra_libs }}

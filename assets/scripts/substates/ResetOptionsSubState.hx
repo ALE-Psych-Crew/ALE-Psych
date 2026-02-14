@@ -49,7 +49,23 @@ function onUpdate(elapsed:Float)
         {
             CoolUtil.save.reset();
 
-            CoolUtil.resetEngine();
+            CoolUtil.resetGame();
         }
     }
+}
+
+MobileAPI.toggleButtons(false, false);
+
+MobileAPI.createButtons(FlxG.width - 100, FlxG.height - 100, [{label: 'A', keys: ClientPrefs.controls.ui.accept}], null, true);
+
+MobileAPI.createButtons(100, FlxG.height - 200, [
+    {label: 'L', keys: ClientPrefs.controls.ui.left},
+    {label: 'R', keys: ClientPrefs.controls.ui.right},
+], null, true);
+
+function onDestroy()
+{
+    MobileAPI.destroyButtons(true);
+
+    MobileAPI.toggleButtons(false, true);
 }

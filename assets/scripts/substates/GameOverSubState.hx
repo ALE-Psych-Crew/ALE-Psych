@@ -110,3 +110,14 @@ function onDestroy()
     sfx.stop();
     music.stop();
 }
+
+MobileAPI.toggleButtons(false, false);
+
+MobileAPI.createButtons(FlxG.width - 100, FlxG.height - 100, [{label: 'A', keys: ClientPrefs.controls.ui.accept}], null, true);
+
+function onDestroy()
+{
+    MobileAPI.destroyButtons(true);
+
+    MobileAPI.toggleButtons(false, true);
+}
