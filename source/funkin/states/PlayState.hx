@@ -1200,6 +1200,8 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'CharacterChange', null, [char, newChar], [newChar]);
     }
 
+    var cameraTarget:Character;
+
     function moveCamera(char:OneOfTwo<Character, Int>)
     {
         var character:Character = null;
@@ -1218,6 +1220,8 @@ class PlayState extends ScriptState
         {
             if (shouldMoveCamera && character != null)
             {
+                cameraTarget = character;
+
                 final pos:FlxPoint = getCharacterCamera(character);
 
                 cast(camGame, FXCamera).position.set(pos.x, pos.y);
@@ -1289,7 +1293,8 @@ class PlayState extends ScriptState
     function justPressedKey(event:KeyboardEvent)
     {
         if (scriptCallbackCall(ON, 'JustPressedKey', null, [event], [event.keyCode]))
-            strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
+            if (Controls.anyJustPressed([event.keyCode]))
+                strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
 
         scriptCallbackCall(POST, 'JustPressedKey', null, [event], [event.keyCode]);
     }

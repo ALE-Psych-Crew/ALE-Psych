@@ -1,0 +1,98 @@
+name: ALE Psych Builds
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    permissions: write-all
+    runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
+
+    strategy:
+      matrix:
+        include:
+          - platform: Nintendo Switch
+            os: ubuntu-latest
+            container: devkitpro/devkita64:latest
+            haxe_setup: |
+              sudo apt-get update
+              sudo apt-get install -y wget git neko libgc-dev
+              wget https://github.com/HaxeFoundation/haxe/releases/download/4.3.4/haxe-4.3.4-linux64.tar.gz
+              mkdir haxe_temp
+              tar -xf haxe-4.3.4-linux64.tar.gz -C haxe_temp
+              sudo cp -r haxe_temp/haxe_*/* /usr/local/bin/
+              mkdir -p ~/haxelib
+              haxelib --always --quiet setup ~/haxelib
+              haxelib --global --always --quiet update haxelib
+            build_cmd: haxelib run lime build Project.xml switch --app-version="4.0.0-${{ github.run_id}}" -D officialBuild
+            extra_libs: |
+              dkp-pacman -Sy --noconfirm
+              dkp-pacman -S --needed --noconfirm \
+              switch-bzip2 switch-cmake switch-curl switch-flac \
+              switch-freetype switch-glad switch-glm switch-harfbuzz \
+              switch-libdrm_nouveau switch-libjpeg-turbo switch-libmodplug \
+              switch-libogg switch-libopus switch-libpng switch-libvorbis \
+              switch-libvorbisidec switch-libwebp switch-mesa switch-mpg123 \
+              switch-openal-soft switch-opusfile switch-pkg-config switch-sdl2 \
+              switch-sdl2_gfx switch-sdl2_image switch-sdl2_mixer \
+              switch-sdl2_net switch-sdl2_ttf switch-tools switch-zlib \
+              switch-liblua51
+                  
+              haxelib --always --quiet install format
+              haxelib --always --quiet install hxp
+              haxelib --always --quiet git lime https://github.com/Slushi-Github/lime-nx.git
+              haxelib --always --quiet git hxcpp https://github.com/Slushi-Github/hxcpp-nx.git
+              haxelib --always --quiet git hx_libnx https://github.com/Slushi-Github/hx_libnx.git
+            pre_build_commands: |
+              HXCPP_PATH=$(haxelib libpath hxcpp)
+              if [ -d "$HXCPP_PATH/tools/hxcpp" ]; then
+                cd "$HXCPP_PATH/tools/hxcpp"
+                haxe compile.hxml
+                cd -
+              else
+                echo "::error::Can't change directory to HXCPP"
+              fi
+                
+              haxelib run lime rebuild switch
+            artifact_path: export/release/switch/bin/*.nro
+            
+    steps:
+      - name: Pull the New Commit
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Haxe
+        if: ${{ !matrix.haxe_setup }}
+        uses: krdlab/setup-haxe@master
+        with:
+          haxe-version: 4.3.7
+
+      - name: Custom Haxe Setup
+        if: ${{ matrix.haxe_setup }}
+        run: ${{ matrix.haxe_setup }}
+
+      - name: Install Main Libraries
+        run: |
+          haxelib --global git hmm https://github.com/ALE-Psych-Crew/hmm
+          haxelib --global run hmm setup
+          haxelib --global run hmm install
+
+      - name: Install Extra Libraries
+        if: ${{ matrix.extra_libs }}
+        run: ${{ matrix.extra_libs }}
+
+      - name: Pre-Build Commands
+        if: ${{ matrix.pre_build_commands }}
+        run: ${{ matrix.pre_build_commands }}
+
+      - name: Build for ${{ matrix.platform }}
+        run: ${{ matrix.build_cmd }}
+
+      - name: Upload Game
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.platform }} Build
+          path: ${{ matrix.artifact_path }}
+          if-no-files-found: error
