@@ -40,6 +40,9 @@ jobs:
               switch-sdl2_gfx switch-sdl2_image switch-sdl2_mixer \
               switch-sdl2_net switch-sdl2_ttf switch-tools switch-zlib \
               switch-liblua51
+
+              haxelib remove lime
+              haxelib remove hxcpp
                   
               haxelib --always --quiet install format
               haxelib --always --quiet install hxp
