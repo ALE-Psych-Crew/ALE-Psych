@@ -111,8 +111,9 @@
 	<section if="cpp">
 		<setenv name="HAXEPATH" value="./"/>
 
-		<haxedef name="HXCPP_DEBUG_LINK" if="release"/>
+		<haxedef name="HXCPP_DEBUG_LINK"/>
 		<haxedef name="HXCPP_CATCH_SEGV"/>
+		<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 	</section>
 
 	<haxedef name='no-deprecation-warnings'/>
