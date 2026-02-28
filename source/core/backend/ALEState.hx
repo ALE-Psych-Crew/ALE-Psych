@@ -19,8 +19,6 @@ class ALEState extends FlxState
     {
         super.create();
 
-        FlxG.stage.window.onTextInput.add(onTextInput);
-		
 		camGame = new ALECamera();
 		
 		FlxG.cameras.reset(camGame);
@@ -66,15 +64,11 @@ class ALEState extends FlxState
 
 	override function destroy()
 	{
-        FlxG.stage.window.onTextInput.remove(onTextInput);
-        
         if (shouldClearMemory)
             cleanMemory();
         
 		super.destroy();
 	}
-
-    public function onTextInput(text:String) {}
 
     public var shouldClearMemory:Bool = true;
 
