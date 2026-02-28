@@ -562,22 +562,22 @@ class PlayState extends ScriptState
             if (soundsMap.exists('::VOICES'))
                 voices = new FlxSound().loadEmbedded(soundsMap.get('::VOICES'));
 
-            var playerVoices:Null<FlxSound> = null;
+            var playersVoices:Null<FlxSound> = null;
 
             if (soundsMap.exists('::PLAYER'))
-                playerVoices = new FlxSound().loadEmbedded(soundsMap.get('::PLAYER'));
+                playersVoices = new FlxSound().loadEmbedded(soundsMap.get('::PLAYER'));
 
-            var opponentVoices:Null<FlxSound> = null;
+            var opponentsVoices:Null<FlxSound> = null;
 
             if (soundsMap.exists('::OPPONENT'))
-                opponentVoices = new FlxSound().loadEmbedded(soundsMap.get('::OPPONENT'));
+                opponentsVoices = new FlxSound().loadEmbedded(soundsMap.get('::OPPONENT'));
 
-            var extraVoices:Null<FlxSound> = null;
+            var extrasVoices:Null<FlxSound> = null;
 
             if (soundsMap.exists('::EXTRA'))
-                extraVoices = new FlxSound().loadEmbedded(soundsMap.get('::EXTRA'));
+                extrasVoices = new FlxSound().loadEmbedded(soundsMap.get('::EXTRA'));
 
-            for (sound in [voices, playerVoices, opponentVoices, extraVoices])
+            for (sound in [voices, playersVoices, opponentsVoices, extrasVoices])
                 if (sound != null)
                     addVocal(sound);
 
@@ -591,13 +591,13 @@ class PlayState extends ScriptState
                 final defaultVoice:Null<FlxSound> = switch (cast char.type)
                 {
                     case PLAYER:
-                        playerVoices;
+                        playersVoices;
 
                     case OPPONENT:
-                        opponentVoices;
+                        opponentsVoices;
 
                     case EXTRA:
-                        extraVoices;
+                        extrasVoices;
                 };
 
                 if (defaultVoice != null)
@@ -1034,32 +1034,21 @@ class PlayState extends ScriptState
         {
             soundsMap.set('::MUSIC', Paths.inst('songs/' + song));
 
-            final voices:Sound = Paths.voices('songs/' + song, '', false, false);
+            for (postfix in [null, 'Player', 'Opponent', 'Extra'])
+            {
+                final audio:Sound = Paths.voices('songs/' + song, postfix ?? '', false, false);
 
-            if (voices != null)
-                soundsMap.set('::VOICES', voices);
+                if (audio != null)
+                    soundsMap.set('::' + (postfix == null ? 'VOICES' : postfix.toUpperCase()), audio);
+            }
 
-            final playerVoices:Sound = Paths.voices('songs/' + song, 'Player', false, false);
+            for (char in characters)
+            {
+                final audio:Sound = Paths.voices('songs/' + song, char.id, false, false);
 
-            if (playerVoices != null)
-                soundsMap.set('::PLAYER', playerVoices);
-
-            final opponentVoices:Sound = Paths.voices('songs/' + song, 'Opponent', false, false);
-
-            if (opponentVoices != null)
-                soundsMap.set('::OPPONENT', opponentVoices);
-
-            final extraVoices:Sound = Paths.voices('songs/' + song, 'Extra', false, false);
-
-            if (extraVoices != null)
-                soundsMap.set('::EXTRA', extraVoices);
-
-            characters.forEachAlive((char) -> {
-                final voice:Sound = Paths.voices('songs/' + song, char.id, false, false);
-
-                if (voice != null)
-                    soundsMap.set(char.id, voice);
-            });
+                if (audio != null)
+                    soundsMap.set(char.id, audio);
+            };
         }
 
         scriptCallbackCall(POST, 'SoundsInit');

@@ -246,7 +246,7 @@ class Paths
         if (!exists(path) && data.verifyExistence)
         {
             if (missingPrint)
-                debugTrace(path, 'missing_file');
+                debugTrace(path, MISSING_FILE);
 
             return null;
         }
@@ -264,7 +264,7 @@ class Paths
 
     public static function getPath(file:String, ?missingPrint:Bool = true):String
     {
-        final path:String = OpenFLAssets.getPath(file);
+        final path:String = library.getPath(file);
 
         if (path == null && missingPrint)
             debugTrace(file, MISSING_FILE);

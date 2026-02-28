@@ -29,11 +29,8 @@ class ALEAssetLibrary extends AssetLibrary
         __fromManifest(AssetManifest.fromFile(#if switch 'romfs:/' + #end 'manifest/default.json'));
     }
 
-    public function assetExists(id:String):Bool
-        return getPath(id) != null;
-
     override public function exists(id:String, type:String):Bool
-        return assetExists(id);
+        return getPath(id) != null;
 
     override public function getPath(id:String):String
     {
@@ -45,7 +42,7 @@ class ALEAssetLibrary extends AssetLibrary
                 return path;
         }
 
-        return super.getPath(id);
+        return null;
     }
 
     override public function getBytes(id:String):Bytes
