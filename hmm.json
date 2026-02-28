@@ -65,7 +65,7 @@
         {
             "name": "ale-ui",
             "type": "haxelib",
-            "version": "1.0.4"
+            "version": "1.0.5"
         },
         {
             "name": "hxvlc",
@@ -82,7 +82,7 @@
             "name": "rulescript",
             "type": "git",
             "url": "https://github.com/Kriptel/RuleScript",
-            "ref": "221050fbc10819fd22a3528e8cbc36ccc7c61b1d"
+            "ref": "97420a1906b8fc5e4cb10003f9968170cabf24e7"
         },
         {
             "name": "hxluajit",
