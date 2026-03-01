@@ -68,14 +68,7 @@ class Paths
 
     public static function init()
     {
-        final roots:Array<String> = [];
-
-        if (mod != null)
-            roots.push(mods + '/' + mod);
-
-        roots.push(#if switch 'romfs:/' + #end assets);
-
-        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary(roots));
+        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary([for (root in [mod == null ? null : mods + '/' + mod, #if switch 'romfs:/' + #end assets, '']) if (root != null) root]));
 
         config = [
             FileType.CONTENT => {
@@ -92,23 +85,16 @@ class Paths
                 prefix: 'images/',
                 postfix: '.png',
                 method: (id, permanent, missingPrint) -> {
-                    var bitmap:BitmapData = BitmapData.fromBytes(OpenFLAssets.getBytes(id));
+                    final bitmap:BitmapData = BitmapData.fromImage(library.getImage(id));
                     
                     if (ClientPrefs.data.cacheOnGPU)
                     {
-                        var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(
-                            bitmap.width, bitmap.height, BGRA, true
-                        );
+                        final texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
+
                         texture.uploadFromBitmapData(bitmap);
-                        
-                        bitmap.image.data = null;
-                        bitmap.dispose();
-                        bitmap.disposeImage();
-                        
-                        bitmap = BitmapData.fromTexture(texture);
                     }
                     
-                    var graphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, id);
+                    final graphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, id);
                     graphic.persist = true;
                     graphic.destroyOnNoUse = false;
                     

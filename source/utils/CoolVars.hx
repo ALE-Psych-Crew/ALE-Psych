@@ -73,10 +73,6 @@ class CoolVars
 			width: 1280,
 			height: 720,
 
-            paths: [],
-
-            dependencies: [],
-
 			windowColor: [33, 33, 33],
 
 			bpm: 102.0,
