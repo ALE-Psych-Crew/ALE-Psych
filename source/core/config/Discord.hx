@@ -22,30 +22,13 @@ class Discord
 
 	@:unreflective private static var thread:Thread;
 
-	public static function check():Bool
-	{
-		if (ClientPrefs.data.discordRPC)
-		{
-			if (!initialized)
-				Discord.init(CoolVars.data.discordID);
-		} else {
-			if (initialized)
-				destroy();
-		}
-
-		return ClientPrefs.data.discordRPC;
-	}
-
-	public static function init(id:String)
+	public static function init(?id:String)
 	{
 		#if DISCORD_ALLOWED
-		if (!ClientPrefs.data.discordRPC)
-		{
-			if (initialized)
-				destroy();
-
+		if (!ClientPrefs.data.discordRPC || initialized)
 			return;
-		}
+
+		id ??= CoolVars.data.discordID;
 
 		var eventHandlers:DiscordEventHandlers = new DiscordEventHandlers();
 		eventHandlers.ready = Function.fromStaticFunction(onReady);
@@ -72,15 +55,15 @@ class Discord
 			);
 		}
 
-		Application.current.window.onClose.add(function()
-			{
-				if (initialized)
-					destroy();
-			}
-		);
+		Application.current.window.onClose.add(onClose);
 
 		initialized = true;
 		#end
+	}
+
+	public static function onClose()
+	{
+		destroy();
 	}
 
 	public static function destroy()
@@ -90,14 +73,13 @@ class Discord
 
 		DiscordLib.Shutdown();
 		#end
+
+		Application.current.window.onClose.remove(onClose);
 	}
 
 	public static function changePresence(details:String, ?state:String, ?largeImage:String, ?smallImage:String, ?usesTime:Bool = false, ?endTime:Float = 0)
 	{
 		#if DISCORD_ALLOWED
-		if (!check())
-			return;
-
 		var startTime:Float = 0;
 
 		if (usesTime)
@@ -121,9 +103,6 @@ class Discord
 	public static function updatePresence()
 	{
 		#if DISCORD_ALLOWED
-		if (!check())
-			return;
-		
 		DiscordLib.UpdatePresence(RawConstPointer.addressOf(presence));
 		#end
 	}

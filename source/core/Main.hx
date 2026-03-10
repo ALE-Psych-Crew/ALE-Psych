@@ -208,6 +208,8 @@ class Main extends Sprite
 		
 		ALEPluginsHandler.destroy();
 
+		Discord.destroy();
+
 		debugPrintPlugin = null;
 
 		mobileControlsPlugin = null;
@@ -280,6 +282,8 @@ class Main extends Sprite
         CoolVars.loadMetadata();
 
         Paths.init();
+
+		Discord.init();
 
         CoolUtil.init();
 
