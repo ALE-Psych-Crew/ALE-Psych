@@ -1257,7 +1257,7 @@ class PlayState extends ScriptState
             {
                 cameraTarget = character;
 
-                final pos:FlxPoint = getCharacterCamera(character);
+                final pos:Point = getCharacterCamera(character);
 
                 cast(camGame, FXCamera).position.set(pos.x, pos.y);
             }
@@ -1266,9 +1266,9 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'CameraMove', null, [character], []);
     }
 
-    function getCharacterCamera(character:Character):FlxPoint
+    function getCharacterCamera(character:Character):Point
     {
-        final result:FlxPoint = FlxPoint.get(character.getMidpoint().x + character.data.cameraPosition.x * (character.type == PLAYER ? -1 : 1), character.getMidpoint().y + character.data.cameraPosition.y);
+        final result:Point = {x: character.getMidpoint().x + character.data.cameraPosition.x * (character.type == PLAYER ? -1 : 1), y: character.getMidpoint().y + character.data.cameraPosition.y};
 
         if (stage.data.cameraOffset != null)
         {
