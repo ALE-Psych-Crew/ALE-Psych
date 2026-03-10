@@ -1,0 +1,1 @@
+Discord.changePresence('In the Menus: ' + scriptName);
