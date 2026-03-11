@@ -96,9 +96,7 @@ class HScriptConfig
         final curPackage:Map<String, Dynamic> = RuleScript.defaultImports[''];
 
 		var presetClasses:Array<Class<Dynamic>> = [
-            #if DISCORD_ALLOWED
             core.config.Discord,
-            #end
 
 			flixel.FlxG,
 			flixel.sound.FlxSound,
