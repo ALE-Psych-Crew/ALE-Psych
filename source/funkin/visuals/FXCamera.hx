@@ -29,6 +29,9 @@ class FXCamera extends ALECamera
 	public var zoomSpeed:Float = 0;
 	public var targetZoom:Float = 1;
 
+	public var angleSpeed:Float = 0;
+	public var targetAngle:Float = 0;
+
 	public var offset:FlxCallbackPoint;
 	public var position:FlxCallbackPoint;
 
@@ -37,6 +40,8 @@ class FXCamera extends ALECamera
 	var _zoomSpeedTween:FlxTween;
 
 	var _offsetTween:FlxTween;
+
+	var _angleTween:FlxTween;
 
 	var _zoomTween:FlxTween;
 
@@ -49,8 +54,10 @@ class FXCamera extends ALECamera
 		bopModulo = Conductor.beatsPerSection;
 		bopZoom = 1;
 		
+		angle = targetAngle = 0;
+
 		zoomSpeed = 1;
-		targetZoom = 1;
+		zoom = targetZoom = 1;
 
 		offset.x = offset.y = 0;
 
@@ -60,6 +67,7 @@ class FXCamera extends ALECamera
 		cancelPositionTween();
 		cancelZoomSpeedTween();
 		cancelOffsetTween();
+		cancelAngleTween();
 		cancelZoomTween();
 		cancelSpeedTween();
 	}
@@ -85,6 +93,9 @@ class FXCamera extends ALECamera
 
 		if (_zoomTween == null && zoomSpeed > 0)
 			zoom = MathUtil.fpsLerp(zoom, targetZoom, 0.05 * zoomSpeed);
+
+		if (_angleTween == null && angleSpeed > 0)
+			angle = MathUtil.fpsLerp(angle, targetAngle, angleSpeed);
 	}
 
 	public function updateTarget(_:FlxPoint)
@@ -135,6 +146,26 @@ class FXCamera extends ALECamera
 			initTween.cancel();
 
 		return FlxTween.tween(point, {x: x, y: y}, duration, callbackTweenOptions(endFunc, options));
+	}
+
+	public function tweenAngle(newAngle:Float, ?duration:Float, ?options:TweenOptions, ?permanent:Bool)
+	{
+		_angleTween = safeUniqueTween(_angleTween, angle, newAngle, (val) -> {
+			if (permanent ?? true)
+				targetAngle = val;
+
+			angle = val;
+		}, () -> { _angleTween = null; }, duration, options);
+	}
+
+	public function cancelAngleTween()
+	{
+		if (_angleTween != null)
+		{
+			_angleTween.cancel();
+
+			_angleTween = null;
+		}
 	}
 
 	public function tweenZoom(newZoom:Float, ?duration:Float, ?options:TweenOptions, ?permanent:Bool)
