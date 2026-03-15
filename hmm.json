@@ -82,7 +82,7 @@
             "name": "rulescript",
             "type": "git",
             "url": "https://github.com/Kriptel/RuleScript",
-            "ref": "97420a1906b8fc5e4cb10003f9968170cabf24e7"
+            "ref": "f1fe3944790b4c1c8ca329894f8205fda359d817"
         },
         {
             "name": "hxluajit",

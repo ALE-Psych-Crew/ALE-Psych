@@ -64,6 +64,11 @@ class Icon extends Bopper
     {
         super.beatHit(curBeat);
 
+        bop(curBeat);
+    }
+
+    public function bop(curBeat:Int)
+    {
         if (data.bopModulo > 0 && curBeat % data.bopModulo == 0)
         {
             scale.x = data.bopScale.x;
@@ -79,6 +84,15 @@ class Icon extends Bopper
     {
         super.update(elapsed);
 
+        updateScale();
+
+        updatePosition();
+
+        checkAnimation();
+    }
+
+    public function updateScale()
+    {
         if (data.lerp > 0)
         {
             scale.x = MathUtil.fpsLerp(scale.x, data.scale.x, data.lerp);
@@ -86,7 +100,10 @@ class Icon extends Bopper
 
             updateHitbox();
         }
+    }
 
+    public function updatePosition()
+    {
         if (bar != null)
         {
             final isRight:Bool = (type == 'player') == bar.rightToLeft;
@@ -98,8 +115,6 @@ class Icon extends Bopper
 
             flipX = ((type != 'player') == data.flipX) == bar.rightToLeft;
         }
-
-        checkAnimation();
     }
 
     var animationIndex:Int = -1;

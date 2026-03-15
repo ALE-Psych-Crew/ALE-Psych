@@ -68,7 +68,7 @@ class StrumLine extends FlxSpriteGroup
 
     public var characters:Array<Character>;
 
-    public function new(chartData:ALESongStrumLine, arrayNotes:Array<Dynamic>, speed:Float, characters:Array<Character>, ?onStackNote:Note -> Dynamic, ?postStackNote:Note -> Void)
+    public function new(chartData:ALESongStrumLine, arrayNotes:Array<Dynamic>, speed:Float, characters:Array<Character>, ?onStackNote:Note -> Bool)
     {
         super();
 
@@ -180,11 +180,8 @@ class StrumLine extends FlxSpriteGroup
         {
             final callbackResult:Dynamic = onStackNote == null ? null : onStackNote(note);
             
-            if (callbackResult != CoolVars.Function_Stop)
+            if (callbackResult)
                 notesStack.add(note);
-
-            if (postStackNote != null)
-                postStackNote(note);
         }
 
         this.totalStrums = strums.members.length;
@@ -240,8 +237,7 @@ class StrumLine extends FlxSpriteGroup
     public var spawnWindow:Float = 2000;
     public var despawnWindow:Float = 650;
 
-    public var onSpawnNote:Note -> Dynamic;
-    public var postSpawnNote:Note -> Void;
+    public var onSpawnNote:Note -> Bool;
 
     override public function update(elapsed:Float)
     {
@@ -253,13 +249,8 @@ class StrumLine extends FlxSpriteGroup
 
             final callbackResult:Dynamic = onSpawnNote == null ? null : onSpawnNote(note);
 
-            if (callbackResult != CoolVars.Function_Stop)
-            {
+            if (callbackResult)
                 notes.add(note);
-            }
-
-            if (postSpawnNote != null)
-                postSpawnNote(note);
         }
 
         var noteIndex:Int = 0;
@@ -345,7 +336,6 @@ class StrumLine extends FlxSpriteGroup
     }
 
     public var onHitNote:Note -> Rating -> Character -> Bool -> Dynamic;
-    public var postHitNote:Note -> Rating -> Character -> Bool -> Void;
 
     public function hitNote(note:Note, ?remove:Bool)
     {
@@ -371,9 +361,6 @@ class StrumLine extends FlxSpriteGroup
             if (remove)
                 removeNote(note);
         }
-
-        if (postHitNote != null)
-            postHitNote(note, rating, character, remove);
     }
 
     public var sickWindow:Int = 45;
@@ -398,7 +385,6 @@ class StrumLine extends FlxSpriteGroup
     }
 
     public var onMissNote:Note -> Character -> Dynamic;
-    public var postMissNote:Note -> Character -> Void;
 
     public function missNote(note:Note)
     {
@@ -412,13 +398,9 @@ class StrumLine extends FlxSpriteGroup
 
             character?.miss(note.type != 'note' && !character.data.sustainAnimation ? null : note.missAnimation);
         }
-
-        if (postMissNote != null)
-            postMissNote(note, character);
     }
 
     public var onRemoveNote:Note -> Character -> Dynamic;
-    public var postRemoveNote:Note -> Character -> Void;
 
     public function removeNote(note:Note)
     {
@@ -432,9 +414,6 @@ class StrumLine extends FlxSpriteGroup
             notes.remove(note, true);
             note.destroy();
         }
-
-        if (postRemoveNote != null)
-            postRemoveNote(note, character);
     }
 
     override function destroy()

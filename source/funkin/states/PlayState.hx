@@ -794,6 +794,8 @@ class PlayState extends ScriptState
 
                 final strumLine:StrumLine = new StrumLine(strl, notes[strlIndex] ?? [], CHART.speed, strlCharacters, stackNote);
 
+                strumLine.onSpawnNote = spawnNote;
+
                 strumLine.onHitNote = hitNote;
 
                 strumLine.onMissNote = missNote;
@@ -810,17 +812,34 @@ class PlayState extends ScriptState
 
     var lastStackedNote:Note = null;
 
-    function stackNote(note:Note)
+    function stackNote(note:Note):Bool
     {
         lastStackedNote = note;
 
-        if (scriptCallbackCall(ON, 'NoteStack', null, [note], []))
+        final result:Bool = scriptCallbackCall(ON, 'NoteStack', null, [note], []);
+
+        if (result)
         {
             if (!totalNoteTypes.contains(note.noteType))
                 totalNoteTypes.push(note.noteType);
         }
 
         scriptCallbackCall(POST, 'NoteStack', null, [note], []);
+
+        return result;
+    }
+
+    var lastSpawnedNote:Note = null;
+
+    function spawnNote(note:Note):Bool
+    {
+        lastSpawnedNote = note;
+
+        final result:Bool = scriptCallbackCall(ON, 'NoteSpawn', null, [note], []);
+
+        scriptCallbackCall(POST, 'NoteSpawn', null, [note], []);
+
+        return result;
     }
 
     var lastHitNote:Note = null;
@@ -1237,7 +1256,7 @@ class PlayState extends ScriptState
 
     var cameraTarget:Character;
 
-    function moveCamera(char:OneOfTwo<Character, Int>)
+    function moveCamera(char:OneOfTwo<Character, Int>, ?force:Bool = false)
     {
         var character:Character = null;
 
@@ -1251,12 +1270,13 @@ class PlayState extends ScriptState
                 character = cameraCharacters[songSection.camera[0]][songSection.camera[1]];
         }
 
+        if (character != null)
+            cameraTarget = character;
+
         if (scriptCallbackCall(ON, 'CameraMove', null, [character], []))
         {
-            if (shouldMoveCamera && character != null)
+            if ((shouldMoveCamera || force) && character != null)
             {
-                cameraTarget = character;
-
                 final pos:Point = getCharacterCamera(character);
 
                 cast(camGame, FXCamera).position.set(pos.x, pos.y);
