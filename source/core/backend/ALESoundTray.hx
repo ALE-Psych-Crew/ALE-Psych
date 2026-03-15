@@ -32,7 +32,7 @@ class ALESoundTray extends FlxSoundTray
 		if (_timer > 0)
 		{
 			_timer -= elapsed / 750;
-		} else if (Math.floor(y) > -height) {
+		} else if (targetY != -height) {
 			targetY = -height;
 
 			targetAlpha = 0;
@@ -77,5 +77,12 @@ class ALESoundTray extends FlxSoundTray
 		_label.text = label;
 
 		updateSize();
+		
+		if (FlxG.save.isBound)
+		{
+			FlxG.save.data.mute = FlxG.sound.muted;
+			FlxG.save.data.volume = FlxG.sound.volume;
+			FlxG.save.flush();
+		}
 	}
 }

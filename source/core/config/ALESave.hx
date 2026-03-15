@@ -100,7 +100,6 @@ class ALESave
 				if (Reflect.field(ClientPrefs.controls, field) != null)
 					Reflect.setField(ClientPrefs.controls, field, Reflect.field(controls.data.settings, field));
 
-
         if (custom.data.settings == null)
             ClientPrefs.custom = {};
         else            
