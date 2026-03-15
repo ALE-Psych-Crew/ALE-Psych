@@ -34,6 +34,8 @@ class Paths
 {
     @:unreflective public static var UNIQUE_MOD:Null<String> = null;
 
+    @:unreflective static var usedCommandMod:Bool = false;
+
     public static final assets:String = 'assets';
     public static final mods:String = 'mods';
     public static var mod:Null<String> = UNIQUE_MOD;
@@ -46,15 +48,22 @@ class Paths
         } else {
             UNIQUE_MOD = null;
 
-            var save:FlxSave = new FlxSave();
+            if (Sys.args()[0] != null && !usedCommandMod)
+            {
+                mod = Sys.args()[0].trim();
 
-            save.bind('ALEEngineData', utils.cool.FileUtil.getSavePath(false));
+                usedCommandMod = true;
+            } else {
+                var save:FlxSave = new FlxSave();
 
-            if (save != null)
-                mod = save.data.currentMod;
+                save.bind('ALEEngineData', utils.cool.FileUtil.getSavePath(false));
 
-            if (!FileSystem.exists(mods + '/' + mod))
-                mod = null;
+                if (save != null)
+                    mod = save.data.currentMod;
+
+                if (!FileSystem.exists(mods + '/' + mod))
+                    mod = null;
+            }
         }
     }
     
