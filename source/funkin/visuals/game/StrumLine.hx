@@ -282,7 +282,7 @@ class StrumLine extends FlxSpriteGroup
                 {
                     if (Math.abs(note.timeDistance) <= shitWindow)
                         if (keyJustPressed[note.data])
-                            if (notesToHit[note.data] == null || note.timeDistance < notesToHit[note.data].timeDistance)
+                            if (notesToHit[note.data] == null || note.time < notesToHit[note.data].time)
                                 notesToHit[note.data] = note;
                 } else {
                     if (!note.hit && note.timeDistance <= 0 && keyPressed[note.data] && note.parent.hit)

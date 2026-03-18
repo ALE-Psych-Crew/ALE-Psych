@@ -42,28 +42,41 @@ class Paths
 
     @:unreflective public static function initMod()
     {
-        if (FileSystem.exists('mods/UNIQUE_MOD.txt'))
-        {
-            UNIQUE_MOD = mod = File.getContent('mods/UNIQUE_MOD.txt').split('\n')[0].trim();
-        } else {
-            UNIQUE_MOD = null;
+        UNIQUE_MOD = mod = null;
 
-            if (Sys.args()[0] != null && !usedCommandMod)
-            {
-                mod = Sys.args()[0].trim();
+        final modCheckSteps:Array<Void -> Void> = [
+            () -> {
+                if (FileSystem.exists(mods + '/UNIQUE_MOD.txt'))
+                    UNIQUE_MOD = mod = File.getContent(mods + '/UNIQUE_MOD.txt').split('\n')[0].trim();
+            },
+            () -> {
+                if (Sys.args()[0] != null && !usedCommandMod)
+                {
+                    mod = Sys.args()[0].trim();
 
-                usedCommandMod = true;
-            } else {
-                var save:FlxSave = new FlxSave();
+                    usedCommandMod = true;
+                }
+            },
+            () -> {
+                final save:FlxSave = new FlxSave();
 
                 save.bind('ALEEngineData', utils.cool.FileUtil.getSavePath(false));
 
                 if (save != null)
                     mod = save.data.currentMod;
-
-                if (!FileSystem.exists(mods + '/' + mod))
-                    mod = null;
             }
+        ];
+
+        var curStep:Int = 0;
+
+        while (mod == null && curStep < modCheckSteps.length)
+        {
+            modCheckSteps[curStep]();
+                
+            if (!FileSystem.exists(mods + '/' + mod))
+                UNIQUE_MOD = mod = null;
+
+            curStep++;
         }
     }
     
