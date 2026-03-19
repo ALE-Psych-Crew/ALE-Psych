@@ -1,5 +1,7 @@
 package scripting.haxe;
 
+import scripting.ScriptConfig;
+
 import haxe.ds.StringMap;
 
 import rulescript.RuleScript;
@@ -72,13 +74,6 @@ class HScriptConfig
 
         ScriptedTypeUtil.resolveScript = function (name:String):Dynamic
         {
-            /*
-            final cl = RuleScriptedClassUtil.getClass(name);
-            
-            if (cl != null)
-                return cl;
-            */
-
             var path = Tools.parseTypePath(name);
 
             final module:Array<ModuleDecl> = ScriptedTypeUtil.resolveModule(path.modulePath());
@@ -95,82 +90,16 @@ class HScriptConfig
 		
         final curPackage:Map<String, Dynamic> = RuleScript.defaultImports[''];
 
-		var presetClasses:Array<Class<Dynamic>> = [
-            core.config.Discord,
-
-			flixel.FlxG,
-			flixel.sound.FlxSound,
-			flixel.FlxState,
-			flixel.FlxSprite,
-			flixel.FlxCamera,
-			flixel.math.FlxMath,
-			flixel.util.FlxTimer,
-			flixel.text.FlxText,
-			flixel.tweens.FlxEase,
-			flixel.tweens.FlxTween,
-			flixel.group.FlxSpriteGroup,
-			flixel.group.FlxGroup.FlxTypedGroup,
-
-			Array,
-			String,
-            StringTools,
-			Std,
-			Math,
-			Type,
-			Reflect,
-			Date,
-			DateTools,
-			Xml,
-			EReg,
-			Lambda,
-			IntIterator,
-
-			sys.io.Process,
-			haxe.ds.StringMap,
-			haxe.ds.IntMap,
-			haxe.ds.EnumValueMap,
-	
-			sys.io.File,
-			sys.FileSystem,
-			Sys,
-
-            utils.Conductor,
-
-            core.backend.MusicBeatState,
-            core.backend.MusicBeatSubState,
-
-            core.config.ClientPrefs,
-
-            utils.CoolUtil,
-            utils.CoolVars,
-
-            funkin.states.PlayState,
-			funkin.states.CustomState,
-			funkin.substates.CustomSubState,
-
-			funkin.visuals.ALECamera,
-            
-            Controls,
-
-			Paths,
-
-			api.DesktopAPI,
-			api.MobileAPI
-		];
-
-        for (theClass in presetClasses)
+        for (theClass in ScriptConfig.CLASSES)
 			curPackage.set(Type.getClassName(theClass).split('.').pop(), theClass);
 
-        var abstracts:Array<String> = [
-            'flixel.util.FlxColor',
-			'flixel.tweens.FlxTween.FlxTweenType'
-        ];
-
-        for (abst in abstracts)
+        for (abst in ScriptConfig.ABSTRACTS)
             curPackage.set(abst.trim().split('.').pop(), Abstracts.resolveAbstract(abst));
 
+		for (def in ScriptConfig.TYPEDEFS.keys())
+			curPackage.set(def, ScriptConfig.TYPEDEFS.get(def));
+
 		var presetVariables:StringMap<Dynamic> = [
-			'Json' => utils.ALEJson,
             'debugTrace' => debugTrace,
             'Function_Stop' => CoolVars.Function_Stop,
             'Function_Continue' => CoolVars.Function_Continue,

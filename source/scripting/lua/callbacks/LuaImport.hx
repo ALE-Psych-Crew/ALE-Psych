@@ -357,7 +357,7 @@ class LuaImport
 			
 			Lua.setglobal(state, trimmedName);
 		} else {
-			Sys.println('Lua Import Error: Unable to find class from path "$path".');
+			debugTrace('Type not Found: ' + path, ERROR);
 		}
 	}
     

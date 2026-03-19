@@ -11,6 +11,9 @@ import hxluajit.Lua;
 import hxluajit.LuaL;
 import hxluajit.Types;
 
+import scripting.lua.callbacks.LuaImport;
+import scripting.ScriptConfig;
+
 import haxe.ds.StringMap;
 
 import core.enums.StateType;
@@ -52,6 +55,12 @@ class LuaScript
 		current = this;
 
         new LuaPreset(this);
+
+        for (cls in ScriptConfig.CLASSES)
+            LuaImport.importClass(Type.getClassName(cls));
+        
+        for (def in ScriptConfig.TYPEDEFS.keys())
+            LuaImport.importClass(Type.getClassName(ScriptConfig.TYPEDEFS.get(def)), def);
 
         for (callbacks in (customCallbacks ?? []))
             Type.createInstance(callbacks, [this]);
