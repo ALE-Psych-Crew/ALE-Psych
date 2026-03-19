@@ -17,7 +17,9 @@ import core.enums.StateType;
 
 class LuaScript
 {
-    public var state:Null<RawPointer<Lua_State>>;
+    public static var current:LuaScript;
+
+    public var state:LuaStatePointer;
 
     public var type:StateType;
 
@@ -26,6 +28,12 @@ class LuaScript
     public var closed:Bool = false;
 
     public var variables:StringMap<Dynamic> = new StringMap();
+
+	public var specialVariables:Map<Int, Dynamic> = [-1 => null];
+
+	public var availableIndices:Array<Int> = [];
+
+    public var nextIndex:Int = 1;
 
     public function new(name:String, type:StateType, ?args:Array<Dynamic>, ?customCallbacks:Array<Class<LuaPresetBase>>)
     {
@@ -39,6 +47,10 @@ class LuaScript
         
         LuaCallbackHandler.applyID(state, name);
 
+		final lastLua:LuaScript = current;
+
+		current = this;
+
         new LuaPreset(this);
 
         for (callbacks in (customCallbacks ?? []))
@@ -46,7 +58,10 @@ class LuaScript
 
         LuaL.openlibs(state);
 
-        LuaUtils.doFile(state, name);
+        if (LuaL.dofile(state, name) != 0)
+            LuaError.errorHandler(LuaError.getMessage(state, -1));
+
+		current = lastLua;
 
         call('new', args ?? []);
     }
@@ -55,6 +70,10 @@ class LuaScript
     {
         if (closed)
             return CoolVars.Function_Continue;
+
+		final lastLua:LuaScript = current;
+
+		current = this;
 
         try
         {
@@ -96,6 +115,8 @@ class LuaScript
             debugTrace(error, ERROR);
         }
 
+		current = lastLua;
+
         return CoolVars.Function_Continue;
     }
 
@@ -104,10 +125,16 @@ class LuaScript
         if (closed)
             return;
 
+		final lastLua:LuaScript = current;
+
+		current = this;
+
         if (Reflect.isFunction(value))
             LuaCallbackHandler.addFunction(state, name, value);
         else
             LuaUtils.setVariable(state, name, value);
+        
+		current = lastLua;
     }
     
     public function close()

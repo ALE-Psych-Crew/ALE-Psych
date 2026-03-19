@@ -6,6 +6,8 @@ class LuaPreset
 {
     public function new(lua:LuaScript)
     {
+        new LuaImport(lua);
+
         new LuaSprite(lua);
 
         new LuaGlobal(lua);
