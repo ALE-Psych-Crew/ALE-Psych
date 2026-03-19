@@ -1,13 +1,16 @@
 name: ALE Psych Builds
+
 on:
   push:
   workflow_dispatch:
+
 jobs:
   build:
     name: Build ${{ matrix.platform }}
     permissions: write-all
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
+
     strategy:
       matrix:
         include:
@@ -19,10 +22,7 @@ jobs:
             extra_libs:
             pre_build_commands:
             artifact_path: export/release/windows/bin
-            cache_paths: |
-              .haxelib/
-              export/release/windows/haxe/
-              export/release/windows/obj/
+
           - platform: Windows x32
             os: windows-latest
             container:
@@ -31,10 +31,7 @@ jobs:
             extra_libs:
             pre_build_commands:
             artifact_path: export/32bit/windows/bin
-            cache_paths: |
-              .haxelib/
-              export/32bit/windows/haxe/
-              export/32bit/windows/obj/
+
           - platform: Linux
             os: ubuntu-22.04
             container:
@@ -45,10 +42,7 @@ jobs:
               sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
             pre_build_commands:
             artifact_path: export/release/linux/bin
-            cache_paths: |
-              .haxelib/
-              export/release/linux/haxe/
-              export/release/linux/obj/
+
           - platform: Android
             os: ubuntu-latest
             container:
@@ -61,10 +55,7 @@ jobs:
               haxelib run lime config JAVA_HOME $JAVA_HOME_17_X64
               haxelib run lime config ANDROID_SETUP true
             artifact_path: export/release/android/bin/app/build/outputs/apk/release/*.apk
-            cache_paths: |
-              .haxelib/
-              export/release/android/haxe/
-              export/release/android/obj/
+
           - platform: MacOS
             os: macos-15
             container:
@@ -72,10 +63,7 @@ jobs:
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             pre_build_commands:
             artifact_path: export/release/macos/bin
-            cache_paths: |
-              .haxelib/
-              export/release/macos/haxe/
-              export/release/macos/obj/
+
           - platform: MacOS x64
             os: macos-15-intel
             container:
@@ -83,10 +71,7 @@ jobs:
             build_cmd: haxelib run lime build macos --app-version="4.0.0-${{ github.run_id}}"
             pre_build_commands:
             artifact_path: export/release/macos/bin
-            cache_paths: |
-              .haxelib/
-              export/release/macos/haxe/
-              export/release/macos/obj/
+
     steps:
       - name: Pull the New Commit
         uses: actions/checkout@v4.1.7
@@ -100,14 +85,6 @@ jobs:
       - name: Custom Haxe Setup
         if: ${{ matrix.haxe_setup }}
         run: ${{ matrix.haxe_setup }}
-
-      - name: Restore Build Cache
-        uses: actions/cache@v4
-        with:
-          key: cache-build-${{ matrix.platform }}
-          path: ${{ matrix.cache_paths }}
-          restore-keys: |
-            cache-build-${{ matrix.platform }}
 
       - name: Install Main Libraries
         run: |
@@ -132,33 +109,3 @@ jobs:
           name: ${{ matrix.platform }} Build
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error
-
-      # We're going to delete the old build data so we can save the new data!
-      - name: Clear Old Cache
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const key = "cache-build-${{ matrix.platform }}"
-            const caches = await github.rest.actions.getActionsCacheList({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            })
-            for (const cache of caches.data.actions_caches) {
-              if (cache.key === key) {
-                console.log(`Clearing ${cache.key}...`)
-                await github.rest.actions.deleteActionsCacheById({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  cache_id: cache.id,
-                })
-                console.log("Cache cleared.")
-              }
-            }
-
-      - name: Upload New Cache
-        uses: actions/cache@v4
-        with:
-          key: cache-build-${{ matrix.platform }}
-          path: ${{ matrix.cache_paths }}
-          restore-keys: |
-            cache-build-${{ matrix.platform }}
