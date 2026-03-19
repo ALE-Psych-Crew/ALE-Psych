@@ -180,13 +180,14 @@ class LuaImport
 	{
 		final lua = LuaScript.current;
 		final state = lua.state;
-		final location = lua.availableIndices.length > 0 ? lua.availableIndices.shift() : lua.nextIndex;
+		final location:Int = lua.availableIndices.length > 0 ? lua.availableIndices.shift() : lua.nextIndex;
 
+		// Maye just use `if (lua.nextIndex == location) lua.nextIndex++;`?
 		lua.nextIndex += untyped __cpp__("{0}", lua.nextIndex == location);
 		lua.specialVariables.set(location, val); 
 
 		Lua.newtable(state);
-			final tableIndex = Lua.gettop(state);
+		final tableIndex = Lua.gettop(state);
 
 		Lua.pushstring(state, '__parent_id');
 		Lua.pushinteger(state, parentIndex);
