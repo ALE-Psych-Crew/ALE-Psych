@@ -4,9 +4,9 @@ import funkin.substates.ModsMenuSubState;
 
 import funkin.states.AdminState;
 
-import winapi.WindowsCPP;
-
 import flixel.FlxState;
+
+import api.DesktopAPI;
 
 import core.Main;
 
@@ -21,7 +21,7 @@ class MainState extends FlxState
         Main.postResetConfig();
         
 		FlxTimer.wait(0.0001, () -> {
-            if (WindowsCPP.isRunningAsAdmin() && !WindowsCPP.isRunningInWine())
+            if (DesktopAPI.isRunningAsAdministrator() && !DesktopAPI.isRunningInWine())
             {
                 CoolUtil.switchState(new AdminState());
             } else if (showedModMenu) {
