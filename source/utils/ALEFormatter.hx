@@ -81,7 +81,7 @@ class ALEFormatter
                             note[1] % 4,
                             note[2],
                             note[3] == 'GF Sing' && (section.gfSection || (!section.mustHitSection && onlyGF)) && note[1] < 4 ? '' : (note[3] ?? ''),
-                            onlyGF ? note[3] == 'GF Sing' || (section.gfSection || (!section.mustHitSection && onlyGF)) && note[1] < 4 ? 0 : 1 : note[3] == 'GF Sing' || section.gfSection && note[1] < 4 ? 0 : (section.mustHitSection && note[1] < 4) || (!section.mustHitSection && note[1] > 3) ? 2 : 1,
+                            onlyGF ? section.mustHitSection && note[1] > 3 || !section.mustHitSection && note[1] < 4 || note[3] == 'GF Sing' ? 0 : 1 : note[3] == 'GF Sing' || section.gfSection && note[1] < 4 ? 0 : (section.mustHitSection && note[1] < 4) || (!section.mustHitSection && note[1] > 3) ? 2 : 1,
                             0
                         ];
 
