@@ -2,9 +2,7 @@ package scripting.lua.callbacks;
 
 import api.DesktopAPI;
 
-#if WINDOWS_API
 import winapi.WindowsAPI.MessageBoxIcon;
-#end
 
 class LuaDesktopAPI extends LuaPresetBase
 {
@@ -12,7 +10,7 @@ class LuaDesktopAPI extends LuaPresetBase
 	{
 		super(lua);
 
-		set('showMessageBox', function(caption:String, message:String, ?icon:#if WINDOWS_API MessageBoxIcon #else Int #end)
+		set('showMessageBox', function(caption:String, message:String, ?icon:MessageBoxIcon)
 		{
 			DesktopAPI.showMessageBox(caption, message, icon);
 		});
