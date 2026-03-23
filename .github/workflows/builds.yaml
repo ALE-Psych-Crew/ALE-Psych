@@ -40,6 +40,7 @@ jobs:
             extra_libs: |
               sudo apt-get update
               sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
+              sudo apt install libxcb1-dev libx11-xcb-dev
             pre_build_commands:
             artifact_path: export/release/linux/bin
 
