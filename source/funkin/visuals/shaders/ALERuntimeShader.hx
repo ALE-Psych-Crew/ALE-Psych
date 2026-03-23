@@ -8,11 +8,13 @@ class ALERuntimeShader extends FlxRuntimeShader
 {
     public var shaderName:String = '';
 
-    public function new (?shaderName:String)
+    public function new (?shaderName:String, ?forced:Bool = false)
     {
         this.shaderName = shaderName;
+		
+		final allowed:Bool = ClientPrefs.data.shaders || forced;
         
-        super(Paths.exists('shaders/' + shaderName + '.frag') ? Paths.getContent('shaders/' + shaderName + '.frag') : null, Paths.exists('shaders/' + shaderName + '.vert') ? Paths.getContent('shaders/' + shaderName + '.vert') : null);
+        super(Paths.exists('shaders/' + shaderName + '.frag') && allowed ? Paths.getContent('shaders/' + shaderName + '.frag') : null, Paths.exists('shaders/' + shaderName + '.vert') && allowed ? Paths.getContent('shaders/' + shaderName + '.vert') : null);
     }
 
 	override function __createGLProgram(vertexSource:String, fragmentSource:String):GLProgram

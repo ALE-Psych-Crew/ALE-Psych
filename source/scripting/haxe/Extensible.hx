@@ -91,6 +91,7 @@ class ScriptFXCamera extends FXCamera implements RuleScriptedClass {}
 class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
 
 class ScriptALERuntimeShader extends ALERuntimeShader implements RuleScriptedClass {}
+class ScriptFXShader extends FXShader implements RuleScriptedClass {}
 
 // ALE UI
 
