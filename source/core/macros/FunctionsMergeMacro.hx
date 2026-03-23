@@ -7,8 +7,20 @@ import haxe.macro.Type;
 
 class FunctionsMergeMacro
 {
-	public static function build(utils:Array<String>):Array<Field>
+	public static function build(utils:Array<String>, ?renameArray:Array<String>):Array<Field>
 	{
+		final rename:Map<String, String> = new Map();
+
+		if (renameArray != null)
+		{
+			for (str in renameArray)
+			{
+				final parsedStr:Array<String> = str.split('::');
+
+				rename.set(parsedStr[0], parsedStr[1]);
+			}
+		}
+
         final list:Array<Type> = utils.map(t -> Context.getType(t));
 
 		var fields:Array<Field> = Context.getBuildFields();
@@ -27,11 +39,13 @@ class FunctionsMergeMacro
 
 						var fieldData:Array<String> = type.module.split('.').concat([type.name, field.name]);
 
+						final newName:String = rename.exists(field.name) ? rename.get(field.name) : field.name;
+
 						switch (field.kind)
 						{
 							case FVar(read, write):
 								fields.push({
-									name: field.name,
+									name: newName,
 									doc: field.doc,
 									access: [APublic, AStatic],
 									kind: FVar(null, macro $p{fieldData}),
@@ -40,7 +54,7 @@ class FunctionsMergeMacro
 
 							case FMethod(k):
 								fields.push({
-									name: field.name,
+									name: newName,
 									doc: field.doc,
 									access: [APublic, AStatic],
 									kind: FProp('get', 'never', Context.toComplexType(field.type)),
@@ -48,7 +62,7 @@ class FunctionsMergeMacro
 								});
 
 								fields.push({
-									name: 'get_' + field.name,
+									name: 'get_' + newName,
 									doc: field.doc,
 									access: [AInline, AStatic],
 									kind: FFun({

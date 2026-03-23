@@ -75,7 +75,10 @@
 
 	<haxelib name="hxdiscord_rpc" if="DISCORD_ALLOWED"/>
 
-	<haxelib name="sl-windows-api" if="WINDOWS_API"/>
+	<haxelib name="sl-windows-api"/>
+	<haxelib name="window-modcharting"/>
+
+	<define name="WM_ENGINE" value="ALE_PSYCH"/>
 
 	<haxelib name="extension-androidtools" if="android"/>
 	<haxelib name="extension-orientation" if="mobile"/>
@@ -105,6 +108,8 @@
 	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER"/>
 	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER"/>
 	<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER"/>
+
+	<define name="HX_WINDOWS" if="WINDOWS_API"/>
 	
 	<section if="cpp">
 		<setenv name="HAXEPATH" value="./"/>

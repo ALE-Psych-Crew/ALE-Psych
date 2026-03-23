@@ -92,6 +92,15 @@ class ImportsMacro
             'haxe.sys',
             'haxe.sys.io',
             'haxe.runtime',
+
+            'windowmodcharting',
+            'windowmodcharting.modifiers',
+            'windowmodcharting.modifiers.modifiers',
+            'windowmodcharting.modifiers.modifiers.math',
+            'windowmodcharting.backend',
+            'windowmodcharting.backend.window',
+            'windowmodcharting.engineImplementation',
+            'windowmodcharting.framework',
             #end
 
             'funkin.visuals.objects',
