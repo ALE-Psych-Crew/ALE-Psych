@@ -31,21 +31,26 @@ class ALEFormatter
         {
             var psychSong:PsychSong = getPsychSong(json);
 
+            final onlyGF:Bool = psychSong.gfVersion == psychSong.player2;
+
             result = {
                 events: psychSong.events,
                 strumLines: [
                     for (i in 0...3)
                     {
+                        if (i != 1 || !onlyGF)
                         {
-                            file: 'default',
-                            position: {
-                                x: 92,
-                                y: 50
-                            },
-                            rightToLeft: i == 1,
-                            visible: i != 0,
-                            characters: [[psychSong.gfVersion, psychSong.player2, psychSong.player1][i]],
-                            type: cast ['extra', 'opponent', 'player'][i]
+                            {
+                                file: 'default',
+                                position: {
+                                    x: 92,
+                                    y: 50
+                                },
+                                rightToLeft: i == 1,
+                                visible: i != 0,
+                                characters: [[psychSong.gfVersion, psychSong.player2, psychSong.player1][i]],
+                                type: cast ['extra', 'opponent', 'player'][i]
+                            }
                         }
                     }
                 ],
@@ -62,7 +67,7 @@ class ALEFormatter
             {
                 var curSection:ALESongSection = {
                     notes: [],
-                    camera: [section.gfSection ? 0 : section.mustHitSection ? 2 : 1, 0],
+                    camera: onlyGF ? [section.mustHitSection ? 1 : 0] : [section.gfSection ? 0 : section.mustHitSection ? 2 : 1, 0],
                     bpm: section.changeBPM == true ? section.bpm : psychSong.bpm,
                     changeBPM: section.changeBPM ?? false
                 };
@@ -75,8 +80,9 @@ class ALEFormatter
                             note[0],
                             note[1] % 4,
                             note[2],
-                            note[3] == 'GF Sing' && section.gfSection && note[1] < 4 ? '' : (note[3] ?? ''),
-                            [note[3] == 'GF Sing' || section.gfSection && note[1] < 4 ? 0 : (section.mustHitSection && note[1] < 4) || (!section.mustHitSection && note[1] > 3) ? 2 : 1, 0]
+                            note[3] == 'GF Sing' && (section.gfSection || (!section.mustHitSection && onlyGF)) && note[1] < 4 ? '' : (note[3] ?? ''),
+                            onlyGF ? note[3] == 'GF Sing' || (section.gfSection || (!section.mustHitSection && onlyGF)) && note[1] < 4 ? 0 : 1 : note[3] == 'GF Sing' || section.gfSection && note[1] < 4 ? 0 : (section.mustHitSection && note[1] < 4) || (!section.mustHitSection && note[1] > 3) ? 2 : 1,
+                            0
                         ];
 
                         curSection.notes.push(arrayNote);

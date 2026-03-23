@@ -744,14 +744,14 @@ class PlayState extends ScriptState
                         if (note[0] < startTime)
                             continue;
 
-                        notes[note[4][0]] ??= [];
+                        notes[note[4]] ??= [];
 
-                        notes[note[4][0]].push([
+                        notes[note[4]].push([
                             note[0],
                             note[1],
                             note[2],
                             note[3],
-                            note[4][1],
+                            note[5],
                             Conductor.stepCrochet
                         ]);
                     }
@@ -1003,30 +1003,34 @@ class PlayState extends ScriptState
 
             icons = new FlxTypedGroup<Icon>();
 
-            playerIcon = new Icon(PLAYER);
-            addIcon(playerIcon);
+            var usedGF:Bool = false;
 
-            opponentIcon = new Icon(OPPONENT);
+            function tryIconSetup(icon:Icon, target:Character, bar:FlxSprite)
+            {
+                target ??= gf;
+
+                if (target != null && !(target == gf && usedGF))
+                {
+                    bar.color = CoolUtil.colorFromString(target.data.barColor);
+                    icon.change(target.data.icon);
+                    
+                    if (target == gf)
+                        usedGF = true;
+                } else {
+                    icon.change('bf');
+                    bar.color = FlxColor.BLACK;
+                    icon.visible = false;
+                }
+            }
+
+            opponentIcon = new Icon(gf != null && dad == null ? EXTRA : OPPONENT);
             addIcon(opponentIcon);
+            tryIconSetup(opponentIcon, dad, healthBar.rightBar);
 
-            if (dad != null)
-            {
-                healthBar.rightBar.color = CoolUtil.colorFromString(dad.data.barColor);
-                opponentIcon.change(dad.data.icon);
-            } else {
-                healthBar.rightBar.color = FlxColor.BLACK;
-                opponentIcon.visible = false;
-            }
-
-            if (boyfriend != null)
-            {
-                healthBar.leftBar.color = CoolUtil.colorFromString(boyfriend.data.barColor);
-                playerIcon.change(boyfriend.data.icon);
-            } else {
-                healthBar.leftBar.color = FlxColor.BLACK;
-                playerIcon.visible = false;
-            }
-
+            playerIcon = new Icon(gf != null && bf == null ? EXTRA : PLAYER);
+            addIcon(playerIcon);
+            tryIconSetup(playerIcon, bf, healthBar.leftBar);
+            
             scoreText = new FlxText(0, healthBar.y + 40, FlxG.width, 'Score      Misses      Rating');
             scoreText.setFormat(Paths.font('vcr.ttf'), 17, FlxColor.WHITE, 'center', FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
             scoreText.borderSize = 1.25;
@@ -1234,7 +1238,7 @@ class PlayState extends ScriptState
         {
             char.change(newChar);
 
-            if (char == boyfriend)
+            if (char == bf)
             {
                 playerIcon.change(char.data.icon);
 
@@ -1474,6 +1478,10 @@ class PlayState extends ScriptState
 
     var boyfriend(get, never):Character;
     function get_boyfriend():Character
+        return players.members[0];
+
+    var bf(get, never):Character;
+    function get_bf():Character
         return players.members[0];
 
     var gf(get, never):Character;
