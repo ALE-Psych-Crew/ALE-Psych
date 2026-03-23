@@ -7,7 +7,8 @@ package api;
 	],
 	[
 		'allocConsole::showConsole',
-		'sendWindowsNotification::sendNotification'
+		'sendWindowsNotification::sendNotification',
+		'resetWindowsFuncs::reset'
 	]
 ))
 class DesktopAPI 

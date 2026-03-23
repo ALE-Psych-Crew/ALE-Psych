@@ -111,9 +111,50 @@ class Main extends Sprite
 
 	@:unreflective function preOnceConfig()
 	{
+		DesktopAPI.reset();
+
 		#if CRASH_HANDLER
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, 
+			(e) -> {
+				var errMsg:String = '';
+
+				final callStack:Array<StackItem> = CallStack.exceptionStack(true);
+
+				for (stackItem in callStack)
+				{
+					switch (stackItem)
+					{
+						case FilePos(s, file, line, column):
+							errMsg += file + " (line " + line + ")\n";
+						default:
+							Sys.println(stackItem);
+					}
+				}
+
+				errMsg += "\nUncaught Error: " + e.error;
+			
+				#if WINDOWS_API
+				DesktopAPI.showMessageBox('ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
+				#else
+				Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
+				#end
+
+				Sys.println(errMsg);
+
+				Discord.destroy();
+
+				DesktopAPI.reset();
+
+				Sys.exit(1);
+			}
+		);
 		#end
+
+		Lib.application.window.onClose.add(
+			() -> {
+				DesktopAPI.reset();
+			}
+		);
 
 		#if android
 		final androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/.' + Lib.application?.meta?.get('file');
@@ -184,9 +225,7 @@ class Main extends Sprite
 
     @:unreflective public static function preResetConfig()
     {
-		#if WINDOWS_API
-		winapi.WindowsAPI.resetWindowsFuncs();
-		#end
+		DesktopAPI.reset();
 
 		#if desktop
 		Mouse.cursor = ARROW;
@@ -326,39 +365,4 @@ class Main extends Sprite
 
 		MobileAPI.setOrientation(LANDSCAPE);
     }
-
-	function onCrash(e:UncaughtErrorEvent):Void
-	{
-		var errMsg:String = "";
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-
-		for (stackItem in callStack)
-		{
-			switch (stackItem)
-			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
-			}
-		}
-
-		errMsg += "\nUncaught Error: " + e.error;
-	
-		#if WINDOWS_API
-		DesktopAPI.showMessageBox('ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
-		#else
-		Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
-		#end
-
-		Sys.println(errMsg);
-
-		Discord.destroy();
-
-		#if WINDOWS_API
-		winapi.WindowsAPI.resetWindowsFuncs();
-		#end
-
-		Sys.exit(1);
-	}
 }
