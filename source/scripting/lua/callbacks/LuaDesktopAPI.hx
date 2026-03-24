@@ -10,9 +10,9 @@ class LuaDesktopAPI extends LuaPresetBase
 	{
 		super(lua);
 
-		set('showMessageBox', function(caption:String, message:String, ?icon:MessageBoxIcon)
+		set('showMessageBox', function(message:String, caption:String, ?icon:MessageBoxIcon)
 		{
-			DesktopAPI.showMessageBox(caption, message, icon);
+			DesktopAPI.showMessageBox(message, caption, icon);
 		});
 
 		set('setWindowBorderColor', function(r:Int, g:Int, b:Int)

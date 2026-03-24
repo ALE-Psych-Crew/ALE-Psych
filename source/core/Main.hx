@@ -134,7 +134,7 @@ class Main extends Sprite
 				errMsg += "\nUncaught Error: " + e.error;
 			
 				#if WINDOWS_API
-				DesktopAPI.showMessageBox('ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', errMsg, ERROR);
+				DesktopAPI.showMessageBox(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', ERROR);
 				#else
 				Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
 				#end
