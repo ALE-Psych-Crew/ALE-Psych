@@ -1124,6 +1124,18 @@ class PlayState extends ScriptState
     public function addBehindGroup(group:FlxTypedGroup<Dynamic>, obj:FlxBasic)
         insert(members.indexOf(group.members[0]), obj);
 
+    inline public function addAheadOpponents(obj:FlxBasic)
+        addAheadGroup(opponents, obj);
+
+    inline public function addAheadPlayers(obj:FlxBasic)
+        addAheadGroup(players, obj);
+
+    inline public function addAheadExtras(obj:FlxBasic)
+        addAheadGroup(extras, obj);
+
+    public function addAheadGroup(group:FlxTypedGroup<Dynamic>, obj:FlxBasic)
+        insert(members.indexOf(group.members[group.members.length - 1]) + 1, obj);
+
     function addStrumLine(strumLine:StrumLine)
     {
         if (scriptCallbackCall(ON, 'StrumLineAdd', null, [strumLine], []))
@@ -1512,4 +1524,13 @@ class PlayState extends ScriptState
 
     inline public function addBehindGF(obj:FlxBasic)
         addBehindExtras(obj);
+
+    inline public function addAheadDad(obj:FlxBasic)
+        addAheadOpponents(obj);
+
+    inline public function addAheadBF(obj:FlxBasic)
+        addAheadPlayers(obj);
+
+    inline public function addAheadGF(obj:FlxBasic)
+        addAheadExtras(obj);
 }
