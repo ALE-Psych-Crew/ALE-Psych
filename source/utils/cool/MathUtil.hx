@@ -1,5 +1,7 @@
 package utils.cool;
 
+import openfl.Vector;
+
 class MathUtil
 {
 	public static function floorDecimal(value:Float, decimals:Int):Float
@@ -26,4 +28,10 @@ class MathUtil
 
 	public static function snapNumber(og:Float, mod:Float):Float
 		return Math.floor(og / mod) * mod;
+
+	public static function vectorFromFloatArray(arr:Array<Float>):Vector<Float>
+		return Vector.ofArray(arr);
+	
+	public static function vectorFromIntArray(arr:Array<Int>):Vector<Int>
+		return Vector.ofArray(arr);
 }
