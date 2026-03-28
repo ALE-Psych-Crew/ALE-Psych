@@ -89,5 +89,12 @@ class HScript extends ALERuleScript
 
 		for (insVar in instanceVariables.keys())
 			set(insVar, instanceVariables.get(insVar));
+
+		final globalVariables:StringMap<Dynamic> = [
+			'window' => openfl.Lib.application.window
+		];
+
+		for (gloVar in globalVariables.keys())
+			set(gloVar, globalVariables.get(gloVar));
 	}
 }
