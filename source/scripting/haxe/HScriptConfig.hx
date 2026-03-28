@@ -4,6 +4,7 @@ import scripting.ScriptConfig;
 
 import haxe.ds.StringMap;
 
+#if HSCRIPT_ALLOWED
 import rulescript.RuleScript;
 import rulescript.scriptedClass.RuleScriptedClassUtil;
 import rulescript.scriptedClass.RuleScriptedClass;
@@ -18,10 +19,12 @@ import hscript.Expr;
 using rulescript.Tools;
 
 @:access(rulescript.types.ScriptedTypeUtil)
+#end
 class HScriptConfig
 {
 	public static function config()
 	{
+        #if HSCRIPT_ALLOWED
 		ScriptedTypeUtil.resolveModule = function (name:String):Array<ModuleDecl>
         {
             var path:Array<String> = name.split('.');
@@ -110,5 +113,6 @@ class HScriptConfig
 
 		for (preVar in presetVariables.keys())
 			curPackage.set(preVar, presetVariables.get(preVar));
+        #end
 	}
 }

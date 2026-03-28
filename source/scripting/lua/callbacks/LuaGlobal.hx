@@ -151,6 +151,7 @@ class LuaGlobal extends LuaPresetBase
         }
     }
 
+    #if HSCRIPT_ALLOWED
     function globalFunctionHScript(name:String)
     {
         for (script in game.hScripts)
@@ -161,6 +162,7 @@ class LuaGlobal extends LuaPresetBase
             }));
         }  
     }
+    #end
     
     function globalVariableLua(tag:String)
     {
@@ -179,6 +181,7 @@ class LuaGlobal extends LuaPresetBase
         }
     }
 
+    #if HSCRIPT_ALLOWED
     function globalVariableHScript(tag:String)
     {
         final object:Dynamic = getTag(tag);
@@ -190,4 +193,5 @@ class LuaGlobal extends LuaPresetBase
             if (!script.variables.exists(tag))
                 script.set(tag, object);
     }
+    #end
 }

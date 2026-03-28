@@ -26,14 +26,15 @@ interface IScriptState
     public var hScripts:Array<HScript>;
     
     public var hScriptsContext:Context;
+
+    public var hsCustomCallbacks:Array<Class<HScriptPresetBase>>;
     #end
 
     #if LUA_ALLOWED
     public var luaScripts:Array<LuaScript>;
-    #end
 
-    public var hsCustomCallbacks:Array<Class<HScriptPresetBase>>;
     public var luaCustomCallbacks:Array<Class<LuaPresetBase>>;
+    #end
 
     public function loadScript(path:String, ?hsArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Void;
     public function loadHScript(path:String, ?args:Array<Dynamic>):Void;
