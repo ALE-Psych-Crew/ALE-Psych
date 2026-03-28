@@ -1,10 +1,11 @@
 package core.structures;
 
-import core.enums.DebugFieldTextLineType;
+import core.enums.DebugLineType;
 
-typedef DebugFieldTextLine = {
-    var type:DebugFieldTextLineType;
+typedef JsonDebugLine = {
+    // > JsonBase,
+    var type:DebugLineType;
     @:optional var value:String;
     @:optional var path:String;
     @:optional var variable:String;
-}
+};

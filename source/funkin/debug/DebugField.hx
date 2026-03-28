@@ -1,130 +1,81 @@
 package funkin.debug;
 
-import core.structures.DebugFieldText;
-import core.structures.DebugFieldTextLine;
-
 import openfl.display.Sprite;
-import openfl.display.Bitmap;
-import openfl.display.BitmapData;
-
+import openfl.text.TextField;
 import openfl.text.TextFormat;
-
-import flixel.util.FlxColor;
 
 class DebugField extends Sprite
 {
-    public var labels:Array<DebugText> = [];
+    final label:TextField;
 
-    public var bg:Bitmap;
+    public var textFunction:Void -> String;
 
-    public function new(infos:Array<DebugFieldText>)
+    public function new(?textFunction:Void -> String)
     {
         super();
 
-        bg = new Bitmap(new BitmapData(1, 1, FlxColor.BLACK));
-        addChild(bg);
-        bg.alpha = 0.5;
+        this.textFunction = textFunction ?? () -> '';
 
-        for (field in infos)
-            createLabel(getText(field.lines), field.size, field.color is String ? FlxColor.fromString(field.color) : field.color, field.offset);
-        
-        updateBG();
-    }
-
-    function getText(data:Array<DebugFieldTextLine>):Void -> String
-    {
-        var funcs:Array<Void -> String> = [];
-
-        for (field in data)
-        {
-            switch (field.type)
-            {
-                case TEXT:
-                    final val = field.value;
-                    
-                    funcs.push(() -> val);
-                case VARIABLE:
-                    funcs.push(getFunction(field.path, field.variable));
-            }
-        }
-
-        return () -> {
-            var str:String = '';
-
-            for (func in funcs)
-                str += func();
-
-            return str;
-        };
-    }
-
-    function getFunction(daClass:String, daVar:String):Void -> String
-    {
-        if (daClass.length <= 0)
-            return () -> '';
-
-        var obj:Dynamic = Type.resolveClass(daClass);
-
-        if (obj == null)
-            return function() return daClass + '.' + daVar;
-        
-        return () -> getRecursiveProperty(obj, daVar.split('.'));
-    }
-
-    function getRecursiveProperty(instance:Dynamic, split:Array<String>):Dynamic
-    {
-        var result:Dynamic = instance;
-
-        for (part in split)
-        {
-            result = Reflect.getProperty(result, part);
-
-            if (result == null)
-                return null;
-        }
-
-        return result;
-    }
-
-    var offset:Float = 2.5;
-
-    function createLabel(func:Void -> String, ?size:Int = 12, ?color:FlxColor = FlxColor.WHITE, ?off:Float = 0)
-    {
-        var label:DebugText = new DebugText(func);
-        label.defaultTextFormat = new TextFormat(Paths.font('jetbrains.ttf'), size, color);
-        label.x = 10;
-        label.y = offset + off;
+        label = new TextField();
+        label.selectable = label.mouseEnabled = false;
+        label.autoSize = LEFT;
+        label.multiline = true;
+        label.defaultTextFormat = new TextFormat(Paths.font('poppins.ttf'), 12, FlxColor.WHITE);
+        label.x = 5;
+        label.y = 5;
 
         addChild(label);
 
-        labels.push(label);
+        showBG = true;
 
-        offset += label.height + off;
+        update();
     }
 
-    public function updateBG()
+    var currentWidth:Float = 0;
+    var currentHeight:Float = 0;
+
+    public var showBG(default, set):Bool;
+    function set_showBG(value:Bool):Bool
     {
-        var scaleX:Float = 0;
+        showBG = value;
 
-        for (label in labels)
-            if (label.width > scaleX)
-                scaleX = label.width;
+        if (!showBG)
+            graphics.clear();
+        else
+            update(true);
 
-        scaleX += 20;
-
-        var scaleY:Float = offset + 10;
-
-        bg.scaleX = scaleX;
-        bg.scaleY = scaleY;
+        return showBG;
     }
 
-    override function __enterFrame(time:Int)
-    {   
-        if (!visible)
-            return;
+    public function update(?drawBG:Bool = false)
+    {
+        label.text = textFunction();
 
-        super.__enterFrame(time);
+        if (label.width != currentWidth || label.height != currentHeight || drawBG)
+        {
+            currentWidth = label.width;
+            currentHeight = label.height;
 
-        updateBG();
+            if (showBG)
+            {
+                graphics.clear();
+                graphics.lineStyle(2, FlxColor.WHITE, 0.5);
+                graphics.beginFill(FlxColor.BLACK, 0.5);
+                graphics.drawRect(0, 0, currentWidth + 10, currentHeight + 10);
+                graphics.endFill();
+            }
+        }
+    }
+
+    public function destroy()
+    {
+        for (i in 0...numChildren)
+        {
+            final child = getChildAt(i);
+
+            removeChild(child);
+        }
+        
+        graphics.clear();
     }
 }

@@ -2,166 +2,207 @@ package funkin.debug;
 
 import openfl.display.Sprite;
 
-import core.structures.DebugFieldText;
+import cpp.vm.Gc;
 
-import openfl.events.KeyboardEvent;
+import flixel.util.FlxStringUtil;
 
-import utils.cool.KeyUtil;
+import core.structures.JsonDebugLine;
 
 class DebugCounter extends Sprite
 {
-    @:unreflective var fps:DebugField;
+    public final fpsField:DebugField;
 
-    var fields:Array<DebugField> = [];
-
-    public function new(data:Array<Array<DebugFieldText>>)
+    public function new(?extraFields:Array<Array<JsonDebugLine>>)
     {
         super();
-		
-		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
 
-        FlxG.stage.addEventListener('activate', onFocus);
-        FlxG.stage.addEventListener('deactivate', onUnFocus);
+        x = 10;
+        y = 10;
 
-        fps = new FPSField();
-        addField(fps);
+        var fps:Float = 0;
 
-        curHeight = fps.bg.scaleY;
+        var memory:Float = 0;
+        var memoryString:String = '';
 
-        for (field in [new EngineField(), new ConductorField(), new FlixelField()].concat([for (field in data) new DebugField(field)]))
-            addField(field);
+        var memoryPeak:Float = 0;
+        var memoryPeakString:String = '';
 
-        switchMode(0);
+        fpsField = addField(() -> {
+            fps = CoolUtil.fpsLerp(fps, FlxG.elapsed <= 0 ? 0 : 1 / FlxG.elapsed, 0.25);
+
+            final curMemory:Float = Gc.memInfo64(Gc.MEM_INFO_USAGE);
+
+            if (memory != curMemory)
+            {
+                memory = curMemory;
+
+                memoryString = FlxStringUtil.formatBytes(memory);
+            }
+
+            if (memory > memoryPeak)
+            {
+                memoryPeak = memory;
+
+                memoryPeakString = FlxStringUtil.formatBytes(memoryPeak);
+            }
+
+            return 'FPS: ' + Math.floor(fps) + '\nMEM: ' + memoryString + ' / ' + memoryPeakString + '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.data.developerMode ? ' - Developer Mode' : '');
+        });
+
+        addField(() -> {
+            return 'Current Version: ' + CoolVars.engineVersion + '\nOnline Version: ' + CoolVars.onlineVersion + '\nCommit: ' + CoolVars.GITHUB_COMMIT + '\nTimestamp: ' + CoolVars.BUILD_TIMESTAMP;
+        });
+
+        addField(() -> {
+            return 'Song Position: ' + Math.floor(Conductor.songPosition) + '\nBPM: ' + Conductor.bpm + '\nStep: ' + Conductor.curStep + '\nBeat: ' + Conductor.curBeat + '\nSection: ' + Conductor.curSection + '\nTime Signature: ' + Conductor.beatsPerSection + ' / ' + Conductor.stepsPerBeat;
+        });
+
+        addField(() -> {
+            return (FlxG.state is CustomState ? 'Custom State: ' + cast(FlxG.state, CustomState).scriptName : 'State: ' +  Type.getClassName(Type.getClass(FlxG.state))) +
+                '\n' + (FlxG.state.subState is CustomSubState ? 'Custom SubState: ' + cast(FlxG.state.subState, CustomSubState).scriptName : 'SubState: ' + Type.getClassName(Type.getClass(FlxG.state.subState))) +
+                '\nObjects: ' + (FlxG.state.members.length + (FlxG.state.subState == null ? 0 : FlxG.state.subState.members.length)) +
+                '\nCameras: ' + FlxG.cameras.list.length +
+                '\nChilds: ' + FlxG.game.numChildren;
+        });
+
+        for (field in extraFields ?? [])
+        {
+            var funcs:Array<Void -> String> = [];
+
+            for (line in field)
+            {
+                switch (line.type)
+                {
+                    case 'text':
+                        final val = line.value;
+                        
+                        funcs.push(() -> val);
+                    case 'variable':
+                        funcs.push(getFunction(line.path, line.variable));
+                }
+            }
+
+            addField(() -> {
+                var str:String = '';
+
+                for (func in funcs)
+                    str += func();
+
+                return str;
+            });
+        }
+
+        FlxG.stage.addEventListener('keyDown', keyDown);
+        FlxG.stage.addEventListener('enterFrame', update);
+
+        nextMode();
     }
 
-    var curHeight:Float = 0;
+    public var fields:Array<DebugField> = [];
 
-    public function addField(field:DebugField)
+    var currentMode:Int = -1;
+
+    public function nextMode()
     {
-        fields.push(field);
+        currentMode++;
+
+        currentMode %= 3;
+
+        switch (currentMode)
+        {
+            case 0:
+                fpsField.showBG = false;
+
+                for (field in fields)
+                    field.visible = field == fpsField;
+            case 1:
+                fpsField.showBG = true;
+
+                for (field in fields)
+                    field.visible = true;
+            case 2:
+                for (field in fields)
+                    field.visible = false;
+            default:
+        }
+    }
+
+    function keyDown(e:Dynamic)
+    {
+        if (FlxG.keys.justPressed.F3)
+            nextMode();
+    }
+
+    var currentHeight:Float = 0;
+
+    public function addField(func:Void -> String):DebugField
+    {
+        final field:DebugField = new DebugField(func);
+        field.y += currentHeight;
 
         addChild(field);
-        
-        field.y = curHeight;
 
-        curHeight += field.height;
+        fields.push(field);
+
+        currentHeight += field.height + 5;
+
+        return field;
     }
 
-    public function removeField(field:DebugField)
+    public function update(_)
     {
-        fields.remove(field);
-
-        removeChild(field);
-
-        sortFields();
-    }
-
-    public function sortFields()
-    {
-        curHeight = fps.bg.scaleY;
-
-        for (field in fields)
+        for (i in 0...numChildren)
         {
-            field.y = curHeight;
+            final child = getChildAt(i);
 
-            curHeight += field.bg.scaleY;
+            if (child.visible && child is DebugField)
+                cast(child, DebugField).update();
         }
-    }
-
-    private var timer:Int = 0;
-
-    private var focused:Bool = true;
-
-    override function __enterFrame(time:Int)
-    {
-        if ((focused || !FlxG.autoPause) && visible)
-        {
-            if (timer > 50)
-            {
-                timer = 0;
-            } else {
-                timer += time;
-
-                return;
-            }
-        } else {
-            return;
-        }
-        
-        super.__enterFrame(time);
     }
 
     public function destroy()
     {
-		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPressed);
-
-        FlxG.stage.removeEventListener('activate', onFocus);
-        FlxG.stage.removeEventListener('deactivate', onUnFocus);
-
-        for (field in fields)
+        for (i in 0...numChildren)
         {
-            removeField(field);
+            final child = getChildAt(i);
 
-            field = null;
+            if (child is DebugField)
+                cast(child, DebugField).destroy();
+
+            removeChild(child);
         }
         
-        removeChild(fps);
-
-        fps = null;
+        graphics.clear();
+        
+        FlxG.stage.removeEventListener('keyDown', keyDown);
+        FlxG.stage.removeEventListener('enterFrame', update);
     }
 
-    function onFocus(_)
-        focused = true;
-
-    function onUnFocus(_)
-        focused = false;
-    
-    public var curMode:Int = 0;
-
-    public function switchMode(change:Int = 1)
+    function getFunction(daClass:String, daVar:String):Void -> String
     {
-        curMode += change;
+        if (daClass.length <= 0)
+            return () -> '';
 
-        curMode = curMode % 3;
+        var obj:Dynamic = Type.resolveClass(daClass);
 
-        switch (curMode)
+        if (obj == null)
+            return function() return daClass + '.' + daVar;
+        
+        return () -> getRecursiveProperty(obj, daVar.split('.'));
+    }
+
+    function getRecursiveProperty(instance:Dynamic, split:Array<String>):Dynamic
+    {
+        var result:Dynamic = instance;
+
+        for (part in split)
         {
-            case 0:
-                for (field in fields)
-                    field.visible = false;
+            result = Reflect.getProperty(result, part);
 
-                fps.visible = true;
-                fps.bg.visible = false;
-            
-                for (label in fps.labels)
-                    label.text = label.valueFunction();
-
-                fps.updateBG();
-            case 1:
-                for (field in fields)
-                {
-                    for (label in field.labels)
-                        label.text = label.valueFunction();
-
-                    field.updateBG();
-
-                    field.visible = true;
-                }
-
-                fps.bg.visible = true;
-            case 2:
-                for (field in fields)
-                    field.visible = false;
-
-                fps.visible = false;
+            if (result == null)
+                return null;
         }
-    }
-    
-    function onKeyPressed(event:KeyboardEvent)
-    {
-		var key = KeyUtil.openFLToFlixelKey(event);
 
-		if (ClientPrefs.controls.engine.fps_counter.contains(key))
-            switchMode();
+        return result;
     }
 }
