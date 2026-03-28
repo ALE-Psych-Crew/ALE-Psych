@@ -214,27 +214,24 @@ class Paths
 
     public static function clear(?perm:Bool = false)
     {
-        if (perm)
-        {
-            @:privateAccess
-            for (key in FlxG.bitmap._cache.keys())
-            {
-                var obj = FlxG.bitmap._cache.get(key);
-
-                if (obj != null && !config.get(FileType.IMAGE).cache.exists(key))
-                {
-                    FlxG.bitmap._cache.remove(key);
-
-                    obj.destroy();
-                }
-            }
-        }
-        
         for (obj in config)
             if (obj.cache != null)
                 for (cacheID in obj.cache.keys())
                     if (!obj.cache.get(cacheID).permanent || perm)
                         obj.cache.remove(cacheID);
+
+        @:privateAccess
+        for (key in FlxG.bitmap._cache.keys())
+        {
+            final obj = FlxG.bitmap._cache.get(key);
+
+            if (obj != null && !config.get(FileType.IMAGE).cache.exists(key))
+            {
+                FlxG.bitmap._cache.remove(key);
+
+                obj.destroy();
+            }
+        }
     }
 
     // Utils
