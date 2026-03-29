@@ -257,7 +257,7 @@ class Main extends Sprite
 
 		debugCounter?.destroy();
 
-		FlxG.game.removeChild(debugCounter);
+		FlxG.stage.removeChild(debugCounter);
     }
 
 	@:unreflective static var allowMobileConfig:Bool = true;
@@ -355,7 +355,7 @@ class Main extends Sprite
 		Sys.putEnv('LUA_PATH', Sys.getCwd() + '/' + Paths.mods + '/' + Paths.mod + '/scripts/modules/?.lua;');
 		#end
 
-		FlxG.game.addChild(debugCounter = new DebugCounter(Paths.exists('data/debug.json') ? cast Paths.json('data/debug').fields : []));
+		FlxG.stage.addChild(debugCounter = new DebugCounter(Paths.exists('data/debug.json') ? cast Paths.json('data/debug').fields : []));
 		
 		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
 			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
