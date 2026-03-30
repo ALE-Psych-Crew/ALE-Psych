@@ -20,7 +20,7 @@ class DebugField extends Sprite
         label.selectable = label.mouseEnabled = false;
         label.autoSize = LEFT;
         label.multiline = true;
-        label.defaultTextFormat = new TextFormat(Paths.font('poppins.ttf'), 12, FlxColor.WHITE);
+        label.defaultTextFormat = new TextFormat(Paths.font('monsterrat.ttf'), 13, FlxColor.WHITE);
         label.x = 5;
         label.y = 5;
 
