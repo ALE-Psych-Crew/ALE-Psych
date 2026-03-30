@@ -9,6 +9,8 @@ import core.structures.ALEStrum;
 
 class Strum extends FlxSprite
 {
+    public var strumLine:StrumLine;
+
     public var textureShader:RGBShaderReference;
 
     public var allowShader:Bool;

@@ -100,9 +100,11 @@ class StrumLine extends FlxSpriteGroup
 
             final strum:Strum = new Strum(strumConfig, strumIndex, data.strumFramerate, data.strumTextures, data.strumScale, data.space);
             strums.add(strum);
+            strum.strumLine = this;
 
             final splash:Splash = new Splash(strumConfig, strum, data.splashScale, data.splashFramerate, data.splashTextures);
             splashes.add(splash);
+            strum.strumLine = this;
 
             strumHeight = Math.max(strumHeight, strum.height);
         }
@@ -178,6 +180,8 @@ class StrumLine extends FlxSpriteGroup
 
         for (note in tempNotes)
         {
+            note.strumLine = this;
+
             final callbackResult:Dynamic = onStackNote == null ? null : onStackNote(note);
             
             if (callbackResult)

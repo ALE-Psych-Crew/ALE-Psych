@@ -12,6 +12,8 @@ import core.enums.NoteType;
 
 class Note extends FlxSprite
 {
+    public var strumLine:StrumLine;
+
     public var textureShader:RGBShaderReference;
 
     public var allowShader:Bool;
