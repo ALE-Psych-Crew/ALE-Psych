@@ -2,11 +2,13 @@ package funkin.debug;
 
 import openfl.display.Sprite;
 
-import cpp.vm.Gc;
-
 import flixel.util.FlxStringUtil;
 
 import core.structures.JsonDebugLine;
+
+import api.DesktopAPI;
+
+import cpp.vm.Gc;
 
 class DebugCounter extends Sprite
 {
@@ -27,26 +29,51 @@ class DebugCounter extends Sprite
         var memoryPeak:Float = 0;
         var memoryPeakString:String = '';
 
+        var task:Null<Float> = null;
+        var taskString:String = '';
+
+        var taskPeak:Float = 0;
+        var taskPeakString:String = '';
+
         fpsField = addField(() -> {
             fps = CoolUtil.fpsLerp(fps, FlxG.elapsed <= 0 ? 0 : 1 / FlxG.elapsed, 0.25);
 
-            final curMemory:Float = Gc.memInfo64(Gc.MEM_INFO_USAGE);
+            final curMemory:Null<Float> = Gc.memInfo64(Gc.MEM_INFO_USAGE);
 
-            if (memory != curMemory)
+            if (memory != curMemory && curMemory != null)
             {
                 memory = curMemory;
 
                 memoryString = FlxStringUtil.formatBytes(memory);
+                    
+                if (memory > memoryPeak)
+                {
+                    memoryPeak = memory;
+
+                    memoryPeakString = memoryString;
+                }
             }
 
-            if (memory > memoryPeak)
+            final curTask:Null<Float> = DesktopAPI.getTaskMemory();
+
+            if (task != curTask)
             {
-                memoryPeak = memory;
+                task = curTask;
 
-                memoryPeakString = FlxStringUtil.formatBytes(memoryPeak);
+                taskString = FlxStringUtil.formatBytes(task);
+
+                if (task > taskPeak)
+                {
+                    taskPeak = task;
+
+                    taskPeakString = taskString;
+                }
             }
 
-            return 'FPS: ' + Math.floor(fps) + '\nMEM: ' + memoryString + ' / ' + memoryPeakString + '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.data.developerMode ? ' - Developer Mode' : '');
+            return 'FPS: ' + Math.floor(fps) +
+                '\nGC: ' + memoryString + ' / ' + memoryPeakString +
+                (task == null ? '' : '\nTask: ' + taskString + ' / ' + taskPeakString) +
+                '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.data.developerMode ? ' - Developer Mode' : '');
         });
 
         addField(() -> {
