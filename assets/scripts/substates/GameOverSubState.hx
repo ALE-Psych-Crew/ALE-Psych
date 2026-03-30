@@ -52,6 +52,8 @@ function new(?char:Character)
 
     music = new FlxSound().loadEmbedded(Paths.music(filesPath + '/gameOverMusic'), true);
 
+    FlxG.sound.list.add(music);
+
     playState.resetCharacterPosition(deadCharacter);
 
     playState.moveCamera(deadCharacter);

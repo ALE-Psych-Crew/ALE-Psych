@@ -2,6 +2,14 @@ import funkin.visuals.objects.Alphabet;
 
 import flixel.math.FlxPoint;
 
+final filesPath:String = 'hud/' + PlayState.instance.stage.data.hud;
+
+final music:FlxSound = new FlxSound().loadEmbedded(Paths.music(filesPath + '/pauseMusic', true), true);
+music.play();
+music.fadeIn(5, 0, 0.25);
+
+FlxG.sound.list.add(music);
+
 final bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 bg.cameras = [subCamera];
 bg.alpha = 0;
@@ -103,6 +111,8 @@ MobileAPI.createButtons(100, FlxG.height - 200, [
 
 function onDestroy()
 {
+    music.stop();
+
     MobileAPI.destroyButtons(true);
 
     MobileAPI.toggleButtons(false, true);
