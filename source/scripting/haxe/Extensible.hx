@@ -83,9 +83,9 @@ class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
 class ScriptHScriptPresetBase extends HScriptPresetBase implements RuleScriptedClass {}
 #end
 
-class ScriptIcon extends Icon implements RuleScriptedClass {}
-
+class ScriptFunkinSprite extends FunkinSprite implements RuleScriptedClass {}
 class ScriptCharacter extends Character implements RuleScriptedClass {}
+class ScriptIcon extends Icon implements RuleScriptedClass {}
 
 class ScriptFXCamera extends FXCamera implements RuleScriptedClass {}
 class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
