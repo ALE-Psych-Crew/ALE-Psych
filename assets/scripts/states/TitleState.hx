@@ -50,12 +50,12 @@ function spawnIntroText(text:String)
 
 var logo:FlxSprite = new FlxSprite(-130, -100);
 logo.frames = Paths.getSparrowAtlas('menus/title/logo');
-logo.animation.addByPrefix('idle', 'idle', 24);
+logo.animation.addByPrefix('idle', 'idle', 24, false);
 
 var gf:FlxSprite = new FlxSprite(550, 50);
 gf.frames = Paths.getSparrowAtlas('menus/title/gf');
-gf.animation.addByPrefix('left', 'left', 24);
-gf.animation.addByPrefix('right', 'right', 24);
+for (anim in ['left', 'right'])
+    gf.animation.addByPrefix(anim, anim, 24, false);
 
 var enter:FlxSprite = new FlxSprite(135, 600);
 enter.frames = Paths.getSparrowAtlas('menus/title/enter');
