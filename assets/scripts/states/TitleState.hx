@@ -111,13 +111,13 @@ function postBeatHit(curBeat:Int)
     }
 }
 
-if (FlxG.sound.music == null || !FlxG.sound.music.playing)
-    FlxG.sound.playMusic(Paths.music('freakyMenu'));
-
 if (FlxG.sound.music == null)
     onSafeBeatHit(0);
 else
     finishIntro();
+
+if (FlxG.sound.music == null || !FlxG.sound.music.playing)
+    FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
 var canSelect:Bool = true;
 
