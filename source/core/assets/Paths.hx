@@ -220,16 +220,19 @@ class Paths
                     if (!obj.cache.get(cacheID).permanent || perm)
                         obj.cache.remove(cacheID);
 
-        @:privateAccess
-        for (key in FlxG.bitmap._cache.keys())
+        if (perm)
         {
-            final obj = FlxG.bitmap._cache.get(key);
-
-            if (obj != null && !config.get(FileType.IMAGE).cache.exists(key))
+            @:privateAccess
+            for (key in FlxG.bitmap._cache.keys())
             {
-                FlxG.bitmap._cache.remove(key);
+                final obj = FlxG.bitmap._cache.get(key);
 
-                obj.destroy();
+                if (obj != null && !config.get(FileType.IMAGE).cache.exists(key))
+                {
+                    FlxG.bitmap._cache.remove(key);
+
+                    obj.destroy();
+                }
             }
         }
     }
