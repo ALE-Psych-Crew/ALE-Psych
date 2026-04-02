@@ -77,11 +77,19 @@ class DebugCounter extends Sprite
         });
 
         addField(() -> {
-            return 'Current Version: ' + CoolVars.engineVersion + '\nOnline Version: ' + CoolVars.onlineVersion + '\nCommit: ' + CoolVars.GITHUB_COMMIT + '\nTimestamp: ' + CoolVars.BUILD_TIMESTAMP;
+            return 'Current Version: ' + CoolVars.engineVersion +
+                (CoolVars.onlineVersion == null ? '' : '\nOnline Version: ' + CoolVars.onlineVersion) +
+                (CoolVars.GITHUB_NAME == null ? '' : ('\nCommit: ' + CoolVars.GITHUB_NAME + (CoolVars.GITHUB_COMMIT == null ? '' : ' (' + CoolVars.GITHUB_COMMIT + ')'))) +
+                '\nTimestamp: ' + CoolVars.BUILD_TIMESTAMP;
         });
 
         addField(() -> {
-            return 'Song Position: ' + Math.floor(Conductor.songPosition) + '\nBPM: ' + Conductor.bpm + '\nStep: ' + Conductor.curStep + '\nBeat: ' + Conductor.curBeat + '\nSection: ' + Conductor.curSection + '\nTime Signature: ' + Conductor.beatsPerSection + ' / ' + Conductor.stepsPerBeat;
+            return 'Song Position: ' + Math.floor(Conductor.songPosition) + 
+                '\nBPM: ' + Conductor.bpm +
+                '\nStep: ' + Conductor.curStep +
+                '\nBeat: ' + Conductor.curBeat +
+                '\nSection: ' + Conductor.curSection +
+                '\nTime Signature: ' + Conductor.beatsPerSection + ' / ' + Conductor.stepsPerBeat;
         });
 
         addField(() -> {

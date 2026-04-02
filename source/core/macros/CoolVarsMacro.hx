@@ -11,29 +11,35 @@ class CoolVarsMacro
 	{
 		var fields:Array<Field> = Context.getBuildFields();
 
-		var shaExpr:Expr = macro null;
-
-        try
+        function proccessExpr(id:String, args:Array<String>):Expr
         {
-            var proc = new sys.io.Process('git', ['log', "--pretty=format:%h", '-n', '1']);
-            var sha = proc.stdout.readLine();
-            proc.close();
-            shaExpr = macro $v{sha};
-        } catch (e:Dynamic) {}
+            try
+            {
+                final proc = new sys.io.Process(id, args);
 
-        fields.push({
-            name: 'GITHUB_COMMIT',
-            access: [APublic, AStatic, AFinal],
-            kind: FVar(macro:String, shaExpr),
-            pos: Context.currentPos()
-        });
+                final out = proc.stdout.readLine();
 
-        fields.push({
-            name: 'BUILD_TIMESTAMP',
-            access: [APublic, AStatic, AFinal],
-            kind: FVar(macro:String, macro Date.now().toString()),
-            pos: Context.currentPos()
-        });
+                proc.close();
+
+                return macro $v{out};
+            } catch (e:Dynamic) {}
+
+            return macro null;
+        }
+
+        function pushField(name:String, expr:Expr)
+        {
+            fields.push({
+                name: name,
+                access: [APublic, AStatic, AFinal],
+                kind: FVar(macro:String, expr),
+                pos: Context.currentPos()
+            });
+        }
+
+        pushField('GITHUB_COMMIT', proccessExpr('git', ['log', '--pretty=%h', '-n', '1']));
+        pushField('GITHUB_NAME', proccessExpr('git', ['log', '--pretty=%s', '-n', '1']));
+        pushField('BUILD_TIMESTAMP', macro Date.now().toString());
 
 		return fields;
 	}
