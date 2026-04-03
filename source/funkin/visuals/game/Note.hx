@@ -84,11 +84,11 @@ class Note extends FlxSprite
 
         switch (type)
         {
-            case 'note':
+            case ARROW:
                 animation.addByPrefix('idle', config.note, 0, false);
-            case 'sustain':
+            case SUSTAIN:
                 animation.addByPrefix('idle', config.sustain, 0, false);
-            case 'end':
+            case END:
                 animation.addByPrefix('idle', config.end, 0, false);
         }
 
@@ -129,7 +129,7 @@ class Note extends FlxSprite
 
     public function resizeByRatio(value:Float)
     {
-        if (type == 'sustain' && animation.curAnim != null)
+        if (type == SUSTAIN && animation.curAnim != null)
         {
             scale.y *= value;
 
@@ -182,9 +182,9 @@ class Note extends FlxSprite
             x = strum.x + offsetX + Math.cos(finalDirection) * distance;
 
         if (copyY)
-            y = strum.y + offsetY + Math.sin(finalDirection) * distance - (ClientPrefs.data.downScroll && type != 'note' ? height : 0);
+            y = strum.y + offsetY + Math.sin(finalDirection) * distance - (ClientPrefs.data.downScroll && type != ARROW ? height : 0);
         
-        if (type != 'note' && hit)
+        if (type != ARROW && hit)
         {
             if (this.clipRect == null)
                 clipRect = FlxRect.get();

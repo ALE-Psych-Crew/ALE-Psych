@@ -856,7 +856,7 @@ class PlayState extends ScriptState
         {
             if (character.type == PLAYER)
             {
-                if (note.type == NOTE)
+                if (note.type == ARROW)
                 {
                     health += note.hitHealth;
 
@@ -892,7 +892,7 @@ class PlayState extends ScriptState
         {
             if (character.type == PLAYER)
             {
-                if (note.type == NOTE)
+                if (note.type == ARROW)
                 {
                     combo = 0;
 

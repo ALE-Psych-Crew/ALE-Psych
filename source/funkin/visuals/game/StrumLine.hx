@@ -19,7 +19,11 @@ import core.enums.Rating;
 class StrumLine extends FlxSpriteGroup
 {
     public var strums:FlxTypedSpriteGroup<Strum>;
+
     public var notes:FlxTypedSpriteGroup<Note>;
+    public var arrows:FlxTypedSpriteGroup<Note>;
+    public var sustains:FlxTypedSpriteGroup<Note>;
+
     public var splashes:FlxTypedSpriteGroup<Splash>;
 
     public var botplay(default, set):Bool;
@@ -82,7 +86,10 @@ class StrumLine extends FlxSpriteGroup
 
         add(strums = new FlxTypedSpriteGroup<Strum>());
         
-        add(notes = new FlxTypedSpriteGroup<Note>());
+        notes = new FlxTypedSpriteGroup<Note>();
+
+        add(sustains = new FlxTypedSpriteGroup<Note>());
+        add(arrows = new FlxTypedSpriteGroup<Note>());
 
         add(splashes = new FlxTypedSpriteGroup<Splash>());
 
@@ -140,7 +147,7 @@ class StrumLine extends FlxSpriteGroup
 
             final strumConfig:ALEStrum = data.strums[noteData];
 
-            final note:Note = new Note(strumConfig, time, noteData, length, type, 'note', space, scale, textures, getNoteShader(strumConfig.shader, noteData), character);
+            final note:Note = new Note(strumConfig, time, noteData, length, type, ARROW, space, scale, textures, getNoteShader(strumConfig.shader, noteData), character);
 
             var parent:Note = note;
 
@@ -152,7 +159,7 @@ class StrumLine extends FlxSpriteGroup
 
                 for (i in 0...(floorLength + 1))
                 {
-                    final sustain:Note = new Note(strumConfig, time + i * crochet, noteData, crochet, type, i == floorLength ? 'end' : 'sustain', space, scale, textures, getNoteShader(strumConfig.shader, noteData), character, i == floorLength ? null : crochet * 0.455, i == floorLength ? null : speed);
+                    final sustain:Note = new Note(strumConfig, time + i * crochet, noteData, crochet, type, i == floorLength ? END : SUSTAIN, space, scale, textures, getNoteShader(strumConfig.shader, noteData), character, i == floorLength ? null : crochet * 0.455, i == floorLength ? null : speed);
                     sustain.offsetY = strum.height / 2;
                     sustain.offsetX = strum.width / 2 - sustain.width / 2;
                     sustain.parent = parent;
@@ -170,7 +177,7 @@ class StrumLine extends FlxSpriteGroup
             function(a:Note, b:Note)
             {
                 if (a.time == b.time)
-                    return a.type == b.type ? 0 : b.type == 'note' ? 1 : -1;
+                    return a.type == b.type ? 0 : b.type == ARROW ? 1 : -1;
 
                 return a.time > b.time ? -1 : 1;
             }
@@ -204,9 +211,9 @@ class StrumLine extends FlxSpriteGroup
 
                 var noteToHit:Null<Note> = null;
 
-                for (note in notes)
+                for (note in arrows)
                 {
-                    if (note == null || note.data != strumIndex || note.type != 'note' || note.timeDistance < -shitWindow)
+                    if (note == null || note.data != strumIndex || note.timeDistance < -shitWindow)
                         continue;
 
                     if (note.timeDistance > shitWindow)
@@ -258,7 +265,7 @@ class StrumLine extends FlxSpriteGroup
             final callbackResult:Dynamic = onSpawnNote == null ? null : onSpawnNote(note);
 
             if (callbackResult)
-                notes.add(note);
+                addNote(note);
         }
 
         var noteIndex:Int = 0;
@@ -281,19 +288,19 @@ class StrumLine extends FlxSpriteGroup
             if (botplay)
             {
                 if (!note.hit && note.timeDistance <= 0 && !note.ignore)
-                    hitNote(note, note.type == 'note');
+                    hitNote(note, note.type == ARROW);
 
                 if (note.botplayMiss && note.timeDistance < -shitWindow && !note.miss && !note.hit && note.ignore)
                     missNote(note);
             } else {
-                if (note.type != 'note' && !note.hit && note.timeDistance <= 0 && keyPressed[note.data] && note.parent.hit)
+                if (note.type != ARROW && !note.hit && note.timeDistance <= 0 && keyPressed[note.data] && note.parent.hit)
                     hitNote(note, false);
 
                 if (note.timeDistance < -shitWindow && !note.miss && !note.hit && !note.ignore)
                     missNote(note);
             }
 
-            if (note.type == 'sustain')
+            if (note.type == SUSTAIN)
                 if (note.sustainSpeed != scrollSpeed)
                     note.sustainSpeed = scrollSpeed;
 
@@ -322,9 +329,9 @@ class StrumLine extends FlxSpriteGroup
         {
             note.hit = true;
 
-            character?.sing(note.type != 'note' && !character.data.sustainAnimation ? null : note.singAnimation);
+            character?.sing(note.type != ARROW && !character.data.sustainAnimation ? null : note.singAnimation);
 
-            if (note.type == 'note' && rating == 'sick' && !botplay)
+            if (note.type == ARROW && rating == SICK && !botplay)
                 splashes.members[note.data].splash();
 
             strums.members[note.data].playAnim('hit');
@@ -367,22 +374,44 @@ class StrumLine extends FlxSpriteGroup
         {
             note.miss = true;
 
-            character?.miss(note.type != 'note' && !character.data.sustainAnimation ? null : note.missAnimation);
+            character?.miss(note.type != ARROW && !character.data.sustainAnimation ? null : note.missAnimation);
         }
     }
 
-    public var onRemoveNote:Note -> Character -> Dynamic;
+    public var onAddNote:Note -> Dynamic;
+
+    public function addNote(note:Note)
+    {
+        final callbackResult:Dynamic = onAddNote == null ? null : onAddNote(note);
+
+        if (callbackResult != CoolVars.Function_Stop)
+        {
+            notes.add(note);
+
+            if (note.type == ARROW)
+                arrows.add(note);
+            else
+                sustains.add(note);
+        }
+    }
+
+    public var onRemoveNote:Note -> Dynamic;
 
     public function removeNote(note:Note)
     {
-        final character:Character = this.characters[note.characterPosition];
-
-        final callbackResult:Dynamic = onRemoveNote == null ? null : onRemoveNote(note, character);
+        final callbackResult:Dynamic = onRemoveNote == null ? null : onRemoveNote(note);
 
         if (callbackResult != CoolVars.Function_Stop)
         {
             note.kill();
+
             notes.remove(note, true);
+
+            if (note.type == ARROW)
+                arrows.remove(note, true);
+            else
+                sustains.remove(note, true);
+
             note.destroy();
         }
     }
