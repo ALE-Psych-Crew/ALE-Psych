@@ -101,6 +101,9 @@ import api.MobileAPI;
             CoolUtil.resetGame();
         }
 
+        if (Controls.BACK)
+            close(); 
+
         if (Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL)
         {
             if (Controls.UI_DOWN_P || Controls.MOUSE_WHEEL_DOWN)
