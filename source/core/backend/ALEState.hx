@@ -15,6 +15,10 @@ class ALEState extends FlxState
     public var camGame:ALECamera;
     public var camHUD:ALECamera;
 
+    public var updating(get, never):Bool;
+    function get_updating():Bool
+        return subState == null || persistentUpdate || FlxState.transitioning;
+
     override function create()
     {
         super.create();

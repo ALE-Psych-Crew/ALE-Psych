@@ -1363,6 +1363,9 @@ class PlayState extends ScriptState
 
     function justPressedKey(event:KeyboardEvent)
     {
+        if (!updating)
+            return;
+        
         if (scriptCallbackCall(ON, 'JustPressedKey', null, [event], [event.keyCode]))
             if (Controls.anyJustPressed([event.keyCode]))
                 strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
@@ -1372,6 +1375,9 @@ class PlayState extends ScriptState
 
     function justReleasedKey(event:KeyboardEvent)
     {
+        if (!updating)
+            return;
+
         if (scriptCallbackCall(ON, 'JustReleasedKey', null, [event], [event.keyCode]))
             strumLines.forEachAlive(strl -> strl.justReleasedKey(event.keyCode));
 
