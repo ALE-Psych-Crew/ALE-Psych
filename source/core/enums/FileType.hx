@@ -8,4 +8,5 @@ enum abstract FileType(String) from String to String
     var AUDIO = 'audio';
     var ATLAS = 'atlas';
     var MULTI_ATLAS = 'multi_atlas';
+    var JSON = 'json';
 }

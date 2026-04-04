@@ -208,14 +208,26 @@ class Paths
                     return parentFrames;
                 },
                 verifyExistence: false
+            },
+            FileType.JSON => {
+                postfix: '.json',
+                method: (id, permanent, missingPrint) -> {
+                    final content:String = getContent(id, permanent, missingPrint);
+
+                    if (content == null)
+                        return null;
+
+                    return Json.parse(content);
+                },
+                forceCleaning: true
             }
         ];
     }
 
-    public static function clear(?perm:Bool = false)
+    public static function clear(cleanAll:Bool, ?perm:Bool = false)
     {
         for (obj in config)
-            if (obj.cache != null)
+            if ((cleanAll || obj.forceCleaning) && obj.cache != null)
                 for (cacheID in obj.cache.keys())
                     if (!obj.cache.get(cacheID).permanent || perm)
                         obj.cache.remove(cacheID);
@@ -402,11 +414,7 @@ class Paths
     // Data
 
     public static function json(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):Dynamic
-    {
-        final content:Dynamic = getContent(file + '.json', permanent, missingPrint);
-
-        return content == null ? null : Json.parse(content);
-    }
+        return get(file, FileType.JSON, permanent, missingPrint);
 
     public static function ndll(fileName:String, funcName:String, ?args:Int = 0, ?missingPrint:Bool = true):Dynamic
     {

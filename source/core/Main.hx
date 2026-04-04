@@ -314,7 +314,7 @@ class Main extends Sprite
 
 		FlxG.mouse.useSystemCursor = true;
 
-		Paths.clear(true);
+		Paths.clear(true, true);
 
 		Paths.initMod();
 

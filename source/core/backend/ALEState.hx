@@ -68,6 +68,8 @@ class ALEState extends FlxState
 
 	override function destroy()
 	{
+        Paths.clear(shouldClearMemory);
+
         if (shouldClearMemory)
             cleanMemory();
         
@@ -78,8 +80,6 @@ class ALEState extends FlxState
 
     function cleanMemory()
     {
-        Paths.clear();
-
         #if cpp
         var killZombies:Bool = true;
         

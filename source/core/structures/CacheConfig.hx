@@ -11,4 +11,5 @@ import haxe.ds.StringMap;
     public var method:Function = () -> {};
     public var verifyExistence:Bool = true;
     public var cache:StringMap<{permanent:Bool, content:Dynamic}> = new StringMap();
+    public var forceCleaning:Bool = false;
 }
