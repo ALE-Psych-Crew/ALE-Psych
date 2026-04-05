@@ -102,7 +102,7 @@ class ALEAssetLibrary extends AssetLibrary
             case IMAGE:
                 getImage(id);
             case SOUND, MUSIC:
-                Sound.fromAudioBuffer(AudioBuffer.fromBytes(getBytes(id)));
+                getAudioBuffer(id);
             case FONT:
                 getFont(id);
             default:
