@@ -29,14 +29,8 @@ class DebugCounter extends Sprite
         var memoryPeak:Float = 0;
         var memoryPeakString:String = '';
 
-        var task:Null<Float> = null;
-        var taskString:String = '';
-
-        var taskPeak:Float = 0;
-        var taskPeakString:String = '';
-
         fpsField = addField(() -> {
-            fps = CoolUtil.fpsLerp(fps, FlxG.elapsed <= 0 ? 0 : 1 / FlxG.elapsed, 0.25);
+            fps = CoolUtil.fpsLerp(fps, FlxG.elapsed <= 0 ? 0 : 1 / FlxG.elapsed, 0.1);
 
             final curMemory:Null<Float> = Gc.memInfo64(Gc.MEM_INFO_USAGE);
 
@@ -54,25 +48,7 @@ class DebugCounter extends Sprite
                 }
             }
 
-            final curTask:Null<Float> = DesktopAPI.getTaskMemory();
-
-            if (task != curTask)
-            {
-                task = curTask;
-
-                taskString = FlxStringUtil.formatBytes(task);
-
-                if (task > taskPeak)
-                {
-                    taskPeak = task;
-
-                    taskPeakString = taskString;
-                }
-            }
-
-            return 'FPS: ' + Math.floor(fps) +
-                '\nGC: ' + memoryString + ' / ' + memoryPeakString +
-                (task == null ? '' : '\nTask: ' + taskString + ' / ' + taskPeakString) +
+            return 'FPS: ' + Math.floor(fps) + ' | GC: ' + memoryString + ' / ' + memoryPeakString +
                 '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.data.developerMode ? ' - Developer Mode' : '');
         });
 
@@ -89,7 +65,7 @@ class DebugCounter extends Sprite
                 '\nStep: ' + Conductor.curStep +
                 '\nBeat: ' + Conductor.curBeat +
                 '\nSection: ' + Conductor.curSection +
-                '\nTime Signature: ' + Conductor.beatsPerSection + ' / ' + Conductor.stepsPerBeat;
+                '\nTime Signature: ' + Conductor.beatsPerSection + ' | ' + Conductor.stepsPerBeat;
         });
 
         addField(() -> {
