@@ -5,7 +5,7 @@ import funkin.visuals.objects.Bar;
 import flixel.graphics.FlxGraphic;
 
 import utils.cool.MathUtil;
-import utils.ALEFormatter;
+import utils.Formatter;
 
 import core.structures.ALEIcon;
 
@@ -41,7 +41,7 @@ class Icon extends Bopper
 
         this.id = id;
 
-        data = ALEFormatter.getIcon(id);
+        data = Formatter.getIcon(id);
 
         data.animations.sort((a, b) -> Math.floor(a.percent - b.percent));
 

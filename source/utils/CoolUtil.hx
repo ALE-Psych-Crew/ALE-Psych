@@ -2,7 +2,7 @@ package utils;
 
 import flixel.input.keyboard.FlxKey;
 
-import core.config.ALESave;
+import core.config.Save;
 
 import core.Main;
 
@@ -23,11 +23,11 @@ import core.Main;
 ))
 class CoolUtil
 {
-	public static var save:ALESave;
+	public static var save:Save;
 
 	public static function init()
 	{
-		save = new ALESave();
+		save = new Save();
 
 		save.load();
 	}

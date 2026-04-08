@@ -10,7 +10,7 @@ import flixel.tweens.FlxEase.*;
 
 import utils.cool.MathUtil;
 
-class FXCamera extends ALECamera
+class FXCamera extends Camera
 {
 	public var speed(default, set):Float = 0;
 	function set_speed(value:Float):Float

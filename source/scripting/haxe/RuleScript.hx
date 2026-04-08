@@ -1,12 +1,12 @@
 package scripting.haxe;
 
-import rulescript.RuleScript;
+import rulescript.RuleScript as OGRuleScript;
 import rulescript.interps.RuleScriptInterp;
 import rulescript.interps.NeoInterp;
 import rulescript.parsers.HxParser;
 import rulescript.Context;
 
-import scripting.haxe.ALEParser;
+import scripting.haxe.Parser;
 
 import haxe.ds.StringMap;
 import haxe.Exception;
@@ -17,13 +17,13 @@ import haxe.CallStack;
 
 typedef ALEInterp = RuleScriptInterp;
 
-class ALERuleScript extends RuleScript
+class RuleScript extends OGRuleScript
 {
 	public var failedParsing:Bool = false;
 
 	override public function new(scriptName:String, ?context:Context)
 	{
-		super(new ALEInterp(), new ALEParser(scriptName), context);
+		super(new ALEInterp(), new Parser(scriptName), context);
 
 		getParser(HxParser).allowAll();
 

@@ -3,7 +3,7 @@ package core.backend;
 import core.interfaces.IMusicState;
 import core.interfaces.IMusicObject;
 
-class MusicBeatState extends ALEState implements IMusicState
+class MusicBeatState extends State implements IMusicState
 {
     public var curStep(get, never):Int;
     function get_curStep():Int

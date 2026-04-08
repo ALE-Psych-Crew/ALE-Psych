@@ -15,7 +15,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 
 import funkin.visuals.objects.FunkinSprite;
 import funkin.visuals.objects.Bopper;
-import funkin.visuals.ALECamera;
+import funkin.visuals.Camera;
 import funkin.states.PlayState;
 
 import core.assets.Paths;
@@ -24,17 +24,17 @@ import core.config.ClientPrefs;
 
 import utils.CoolUtil;
 import utils.CoolVars;
-import utils.ALEJson as Json;
 import utils.Conductor;
 import utils.Controls;
+import utils.Json;
 
 import utils.cool.LogUtil.debugTrace;
 
-import core.backend.ALEState;
+import core.backend.State;
 import core.backend.ScriptState;
 import core.backend.MusicBeatState;
 
-import core.backend.ALESubState;
+import core.backend.SubState;
 import core.backend.ScriptSubState;
 import core.backend.MusicBeatSubState;
 

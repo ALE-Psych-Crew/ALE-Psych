@@ -1,13 +1,13 @@
 package utils;
 
-import jsonmod.Json;
-
 import haxe.format.JsonPrinter;
 
-class ALEJson
+import jsonmod.Json as OGJson;
+
+class Json
 {
     public static function parse(raw:String)
-        return Json.parse(raw);
+        return OGJson.parse(raw);
 
     public static function stringify(object:Dynamic, ?space:String)
         return JsonPrinter.print(object, null, space ?? '\t');

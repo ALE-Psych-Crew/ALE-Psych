@@ -2,9 +2,9 @@ package core.assets;
 
 import lime.utils.Bytes;
 
+import openfl.utils.AssetLibrary as OGAssetLibrary;
 import openfl.display.BitmapData;
 import openfl.utils.AssetManifest;
-import openfl.utils.AssetLibrary;
 import openfl.utils.AssetType;
 import openfl.media.Sound;
 import openfl.text.Font as OpenFLFont;
@@ -16,7 +16,7 @@ import lime.text.Font;
 import sys.io.File;
 import sys.FileSystem;
 
-class ALEAssetLibrary extends AssetLibrary
+class AssetLibrary extends OGAssetLibrary
 {
     public final roots:Array<String>;
 

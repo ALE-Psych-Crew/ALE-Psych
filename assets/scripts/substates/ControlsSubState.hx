@@ -14,13 +14,6 @@ var options:Array<Dynamic> = [
     }
 ];
 
-FlxG.camera.bgColor = FlxColor.WHITE;
-
-var subCamera:FlxCamera = new ALECamera();
-subCamera.bgColor = FlxColor.TRANSPARENT;
-
-FlxG.cameras.add(subCamera, false);
-
 var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
 add(bg);
 bg.cameras = [subCamera];
@@ -149,8 +142,3 @@ function changeShit()
 }
 
 changeShit();
-
-function onDestroy()
-{
-    FlxG.cameras.remove(subCamera);
-}

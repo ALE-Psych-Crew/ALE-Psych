@@ -10,10 +10,10 @@ import hl.Gc;
 
 import api.MobileAPI;
 
-class ALEState extends FlxState
+class State extends FlxState
 {
-    public var camGame:ALECamera;
-    public var camHUD:ALECamera;
+    public var camGame:Camera;
+    public var camHUD:Camera;
 
     public var updating(get, never):Bool;
     function get_updating():Bool
@@ -23,12 +23,12 @@ class ALEState extends FlxState
     {
         super.create();
 
-		camGame = new ALECamera();
+		camGame = new Camera();
 		
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
         
-		camHUD = new ALECamera();
+		camHUD = new Camera();
 		
 		FlxG.cameras.add(camHUD, false);
 

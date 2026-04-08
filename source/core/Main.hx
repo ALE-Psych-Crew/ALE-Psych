@@ -9,7 +9,7 @@ import openfl.display.Sprite;
 import openfl.ui.Mouse;
 import openfl.Lib;
 
-import ale.ui.ALEUIUtils;
+import ale.ui.UIUtils;
 
 #if LUA_ALLOWED
 import hxluajit.wrapper.LuaError;
@@ -25,9 +25,9 @@ import funkin.debug.DebugCounter;
 
 import core.config.MainState;
 
-import core.backend.ALESoundTray;
+import core.backend.SoundTray;
 import core.plugins.*;
-import core.ALEGame;
+import core.Game;
 
 import scripting.haxe.HScriptConfig;
 
@@ -104,7 +104,7 @@ class Main extends Sprite
 
 		preOnceConfig();
 		
-		addChild(new ALEGame(MainState));
+		addChild(new Game(MainState));
 
 		postOnceConfig();
 	}
@@ -134,9 +134,9 @@ class Main extends Sprite
 				errMsg += "\nUncaught Error: " + e.error;
 			
 				#if WINDOWS_API
-				DesktopAPI.showMessageBox(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', ERROR);
+				DesktopAPI.showMessageBox(errMsg, ' Psych ' + CoolVars.engineVersion + ' | Crash Handler', ERROR);
 				#else
-				Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
+				Application.current.window.alert(errMsg, ' Psych ' + CoolVars.engineVersion + ' | Crash Handler');
 				#end
 
 				Sys.println(errMsg);
@@ -200,7 +200,7 @@ class Main extends Sprite
 		
 		try
 		{
-			var http = new Http('https://raw.githubusercontent.com/ALE-Psych-Crew/ALE-Psych/main/githubVersion.txt');
+			var http = new Http('https://raw.githubusercontent.com/-Psych-Crew/-Psych/main/githubVersion.txt');
 
 			http.onData = function (data:String)
 			{
@@ -245,7 +245,7 @@ class Main extends Sprite
 
         Conductor.destroy();
 		
-		ALEPluginsHandler.destroy();
+		PluginsHandler.destroy();
 
 		Discord.destroy();
 
@@ -330,11 +330,11 @@ class Main extends Sprite
 
 		HScriptConfig.config();
 
-		ALEPluginsHandler.init();
+		PluginsHandler.init();
 
 		Lib.current.stage.window.setIcon(Paths.library.getImage(CoolVars.data.icon + '.png'));
 
-		final soundTray:ALESoundTray = cast FlxG.game.soundTray;
+		final soundTray:SoundTray = cast FlxG.game.soundTray;
 
 		if (soundTray != null)
 		{
@@ -342,10 +342,10 @@ class Main extends Sprite
 			soundTray.sound = Paths.sound('tick');
 		}
 
-		ALEUIUtils.OBJECT_SIZE = 25;
-		ALEUIUtils.FONT = Paths.font('jetbrains.ttf');
-		ALEUIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
-		ALEUIUtils.OUTLINE_COLOR = FlxColor.WHITE;
+		UIUtils.OBJECT_SIZE = 25;
+		UIUtils.FONT = Paths.font('jetbrains.ttf');
+		UIUtils.COLOR = FlxColor.fromRGB(50, 70, 100);
+		UIUtils.OUTLINE_COLOR = FlxColor.WHITE;
 
 		#if LUA_ALLOWED
 		LuaError.errorHandler = (e:String) -> {
@@ -358,10 +358,10 @@ class Main extends Sprite
 		FlxG.stage.addChild(debugCounter = new DebugCounter(Paths.exists('data/debug.json') ? cast Paths.json('data/debug').fields : []));
 		
 		if (CoolVars.data.allowDebugPrint && CoolVars.data.developerMode)
-			ALEPluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
 
 		if (CoolVars.mobile)
-			ALEPluginsHandler.add(mobileControlsPlugin = new MobileControlsPlugin());
+			PluginsHandler.add(mobileControlsPlugin = new MobileControlsPlugin());
 
 		MobileAPI.setOrientation(LANDSCAPE);
     }

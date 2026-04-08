@@ -57,7 +57,7 @@ import haxe.ds.StringMap;
         funkin.states.CustomState,
         funkin.substates.CustomSubState,
 
-        funkin.visuals.ALECamera,
+        funkin.visuals.Camera,
         
         Controls,
 
@@ -73,6 +73,6 @@ import haxe.ds.StringMap;
     ];
 
     public static final TYPEDEFS:StringMap<Class<Dynamic>> = [
-        'Json' => utils.ALEJson
+        'Json' => utils.Json
     ];
 }

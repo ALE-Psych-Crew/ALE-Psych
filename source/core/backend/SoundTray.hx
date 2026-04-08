@@ -7,7 +7,7 @@ import openfl.text.TextFormat;
 
 import openfl.media.Sound;
 
-class ALESoundTray extends FlxSoundTray
+class SoundTray extends FlxSoundTray
 {
 	public var targetY:Float = 0;
 	public var targetAlpha:Float = 1;

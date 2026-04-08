@@ -6,7 +6,7 @@ import utils.Score;
 
 import flixel.math.FlxPoint;
 
-import utils.ALEFormatter;
+import utils.Formatter;
 
 using StringTools;
 
@@ -25,7 +25,7 @@ for (week in Paths.readDirectory('data/weeks', CoolVars.data.loadDefaultWeeks ? 
         if (weekNames.contains(name))
             continue;
 
-        weeks.push(ALEFormatter.getWeek(name));
+        weeks.push(Formatter.getWeek(name));
 
         weekNames.push(name);
     }

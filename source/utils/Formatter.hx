@@ -10,7 +10,7 @@ import utils.cool.FileUtil;
 
 using StringTools;
 
-class ALEFormatter
+class Formatter
 {
     public static final CHART_FORMAT:String = 'ale-chart-v0.1';
 

@@ -7,7 +7,7 @@ import hscript.Expr;
 
 using StringTools;
 
-class ALEParser extends HxParser
+class Parser extends HxParser
 {
 	public var scriptName:String = 'ALEScript.hx';
 	

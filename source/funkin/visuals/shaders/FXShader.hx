@@ -4,7 +4,7 @@ import haxe.ds.StringMap;
 
 import flixel.tweens.FlxEase.EaseFunction;
 
-class FXShader extends ALERuntimeShader
+class FXShader extends RuntimeShader
 {
     var _tweens:StringMap<FlxTween> = new StringMap();
 

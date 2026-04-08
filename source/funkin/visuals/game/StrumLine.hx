@@ -1,6 +1,6 @@
 package funkin.visuals.game;
 
-import utils.ALEFormatter;
+import utils.Formatter;
 
 import flixel.input.keyboard.FlxKey;
 
@@ -78,7 +78,7 @@ class StrumLine extends FlxSpriteGroup
 
         this.characters = characters;
 
-        data = ALEFormatter.getStrumLine(chartData.file);
+        data = Formatter.getStrumLine(chartData.file);
 
         visible = chartData.visible;
 

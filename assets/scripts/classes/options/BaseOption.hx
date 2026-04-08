@@ -1,7 +1,5 @@
 package options;
 
-import scripting.haxe.ScriptSpriteGroup;
-
 import funkin.visuals.objects.Alphabet;
 
 import openfl.display.Shape;
@@ -30,7 +28,7 @@ typedef OptionsOption =
     @:optional var scripted:Bool;
 }
 
-class BaseOption extends ScriptSpriteGroup
+class BaseOption extends scripting.haxe.ScriptedFlxSpriteGroup
 {
     public var bg:FlxSprite;
 

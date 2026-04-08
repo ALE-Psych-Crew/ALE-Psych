@@ -183,7 +183,7 @@ class Conductor
 	
 	public static var allowUpdate:Bool = true;
 
-	@:allow(core.ALEGame)
+	@:allow(core.Game)
 	private static function update()
 	{
 		if (songPosition <= 0 || !allowUpdate)

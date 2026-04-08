@@ -8,7 +8,7 @@ import flixel.util.FlxSave;
 import utils.cool.FileUtil;
 import utils.Score;
 
-class ALESave
+class Save
 {
     public var score:FlxSave;
 

@@ -3,7 +3,7 @@ package core.assets;
 import haxe.Constraints.Function;
 import haxe.ds.StringMap;
 
-import core.assets.ALEAssetLibrary;
+import core.assets.AssetLibrary;
 
 import core.structures.CacheConfig;
 
@@ -82,15 +82,15 @@ class Paths
     
     public static final SEPARATOR:String = '::';
 
-    public static var library(get, never):ALEAssetLibrary;
-    static function get_library():ALEAssetLibrary
+    public static var library(get, never):AssetLibrary;
+    static function get_library():AssetLibrary
         return cast OpenFLAssets.getLibrary('default');
 
     public static var config:StringMap<CacheConfig> = new StringMap();
 
     public static function init()
     {
-        OpenFLAssets.registerLibrary('default', new ALEAssetLibrary([for (root in [mod == null ? null : mods + '/' + mod, #if switch 'romfs:/' + #end assets, '']) if (root != null) root]));
+        OpenFLAssets.registerLibrary('default', new AssetLibrary([for (root in [mod == null ? null : mods + '/' + mod, #if switch 'romfs:/' + #end assets, '']) if (root != null) root]));
 
         config = [
             FileType.CONTENT => {

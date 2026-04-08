@@ -1,6 +1,6 @@
 package funkin.visuals.game;
 
-import utils.ALEFormatter;
+import utils.Formatter;
 
 import flixel.FlxCamera;
 import flixel.FlxBasic;
@@ -81,7 +81,7 @@ class Stage
         if (alreadyCached.contains(id))
             return;
 
-        final json:ALEStage = ALEFormatter.getStage(id);
+        final json:ALEStage = Formatter.getStage(id);
 
         if (json == null)
             return;

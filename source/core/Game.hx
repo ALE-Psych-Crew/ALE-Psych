@@ -6,17 +6,17 @@ import flixel.FlxGame;
 
 import api.DesktopAPI;
 
-import core.backend.ALESoundTray;
+import core.backend.SoundTray;
 
 import funkin.substates.ModsMenuSubState;
 
-class ALEGame extends FlxGame
+class Game extends FlxGame
 {
 	override public function new(initial:InitialState)
 	{
 		super(1280, 720, initial, 120, 120, true, false);
 
-		_customSoundTray = ALESoundTray;
+		_customSoundTray = SoundTray;
 	}
 
 	@:unreflective var visibleConsole:Bool = false;

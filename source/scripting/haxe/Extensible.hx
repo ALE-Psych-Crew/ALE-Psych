@@ -40,61 +40,61 @@ class Extensible {}
 
 // Flixel
 
-class ScriptBasic extends FlxBasic implements RuleScriptedClass {}
-class ScriptObject extends FlxObject implements RuleScriptedClass {}
-class ScriptGroup extends FlxGroup implements RuleScriptedClass {}
-class ScriptSpriteGroup extends FlxSpriteGroup implements RuleScriptedClass {}
+class ScriptedFlxBasic extends FlxBasic implements RuleScriptedClass {}
+class ScriptedFlxObject extends FlxObject implements RuleScriptedClass {}
+class ScriptedFlxGroup extends FlxGroup implements RuleScriptedClass {}
+class ScriptedFlxSpriteGroup extends FlxSpriteGroup implements RuleScriptedClass {}
 
-class ScriptTimer extends FlxTimer implements RuleScriptedClass {}
-class ScriptSound extends FlxSound implements RuleScriptedClass {}
-class ScriptRect extends FlxRect implements RuleScriptedClass {}
+class ScriptedFlxTimer extends FlxTimer implements RuleScriptedClass {}
+class ScriptedFlxSound extends FlxSound implements RuleScriptedClass {}
+class ScriptedFlxRect extends FlxRect implements RuleScriptedClass {}
 
-class ScriptButton extends FlxButton implements RuleScriptedClass {}
-class ScriptBar extends FlxBar implements RuleScriptedClass {}
-class ScriptGraphic extends FlxGraphic implements RuleScriptedClass {}
+class ScriptedFlxButton extends FlxButton implements RuleScriptedClass {}
+class ScriptedFlxBar extends FlxBar implements RuleScriptedClass {}
+class ScriptedFlxGraphic extends FlxGraphic implements RuleScriptedClass {}
 
-class ScriptSprite extends FlxSprite implements RuleScriptedClass {}
-class ScriptAnimate extends FlxAnimate implements RuleScriptedClass {}
-class ScriptBackdrop extends FlxBackdrop implements RuleScriptedClass {}
-class ScriptRuntimeShader extends FlxRuntimeShader implements RuleScriptedClass {}
+class ScriptedFlxSprite extends FlxSprite implements RuleScriptedClass {}
+class ScriptedFlxAnimate extends FlxAnimate implements RuleScriptedClass {}
+class ScriptedFlxBackdrop extends FlxBackdrop implements RuleScriptedClass {}
+class ScriptedFlxRuntimeShader extends FlxRuntimeShader implements RuleScriptedClass {}
 
-class ScriptText extends FlxText implements RuleScriptedClass {}
-class ScriptBitmapText extends FlxBitmapText implements RuleScriptedClass {}
-class ScriptTextFormat extends FlxTextFormat implements RuleScriptedClass {}
+class ScriptedFlxText extends FlxText implements RuleScriptedClass {}
+class ScriptedFlxBitmapText extends FlxBitmapText implements RuleScriptedClass {}
+class ScriptedFlxTextFormat extends FlxTextFormat implements RuleScriptedClass {}
 
-class ScriptCamera extends FlxCamera implements RuleScriptedClass {}
+class ScriptedFlxCamera extends FlxCamera implements RuleScriptedClass {}
 
-class ScriptKeyList extends FlxKeyList implements RuleScriptedClass {}
-class ScriptBaseKeyList extends FlxBaseKeyList implements RuleScriptedClass {}
+class ScriptedFlxKeyList extends FlxKeyList implements RuleScriptedClass {}
+class ScriptedFlxBaseKeyList extends FlxBaseKeyList implements RuleScriptedClass {}
 
 // OpenFL
 
-@:forceOverride class ScriptOpenFLSprite extends Sprite implements RuleScriptedClass {}
+@:forceOverride class ScriptedOpenFLSprite extends Sprite implements RuleScriptedClass {}
 
-@:forceOverride class ScriptOpenFLTextField extends TextField implements RuleScriptedClass {}
+@:forceOverride class ScriptedOpenFLTextField extends TextField implements RuleScriptedClass {}
 
 // ALE Psych
 
 #if LUA_ALLOWED
-class ScriptLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
+class ScriptedLuaPresetBase extends LuaPresetBase implements RuleScriptedClass {}
 #end
 
 #if HSCRIPT_ALLOWED
-class ScriptHScriptPresetBase extends HScriptPresetBase implements RuleScriptedClass {}
+class ScriptedHScriptPresetBase extends HScriptPresetBase implements RuleScriptedClass {}
 #end
 
-class ScriptFunkinSprite extends FunkinSprite implements RuleScriptedClass {}
-class ScriptCharacter extends Character implements RuleScriptedClass {}
-class ScriptIcon extends Icon implements RuleScriptedClass {}
+class ScriptedFunkinSprite extends FunkinSprite implements RuleScriptedClass {}
+class ScriptedCharacter extends Character implements RuleScriptedClass {}
+class ScriptedIcon extends Icon implements RuleScriptedClass {}
 
-class ScriptFXCamera extends FXCamera implements RuleScriptedClass {}
-class ScriptALECamera extends ALECamera implements RuleScriptedClass {}
+class ScriptedFXCamera extends FXCamera implements RuleScriptedClass {}
+class ScriptedCamera extends Camera implements RuleScriptedClass {}
 
-class ScriptALERuntimeShader extends ALERuntimeShader implements RuleScriptedClass {}
-class ScriptFXShader extends FXShader implements RuleScriptedClass {}
+class ScriptedRuntimeShader extends RuntimeShader implements RuleScriptedClass {}
+class ScriptedFXShader extends FXShader implements RuleScriptedClass {}
 
 // ALE UI
 
-class ScriptALEMouseSprite extends ALEMouseSprite implements RuleScriptedClass {}
+class ScriptedMouseSprite extends MouseSprite implements RuleScriptedClass {}
 
-class ScriptALEUISprite extends ALEUISprite implements RuleScriptedClass {}
+class ScriptedUISprite extends UISprite implements RuleScriptedClass {}

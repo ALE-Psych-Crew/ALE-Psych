@@ -2,7 +2,7 @@ package funkin.substates;
 
 import haxe.ds.StringMap;
 
-import ale.ui.ALEUIUtils;
+import ale.ui.UIUtils;
 
 class CustomSubState extends ScriptSubState
 {
@@ -66,7 +66,7 @@ class CustomSubState extends ScriptSubState
         {
             super.update(elapsed);
 
-            if (Controls.BACK && CoolVars.data.developerMode && !ALEUIUtils.usingInputs)
+            if (Controls.BACK && CoolVars.data.developerMode && !UIUtils.usingInputs)
                 close();
         }
 

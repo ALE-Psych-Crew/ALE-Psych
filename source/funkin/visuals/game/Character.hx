@@ -1,6 +1,6 @@
 package funkin.visuals.game;
 
-import utils.ALEFormatter;
+import utils.Formatter;
 
 import core.structures.ALECharacter;
 
@@ -35,7 +35,7 @@ class Character extends Bopper
         if (type != null)
             this.type = type;
 
-        final jsonData:ALECharacter = ALEFormatter.getCharacter(id, this.type);
+        final jsonData:ALECharacter = Formatter.getCharacter(id, this.type);
 
         if (jsonData == null)
             return;

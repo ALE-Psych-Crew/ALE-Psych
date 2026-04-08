@@ -4,7 +4,7 @@ import flixel.addons.display.FlxRuntimeShader;
 import lime.graphics.opengl.GLProgram;
 import lime.app.Application;
 
-class ALERuntimeShader extends FlxRuntimeShader
+class RuntimeShader extends FlxRuntimeShader
 {
     public var shaderName:String = '';
 

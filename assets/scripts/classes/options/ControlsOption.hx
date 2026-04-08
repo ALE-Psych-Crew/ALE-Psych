@@ -1,13 +1,11 @@
 package options;
 
-import scripting.haxe.ScriptSpriteGroup;
-
 import funkin.visuals.objects.Alphabet;
 
 import flixel.input.keyboard.FlxKey;
 import flixel.effects.FlxFlicker;
 
-class ControlsOption extends ScriptSpriteGroup
+class ControlsOption extends scripting.haxe.ScriptedFlxSpriteGroup
 {
     public var group:String;
     public var variable:String;

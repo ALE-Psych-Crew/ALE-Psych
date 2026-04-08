@@ -2,7 +2,7 @@ package core.plugins;
 
 import flixel.FlxBasic;
 
-class ALEPluginsHandler
+class PluginsHandler
 {
 	public static var pluginsCamera:FlxCamera;
 
@@ -37,7 +37,7 @@ class ALEPluginsHandler
 		{
 			if (!camera.exists)
 			{
-				pluginsCamera = new ALECamera();
+				pluginsCamera = new Camera();
 
 				for (obj in plugins)
 					obj.cameras = [pluginsCamera];
@@ -62,7 +62,7 @@ class ALEPluginsHandler
 		if (initialized)
 			return;
 
-		pluginsCamera = new ALECamera();
+		pluginsCamera = new Camera();
 		FlxG.cameras.add(pluginsCamera, false);
 
 		FlxG.plugins.drawOnTop = true;

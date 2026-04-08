@@ -5,7 +5,7 @@ import scripting.ScriptConfig;
 import haxe.ds.StringMap;
 
 #if HSCRIPT_ALLOWED
-import rulescript.RuleScript;
+import rulescript.RuleScript as OGRuleScript;
 import rulescript.scriptedClass.RuleScriptedClassUtil;
 import rulescript.scriptedClass.RuleScriptedClass;
 import rulescript.types.ScriptedTypeUtil;
@@ -44,18 +44,18 @@ class HScriptConfig
             if (!Paths.exists(filePath))
                 return null;
 
-            var parser = new ALEParser(name);
+            var parser = new Parser(name);
             parser.allowAll();
             parser.mode = MODULE;
 
             return parser.parseModule(Paths.getContent(filePath));
         }
 
-        RuleScriptedClassUtil.buildBridge = function (typePath:String, superInstance:Dynamic):RuleScript
+        RuleScriptedClassUtil.buildBridge = function (typePath:String, superInstance:Dynamic):OGRuleScript
         {
 			var type:ScriptedClassType = ScriptedTypeUtil.resolveScript(typePath);
 
-			var script = new ALERuleScript(typePath);
+			var script = new RuleScript(typePath);
 
 			script.superInstance = superInstance;
 
@@ -89,9 +89,9 @@ class HScriptConfig
 
         // Imports
 
-		RuleScript.defaultImports[''] = new Map();
+		OGRuleScript.defaultImports[''] = new Map();
 		
-        final curPackage:Map<String, Dynamic> = RuleScript.defaultImports[''];
+        final curPackage:Map<String, Dynamic> = OGRuleScript.defaultImports[''];
 
         for (theClass in ScriptConfig.CLASSES)
 			curPackage.set(Type.getClassName(theClass).split('.').pop(), theClass);

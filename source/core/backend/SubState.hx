@@ -2,9 +2,9 @@ package core.backend;
 
 import flixel.FlxSubState;
 
-class ALESubState extends FlxSubState
+class SubState extends FlxSubState
 {
-    public var subCamera:ALECamera;
+    public var subCamera:Camera;
 
     override function create()
     {
@@ -12,7 +12,7 @@ class ALESubState extends FlxSubState
 
         FlxG.stage.window.onTextInput.add(onTextInput);
 		
-		FlxG.cameras.add(subCamera = new ALECamera(), false);
+		FlxG.cameras.add(subCamera = new Camera(), false);
     }
 
 	override function destroy()

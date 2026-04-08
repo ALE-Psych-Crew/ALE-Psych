@@ -4,7 +4,7 @@ import flixel.input.keyboard.FlxKey;
 
 import utils.Score;
 
-import utils.ALEFormatter;
+import utils.Formatter;
 
 using StringTools;
 
@@ -101,7 +101,7 @@ function onCreate()
 
     for (week in Paths.readDirectory('data/weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
         if (week.endsWith('.json'))
-            weeks.push(ALEFormatter.getWeek(week.substring(0, week.length - 5)));
+            weeks.push(Formatter.getWeek(week.substring(0, week.length - 5)));
 
     for (week in weeks.copy())
         if (week.hideStoryMode)

@@ -2,7 +2,7 @@ package scripting.lua.callbacks;
 
 import scripting.lua.LuaPresetBase;
 
-import funkin.visuals.shaders.ALERuntimeShader;
+import funkin.visuals.shaders.RuntimeShader;
 
 import flixel.FlxState;
 import flixel.FlxSubState;

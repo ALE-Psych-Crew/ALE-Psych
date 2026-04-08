@@ -20,13 +20,12 @@ import core.structures.ALEStageObjectsConfig;
 import core.structures.ALESong;
 import core.structures.ALEHud;
 import core.structures.Point;
-import core.plugins.ALEPluginsHandler;
 import core.enums.CharacterType;
 import core.enums.SongType;
 import core.enums.Rating;
 import core.Main;
 
-import utils.ALEFormatter;
+import utils.Formatter;
 import utils.Score;
 
 import haxe.ds.StringMap;
@@ -109,11 +108,11 @@ class PlayState extends ScriptState
         this.week = week;
         this.weekScore = weekScore;
 
-        CHART ??= ALEFormatter.getSong(this.song, this.difficulty);
+        CHART ??= Formatter.getSong(this.song, this.difficulty);
 
-        stage = new Stage(this, ALEFormatter.getStage(CHART.stage));
+        stage = new Stage(this, Formatter.getStage(CHART.stage));
 
-        HUD ??= ALEFormatter.getHud(stage.data.hud);
+        HUD ??= Formatter.getHud(stage.data.hud);
 
         songRoute = CoolUtil.searchComplexFile('songs/' + this.song);
     }
@@ -1160,7 +1159,7 @@ class PlayState extends ScriptState
 
     function cacheCharacter(character:String)
     {
-        final json = ALEFormatter.getCharacter(character, OPPONENT);
+        final json = Formatter.getCharacter(character, OPPONENT);
 
         if (json == null)
             return;
@@ -1178,7 +1177,7 @@ class PlayState extends ScriptState
 
     function cacheIcon(icon:String, type:CharacterType)
     {
-        final json = ALEFormatter.getIcon(icon);
+        final json = Formatter.getIcon(icon);
 
         if (json == null)
             return;

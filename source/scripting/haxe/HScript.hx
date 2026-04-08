@@ -19,7 +19,7 @@ import scripting.haxe.Extensible;
 import scripting.haxe.HScriptPresetBase;
 #end
 
-class HScript extends ALERuleScript
+class HScript extends RuleScript
 {
 	public final type:StateType;
 

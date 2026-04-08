@@ -30,7 +30,7 @@ final filesPath:String = 'hud/' + playState.stage.data.hud;
 
 function new(?char:Character)
 {
-    playStateChar = char ?? playState.lastMissNoteCharacter;
+    playStateChar = char ?? playState.lastMissNoteCharacter ?? playState.bf ?? playState.gf ?? playState.dad;
     
     playStateChar.exists = false;
 
