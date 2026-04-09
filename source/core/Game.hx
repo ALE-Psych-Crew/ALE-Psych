@@ -1,7 +1,6 @@
 package core;
 
 import flixel.util.typeLimit.NextState.InitialState;
-
 import flixel.FlxGame;
 
 import api.DesktopAPI;
@@ -9,6 +8,10 @@ import api.DesktopAPI;
 import core.backend.SoundTray;
 
 import funkin.substates.ModsMenuSubState;
+
+import openfl.events.FullScreenEvent;
+
+import lime.app.Application;
 
 class Game extends FlxGame
 {
@@ -18,7 +21,7 @@ class Game extends FlxGame
 
 		_customSoundTray = SoundTray;
 	}
-
+	
 	@:unreflective var visibleConsole:Bool = false;
 
 	override public function update()

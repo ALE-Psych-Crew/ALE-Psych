@@ -21,6 +21,8 @@ import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 #end
 
+import flixel.input.keyboard.FlxKey;
+
 import funkin.debug.DebugCounter;
 
 import core.config.MainState;
@@ -195,6 +197,11 @@ class Main extends Sprite
 		#if VIDEOS_ALLOWED
 		hxvlc.util.Handle.init(#if (hxvlc >= "1.8.0") ['--no-lua'] #end);
 		#end
+
+		FlxG.stage.addEventListener('keyDown', (event) -> {
+			if (event.altKey && event.keyCode == FlxKey.ENTER)
+				event.stopImmediatePropagation();
+		}, false, 1);
 
 		return;
 		

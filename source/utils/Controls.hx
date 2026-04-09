@@ -181,11 +181,11 @@ class Controls
         return FlxG.mouse.justReleased;
 
     public static function anyPressed(keys:Array<FlxKey>)
-        return MobileAPI.checkKeys(keys, PRESSED) || FlxG.keys.anyPressed(keys);
+        return (MobileAPI.checkKeys(keys, PRESSED) || FlxG.keys.anyPressed(keys));
     
     public static function anyJustPressed(keys:Array<FlxKey>)
-        return MobileAPI.checkKeys(keys, JUST_PRESSED) || FlxG.keys.anyJustPressed(keys);
+        return (MobileAPI.checkKeys(keys, JUST_PRESSED) || FlxG.keys.anyJustPressed(keys));
     
     public static function anyJustReleased(keys:Array<FlxKey>)
-        return MobileAPI.checkKeys(keys, JUST_RELEASED) || FlxG.keys.anyJustReleased(keys);
+        return (MobileAPI.checkKeys(keys, JUST_RELEASED) || FlxG.keys.anyJustReleased(keys));
 }
