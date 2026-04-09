@@ -2,117 +2,38 @@ package scripting.haxe;
 
 import scripting.ScriptConfig;
 
-import haxe.ds.StringMap;
-
 #if HSCRIPT_ALLOWED
-import rulescript.RuleScript as OGRuleScript;
-import rulescript.scriptedClass.RuleScriptedClassUtil;
-import rulescript.scriptedClass.RuleScriptedClass;
-import rulescript.types.ScriptedTypeUtil;
-import rulescript.types.ScriptedAbstract;
-import rulescript.interps.RuleScriptInterp;
-import rulescript.types.ScriptedModule;
-import rulescript.types.Abstracts;
+import ale.rulescript.RuleScriptGlobal;
 
-import hscript.Expr;
-
-using rulescript.Tools;
-
-@:access(rulescript.types.ScriptedTypeUtil)
+import scripting.haxe.Extensible;
 #end
+
+import haxe.Exception;
+
+using utils.cool.MapUtil;
+
 class HScriptConfig
 {
 	public static function config()
 	{
         #if HSCRIPT_ALLOWED
-		ScriptedTypeUtil.resolveModule = function (name:String):Array<ModuleDecl>
-        {
-            var path:Array<String> = name.split('.');
+        RuleScriptGlobal.reset();
 
-            var pack:Array<String> = [];
+        RuleScriptGlobal.FILE_CHECKER = (id:String) -> Paths.exists(id);
+        RuleScriptGlobal.FILE_READER = (id:String) -> Paths.getContent(id);
 
-            while (path[0].charAt(0) == path[0].charAt(0).toLowerCase())
-                pack.push(path.shift());
+        RuleScriptGlobal.IMPORTS = RuleScriptGlobal.IMPORTS.concat(ScriptConfig.CLASSES);
+        RuleScriptGlobal.ABSTRACTS = RuleScriptGlobal.ABSTRACTS.concat(ScriptConfig.ABSTRACTS);
+        RuleScriptGlobal.TYPEDEFS = cast RuleScriptGlobal.TYPEDEFS.mapConcat(ScriptConfig.TYPEDEFS);
+        RuleScriptGlobal.VARIABLES = cast RuleScriptGlobal.VARIABLES.mapConcat(ScriptConfig.VARIABLES);
 
-            var moduleName:String = null;
+        RuleScriptGlobal.VARIABLES.set('window', openfl.Lib.application.window);
 
-            if (path.length > 1)
-                moduleName = path.shift();
+        RuleScriptGlobal.SCRIPT_PATH = '';
 
-            var filePath = 'scripts/classes/' + (pack.length >= 1 ? pack.join('.') + '.' + (moduleName ?? path[0]) : path[0]).replace('.', '/') + '.hx';
+        RuleScriptGlobal.ERROR_HANDLER = (error:String) -> debugTrace(error, ERROR);
 
-            if (!Paths.exists(filePath))
-                return null;
-
-            var parser = new Parser(name);
-            parser.allowAll();
-            parser.mode = MODULE;
-
-            return parser.parseModule(Paths.getContent(filePath));
-        }
-
-        RuleScriptedClassUtil.buildBridge = function (typePath:String, superInstance:Dynamic):OGRuleScript
-        {
-			var type:ScriptedClassType = ScriptedTypeUtil.resolveScript(typePath);
-
-			var script = new RuleScript(typePath);
-
-			script.superInstance = superInstance;
-
-			script.getInterp(RuleScriptInterp).skipNextRestore = true;
-
-			if (type.isExpr)
-			{
-				script.execute(cast type);
-
-				script;
-			} else {
-				var cl:ScriptedClass = cast type;
-
-				RuleScriptedClassUtil.buildScriptedClass(cl, script);
-			}
-
-			return script;
-        };
-
-        ScriptedTypeUtil.resolveScript = function (name:String):Dynamic
-        {
-            var path = Tools.parseTypePath(name);
-
-            final module:Array<ModuleDecl> = ScriptedTypeUtil.resolveModule(path.modulePath());
-
-            if (module == null)
-                return null;
-
-            return new ScriptedModule(path.modulePath(), module, ScriptedTypeUtil._currentContext).types[path.typeName];
-        };
-
-        // Imports
-
-		OGRuleScript.defaultImports[''] = new Map();
-		
-        final curPackage:Map<String, Dynamic> = OGRuleScript.defaultImports[''];
-
-        for (theClass in ScriptConfig.CLASSES)
-			curPackage.set(Type.getClassName(theClass).split('.').pop(), theClass);
-
-        for (abst in ScriptConfig.ABSTRACTS)
-            curPackage.set(abst.trim().split('.').pop(), Abstracts.resolveAbstract(abst));
-
-		for (def in ScriptConfig.TYPEDEFS.keys())
-			curPackage.set(def, ScriptConfig.TYPEDEFS.get(def));
-
-		var presetVariables:StringMap<Dynamic> = [
-            'debugTrace' => debugTrace,
-            'Function_Stop' => CoolVars.Function_Stop,
-            'Function_Continue' => CoolVars.Function_Continue,
-			'Int' => Int,
-			'Float' => Float,
-			'Bool' => Bool
-		];
-
-		for (preVar in presetVariables.keys())
-			curPackage.set(preVar, presetVariables.get(preVar));
-        #end
+        RuleScriptGlobal.apply();
+		#end
 	}
 }

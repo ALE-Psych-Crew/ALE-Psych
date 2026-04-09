@@ -85,6 +85,11 @@
             "ref": "194aeb4173ed75e58f7e1a1d5f95cbac2653aa99"
         },
         {
+            "name": "ale-rulescript-wrapper",
+            "type": "haxelib",
+            "version": "1.0.2"
+        },
+        {
             "name": "hxluajit",
             "type": "haxelib",
             "version": "1.0.5"

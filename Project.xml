@@ -67,6 +67,7 @@
 	<haxelib name="hxvlc" if="VIDEOS_ALLOWED"/>
 
 	<haxelib name="rulescript" if="HSCRIPT_ALLOWED"/>
+	<haxelib name="ale-rulescript-wrapper" if="HSCRIPT_ALLOWED"/>
 
 	<haxelib name="hxluajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxluajit-wrapper" if="LUA_ALLOWED"/>

@@ -1,100 +1,29 @@
 package scripting.haxe;
 
+import scripting.haxe.HScriptPresetBase;
+
 import core.enums.StateType;
 
-import haxe.ds.StringMap;
-import haxe.Exception;
-
-import flixel.FlxG;
-import flixel.FlxObject;
-
-import sys.FileSystem;
-import sys.io.File;
-
+import ale.rulescript.RuleScript;
 import rulescript.Context;
-
-import scripting.haxe.Extensible;
-
-#if HSCRIPT_ALLOWED
-import scripting.haxe.HScriptPresetBase;
-#end
 
 class HScript extends RuleScript
 {
 	public final type:StateType;
 
-	override public function new(filePath:String, context:Context, ?args:Array<Dynamic>, type:StateType, scriptName:String, ?customCallbacks:Array<Class<HScriptPresetBase>>)
+	override public function new(scriptName:String, context:Context, ?args:Array<Dynamic>, type:StateType, ?customCallbacks:Array<Class<HScriptPresetBase>>)
 	{
 		this.type = type;
 
-		super(scriptName, context);
+		super(scriptName, type == STATE ? FlxG.state : FlxG.state.subState, context);
 
-		superInstance = type == STATE ? FlxG.state : FlxG.state.subState;
-
-		preset();
+		set('game', superInstance);
 
         for (callbacks in (customCallbacks ?? []))
             Type.createInstance(callbacks, [this]);
 
-		scriptName = filePath.split('/').pop();
-
-		if (FileSystem.exists(filePath))
-			tryExecute(File.getContent(filePath), onError);
+		run();
 		
-		call('new', args ?? []);
-	}
-
-	function preset():Void
-	{
-		var instanceVariables:StringMap<Dynamic> = new StringMap<Dynamic>();
-		
-		if (type == STATE)
-		{
-			instanceVariables = [
-				'game' => FlxG.state,
-				'add' => FlxG.state.add,
-				'insert' => FlxG.state.insert,
-				'remove' => FlxG.state.remove,
-				'openSubState' => FlxG.state.openSubState,
-				//'debugPrint' => ScriptState.instance.debugPrint,
-				'getObjectOrder' => function(obj:FlxObject)
-				{
-					return FlxG.state.members.indexOf(obj);
-				},
-				'setObjectOrder' => function(obj:FlxObject, index:Int)
-				{
-					FlxG.state.remove(obj);
-					FlxG.state.insert(index, obj);
-				}
-			];
-		} else if (type == SUBSTATE) {
-			instanceVariables = [
-				'game' => FlxG.state.subState,
-				'add' => FlxG.state.subState.add,
-				'insert' => FlxG.state.subState.insert,
-				'remove' => FlxG.state.subState.remove,
-				'close' => FlxG.state.subState.close,
-				//'debugPrint' => ScriptSubState.instance.debugPrint,
-				'getObjectOrder' => function(obj:FlxObject)
-				{
-					return FlxG.state.subState.members.indexOf(obj);
-				},
-				'setObjectOrder' => function(obj:FlxObject, index:Int)
-				{
-					FlxG.state.subState.remove(obj);
-					FlxG.state.subState.insert(index, obj);
-				}
-			];
-		};
-
-		for (insVar in instanceVariables.keys())
-			set(insVar, instanceVariables.get(insVar));
-
-		final globalVariables:StringMap<Dynamic> = [
-			'window' => openfl.Lib.application.window
-		];
-
-		for (gloVar in globalVariables.keys())
-			set(gloVar, globalVariables.get(gloVar));
+		call('new', args);
 	}
 }

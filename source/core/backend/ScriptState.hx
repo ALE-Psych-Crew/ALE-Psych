@@ -1,6 +1,8 @@
 package core.backend;
 
 #if HSCRIPT_ALLOWED
+import ale.rulescript.RuleScriptGlobal;
+
 import scripting.haxe.HScript;
 
 import rulescript.Context;
@@ -94,11 +96,11 @@ class ScriptState extends MusicBeatState implements IScriptState
     public function loadHScript(path:String, ?args:Array<Dynamic>)
     {
         #if HSCRIPT_ALLOWED
-        if (Paths.exists(path + '.hx'))
+        if (Paths.exists(path + RuleScriptGlobal.SCRIPT_EXTENSION))
         {
-            var script:HScript = new HScript(Paths.getPath(path + '.hx'), hScriptsContext, args, STATE, path, hsCustomCallbacks);
+            var script:HScript = new HScript(path, hScriptsContext, args, STATE, hsCustomCallbacks);
 
-            if (!script.failedParsing)
+            if (!script.failedExecution)
             {
                 hScripts.push(script);
 

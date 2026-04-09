@@ -1,12 +1,8 @@
 package scripting;
 
-import haxe.ds.StringMap;
-
 @:unreflective class ScriptConfig
 {
     public static final CLASSES:Array<Class<Dynamic>> = [
-        core.config.Discord,
-
         flixel.FlxG,
         flixel.sound.FlxSound,
         flixel.FlxState,
@@ -20,51 +16,36 @@ import haxe.ds.StringMap;
         flixel.group.FlxSpriteGroup,
         flixel.group.FlxGroup.FlxTypedGroup,
 
-        Array,
-        String,
-        StringTools,
-        Std,
-        Math,
-        Type,
-        Reflect,
-        Date,
-        DateTools,
-        Xml,
-        EReg,
-        Lambda,
-        IntIterator,
-
+        api.DesktopAPI,
+        api.MobileAPI,
+        
+        core.config.Discord,
+        core.config.ClientPrefs,
+        
+        sys.FileSystem,
         sys.io.Process,
+        sys.io.File,
+
         haxe.ds.StringMap,
         haxe.ds.IntMap,
         haxe.ds.EnumValueMap,
 
-        sys.io.File,
-        sys.FileSystem,
-        Sys,
-
         utils.Conductor,
+        utils.CoolUtil,
+        utils.CoolVars,
+        utils.Controls,
+        utils.Json,
 
         core.backend.MusicBeatState,
         core.backend.MusicBeatSubState,
-
-        core.config.ClientPrefs,
-
-        utils.CoolUtil,
-        utils.CoolVars,
 
         funkin.states.PlayState,
         funkin.states.CustomState,
         funkin.substates.CustomSubState,
 
         funkin.visuals.Camera,
-        
-        Controls,
 
-        Paths,
-
-        api.DesktopAPI,
-        api.MobileAPI
+        core.assets.Paths
     ];
 
     public static final ABSTRACTS:Array<String> = [
@@ -72,7 +53,11 @@ import haxe.ds.StringMap;
         'flixel.tweens.FlxTween.FlxTweenType'
     ];
 
-    public static final TYPEDEFS:StringMap<Class<Dynamic>> = [
-        'Json' => utils.Json
+    public static final TYPEDEFS:Map<String, Class<Dynamic>> = [];
+
+    public static final VARIABLES:Map<String, Dynamic> = [
+        'debugTrace' => debugTrace,
+        'Function_Stop' => CoolVars.Function_Stop,
+        'Function_Continue' => CoolVars.Function_Continue
     ];
 }
