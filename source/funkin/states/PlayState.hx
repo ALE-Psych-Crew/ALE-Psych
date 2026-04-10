@@ -14,9 +14,6 @@ import flixel.FlxBasic;
 import core.structures.ALESongSection;
 import core.structures.ALEEventList;
 import core.structures.ALEEvent;
-import core.structures.ALEStage;
-import core.structures.ALEStageObject;
-import core.structures.ALEStageObjectsConfig;
 import core.structures.ALESong;
 import core.structures.ALEHud;
 import core.structures.Point;
@@ -112,7 +109,7 @@ class PlayState extends ScriptState
 
         stage = new Stage(this, Formatter.getStage(CHART.stage));
 
-        HUD ??= Formatter.getHud(stage.data.hud);
+        HUD ??= Formatter.getHud(stage.config.hud);
 
         songRoute = CoolUtil.searchComplexFile('songs/' + this.song);
     }
@@ -215,11 +212,11 @@ class PlayState extends ScriptState
 
         hitboxes.clear();
 
-        for (index => strum in strumLine.data.strums)
+        for (index => strum in strumLine.config.config)
         {
-            final keysArray:Array<Null<FlxKey>> = CoolUtil.getControl(strum.keybind[0], strum.keybind[1]);
+            final keysArray:Array<Null<FlxKey>> = CoolUtil.getControl(strum.keyBind.group, strum.keyBind.id);
 
-            final hitbox:Hitbox = new Hitbox(strumLine.data.strums.length, index, keysArray,
+            final hitbox:Hitbox = new Hitbox(strumLine.config.config.length, index, keysArray,
                 () -> {
                     for (key in keysArray)
                         if (key != null)
@@ -390,7 +387,7 @@ class PlayState extends ScriptState
             final songSection:ALESongSection = CHART.sections[curSection];
 
             if (songSection != null)
-                moveCamera(cameraCharacters[songSection.camera[0]][songSection.camera[1]]);
+                moveCamera(strumLineCharacters[songSection.camera[0]][songSection.camera[1]]);
         }
 
         scriptCallbackCall(POST, 'SectionHit', [curSection]);
@@ -483,9 +480,9 @@ class PlayState extends ScriptState
             
             final ids:Array<String> = [null, 'ready', 'set', 'go'];
 
-            final graphics:Array<FlxGraphic> = [for (spr in ids) spr == null ? null : Paths.image('hud/' + stage.data.hud + '/countdown/' + spr)];
+            final graphics:Array<FlxGraphic> = [for (spr in ids) spr == null ? null : Paths.image('hud/' + stage.config.hud + '/countdown/' + spr)];
 
-            final sounds:Array<Sound> = [for (spr in ['three', 'two', 'one', 'go']) spr == null ? null : Paths.sound('hud/' + stage.data.hud + '/countdown/' + spr)];
+            final sounds:Array<Sound> = [for (spr in ['three', 'two', 'one', 'go']) spr == null ? null : Paths.sound('hud/' + stage.config.hud + '/countdown/' + spr)];
 
             allowSongPositionUpdate = true;
             
@@ -679,13 +676,13 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'CamerasInit'))
         {
-            camGame = new FXCamera(stage.data.speed ?? 1);
+            camGame = new FXCamera(stage.config.speed ?? 1);
 
             final camGame:FXCamera = cast camGame;
 
             camGame.zoomSpeed = 1;
             camGame.bopModulo = 4;
-            camGame.zoom = camGame.targetZoom = stage.data.zoom;
+            camGame.zoom = camGame.targetZoom = stage.config.zoom;
 
             FlxG.cameras.reset(camGame);
                 
@@ -721,13 +718,13 @@ class PlayState extends ScriptState
     var players:FlxTypedGroup<Character>;
     var extras:FlxTypedGroup<Character>;
 
-    var cameraCharacters:Array<Array<Character>> = [];
+    var strumLineCharacters:Array<Array<Character>> = [];
 
     function initStrumLines()
     {
         if (scriptCallbackCall(ON, 'StrumLinesInit'))
         {
-            final notes:Array<Array<Dynamic>> = [];
+            final notes:Array<Array<Array<Dynamic>>> = [];
 
             Conductor.bpm = CHART.bpm;
 
@@ -755,8 +752,6 @@ class PlayState extends ScriptState
                         ]);
                     }
                 }
-
-                Conductor.bpm = CHART.bpm;
             }
 
             Conductor.bpm = CHART.bpm;
@@ -776,33 +771,37 @@ class PlayState extends ScriptState
 
             for (strlIndex => strl in CHART.strumLines)
             {
-                final strlCharacters:Array<Character> = [];
-
                 for (char in strl.characters)
                 {
                     final character:Character = new Character(char, strl.type);
 
-                    cameraCharacters[strlIndex] ??= [];
-
-                    cameraCharacters[strlIndex].push(character);
-
-                    strlCharacters.push(character);
+                    strumLineCharacters[strlIndex] ??= [];
+                    strumLineCharacters[strlIndex].push(character);
                     
                     addCharacter(character);
                 }
 
-                final strumLine:StrumLine = new StrumLine(strl, notes[strlIndex] ?? [], CHART.speed, strlCharacters, stackNote);
+                final strumLine:StrumLine = new StrumLine(strl.file, strl.type, strlIndex, stackNote, notes[strlIndex] ?? []);
 
-                strumLine.onSpawnNote = spawnNote;
+                strumLine.visible = strl.visible;
 
-                strumLine.onHitNote = hitNote;
-
-                strumLine.onMissNote = missNote;
-
-                addStrumLine(strumLine);
+                var strumHeight:Float = 0;
 
                 for (strum in strumLine.strums)
+                {
                     strums.add(strum);
+                    
+                    strumHeight = Math.max(strumHeight, strum.height);
+                }
+
+                strumLine.x = strl.rightToLeft ? strl.position.x : FlxG.width - strl.position.x - (strumLine.config.config.length - 1) * strumLine.config.spacing - strums.members[strums.members.length - 1].width;
+                strumLine.y = ClientPrefs.data.downScroll ? FlxG.height - strl.position.y - strumHeight : strl.position.y;
+
+                strumLine.noteSpawnCallback = spawnNote;
+                strumLine.noteHitCallback = hitNote;
+                strumLine.noteMissCallback = missNote;
+
+                addStrumLine(strumLine);
             }
         }
 
@@ -818,10 +817,8 @@ class PlayState extends ScriptState
         final result:Bool = scriptCallbackCall(ON, 'NoteStack', null, [note], []);
 
         if (result)
-        {
             if (!totalNoteTypes.contains(note.noteType))
                 totalNoteTypes.push(note.noteType);
-        }
 
         scriptCallbackCall(POST, 'NoteStack', null, [note], []);
 
@@ -844,21 +841,27 @@ class PlayState extends ScriptState
     var lastHitNote:Note = null;
     var lastHitNoteCharacter:Character = null;
 
-    function hitNote(note:Note, rating:Rating, character:Character, removeNote:Bool):Dynamic
+    function hitNote(note:Note, rating:Rating, removeNote:Bool):Dynamic
     {
         lastHitNote = note;
+
+        final character:Character = characterFromNote(note);
+
         lastHitNoteCharacter = character;
 
-        final scriptResult:Bool = scriptCallbackCall(ON, 'NoteHit', null, [note, rating, character, removeNote], [rating, removeNote]);
+        final result:Bool = scriptCallbackCall(ON, 'NoteHit', null, [note, rating, character, removeNote], [rating, removeNote]);
 
-        if (scriptResult)
+        if (result)
         {
+            if (character != null)
+                character.sing(character._castConfig.sustainAnimation || note.type == ARROW ? note.strumLineConfig.sing : null);
+
             if (character.type == PLAYER)
             {
+                health += note.hitHealth;
+
                 if (note.type == ARROW)
                 {
-                    health += note.hitHealth;
-
                     score += rating.toScore();
 
                     accuracyMod += rating.toAccuracy();
@@ -874,39 +877,46 @@ class PlayState extends ScriptState
 
         scriptCallbackCall(POST, 'NoteHit', null, [note, rating, character, removeNote], [rating, removeNote]);
 
-        return scriptResult ? null : CoolVars.Function_Stop;
+        return result;
     }
 
     var lastMissNote:Note = null;
+
     var lastMissNoteCharacter:Character = null;
 
-    function missNote(note:Note, character:Character):Dynamic
+    function missNote(note:Note):Dynamic
     {
         lastMissNote = note;
+
+        final character:Character = characterFromNote(note);
+
         lastMissNoteCharacter = character;
 
-        final scriptResult:Bool = scriptCallbackCall(ON, 'NoteMiss', null, [note, character], []);
+        final result:Bool = scriptCallbackCall(ON, 'NoteMiss', null, [note, character], []);
 
-        if (scriptResult)
+        if (result)
         {
+            if (character != null)
+                character.miss(character._castConfig.sustainAnimation || note.type == ARROW ? note.strumLineConfig.miss : null);
+
             if (character.type == PLAYER)
             {
                 if (note.type == ARROW)
                 {
                     combo = 0;
 
-                    health -= note.missHealth;
-
                     misses++;
 
                     totalPlayed++;
                 }
+                
+                health -= note.missHealth;
             }
         }
 
         scriptCallbackCall(POST, 'NoteMiss', null, [note, character], []);
 
-        return scriptResult ? null : CoolVars.Function_Stop;
+        return result;
     }
 
     final eventsListStack:GenericStack<ALEEventList> = new GenericStack();
@@ -936,6 +946,9 @@ class PlayState extends ScriptState
 
         scriptCallbackCall(POST, 'EventsInit');
     }
+
+    function characterFromNote(note:Note):Character
+        return strumLineCharacters[note.character[0]][note.character[1]];
 
     function stackEventList(eventList:ALEEventList)
     {
@@ -996,7 +1009,7 @@ class PlayState extends ScriptState
         {
             uiGroup.cameras = [camHUD];
 
-            healthBar = new Bar('hud/' + stage.data.hud + '/bar', 0, FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9), health * 50, true);
+            healthBar = new Bar('hud/' + stage.config.hud + '/bar', 0, FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9), health * 50, true);
             healthBar.x = FlxG.width / 2 - healthBar.width / 2;
             uiGroup.add(healthBar);
 
@@ -1010,8 +1023,8 @@ class PlayState extends ScriptState
 
                 if (target != null && !(target == gf && usedGF))
                 {
-                    bar.color = CoolUtil.colorFromString(target.data.barColor);
-                    icon.change(target.data.icon);
+                    bar.color = CoolUtil.colorFromString(target._castConfig.barColor);
+                    icon.change(target._castConfig.icon);
                     
                     if (target == gf)
                         usedGF = true;
@@ -1022,11 +1035,11 @@ class PlayState extends ScriptState
                 }
             }
 
-            opponentIcon = new Icon(gf != null && dad == null ? EXTRA : OPPONENT);
+            opponentIcon = new Icon('dad', gf != null && dad == null ? EXTRA : OPPONENT);
             addIcon(opponentIcon);
             tryIconSetup(opponentIcon, dad, healthBar.rightBar);
 
-            playerIcon = new Icon(gf != null && bf == null ? EXTRA : PLAYER);
+            playerIcon = new Icon('bf', gf != null && bf == null ? EXTRA : PLAYER);
             addIcon(playerIcon);
             tryIconSetup(playerIcon, bf, healthBar.leftBar);
             
@@ -1079,7 +1092,7 @@ class PlayState extends ScriptState
         if (scriptCallbackCall(ON, 'ComboInit'))
         {
             for (obj in ['sick', 'good', 'bad', 'shit'].concat([for (i in 0...10) '$i']))
-                Paths.image('hud/' + stage.data.hud + '/combo/' + obj);
+                Paths.image('hud/' + stage.config.hud + '/combo/' + obj);
             
             comboGroup.cameras = [camHUD];
 
@@ -1167,11 +1180,11 @@ class PlayState extends ScriptState
         switch (json.type)
         {
             case SHEET:
-                Paths.getMultiAtlas(json.textures);
+                Paths.getMultiAtlas(json.images);
             case MAP:
-                Paths.getAnimateAtlas(json.textures[0]);
-            case FRAMES:
-                Paths.image(json.textures[0]);
+                Paths.getAnimateAtlas(json.images[0]);
+            case FRAMES, IMAGE:
+                Paths.image(json.images[0]);
         }
     }
 
@@ -1185,11 +1198,11 @@ class PlayState extends ScriptState
         switch (json.type)
         {
             case SHEET:
-                Paths.getMultiAtlas(json.textures);
+                Paths.getMultiAtlas(json.images);
             case MAP:
-                Paths.getAnimateAtlas(json.textures[0]);
-            case FRAMES:
-                Paths.image(json.textures[0]);
+                Paths.getAnimateAtlas(json.images[0]);
+            case FRAMES, IMAGE:
+                Paths.image(json.images[0]);
         }
     }
 
@@ -1219,18 +1232,18 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'CharacterPositionReset', null, [character], []))
         {
-            character.x = character.data.position.x;
-            character.y = character.data.position.y;
+            character.x = character._castConfig.properties.x;
+            character.y = character._castConfig.properties.y;
 
-            if (stage.data.characterOffset != null)
+            if (stage.config.charactersOffset != null)
             {
                 var offset:Point = null;
 
-                if (stage.data.characterOffset.type != null)
-                    offset = Reflect.getProperty(stage.data.characterOffset.type, cast character.type);
+                if (stage.config.charactersOffset.type != null)
+                    offset = Reflect.getProperty(stage.config.charactersOffset.type, cast character.type);
 
-                if (stage.data.characterOffset.id != null)
-                    offset = Reflect.getProperty(stage.data.characterOffset.id, character.id);
+                if (stage.config.charactersOffset.id != null)
+                    offset = Reflect.getProperty(stage.config.charactersOffset.id, character.id);
 
                 if (offset != null)
                 {
@@ -1251,16 +1264,16 @@ class PlayState extends ScriptState
 
             if (char == bf)
             {
-                playerIcon.change(char.data.icon);
+                playerIcon.change(char._castConfig.icon);
 
-                healthBar.leftBar.color = CoolUtil.colorFromString(char.data.barColor);
+                healthBar.leftBar.color = CoolUtil.colorFromString(char._castConfig.barColor);
             }
 
             if (char == dad)
             {
-                opponentIcon.change(char.data.icon);
+                opponentIcon.change(char._castConfig.icon);
 
-                healthBar.rightBar.color = CoolUtil.colorFromString(char.data.barColor);
+                healthBar.rightBar.color = CoolUtil.colorFromString(char._castConfig.barColor);
             }
 
             resetCharacterPosition(char);
@@ -1282,7 +1295,7 @@ class PlayState extends ScriptState
             final songSection:ALESongSection = CHART.sections[char];
 
             if (songSection != null)
-                character = cameraCharacters[songSection.camera[0]][songSection.camera[1]];
+                character = strumLineCharacters[songSection.camera[0]][songSection.camera[1]];
         }
 
         if (character != null)
@@ -1303,17 +1316,17 @@ class PlayState extends ScriptState
 
     function getCharacterCamera(character:Character):Point
     {
-        final result:Point = {x: character.getMidpoint().x + character.data.cameraPosition.x * (character.type == PLAYER ? -1 : 1), y: character.getMidpoint().y + character.data.cameraPosition.y};
+        final result:Point = {x: character.getMidpoint().x + character._castConfig.cameraOffset.x * (character.type == PLAYER ? -1 : 1), y: character.getMidpoint().y + character._castConfig.cameraOffset.y};
 
-        if (stage.data.cameraOffset != null)
+        if (stage.config.charactersCamera != null)
         {
             var offset:Point = null;
 
-            if (stage.data.cameraOffset.type != null)
-                offset = Reflect.getProperty(stage.data.cameraOffset.type, cast character.type);
+            if (stage.config.charactersCamera.type != null)
+                offset = Reflect.getProperty(stage.config.charactersCamera.type, cast character.type);
 
-            if (stage.data.cameraOffset.id != null)
-                offset = Reflect.getProperty(stage.data.cameraOffset.id, character.id);
+            if (stage.config.charactersCamera.id != null)
+                offset = Reflect.getProperty(stage.config.charactersCamera.id, character.id);
 
             if (offset != null)
             {
@@ -1454,7 +1467,7 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'ComboDisplay', [rating]))
         {
-            final path:String = 'hud/' + stage.data.hud + '/combo';
+            final path:String = 'hud/' + stage.config.hud + '/combo';
 
             FlxTween.cancelTweensOf(comboSprite);
 

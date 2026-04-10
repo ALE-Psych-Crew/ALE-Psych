@@ -1,31 +1,44 @@
 package funkin.visuals.objects;
 
-import haxe.ds.StringMap;
-
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxAngle;
 
+import utils.cool.SpriteUtil;
+
 import animate.FlxAnimate;
+
+import core.structures.JsonSpriteAnimation;
+import core.structures.JsonSprite;
+import core.structures.Point;
 
 import core.enums.SpriteType;
 
-import core.structures.Point;
-
 class FunkinSprite extends FlxAnimate
 {
-    public var offsets:StringMap<Point> = new StringMap();
+    public var offsets:Map<String, Point> = new Map();
 
-    public function playAnim(animation:String, ?force:Bool)
+    public var allowUpdateHitboxOffset:Bool = false;
+
+    override public function updateHitbox()
     {
-        anim.play(animation, force ?? true);
+        super.updateHitbox();
+
+        if (allowUpdateHitboxOffset && allowOffset)
+            applyOffset();
+    }
+
+    public function playAnim(name:Null<String>, ?force:Bool = true)
+    {
+        if (name == null || !anim.getNameList().contains(name) || (anim.curAnim == null ? false : anim.name == name && anim.curAnim.looped))
+            return;
+
+        anim.play(name, force ?? true);
 
         applyOffset(getAnimOffset());
     }
 
     public function getAnimOffset():Point
-    {
-        return offsets.get(anim.name) ?? {x: 0, y: 0};
-    }
+        return offsets.get(anim.name) ?? {x: null, y: null};
 
     var lastScaleX:Float = 1;
     var lastScaleY:Float = 1;
@@ -34,6 +47,9 @@ class FunkinSprite extends FlxAnimate
     override function update(elapsed:Float)
     {
         super.update(elapsed);
+
+        if (!allowUpdateOffset || !allowOffset)
+            return;
 
         if (scale.x != lastScaleX || scale.y != lastScaleY || angle != lastAngle)
         {
@@ -46,67 +62,65 @@ class FunkinSprite extends FlxAnimate
         }
     }
 
+    public var allowOffset:Bool = true;
+    public var allowOffsetX:Bool = true;
+    public var allowOffsetY:Bool = true;
+
+    public var allowUpdateOffset:Bool = true;
+
+    public var allowScaleFix:Bool = true;
+    public var allowScaleXFix:Bool = true;
+    public var allowScaleYFix:Bool = true;
+
+    public var allowAngleFix:Bool = true;
+
     public function applyOffset(?base:Point)
     {
+        if (!allowOffset)
+            return;
+
         base ??= getAnimOffset();
 
-        var sx:Float = base.x * scale.x;
-        var sy:Float = base.y * scale.y;
+        var sx:Float = base.x ?? 0;
+        var sy:Float = base.y ?? 0;
 
-        var cos:Float = 1;
-        var sin:Float = 0;
-
-        if (angle != 0)
+        if (allowScaleFix)
         {
-            var rad:Float = angle * FlxAngle.TO_RAD;
+            if (allowScaleXFix)
+                sx *= scale.x;
 
-            cos = Math.cos(rad);
-            sin = Math.sin(rad);
+            if (allowScaleYFix)
+                sy *= scale.y;
+        }
 
-            var tx:Float = sx * cos - sy * sin;
+        if (allowAngleFix && angle != 0)
+        {
+            final rad:Float = angle * FlxAngle.TO_RAD;
+
+            final cos = Math.cos(rad);
+            final sin = Math.sin(rad);
 
             sy = sx * sin + sy * cos;
-            sx = tx;
+            sx = sx * cos - sy * sin;
         }
         
-        offset.set(sx, sy);
+        if (allowOffsetX && base.x != null)
+            offset.x = sx;
+
+        if (allowOffsetY && base.y != null)
+            offset.y = sy;
     }
 
-    public function addAnimation(type:SpriteType, name:String, ?prefix:String, ?fps:Int, ?loop:Bool, ?indices:Null<Array<Int>>)
-    {
-        switch (type)
-        {
-            case 'sheet':
-                if (indices == null || indices.length <= 0)
-                    animation.addByPrefix(name, prefix, fps, loop);
-                else
-                    animation.addByIndices(name, prefix, indices, '', fps, loop);
+    public var config:JsonSprite;
 
-            case 'frames':
-                animation.add(name, indices, fps, loop);
+    public var pathPrefix:String;
 
-            case 'map':
-                if (indices == null || indices.length <= 0)
-                    anim.addByFrameLabel(name, prefix, fps, loop);
-                else
-                    anim.addByFrameLabelIndices(name, prefix, indices, fps, loop);
+    public function fromJson(json:JsonSprite)
+        SpriteUtil.spriteFromJson(this, json, pathPrefix);
 
-            default:
-        }
-    }
+    public function loadFrames(type:SpriteType, images:Array<String>, ?framesNum:Int)
+        SpriteUtil.loadSpriteFrames(this, type, images, framesNum);
 
-    public function loadFrames(type:SpriteType, ids:Array<String>, ?anims:Int)
-    {
-        switch (type)
-        {
-            case 'sheet':
-                frames = Paths.getMultiAtlas(ids);
-            case 'map':
-                frames = Paths.getAnimateAtlas(ids[0]);
-            case 'frames':
-                final graphic:FlxGraphic = Paths.image(ids[0]);
-
-                loadGraphic(graphic, true, Math.floor(graphic.width / anims));
-        }
-    }
+    public function addAnim(type:SpriteType, animData:JsonSpriteAnimation)
+        SpriteUtil.addSpriteAnim(this, type, animData);
 }

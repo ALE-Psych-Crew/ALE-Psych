@@ -2,12 +2,12 @@ package core.interfaces;
 
 interface IMusicObject
 {
-    public function stepHit(curStep:Int):Void;
-    public function safeStepHit(safeStep:Int):Void;
+    public var stepHit:Int -> Void;
+    public var safeStepHit:Int -> Void;
 
-    public function beatHit(curBeat:Int):Void;
-    public function safeBeatHit(safeBeat:Int):Void;
+    public var beatHit:Int -> Void;
+    public var safeBeatHit:Int -> Void;
 
-    public function sectionHit(curSection:Int):Void;
-    public function safeSectionHit(safeSection:Int):Void;
+    public var sectionHit:Int -> Void;
+    public var safeSectionHit:Int -> Void;
 }

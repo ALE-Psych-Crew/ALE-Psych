@@ -2,7 +2,7 @@ package funkin.visuals.game;
 
 import utils.Formatter;
 
-import core.structures.ALECharacter;
+import core.structures.JsonCharacter;
 
 import core.enums.CharacterType;
 
@@ -10,110 +10,79 @@ class Character extends Bopper
 {
     public var type:CharacterType;
 
-    public function new(initial:String, type:CharacterType)
-    {
-        super();
-
-        this.type = type;
-
-        change(initial);
-
-        anim.onFinish.add((name) -> {
-            if (offsets.exists(name + '-loop'))
-                playAnim(name + '-loop');
-        });
-    }
-
-    public var data:ALECharacter;
-
     public var id:String;
 
-    public var vocals:Array<FlxSound> = [];
+    @:unreflective public var _castConfig(get, never):JsonCharacter;
+    function get__castConfig():JsonCharacter
+        return cast config;
+
+    public function new(name:String, type:CharacterType)
+    {
+        pathPrefix = 'characters/';
+
+        super();
+        
+        beatHit = (curBeat) -> {
+            if (bopTimer <= 0)
+                playAnim(_castConfig.bopAnimations[curBeat % _castConfig.bopAnimations.length]);
+        }
+
+        change(name, type);
+
+        flipX = _castConfig.properties.flipX != (this.type == 'player');
+
+        beatHit(0);
+
+        anim.onFinish.add((name) -> {
+            playAnim(name + '-loop');
+        });
+    }
 
     public function change(id:String, ?type:CharacterType)
     {
         if (type != null)
             this.type = type;
 
-        final jsonData:ALECharacter = Formatter.getCharacter(id, this.type);
-
-        if (jsonData == null)
-            return;
+        fromJson(Formatter.getCharacter(id, type));
 
         this.id = id;
-
-        data = jsonData;
-        
-        scale.x = scale.y = data.scale;
-
-        flipX = data.flipX != (this.type == 'player');
-
-        flipY = data.flipY;
-
-        antialiasing = data.antialiasing && ClientPrefs.data.antialiasing;
-
-        offsets.clear();
-
-        loadFrames(cast data.type, data.textures, data.frames);
-
-        for (animData in data.animations)
-        {
-            addAnimation(cast data.type, animData.name, animData.prefix, animData.framerate, animData.loop, animData.indices);
-
-            offsets.set(animData.name, animData.offset);
-        }
-
-        if (offsets.exists('danceLeft') && offsets.exists('danceRight'))
-            playAnim('danceLeft');
-        else
-            playAnim('idle');
     }
 
-    public var danceTimer:Float = 0;
+    public var bopTimer:Float = 0;
 
     override function update(elapsed:Float)
     {
         super.update(elapsed);
 
-        if (danceTimer > 0)
-            danceTimer -= elapsed;
+        if (bopTimer > 0)
+            bopTimer -= elapsed;
     }
 
-    public function playTimerAnim(?anim:String, ?applyTimer:Bool, ?force:Bool)
+    public function playTimedAnim(?anim:String, ?applyTimer:Bool = true, ?force:Bool = true)
     {
-        if (anim != null)
-            playAnim(anim, force);
+        playAnim(anim, force);
 
-        if (applyTimer ?? true)
-            danceTimer = data.animationLength;
+        if (applyTimer)
+            bopTimer = _castConfig.animationLength;
     }
 
-    public function sing(?anim:String, ?applyTimer:Bool, ?force:Bool)
+    public var vocals:Array<FlxSound> = [];
+
+    public function sing(?anim:String, ?applyTimer:Bool = true, ?force:Bool)
     {
-        playTimerAnim(anim, applyTimer, force);
+        playTimedAnim(anim, applyTimer, force);
 
         for (vocal in vocals)
             if (vocal != null)
                 vocal.volume = 1;
     }
 
-    public function miss(?anim:String, ?applyTimer:Bool, ?force:Bool)
+    public function miss(?anim:String, ?applyTimer:Bool = true, ?force:Bool)
     {
-        playTimerAnim(anim, applyTimer, force);
+        playTimedAnim(anim, applyTimer, force);
 
         for (vocal in vocals)
             if (vocal != null)
                 vocal.volume = 0;
-    }
-
-    override public function beatHit(curBeat:Int)
-    {
-        super.beatHit(curBeat);
-
-        if (curBeat % data.danceModulo == 0 && danceTimer <= 0)
-            if (offsets.exists('danceLeft') && offsets.exists('danceRight'))
-                playAnim(curBeat % (data.danceModulo * 2) == 0 ? 'danceLeft' : 'danceRight');
-            else
-                playAnim('idle');
     }
 }

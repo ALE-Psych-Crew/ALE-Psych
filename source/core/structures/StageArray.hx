@@ -2,8 +2,10 @@ package core.structures;
 
 import haxe.ds.StringMap;
 
+import core.enums.Quality;
+
 typedef StageArray = {
-    var objects:StringMap<{object:FlxSprite, highQuality:Bool}>;
-    var data:ALEStage;
+    var objects:StringMap<{object:FlxSprite, quality:Quality}>;
+    var config:JsonStage;
     var id:String;
 }

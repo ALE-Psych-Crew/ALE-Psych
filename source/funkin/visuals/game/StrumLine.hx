@@ -1,170 +1,114 @@
 package funkin.visuals.game;
 
-import utils.Formatter;
-
-import flixel.input.keyboard.FlxKey;
+import openfl.events.KeyboardEvent;
 
 import haxe.ds.GenericStack;
-import haxe.ds.IntMap;
 
-import funkin.visuals.shaders.RGBPalette;
+import utils.Formatter;
 
-import core.structures.ALEStrumLine;
-import core.structures.ALESongStrumLine;
-import core.structures.ALEStrum;
+import core.structures.JsonStrumLineConfig;
+import core.structures.JsonStrumLine;
 
 import core.enums.CharacterType;
 import core.enums.Rating;
 
 class StrumLine extends FlxSpriteGroup
 {
-    public var strums:FlxTypedSpriteGroup<Strum>;
+    public var config:JsonStrumLine;
 
-    public var notes:FlxTypedSpriteGroup<Note>;
-    public var arrows:FlxTypedSpriteGroup<Note>;
-    public var sustains:FlxTypedSpriteGroup<Note>;
+    public var botplay:Bool;
 
-    public var splashes:FlxTypedSpriteGroup<Splash>;
+    public var downScroll:Bool = ClientPrefs.data.downScroll;
 
-    public var botplay(default, set):Bool;
-    function set_botplay(val:Bool):Bool
-    {
-        botplay = val;
+    public var type:CharacterType;
 
-        for (str in strums)
-            str.returnToIdle = botplay;
+    var inputMap:Map<Int, Array<Int>>;
 
-        return botplay;
-    }
-
-    public var notesStack:GenericStack<Note> = new GenericStack<Note>();
-
-    public final data:ALEStrumLine;
-
-    public var scrollSpeed:Float = 1;
-
-    public var inputMap:IntMap<Array<Int>> = new IntMap();
-
-    public var notesShader:Array<RGBPalette> = [];
-
-    function getNoteShader(shader:Null<Array<String>>, data:Int):RGBPalette
-    {
-        if (notesShader[data] == null)
-        {
-            final palette:RGBPalette = new RGBPalette();
-
-            notesShader[data] = palette;
-
-            if (shader != null)
-            {
-                palette.r = CoolUtil.colorFromString(shader[0]);
-                palette.g = CoolUtil.colorFromString(shader[1]);
-                palette.b = CoolUtil.colorFromString(shader[2]);
-            }
-        }
-
-        return notesShader[data];
-    }
-
-    public final type:CharacterType;
-
-    public var characters:Array<Character>;
-
-    public function new(chartData:ALESongStrumLine, arrayNotes:Array<Dynamic>, speed:Float, characters:Array<Character>, ?onStackNote:Note -> Bool)
+    public function new(id:String, type:CharacterType, strlIndex:Int, ?noteStackCallback:Note -> Bool, ?notes:Array<Array<Dynamic>>)
     {
         super();
 
-        this.scrollSpeed = speed;
+        this.config = Formatter.getStrumLine(id);
 
-        this.characters = characters;
+        this.type = type;
 
-        data = Formatter.getStrumLine(chartData.file);
+        botplay = type != PLAYER || ClientPrefs.data.botplay;
 
-        visible = chartData.visible;
+        initStrums();
+        initNotes(notes ?? [], strlIndex, noteStackCallback);
+        initSplashes();
+        initInputs();
+    }
 
-        type = chartData.type;
+    public var strums:FlxTypedSpriteGroup<Strum>;
 
+    function initStrums()
+    {
         add(strums = new FlxTypedSpriteGroup<Strum>());
-        
-        notes = new FlxTypedSpriteGroup<Note>();
 
-        add(sustains = new FlxTypedSpriteGroup<Note>());
-        add(arrows = new FlxTypedSpriteGroup<Note>());
-
-        add(splashes = new FlxTypedSpriteGroup<Splash>());
-
-        var inputs = ClientPrefs.controls.notes;
-
-        var inputsArray:Array<Array<FlxKey>> = [];
-
-        var strumHeight:Float = 0;
-
-        for (strumIndex => strumConfig in data.strums)
+        for (index => data in config.config)
         {
-            inputsArray.push(CoolUtil.getControl(strumConfig.keybind[0], strumConfig.keybind[1]));
-
-            final strum:Strum = new Strum(strumConfig, strumIndex, data.strumFramerate, data.strumTextures, data.strumScale, data.space);
+            final strum:Strum = new Strum(config.strums, data);
+            strum.x = config.spacing * index;
+            strum.strumLine = this;
+            strum.data = index;
             strums.add(strum);
-            strum.strumLine = this;
-
-            final splash:Splash = new Splash(strumConfig, strum, data.splashScale, data.splashFramerate, data.splashTextures);
-            splashes.add(splash);
-            strum.strumLine = this;
-
-            strumHeight = Math.max(strumHeight, strum.height);
         }
+    }
 
-        for (arrayIndex => array in inputsArray)
+    public var notes:FlxTypedSpriteGroup<Note>;
+
+    public var noteStack:GenericStack<Note>;
+
+    function initNotes(notesArray:Array<Array<Dynamic>>, strlIndex:Int, ?noteStackCallback:Note -> Bool)
+    {
+        add(notes = new FlxTypedSpriteGroup<Note>());
+        
+        final tempNotes:Array<Note> = [];
+
+        for (index => noteData in notesArray)
         {
-            for (key in array)
-            {
-                if (!inputMap.exists(key))
-                    inputMap.set(key, []);
+            final time:Float = noteData[0];
+            final data:Int = noteData[1];
+            final length:Float = noteData[2];
+            final type:String = noteData[3];
+            final character:Int = noteData[4];
+            final crochet:Float = noteData[5];
 
-                inputMap.get(key).push(arrayIndex);
-            }
-        }
+            final strum:Strum = strums.members[data];
 
-        x = chartData.rightToLeft ? data.position.x : FlxG.width - data.position.x - (data.strums.length - 1) * data.space - strums.members[strums.members.length - 1].width;
-        y = ClientPrefs.data.downScroll ? FlxG.height - data.position.y - strumHeight : data.position.y;
-
-        var tempNotes:Array<Note> = [];
-
-        for (chartNote in arrayNotes)
-        {
-            final time:Float = chartNote[0];
-            final noteData:Int = chartNote[1];
-            final length:Float = chartNote[2];
-            final type:String = chartNote[3];
-            final character:Int = chartNote[4];
-            final crochet:Float = chartNote[5];
-
-            final space:Float = data.space;
-            final scale:Float = data.noteScale;
-            final textures:Array<String> = data.noteTextures;
-
-            final strum:Strum = strums.members[noteData];
-
-            final strumConfig:ALEStrum = data.strums[noteData];
-
-            final note:Note = new Note(strumConfig, time, noteData, length, type, ARROW, space, scale, textures, getNoteShader(strumConfig.shader, noteData), character);
-
-            var parent:Note = note;
+            final note:Note = new Note(config.notes, config.config[data], ARROW);
+            note.strum = strum;
+            note.strumLine = this;
+            note.time = time;
+            note.data = data;
+            note.length = length;
+            note.noteType = type;
+            note.character = [strlIndex, character];
 
             tempNotes.push(note);
 
             if (length > 0)
             {
-                final floorLength:Int = Math.floor(length / crochet);
+                final floorLength:Int = Math.floor(length / crochet) + 1;
 
-                for (i in 0...(floorLength + 1))
+                var parent:Note = note;
+                
+                for (i in 0...floorLength)
                 {
-                    final sustain:Note = new Note(strumConfig, time + i * crochet, noteData, crochet, type, i == floorLength ? END : SUSTAIN, space, scale, textures, getNoteShader(strumConfig.shader, noteData), character, i == floorLength ? null : crochet * 0.455, i == floorLength ? null : speed);
-                    sustain.offsetY = strum.height / 2;
-                    sustain.offsetX = strum.width / 2 - sustain.width / 2;
+                    final sustain:Note = new Note(config.notes, config.config[data], i == floorLength - 1 ? END : SUSTAIN);
+                    sustain.sustainHeight = crochet * 0.465;
+                    sustain.strumLine = this;
+                    sustain.strum = strum;
+                    sustain.time = time + i * crochet;
+                    sustain.data = data;
+                    sustain.noteType = type;
+                    sustain.xOffset = strum.width / 2 - sustain.width / 2;
+                    sustain.yOffset = strum.height / 2;
                     sustain.parent = parent;
-                    sustain.multAlpha = 0.5;
-                    sustain.flipY = ClientPrefs.data.downScroll;
+                    sustain.alphaMultiplier = 0.5;
+                    sustain.flipY = downScroll;
+                    sustain.character = [strlIndex, character];
 
                     tempNotes.push(sustain);
 
@@ -172,10 +116,9 @@ class StrumLine extends FlxSpriteGroup
                 }
             }
         }
-        
+
         tempNotes.sort(
-            function(a:Note, b:Note)
-            {
+            (a, b) -> {
                 if (a.time == b.time)
                     return a.type == b.type ? 0 : b.type == ARROW ? 1 : -1;
 
@@ -183,16 +126,119 @@ class StrumLine extends FlxSpriteGroup
             }
         );
 
+        noteStack = new GenericStack<Note>();
+        
         for (note in tempNotes)
-        {
-            note.strumLine = this;
+            if (noteStackCallback == null ? true : noteStackCallback(note))
+                noteStack.add(note);
+    }
 
-            final callbackResult:Dynamic = onStackNote == null ? null : onStackNote(note);
-            
-            if (callbackResult)
-                notesStack.add(note);
+    public var splashes:FlxTypedSpriteGroup<Splash>;
+
+    function initSplashes()
+    {
+        add(splashes = new FlxTypedSpriteGroup<Splash>());
+
+        for (index => data in config.config)
+        {
+            final splash:Splash = new Splash(config.splashes, data);
+            splash.strumLine = this;
+            splash.strum = strums.members[index];
+            splash.data = index;
+            splashes.add(splash);
         }
     }
+
+    function initInputs()
+    {
+        inputMap = new Map();
+
+        for (index => data in config.config)
+        {
+            for (key in CoolUtil.getControl(data.keyBind.group, data.keyBind.id))
+            {
+                var list = inputMap.get(key);
+
+                if (list == null)
+                {
+                    list = [];
+
+                    inputMap.set(key, list);
+                }
+
+                list.push(index);
+            }
+        }
+    }
+
+    public var noteSpawnCallback:Note -> Bool;
+
+    public var spawnWindow:Float = 2000;
+    public var despawnWindow:Float = 650;
+
+    public var speed:Float = 1;
+
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+
+        while (!noteStack.isEmpty() && noteStack.first().time < Conductor.songPosition + spawnWindow / speed)
+        {
+            final note:Note = noteStack.pop();
+
+            if (noteSpawnCallback == null ? true : noteSpawnCallback(note))
+                notes.add(note);
+        }
+
+        var noteIndex:Int = 0;
+
+        while (noteIndex < notes.members.length)
+        {
+            final note:Note = notes.members[noteIndex];
+
+            if (note == null || !note.exists || !note.alive)
+            {
+                noteIndex++;
+
+                continue;
+            }
+
+            note.timeDistance = note.time - Conductor.songPosition;
+
+            if (botplay)
+            {
+                if (note.botplayMiss && note.timeDistance < -shitWindow && !note.miss && !note.hit && note.ignore)
+                    missNote(note);
+                
+                if (!note.hit && note.timeDistance <= 0 && !note.ignore)
+                    hitNote(note, note.type == 'arrow');
+            } else {
+                if (note.type != 'arrow' && !note.miss && !note.hit && note.timeDistance <= 0 && keyPressed[note.data] && note.parent.hit)
+                    hitNote(note, false);
+
+                if (note.timeDistance < -shitWindow && !note.miss && !note.hit && !note.ignore)
+                    missNote(note);
+            }
+            
+            if (note.exists)
+            {
+                if (note.speed != speed)
+                    note.speed = speed;
+
+                note.followStrum();
+
+                if (note.timeDistance < -despawnWindow)
+                    removeNote(note);
+            }
+
+            noteIndex++;
+        }
+    }
+    
+    public var sickWindow:Int = 45;
+    public var goodWindow:Int = 90;
+    public var badWindow:Int = 135;
+    public var shitWindow:Int = 180;
 
     var keyPressed:Array<Bool> = [];
 
@@ -211,9 +257,9 @@ class StrumLine extends FlxSpriteGroup
 
                 var noteToHit:Null<Note> = null;
 
-                for (note in arrows)
+                for (note in notes)
                 {
-                    if (note == null || note.data != strumIndex || note.timeDistance < -shitWindow)
+                    if (note == null || note.type != 'arrow' || note.data != strumIndex || note.timeDistance < -shitWindow)
                         continue;
 
                     if (note.timeDistance > shitWindow)
@@ -226,7 +272,7 @@ class StrumLine extends FlxSpriteGroup
                 if (noteToHit != null)
                     hitNote(noteToHit);
                 else
-                    strums.members[strumIndex].playAnim('pressed');
+                    strums.members[strumIndex].playAnim(config.config[strumIndex].press);
             }
         }
     }
@@ -244,107 +290,10 @@ class StrumLine extends FlxSpriteGroup
             {
                 keyPressed[strumIndex] = false;
 
-                strums.members[strumIndex].playAnim('idle');
+                strums.members[strumIndex].playAnim(config.config[strumIndex].idle);
             }
         }
     }
-
-    public var spawnWindow:Float = 2000;
-    public var despawnWindow:Float = 650;
-
-    public var onSpawnNote:Note -> Bool;
-
-    override public function update(elapsed:Float)
-    {
-        super.update(elapsed);
-
-        while (!notesStack.isEmpty() && notesStack.first().time <= Conductor.songPosition + spawnWindow / scrollSpeed)
-        {
-            final note:Note = notesStack.pop();
-
-            final callbackResult:Dynamic = onSpawnNote == null ? null : onSpawnNote(note);
-
-            if (callbackResult)
-                addNote(note);
-        }
-
-        var noteIndex:Int = 0;
-        
-        while (noteIndex < notes.members.length)
-        {
-            final note:Note = notes.members[noteIndex];
-
-            if (note == null || !note.exists || !note.alive)
-            {
-                noteIndex++;
-
-                continue;
-            }
-
-            note.timeDistance = note.time - Conductor.songPosition;
-
-            final strum:Strum = strums.members[note.data];
-
-            if (botplay)
-            {
-                if (!note.hit && note.timeDistance <= 0 && !note.ignore)
-                    hitNote(note, note.type == ARROW);
-
-                if (note.botplayMiss && note.timeDistance < -shitWindow && !note.miss && !note.hit && note.ignore)
-                    missNote(note);
-            } else {
-                if (note.type != ARROW && !note.hit && note.timeDistance <= 0 && keyPressed[note.data] && note.parent.hit)
-                    hitNote(note, false);
-
-                if (note.timeDistance < -shitWindow && !note.miss && !note.hit && !note.ignore)
-                    missNote(note);
-            }
-
-            if (note.type == SUSTAIN)
-                if (note.sustainSpeed != scrollSpeed)
-                    note.sustainSpeed = scrollSpeed;
-
-            note.followStrum(strum, Conductor.stepCrochet, scrollSpeed);
-
-            if (note.timeDistance < -despawnWindow)
-                removeNote(note);
-
-            noteIndex++;
-        }
-    }
-
-    public var onHitNote:Note -> Rating -> Character -> Bool -> Dynamic;
-
-    public function hitNote(note:Note, ?remove:Bool)
-    {
-        remove ??= true;
-
-        final rating:Rating = judgeNote(note.timeDistance);
-
-        final character:Character = this.characters[note.characterPosition];
-
-        final callbackResult:Dynamic = onHitNote == null ? null : onHitNote(note, rating, character, remove);
-
-        if (callbackResult != CoolVars.Function_Stop)
-        {
-            note.hit = true;
-
-            character?.sing(note.type != ARROW && !character.data.sustainAnimation ? null : note.singAnimation);
-
-            if (note.type == ARROW && rating == SICK && !botplay)
-                splashes.members[note.data].splash();
-
-            strums.members[note.data].playAnim('hit');
-
-            if (remove)
-                removeNote(note);
-        }
-    }
-
-    public var sickWindow:Int = 45;
-    public var goodWindow:Int = 90;
-    public var badWindow:Int = 135;
-    public var shitWindow:Int = 180;
 
     public function judgeNote(time:Float):Rating
     {
@@ -362,67 +311,40 @@ class StrumLine extends FlxSpriteGroup
         return 'shit';
     }
 
-    public var onMissNote:Note -> Character -> Dynamic;
+    public var noteHitCallback:Note -> String -> Bool -> Bool;
+    
+    public function hitNote(note:Note, ?remove:Bool = true)
+    {
+        final rating:Rating = judgeNote(note.timeDistance);
+
+        if (noteHitCallback == null ? true : noteHitCallback(note, rating, remove))
+        {
+            note.hit = true;
+
+            if (note.type == 'arrow' && rating == 'sick' && !botplay)
+                splashes.members[note.data].splash();
+
+            note.strum.playAnim(note.strum.strumLineConfig.hit);
+
+            if (remove)
+                removeNote(note);
+        }
+    }
+
+    public var noteMissCallback:Note -> Bool;
 
     public function missNote(note:Note)
     {
-        final character:Character = this.characters[note.characterPosition];
-
-        final callbackResult:Dynamic = onMissNote == null ? null : onMissNote(note, character);
-
-        if (callbackResult != CoolVars.Function_Stop)
-        {
+        if (noteMissCallback == null ? true : noteMissCallback(note))
             note.miss = true;
-
-            character?.miss(note.type != ARROW && !character.data.sustainAnimation ? null : note.missAnimation);
-        }
     }
-
-    public var onAddNote:Note -> Dynamic;
-
-    public function addNote(note:Note)
-    {
-        final callbackResult:Dynamic = onAddNote == null ? null : onAddNote(note);
-
-        if (callbackResult != CoolVars.Function_Stop)
-        {
-            notes.add(note);
-
-            if (note.type == ARROW)
-                arrows.add(note);
-            else
-                sustains.add(note);
-        }
-    }
-
-    public var onRemoveNote:Note -> Dynamic;
 
     public function removeNote(note:Note)
     {
-        final callbackResult:Dynamic = onRemoveNote == null ? null : onRemoveNote(note);
+        note.kill();
 
-        if (callbackResult != CoolVars.Function_Stop)
-        {
-            note.kill();
+        notes.remove(note, true);
 
-            notes.remove(note, true);
-
-            if (note.type == ARROW)
-                arrows.remove(note, true);
-            else
-                sustains.remove(note, true);
-
-            note.destroy();
-        }
-    }
-
-    override function destroy()
-    {
-        while (!notesStack.isEmpty())
-            notesStack.pop().destroy();
-
-        keyPressed = null;
-
-        super.destroy();
+        note.destroy();
     }
 }

@@ -2,139 +2,129 @@ package funkin.visuals.game;
 
 import funkin.visuals.objects.Bar;
 
-import flixel.graphics.FlxGraphic;
-
 import utils.cool.MathUtil;
 import utils.Formatter;
 
-import core.structures.ALEIcon;
-
+import core.structures.JsonIcon;
 import core.enums.CharacterType;
 
 class Icon extends Bopper
 {
-    public var bar:Bar;
-
-    public function new(type:CharacterType, ?id:String, ?x:Float, ?y:Float)
-    {
-        super(x, y);
-
-        change(id, type);
-    }
-
     public var type:CharacterType;
-
-    public var offsetX:Float = 0;
-    public var offsetY:Float = 0;
 
     public var id:String;
 
-    public var data:ALEIcon;
+    @:unreflective var _castConfig(get, never):JsonIcon;
+    function get__castConfig():JsonIcon
+        return cast config;
 
-    public function change(?id:String, ?type:CharacterType)
+    public function new(name:String, type:CharacterType)
     {
-        if (type != null)
-            this.type = type;
+        pathPrefix = 'icons/';
 
-        if (id == null)
-            return;
+        super();
 
-        this.id = id;
-
-        data = Formatter.getIcon(id);
-
-        data.animations.sort((a, b) -> Math.floor(a.percent - b.percent));
-
-        loadFrames(cast data.type, data.textures, data.frames);
-
-        for (animData in data.animations)
-            addAnimation(cast data.type, animData.name, animData.prefix, animData.framerate, animData.loop, animData.indices);
-
-        offsetX = data.offset.x;
-        offsetY = data.offset.y;
-
-        flipX = type != 'player' == data.flipX;
-
-        flipY = data.flipY;
-
-        checkAnimation();
-    }
-
-    override public function beatHit(curBeat:Int)
-    {
-        super.beatHit(curBeat);
-
-        bop(curBeat);
-    }
-
-    public function bop(curBeat:Int)
-    {
-        if (data.bopModulo > 0 && curBeat % data.bopModulo == 0)
-        {
-            scale.x = data.bopScale.x;
-            scale.y = data.bopScale.y;
-
-            updateHitbox();
-
-            update(0);
+        beatHit = (curBeat) -> {
+            if (bop != null)
+                bop(curBeat);
         }
-    }
 
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+        updatePosition = (elapsed) -> {
+            if (bar == null)
+                return;
 
-        updateScale();
-
-        updatePosition();
-
-        checkAnimation();
-    }
-
-    public function updateScale()
-    {
-        if (data.lerp > 0)
-        {
-            scale.x = MathUtil.fpsLerp(scale.x, data.scale.x, data.lerp);
-            scale.y = MathUtil.fpsLerp(scale.y, data.scale.y, data.lerp);
-
-            updateHitbox();
-        }
-    }
-
-    public function updatePosition()
-    {
-        if (bar != null)
-        {
             final isRight:Bool = (type == 'player') == bar.rightToLeft;
 
             final barMiddle:FlxPoint = bar.getMiddle();
 
-            x = isRight ? (barMiddle.x - offsetX) : (barMiddle.x - width + offsetX);
-            y = barMiddle.y - height / 2 + offsetY;
+            x = isRight ? barMiddle.x - getAnimOffset().x : (barMiddle.x - width + getAnimOffset().x);
+            y = barMiddle.y - height / 2 - getAnimOffset().y;
 
-            flipX = ((type != 'player') == data.flipX) == bar.rightToLeft;
-        }
+            flipX = ((type != 'player') == _castConfig.properties.flipX) == bar.rightToLeft;
+        };
+
+        updateScale = (elapsed) -> {
+            if (_castConfig.speed <= 0)
+                return;
+
+            scale.x = MathUtil.fpsLerp(scale.x, _castConfig.properties.scale.x, _castConfig.speed);
+            scale.y = MathUtil.fpsLerp(scale.y, _castConfig.properties.scale.y, _castConfig.speed);
+
+            updateHitbox();
+        };
+
+        checkAnimation = (elapsed) -> {
+            if (bar == null)
+                return;
+
+            final percent:Float = type == 'player' ? bar.percent : (100 - bar.percent);
+
+            while (animationIndex + 1 < _castConfig.healthAnimations.length && percent >= _castConfig.healthAnimations[animationIndex + 1].percent)
+                animationIndex++;
+
+            while (animationIndex >= 0 && percent < _castConfig.healthAnimations[animationIndex].percent)
+                animationIndex--;
+
+            final curAnimation = _castConfig.healthAnimations[animationIndex].name;
+
+            if (animation.name != curAnimation)
+            {
+                playAnim(curAnimation);
+
+                update(0);
+            }
+        };
+
+        bop = (curBeat) -> {
+            if (_castConfig.bopModulo > 0 && curBeat % _castConfig.bopModulo == 0)
+            {
+                scale.x = _castConfig.bopScale.x;
+                scale.y = _castConfig.bopScale.y;
+
+                updateHitbox();
+
+                update(0);
+            }
+        };
+
+        change(name, type);
     }
 
-    var animationIndex:Int = -1;
-
-    public function checkAnimation()
+    public function change(id:String, ?type:CharacterType)
     {
-        if (bar == null)
-            return;
+        if (type != null)
+            this.type = type;
 
-        final percent:Float = type == 'player' ? bar.percent : (100 - bar.percent);
+        fromJson(Formatter.getIcon(id));
 
-        while (animationIndex + 1 < data.animations.length && percent >= data.animations[animationIndex + 1].percent)
-            animationIndex++;
+        _castConfig.healthAnimations.sort((a, b) -> Math.floor(a.percent - b.percent));
 
-        while (animationIndex >= 0 && percent < data.animations[animationIndex].percent)
-            animationIndex--;
-
-        final curAnimation = data.animations[animationIndex].name;
-
-        if (animation.name != curAnimation)
-            playAnim(curAnimation);
+        this.id = id;
     }
+
+    public var bar:Bar;
+
+    public var updatePosition:Float -> Void;
+    
+    public var updateScale:Float -> Void;
+
+    public var animationIndex:Int = -1;
+    
+    public var checkAnimation:Float -> Void;
+
+    override public function update(elapsed:Float)
+    {
+        super.update(elapsed);
+
+        if (updateScale != null)
+            updateScale(elapsed);
+
+        if (updatePosition != null)
+            updatePosition(elapsed);
+
+        if (checkAnimation != null)
+            checkAnimation(elapsed);
+    }
+
+    public var bop:Int -> Void;
 }

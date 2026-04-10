@@ -56,6 +56,8 @@ import haxe.Exception;
 import api.DesktopAPI;
 import api.MobileAPI;
 
+import utils.Formatter;
+
 #if WINDOWS_API
 @:buildXml('
 <target id="haxe">
@@ -338,6 +340,8 @@ class Main extends Sprite
 		HScriptConfig.config();
 
 		PluginsHandler.init();
+
+		Formatter.init();
 
 		Lib.current.stage.window.setIcon(Paths.library.getImage(CoolVars.data.icon + '.png'));
 

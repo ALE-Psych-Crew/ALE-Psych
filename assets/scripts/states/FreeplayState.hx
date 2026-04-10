@@ -61,7 +61,7 @@ function createSongSprites(song:ALEWeekSong, index:Int)
     var text:Alphabet = new Alphabet(0, 0, song.name);
     group.add(text);
     
-    var icon:Icon = new Icon('opponent', song.icon);
+    var icon:Icon = new Icon(song.icon, 'opponent');
     icon.x = text.width + 20;
     icon.y = text.height / 2 - icon.height / 2;
     group.add(icon);

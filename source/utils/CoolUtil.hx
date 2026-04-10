@@ -19,7 +19,9 @@ import core.Main;
 		'utils.cool.SystemUtil',
 		'utils.cool.KeyUtil',
 		'utils.cool.ReflectUtil',
-		'utils.cool.MapUtil'
+		'utils.cool.MapUtil',
+		'utils.cool.SpriteUtil',
+		'utils.cool.ArrayUtil',
 	]
 ))
 class CoolUtil

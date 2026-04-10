@@ -1,206 +1,146 @@
 package funkin.visuals.game;
 
-import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBShaderReference;
+import core.structures.JsonStrumLineConfig;
+
+import core.enums.NoteType;
 
 import flixel.math.FlxAngle;
 import flixel.math.FlxRect;
 
-import core.structures.ALEStrum;
-
-import core.enums.NoteType;
-
-class Note extends FlxSprite
+class Note extends StrumLineObject
 {
-    public var strumLine:StrumLine;
-
-    public var textureShader:RGBShaderReference;
-
-    public var allowShader:Bool;
-
-    public var type:NoteType;
-
-    public var time:Float;
-    public var data:Int;
-    public var length:Float;
-    public var noteType:String;
-
-    public var hit:Bool = false;
-
-    public var miss:Bool = false;
+    public var time:Float = 0;
+    public var length:Float = 0;
+    public var noteType:String = '';
 
     public var parent:Note;
 
-    public var characterPosition:Int;
+    public var strum:Strum;
 
-    public var singAnimation:String;
-    public var missAnimation:String;
-
-    public var botplayMiss:Bool = false;
-
-    public var ignore:Bool = false;
+    public var type:NoteType;
 
     public var sustainHeight(default, set):Float;
     function set_sustainHeight(value:Float):Float
     {
         sustainHeight = value;
 
-        sustainSpeed = sustainSpeed;
+        speed = speed;
 
         return sustainHeight;
     }
 
-    public var sustainSpeed(default, set):Null<Float>;
-    function set_sustainSpeed(value:Float):Null<Float>
+    public var speed(default, set):Null<Float>;
+    function set_speed(value:Null<Float>):Null<Float>
     {
-        sustainSpeed = value;
+        speed = value ?? 1;
 
-        setGraphicSize(width, sustainHeight * sustainSpeed);
-                    
-        updateHitbox();
+        if (type == SUSTAIN && animation.curAnim != null)
+        {
+            setGraphicSize(width, sustainHeight * speed);
 
-        return sustainSpeed;
+            updateHitbox();
+        }
+
+        return speed;
     }
 
-    public function new(config:ALEStrum, time:Float, data:Int, length:Float, noteType:String, type:NoteType, space:Float, scale:Float, skins:Array<String>, palette:RGBPalette, character:Int, ?sustainHeight:Float, ?speed:Float)
-    {
-        super();
+	public var hitHealth:Float;
+	public var missHealth:Float;
 
-        final inputs = ClientPrefs.controls.notes;
+    public var character:Array<Int> = [0, 0];
+
+    public function new(id:String, strlData:JsonStrumLineConfig, type:NoteType)
+    {
+        allowOffset = false;
+        
+        pathPrefix = 'notes/';
+
+        super(id, strlData);
 
         this.type = type;
 
-        this.time = time;
-        this.data = data;
-        this.length = length;
-        this.noteType = noteType;
+        hitHealth = type == ARROW ? 0.025 : 0;
+        missHealth = type == ARROW ? 0.05 : 0;
 
-        this.characterPosition = character;
+        playAnim(type == ARROW ? strlData.note : type == SUSTAIN ? strlData.sustain : strlData.end);
 
-        this.singAnimation = config.sing;
-        this.missAnimation = config.miss;
+        y = FlxG.height * 2;
 
-        frames = Paths.getMultiAtlas([for (skin in skins) 'notes/' + skin]);
-
-        switch (type)
-        {
-            case ARROW:
-                animation.addByPrefix('idle', config.note, 0, false);
-            case SUSTAIN:
-                animation.addByPrefix('idle', config.sustain, 0, false);
-            case END:
-                animation.addByPrefix('idle', config.end, 0, false);
-        }
-
-        animation.play('idle');
-
-        this.scale.x = this.scale.y = scale;
-        
         updateHitbox();
         centerOrigin();
         centerOffsets();
 
-        x = data * space;
-
-        y = 2000;
-        
-		textureShader = new RGBShaderReference(this, palette);
-
-        allowShader = config.shader != null;
-
-        multSpeed = 1;
-
-        if (sustainHeight != null)
-            this.sustainHeight = sustainHeight;
-
-        if (sustainSpeed != null)
-            this.sustainSpeed = sustainSpeed;
+        sustainHeight = 0.465;
     }
 
-    public var multSpeed(default, set):Float;
-    function set_multSpeed(value:Float):Float
-    {
-        multSpeed = value;
+    public var timeDistance:Float = 0;
 
-        resizeByRatio(value / multSpeed);
-
-        return value;
-    }
-
-    public function resizeByRatio(value:Float)
-    {
-        if (type == SUSTAIN && animation.curAnim != null)
-        {
-            scale.y *= value;
-
-            updateHitbox();
-        }
-    }
+    public var speedMultiplier:Float = 0.45;
 
     public var direction:Float = 0;
 
     public var copyAngle:Bool = true;
+    public var angleOffset:Float = 0;
+
     public var copyDirection:Bool = true;
+    public var directionOffset:Float = 90;
+
     public var copyAlpha:Bool = true;
+    public var alphaMultiplier:Float = 1;
+
     public var copyX:Bool = true;
+    public var xOffset:Float = 0;
+
     public var copyY:Bool = true;
+    public var yOffset:Float = 0;
 
-    public var offsetX:Float = 0;
-    public var offsetY:Float = 0;
-    public var offsetAngle:Float = 0;
-    public var offsetDirection:Float = 0;
-
-	public var hitHealth:Float = 0.02;
-	public var missHealth:Float = 0.1;
-
-    public var multAlpha:Float = 1;
-
-    public final speedMult:Float = ClientPrefs.data.downScroll ? -0.45 : 0.45;
-
-    public var timeDistance:Float = 0;
-
-    public function followStrum(strum:Strum, crochet:Float, ?speed:Float)
+    public var strumClipping:Bool = true;
+    
+    public function followStrum()
     {
         speed ??= 1;
 
-        var distance:Float = speedMult * timeDistance * speed * multSpeed;
+        final distance:Float = timeDistance * speed * speedMultiplier * (strumLine.downScroll ? -1 : 1);
 
         if (copyAngle)
-            angle = strum.angle + offsetAngle;
-
-        var finalDirection:Float = direction;
-
-        if (copyDirection)
-            finalDirection = strum.direction;
-
-        finalDirection = (finalDirection + 90) * FlxAngle.TO_RAD;
+            angle = strum.angle + angleOffset;
 
         if (copyAlpha)
-            alpha = strum.alpha * multAlpha;
+            alpha = strum.alpha * alphaMultiplier;
 
-        if (copyX)
-            x = strum.x + offsetX + Math.cos(finalDirection) * distance;
-
-        if (copyY)
-            y = strum.y + offsetY + Math.sin(finalDirection) * distance - (ClientPrefs.data.downScroll && type != ARROW ? height : 0);
-        
-        if (type != ARROW && hit)
+        if (copyX || copyY)
         {
-            if (this.clipRect == null)
-                clipRect = FlxRect.get();
+            final totalDirection:Float = ((copyDirection ? strum.direction : direction) + directionOffset) * FlxAngle.TO_RAD;
 
-            var clipY:Float = 0;
+            if (copyX)
+                x = strum.x + xOffset + Math.cos(totalDirection) * distance;
 
-            if (ClientPrefs.data.downScroll)
-                clipY = ((y + height) - (strum.y + offsetY)) / scale.y;
-            else
-                clipY = ((strum.y + offsetY) - y) / scale.y;
+            if (copyY)
+                y = strum.y + yOffset + Math.sin(totalDirection) * distance - (strumLine.downScroll && type != 'arrow' ? height : 0);
+        }
 
-            clipRect.set(0, clipY, frameWidth, frameHeight - clipY);
-        } else {
-            clipRect = null;
+        if (strumClipping && type != 'arrow')
+        {
+            if (hit)
+            {
+                this.clipRect ??= FlxRect.get();
+
+                final clip:Float = (strumLine.downScroll ? ((y + height) - (strum.y + yOffset)) : ((strum.y + yOffset) - y)) / scale.y;
+
+                clipRect.set(0, clip, frameWidth, frameHeight - clip);
+            } else {
+                clipRect = null;
+            }
         }
     }
+    
+    public var hit:Bool = false;
+    public var miss:Bool = false;
+
+    public var characterIndex:Int = 0;
+
+    public var ignore:Bool = false;
+    public var botplayMiss:Bool = false;
     
 	override function set_clipRect(rect:FlxRect):FlxRect
 	{

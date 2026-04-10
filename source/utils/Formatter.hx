@@ -1,18 +1,488 @@
 package utils;
 
-import core.structures.*;
-
+import core.enums.FormatterType;
 import core.enums.CharacterType;
 
 import utils.cool.StringUtil;
 import utils.cool.ColorUtil;
 import utils.cool.FileUtil;
 
-using StringTools;
+import core.structures.*;
 
 class Formatter
 {
-    public static final CHART_FORMAT:String = 'ale-chart-v0.1';
+    public static var config:Map<String, FormatterConfig> = new Map();
+
+    static function removePrefix(prefix:String, base:String):String
+    {
+        if (base.startsWith(prefix + '/'))
+            return base.substring(prefix.length + 1);
+        
+        return base;
+    }
+
+    static function removeArrayPrefix(prefix:String, base:Array<String>):Array<String>
+        return [for (obj in base) removePrefix(prefix, obj)];
+
+    public static function init()
+    {
+        config = [
+            CHARACTER => {
+                path: 'characters',
+                format: FormatterType.CHARACTER.format(),
+                resolvers: [
+                    function (rawJson:Dynamic, id:String, ?args:Array<Dynamic>)
+                    {
+                        final psychJson:PsychCharacter = cast rawJson;
+
+                        final result:JsonCharacter = {
+                            type: Paths.isDirectory('images/characters/' + psychJson.image.split(',')[0].trim()) ? 'map' : 'sheet',
+                            images: [for (image in psychJson.image.split(',')) removePrefix('characters', image.trim())],
+                            animations: [],
+                            animationLength: psychJson.sing_duration / 10,
+                            icon: psychJson.healthicon,
+                            cameraOffset: {
+                                x: psychJson.camera_position[0],
+                                y: psychJson.camera_position[1]
+                            },
+                            sustainAnimation: true,
+                            death: 'bf-dead',
+                            properties: {
+                                x: psychJson.position[0],
+                                y: psychJson.position[1],
+                                scale: {
+                                    x: psychJson.scale,
+                                    y: psychJson.scale
+                                },
+                                flipX: psychJson.flip_x,
+                                antialiasing: !psychJson.no_antialiasing
+                            },
+                            format: FormatterType.CHARACTER.format(),
+                            bopAnimations: ['idle', null],
+                            barColor: StringUtil.intToHex(ColorUtil.colorFromArray(psychJson.healthbar_colors))
+                        };
+
+                        if (args[0] == CharacterType.PLAYER)
+                        {
+                            result.cameraOffset.x += 100;
+                            result.cameraOffset.y -= 100;
+                        } else {
+                            result.cameraOffset.x += 150;
+                            result.cameraOffset.y -= 100;
+                        }
+
+                        final animList:Array<String> = [];
+
+                        for (anim in psychJson.animations)
+                        {
+                            result.animations.push({
+                                name: anim.anim,
+                                prefix: anim.name,
+                                frameRate: anim.fps,
+                                loop: anim.loop,
+                                indices: anim.indices,
+                                offset: {
+                                    x: anim.offsets[0] / psychJson.scale,
+                                    y: anim.offsets[1] / psychJson.scale
+                                }
+                            });
+
+                            animList.push(anim.anim);   
+                        }
+
+                        if (animList.contains('danceLeft') && animList.contains('danceRight'))
+                            result.bopAnimations = ['danceLeft', 'danceRight'];
+
+                        return result;
+                    }
+                ],
+                fileCheck: (json) -> {
+                    for (image in cast(json.images, Array<Dynamic>))
+                        if (Paths.exists('images/' + config[CHARACTER].path + '/' + image + '.png'))
+                            return true;
+
+                    return false;
+                },
+                example: {
+                    images: ['bf'],
+                    type: 'sheet',
+                    animations: [],
+                    properties: {
+                        x: 0,
+                        y: 0,
+                        flipX: false
+                    },
+                    sustainAnimation: false,
+                    animationLength: 0.4,
+                    icon: 'bf',
+                    cameraOffset: {
+                        x: 0,
+                        y: 0
+                    },
+                    death: 'bf-dead',
+                    barColor: '0xFF00FF00',
+                    format: FormatterType.CHARACTER.format()
+                }
+            },
+            STAGE => {
+                path: 'stages',
+                format: FormatterType.STAGE.format(),
+                resolvers: [
+                    function (rawJson:Dynamic, id:String, ?args:Array<Dynamic>)
+                    {
+                        final psychJson:PsychStage = cast rawJson;
+
+                        psychJson.boyfriend ??= [0, 0];
+                        psychJson.opponent ??= [0, 0];
+                        psychJson.girlfriend ??= [0, 0];
+                        
+                        psychJson.camera_boyfriend ??= [0, 0];
+                        psychJson.camera_opponent ??= [0, 0];
+                        psychJson.camera_girlfriend ??= [0, 0];
+
+                        return {
+                            speed: psychJson.camera_speed,
+                            zoom: psychJson.defaultZoom,
+                            hud: psychJson.isPixelStage ? 'pixel' : 'default',
+                            charactersOffset: {
+                                type: {
+                                    player: {
+                                        x: psychJson.boyfriend[0],
+                                        y: psychJson.boyfriend[1]
+                                    },
+                                    opponent: {
+                                        x: psychJson.opponent[0],
+                                        y: psychJson.opponent[1]
+                                    },
+                                    extra: {
+                                        x: psychJson.girlfriend[0],
+                                        y: psychJson.girlfriend[1]
+                                    }
+                                }
+                            },
+                            charactersCamera: {
+                                type: {
+                                    player: {
+                                        x: psychJson.camera_boyfriend[0],
+                                        y: psychJson.camera_boyfriend[1]
+                                    },
+                                    opponent: {
+                                        x: psychJson.camera_opponent[0],
+                                        y: psychJson.camera_opponent[1]
+                                    },
+                                    extra: {
+                                        x: psychJson.camera_girlfriend[0],
+                                        y: psychJson.camera_girlfriend[1]
+                                    }
+                                }
+                            },
+                            format: FormatterType.STAGE.format()
+                        }
+                    }
+                ],
+                fileCheck: (json) -> {
+                    return Paths.exists('data/' + config[HUD].path + '/' + json.hud + '.json');
+                },
+                example: {
+                    zoom: 0.9,
+                    speed: 1,
+                    hud: 'default',
+                    format: FormatterType.STAGE.format()
+                }
+            },
+            STRUMLINE => {
+                path: 'strumLines',
+                format: FormatterType.STRUMLINE.format(),
+                fileCheck: (json) -> {
+                    for (obj in [[json.strums, 'strums'], [json.notes, 'notes'], [json.splashes, 'splashes']])
+                        if (!Paths.exists('data/' + obj[1] + '/' + obj[0] + '.json'))
+                            return false;
+
+                    return true;
+                },
+                example: {
+                    spacing: 112,
+                    strums: 'default',
+                    notes: 'default',
+                    splashes: 'default',
+                    config: [
+                        {
+                            idle: 'leftIdle',
+                            hit: 'leftHit',
+                            press: 'leftPress',
+                            keyBind: {
+                                group: 'notes',
+                                id: 'left'
+                            },
+                            note: 'leftNote',
+                            sustain: 'sustain',
+                            end: 'end',
+                            splash: [
+                                'splash1',
+                                'splash2'
+                            ],
+                            sing: 'singLEFT',
+                            miss: 'singLEFTmiss',
+                            shader: [
+                                '0xFFC24B99',
+                                '0xFFFFFFFF',
+                                '0xFF3C1F56'
+                            ]
+                        },
+                        {
+                            idle: 'downIdle',
+                            hit: 'downHit',
+                            press: 'downPress',
+                            keyBind: {
+                                group: 'notes',
+                                id: 'down'
+                            },
+                            note: 'downNote',
+                            sustain: 'sustain',
+                            end: 'end',
+                            splash: [
+                                'splash1',
+                                'splash2'
+                            ],
+                            sing: 'singDOWN',
+                            miss: 'singDOWNmiss',
+                            shader: [
+                                '0xFF00FFFF',
+                                '0xFFFFFFFF',
+                                '0xFF1542B7'
+                            ]
+                        },
+                        {
+                            idle: 'upIdle',
+                            hit: 'upHit',
+                            press: 'upPress',
+                            keyBind: {
+                                group: 'notes',
+                                id: 'up'
+                            },
+                            note: 'upNote',
+                            sustain: 'sustain',
+                            end: 'end',
+                            splash: [
+                                'splash1',
+                                'splash2'
+                            ],
+                            sing: 'singUP',
+                            miss: 'singUPmiss',
+                            shader: [
+                                '0xFF00FF00',
+                                '0xFFFFFFFF',
+                                '0xFF003300'
+                            ]
+                        },
+                        {
+                            idle: 'rightIdle',
+                            hit: 'rightHit',
+                            press: 'rightPress',
+                            keyBind: {
+                                group: 'notes',
+                                id: 'right'
+                            },
+                            note: 'rightNote',
+                            sustain: 'sustain',
+                            end: 'end',
+                            splash: [
+                                'splash1',
+                                'splash2'
+                            ],
+                            sing: 'singRIGHT',
+                            miss: 'singRIGHTmiss',
+                            shader: [
+                                '0xFFF9393F',
+                                '0xFFFFFFFF',
+                                '0xFF651038'
+                            ]
+                        }
+                    ],
+                    format: FormatterType.STRUMLINE.format()
+                }
+            },
+            ICON => {
+                path: 'icons',
+                format: FormatterType.ICON.format(),
+                example: {
+                    images: ['bf'],
+                    type: 'frames',
+                    frames: 2,
+                    animations: [
+                        {
+                            name: 'lose',
+                            indices: [1],
+                            frameRate: 0,
+                            loop: false,
+                            offset: {
+                                x: 20,
+                                y: 0
+                            }
+                        },
+                        {
+                            name: 'neutral',
+                            indices: [0],
+                            frameRate: 0,
+                            loop: false,
+                            offset: {
+                                x: 20,
+                                y: 0
+                            }
+                        }
+                    ],
+                    healthAnimations: [
+                        {
+                            percent: 0,
+                            name: 'lose'
+                        },
+                        {
+                            percent: 20,
+                            name: 'neutral'
+                        }
+                    ],
+                    properties: {
+                        flipX: false,
+                        antialiasing: false,
+                        scale: {
+                            x: 1,
+                            y: 1,
+                        }
+                    },
+                    bopScale: {
+                        x: 1.2,
+                        y: 1.2
+                    },
+                    bopModulo: 1,
+                    speed: 0.33,
+                    format: FormatterType.ICON.format()
+                }
+            },
+            WEEK => {
+                path: 'weeks',
+                format: FormatterType.WEEK.format(),
+                resolvers: [
+                    function (rawJson:Dynamic, id:String, ?args:Array<Dynamic>)
+                    {
+                        final difficulties:Null<String> = cast rawJson.difficulties;
+
+                        return {
+                            songs: [
+                                for (song in cast(rawJson.songs, Array<Dynamic>))
+                                    {
+                                        name: song[0],
+                                        icon: song[1],
+                                        color: song[2]
+                                    }
+                            ],
+                            characters: rawJson.weekCharacters,
+                            background: rawJson.weekBackground,
+                            image: id,
+                            phrase: rawJson.storyName,
+                            locked: !rawJson.startUnlocked,
+                            hideStoryMode: rawJson.hideStoryMode,
+                            hideFreeplay: rawJson.hideFreeplay,
+                            weekBefore: rawJson.weekBefore,
+                            difficulties: difficulties == null || difficulties.length <= 0 ? ['Easy', 'Normal', 'Hard'] : difficulties.trim().split(','),
+                            format: FormatterType.WEEK.format()
+                        }
+                    }
+                ],
+                example: {
+                    songs: [
+                        {
+                            name: 'Bopeebo',
+                            icon: 'dad',
+                            color: [255, 255, 255]
+                        }
+                    ],
+                    opponent: 'dad',
+                    extra: 'gf',
+                    player: 'bf',
+                    background: 'stage',
+                    image: 'week1',
+                    phrase: '',
+                    locked: false,
+                    hideStoryMode: false,
+                    hideFreeplay: false,
+                    weekBefore: '',
+                    difficulties: ['Easy', 'Normal', 'Hard'],
+                    format: FormatterType.WEEK.format()
+                }
+            }
+        ];
+    }
+
+    public static function fix(example:Dynamic, data:Dynamic)
+    {
+        for (prop in Reflect.fields(example))
+        {
+            final dataProp = Reflect.field(data, prop);
+
+            final exampleProp = Reflect.field(example, prop);
+            
+            if (dataProp == null)
+                Reflect.setField(data, prop, exampleProp);
+            else if (Reflect.isObject(dataProp))
+                fix(exampleProp, dataProp);
+        }
+
+        return data;
+    }
+
+    public static function get(type:String, file:String, ?resolverArgs:Array<Dynamic>):Dynamic
+    {
+        final data:FormatterConfig = config.get(type);
+
+        trace(data);
+
+        final rawJson:Dynamic = Paths.json('data/' + data.path + '/' + file, false, false);
+
+        trace(rawJson);
+
+        var result:Dynamic = null;
+
+        if (rawJson != null)
+        {
+            if (rawJson.format == data.format)
+            {
+                result = fix(data.example, rawJson);
+
+                trace(result);
+            } else if (data.resolvers != null) {
+                for (method in data.resolvers)
+                {
+                    try
+                    {
+                        final curResult:Null<JsonCharacter> = method(rawJson, file, resolverArgs);
+
+                        trace(curResult);
+
+                        if (curResult != null)
+                        {
+                            result = fix(data.example, curResult);
+
+                            trace(result);
+
+                            break;
+                        }
+                    } catch(e:Dynamic) {}
+                }
+            }
+        }
+
+        if (result != null)
+        {
+            final fileChecker:Any -> Bool = data.fileCheck ?? (_) -> true;
+            
+            trace(fileChecker);
+
+            if (fileChecker(result))
+                return result;
+        }
+
+        return data.example;
+    }
 
     public static function getSong(name:String, difficulty:String):ALESong
     {
@@ -24,7 +494,7 @@ class Formatter
 
         var result:ALESong = null;
 
-        if (json.format == CHART_FORMAT)
+        if (json.format == 'ale-chart-v0.1')
             result = cast json;
 
         if (result == null)
@@ -57,7 +527,7 @@ class Formatter
                 sections: [],
                 speed: psychSong.speed,
                 bpm: psychSong.bpm,
-                format: CHART_FORMAT,
+                format: 'ale-chart-v0.1',
                 stepsPerBeat: 4,
                 beatsPerSection: 4,
                 stage: psychSong.stage
@@ -146,350 +616,22 @@ class Formatter
 
 		return cast json;
     }
-    
-    public static final CHARACTER_FORMAT:String = 'ale-character-v0.1';
 
-    public static function getCharacter(char:String, type:CharacterType):ALECharacter
-    {
-        var json:Dynamic = Paths.json('data/characters/' + char);
+    public static function getCharacter(id:String, type:CharacterType):JsonCharacter
+        return cast get(CHARACTER, id, [type]);
 
-        if (json == null)
-            return null;
+    public static function getStage(id:String):JsonStage
+        return cast get(STAGE, id);
 
-        if (json.format == CHARACTER_FORMAT)
-            return cast json;
+    public static function getStrumLine(id:String):JsonStrumLine
+        return cast get(STRUMLINE, id);
 
-        if (json.version == "1.0.0")
-        {
-            final funkinJson:FunkinCharacter = cast json;
-
-            final result:ALECharacter = {
-                type: switch (funkinJson.renderType)
-                {
-                    case 'animateatlas', 'multianimateatlas':
-                        'map';
-
-                    default:
-                        'sheet';
-                },
-                animations: [],
-                scale: 1,
-                animationLength: 0.4,
-                icon: funkinJson.healthIcon.id,
-                position: funkinJson.offsets == null ? {x: 0, y: 0} : {
-                    x: funkinJson.offsets[0],
-                    y: funkinJson.offsets[1]
-                },
-                cameraPosition: funkinJson.cameraOffsets == null ? {x: 0, y: 0} : {
-                    x: funkinJson.cameraOffsets[0],
-                    y: funkinJson.cameraOffsets[1]
-                },
-                textures: [funkinJson.assetPath.contains(':') ? funkinJson.assetPath.split(':')[1] : funkinJson.assetPath],
-                flipX: funkinJson.flipX,
-                flipY: false,
-                antialiasing: true,
-                barColor: type == 'opponent' ? '0xFFFF0000' : '0xFF00FF00',
-                death: 'bf-dead',
-                sustainAnimation: false,
-                danceModulo: 2,
-                format: CHARACTER_FORMAT
-            }
-
-            var anims:Array<String> = [];
-
-            for (anim in funkinJson.animations)
-            {
-                result.animations.push({
-                    name: anim.name,
-                    prefix: anim.prefix,
-                    framerate: 24,
-                    loop: false,
-                    indices: anim.indices,
-                    offset: {
-                        x: anim.offsets[0],
-                        y: anim.offsets[1]
-                    }
-                });
-
-                anims.push(anim.name);
-            }
-
-            result.danceModulo = anims.contains('danceLeft') && anims.contains('danceRight') ? 1 : 2;
-
-            return result;
-        }
-
-        final psychJson:PsychCharacter = cast json;
-
-        final result:ALECharacter = {
-            type: Paths.isDirectory('images/' + psychJson.image.split(',')[0].trim()) ? 'map' : 'sheet',
-            animations: [],
-            scale: psychJson.scale,
-            animationLength: psychJson.sing_duration / 10,
-            icon: psychJson.healthicon,
-            position: {
-                x: psychJson.position[0],
-                y: psychJson.position[1]
-            },
-            cameraPosition: {
-                x: psychJson.camera_position[0],
-                y: psychJson.camera_position[1]
-            },
-            textures: [for (image in psychJson.image.split(',')) image.trim()],
-            flipX: psychJson.flip_x,
-            flipY: false,
-            antialiasing: !psychJson.no_antialiasing,
-            barColor: StringUtil.intToHex(ColorUtil.colorFromArray(psychJson.healthbar_colors)),
-            death: psychJson.deadVariant ?? 'bf-dead',
-            sustainAnimation: true,
-            danceModulo: 2,
-            format: CHARACTER_FORMAT
-        };
-
-        if (type == 'player')
-        {
-            result.cameraPosition.x += 100;
-            result.cameraPosition.y -= 100;
-        } else {
-            result.cameraPosition.x += 150;
-            result.cameraPosition.y -= 100;
-        }
-
-        var anims:Array<String> = [];
-
-        for (anim in psychJson.animations)
-        {
-            result.animations.push({
-                name: anim.anim,
-                prefix: anim.name,
-                framerate: anim.fps,
-                loop: anim.loop,
-                indices: anim.indices,
-                offset: {
-                    x: anim.offsets[0] / psychJson.scale,
-                    y: anim.offsets[1] / psychJson.scale
-                }
-            });
-
-            anims.push(anim.anim);
-        }
-
-        result.danceModulo = anims.contains('danceLeft') && anims.contains('danceRight') ? 1 : 2;
-
-        return result;
-    }
-
-    public static final STAGE_FORMAT:String = 'ale-stage-v0.1';
-
-    public static function getStage(id:String):ALEStage
-    {
-        var json:Dynamic = Paths.json('data/stages/' + id);
-
-        if (json.format == STAGE_FORMAT)
-            return cast json;
-
-        json.camera_speed ??= 1;
-        json.defaultZoom ??= 1;
-        json.isPixelStage ??= false;
-
-        json.boyfriend ??= [0, 0];
-        json.opponent ??= [0, 0];
-        json.girlfriend ??= [0, 0];
-        
-        json.camera_boyfriend ??= [0, 0];
-        json.camera_opponent ??= [0, 0];
-        json.camera_girlfriend ??= [0, 0];
-
-        return {
-            speed: json.camera_speed,
-            zoom: json.defaultZoom,
-            hud: json.isPixelStage ? 'pixel' : 'default',
-            characterOffset: {
-                type: {
-                    player: {
-                        x: json.boyfriend[0],
-                        y: json.boyfriend[1]
-                    },
-                    opponent: {
-                        x: json.opponent[0],
-                        y: json.opponent[1]
-                    },
-                    extra: {
-                        x: json.girlfriend[0],
-                        y: json.girlfriend[1]
-                    }
-                }
-            },
-            cameraOffset: {
-                type: {
-                    player: {
-                        x: json.camera_boyfriend[0],
-                        y: json.camera_boyfriend[1]
-                    },
-                    opponent: {
-                        x: json.camera_opponent[0],
-                        y: json.camera_opponent[1]
-                    },
-                    extra: {
-                        x: json.camera_girlfriend[0],
-                        y: json.camera_girlfriend[1]
-                    }
-                }
-            }
-        };
-    }
-
-    public static final STRUMLINE_FORMAT:String = 'ale-strumline-v0.1';
-
-    public static function getStrumLine(strl:String):ALEStrumLine
-    {
-        final json:Dynamic = Paths.json('data/strumLines/' + strl);
-
-        if (json != null && json.format == STRUMLINE_FORMAT)
-            return cast json;
-
-        return null;
-    }
-
-    public static final ICON_FORMAT:String = 'ale-icon-v0.1';
-
-    public static function getIcon(id:String):ALEIcon
-    {
-        final json:Dynamic = Paths.json('data/icons/' + id, false, false);
-
-        if (json != null && json.format == ICON_FORMAT)
-            return cast json;
-
-        return {
-            textures: ['icons/' + id],
-            type: "frames",
-            frames: 2,
-            animations: [
-                {
-                    percent: 0,
-                    name: 'lose',
-                    indices: [1],
-                    framerate: 0,
-                    loop: false
-                },
-                {
-                    percent: 20,
-                    name: 'neutral',
-                    indices: [0],
-                    framerate: 0,
-                    loop: false
-                }
-            ],
-            scale: {
-                x: 1,
-                y: 1
-            },
-            bopScale: {
-                x: 1.2,
-                y: 1.2
-            },
-            offset: {
-                x: 20,
-                y: 0
-            },
-            bopModulo: 1,
-            lerp: 0.33,
-            flipX: false,
-            flipY: false,
-            antialiasing: !id.contains('pixel'),
-            format: ICON_FORMAT
-        };
-    }
-
-    public static final HUD_FORMAT:String = 'ale-hud-v0.1';
+    public static function getIcon(id:String):JsonIcon
+        return cast get(ICON, id);
 
     public static function getHud(id:String):ALEHud
-    {
-        final json:Dynamic = Paths.json('data/huds/' + id);
+        return cast Paths.json('data/huds/' + id);
 
-        if (json.format == HUD_FORMAT)
-            return cast json;
-
-        return null;
-    }
-    
-    public static final WEEK_FORMAT:String = 'ale-week-v0.1';
-
-    public static function getWeek(name:String):ALEWeek
-    {
-        if (Paths.exists('data/weeks/' + name + '.json'))
-        {
-            var data:Dynamic = Paths.json('data/weeks/' + name);
-
-            if (data.format == WEEK_FORMAT)
-                return cast data;
-
-            var difficulties:Null<String> = cast data.difficulties;
-            
-            var formattedWeek:ALEWeek = cast {
-                songs: [],
-
-                characters: data.weekCharacters,
-
-                background: data.weekBackground,
-
-                image: name,
-
-                phrase: data.storyName,
-
-                locked: !data.startUnlocked,
-
-                hideStoryMode: data.hideStoryMode,
-                hideFreeplay: data.hideFreeplay,
-
-                weekBefore: data.weekBefore,
-
-                difficulties: difficulties == null || difficulties.length <= 0 ? ['Easy', 'Normal', 'Hard'] : difficulties.trim().split(','),
-
-                format: WEEK_FORMAT
-            };
-
-            if (data.songs is Array)
-                for (song in cast(data.songs, Array<Dynamic>))
-                    formattedWeek.songs.push(cast {
-                            name: song[0],
-                            icon: song[1],
-                            color: song[2]
-                        }
-                    );
-
-            return cast formattedWeek;
-        } else {
-            return cast {
-                songs: [
-                    {
-                        name: 'Bopeebo',
-                        icon: 'dad',
-                        color: [255, 255, 255]
-                    }
-                ],
-
-                opponent: 'dad',
-                extra: 'gf',
-                player: 'bf',
-
-                background: 'stage',
-
-                image: 'week1',
-
-                phrase: '',
-
-                locked: false,
-
-                hideStoryMode: false,
-                hideFreeplay: false,
-
-                weekBefore: '',
-
-                difficulties: ['Easy', 'Normal', 'Hard'],
-
-                format: WEEK_FORMAT
-            };
-        }
-    }
+    public static function getWeek(id:String):ALEWeek
+        return cast get(WEEK, id);
 }

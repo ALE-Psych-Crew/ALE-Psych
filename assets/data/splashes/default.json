@@ -1,0 +1,18 @@
+{
+    "images": [
+        "default"
+    ],
+    "type": "sheet",
+    "animations": [
+        {
+            "name": "splash1"
+        },
+        {
+            "name": "splash2",
+            "offset": {
+                "x": 10,
+                "y": 10
+            }
+        }
+    ]
+}

@@ -2,7 +2,7 @@
 	"zoom": 0.9,
 	"speed": 1,
 	"hud": "default",
-	"characterOffset": {
+	"charactersOffset": {
 		"type": {
 			"opponent": {
 				"x": 100,
@@ -19,7 +19,7 @@
 		}
 	},
 	"format": "ale-stage-v0.1",
-	"objectsConfig": {
+	"spritesConfig": {
 		"directory": "stage",
 		"properties": {
 			"scale": {
@@ -27,9 +27,13 @@
 				"y": 1.1
 			}
 		},
-		"objects": [
+		"sprites": [
 			{
 				"id": "back",
+				"images": [
+					"back"
+				],
+				"type": "image",
 				"properties": {
 					"x": -600,
 					"y": -200,
@@ -41,6 +45,10 @@
 			},
 			{
 				"id": "front",
+				"images": [
+					"front"
+				],
+				"type": "image",
 				"properties": {
 					"x": -650,
 					"y": 620
@@ -48,7 +56,10 @@
 			},
 			{
 				"id": "leftLight",
-				"path": "light",
+				"images": [
+					"light"
+				],
+				"type": "image",
 				"properties": {
 					"x": -125,
 					"y": -100
@@ -57,7 +68,10 @@
 			},
 			{
 				"id": "rightLight",
-				"path": "light",
+				"images": [
+					"light"
+				],
+				"type": "image",
 				"properties": {
 					"x": 1225,
 					"y": -100,
@@ -67,6 +81,10 @@
 			},
 			{
 				"id": "curtains",
+				"images": [
+					"curtains"
+				],
+				"type": "image",
 				"properties": {
 					"x": -500,
 					"y": -300,

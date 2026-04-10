@@ -26,7 +26,7 @@ var deadCharacter:Character;
 
 var playStateChar:Character;
 
-final filesPath:String = 'hud/' + playState.stage.data.hud;
+final filesPath:String = 'hud/' + playState.stage.config.hud;
 
 function new(?char:Character)
 {
@@ -34,7 +34,7 @@ function new(?char:Character)
     
     playStateChar.exists = false;
 
-    deadCharacter = new Character(playStateChar.data.death, playStateChar.type);
+    deadCharacter = new Character(playStateChar.config.death, playStateChar.type);
     deadCharacter.cameras = [subCamera];
     deadCharacter.playAnim('firstDeath');
     add(deadCharacter);

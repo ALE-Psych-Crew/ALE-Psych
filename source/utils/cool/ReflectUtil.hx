@@ -17,7 +17,7 @@ class ReflectUtil
         return result;
     }
 
-    public static function setMultiProperty(obj:Dynamic, props:Dynamic)
+    public static function setProperties(obj:Dynamic, props:Dynamic)
     {
         var fields = Reflect.fields(props);
 
@@ -29,7 +29,7 @@ class ReflectUtil
             {
                 var subObj = Reflect.field(obj, key) ?? Reflect.getProperty(obj, key);
 
-                setMultiProperty(subObj, value);
+                setProperties(subObj, value);
             } else {
                 Reflect.setProperty(obj, key, value);
             }

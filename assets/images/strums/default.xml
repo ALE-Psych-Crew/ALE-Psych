@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="texture.png" width="994" height="1024">
+	<SubTexture name="downIdle0000" x="668" y="665" width="157" height="154"/>
+	<SubTexture name="leftIdle0000" x="683" y="223" width="154" height="157"/>
+	<SubTexture name="rightIdle0000" x="685" y="1" width="154" height="157"/>
+	<SubTexture name="upIdle0000" x="683" y="383" width="157" height="154"/>
+	<SubTexture name="downHit0000" x="1" y="1" width="229" height="228"/>
+	<SubTexture name="downHit0001" x="1" y="232" width="229" height="228"/>
+	<SubTexture name="downHit0002" x="1" y="680" width="210" height="211" frameX="-9" frameY="-10" frameWidth="238" frameHeight="235"/>
+	<SubTexture name="downHit0003" x="1" y="680" width="210" height="211" frameX="-9" frameY="-10" frameWidth="238" frameHeight="235"/>
+	<SubTexture name="downPress0000" x="668" y="822" width="142" height="139" frameX="-4" frameY="-2" frameWidth="149" frameHeight="146"/>
+	<SubTexture name="downPress0001" x="668" y="822" width="142" height="139" frameX="-4" frameY="-2" frameWidth="149" frameHeight="146"/>
+	<SubTexture name="downPress0002" x="828" y="540" width="149" height="146"/>
+	<SubTexture name="downPress0003" x="828" y="540" width="149" height="146"/>
+	<SubTexture name="leftHit0000" x="1" y="463" width="212" height="214" frameX="-3" frameY="-4" frameWidth="225" frameHeight="228"/>
+	<SubTexture name="leftHit0001" x="453" y="665" width="212" height="214" frameX="-3" frameY="-4" frameWidth="225" frameHeight="228"/>
+	<SubTexture name="leftHit0002" x="463" y="223" width="217" height="218"/>
+	<SubTexture name="leftHit0003" x="463" y="223" width="217" height="218"/>
+	<SubTexture name="leftPress0000" x="813" y="833" width="139" height="142" frameX="-3" frameY="-3" frameWidth="146" frameHeight="149"/>
+	<SubTexture name="leftPress0001" x="813" y="833" width="139" height="142" frameX="-3" frameY="-3" frameWidth="146" frameHeight="149"/>
+	<SubTexture name="leftPress0002" x="843" y="314" width="146" height="149"/>
+	<SubTexture name="leftPress0003" x="843" y="314" width="146" height="149"/>
+	<SubTexture name="rightHit0000" x="463" y="444" width="217" height="218" frameX="-1" frameY="-3" frameWidth="226" frameHeight="230"/>
+	<SubTexture name="rightHit0001" x="233" y="459" width="217" height="218" frameX="-1" frameY="-3" frameWidth="226" frameHeight="230"/>
+	<SubTexture name="rightHit0002" x="463" y="1" width="219" height="219"/>
+	<SubTexture name="rightHit0003" x="463" y="1" width="219" height="219"/>
+	<SubTexture name="rightPress0000" x="421" y="882" width="138" height="141" frameX="-4" frameY="-5" frameWidth="148" frameHeight="152"/>
+	<SubTexture name="rightPress0001" x="421" y="882" width="138" height="141" frameX="-4" frameY="-5" frameWidth="148" frameHeight="152"/>
+	<SubTexture name="rightPress0002" x="842" y="1" width="148" height="151"/>
+	<SubTexture name="rightPress0003" x="842" y="1" width="148" height="151"/>
+	<SubTexture name="upHit0000" x="233" y="1" width="227" height="226"/>
+	<SubTexture name="upHit0001" x="233" y="230" width="227" height="226"/>
+	<SubTexture name="upHit0002" x="214" y="680" width="204" height="205" frameX="-11" frameY="-10" frameWidth="236" frameHeight="232"/>
+	<SubTexture name="upHit0003" x="214" y="680" width="204" height="205" frameX="-11" frameY="-10" frameWidth="236" frameHeight="232"/>
+	<SubTexture name="upPress0000" x="828" y="689" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
+	<SubTexture name="upPress0001" x="828" y="689" width="144" height="141" frameX="-5" frameY="-4" frameWidth="153" frameHeight="150"/>
+	<SubTexture name="upPress0002" x="840" y="161" width="153" height="150"/>
+	<SubTexture name="upPress0003" x="840" y="161" width="153" height="150"/>
+
+</TextureAtlas>

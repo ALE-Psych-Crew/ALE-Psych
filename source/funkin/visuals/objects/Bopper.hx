@@ -4,12 +4,12 @@ import core.interfaces.IMusicObject;
 
 class Bopper extends FunkinSprite implements IMusicObject
 {
-    public function stepHit(curStep:Int) {}
-    public function safeStepHit(safeStep:Int) {}
+    public var stepHit:Int -> Void;
+    public var safeStepHit:Int -> Void;
 
-    public function beatHit(curBeat:Int) {}
-    public function safeBeatHit(safeBeat:Int) {}
+    public var beatHit:Int -> Void;
+    public var safeBeatHit:Int -> Void;
 
-    public function sectionHit(curSection:Int) {}
-    public function safeSectionHit(safeSection:Int) {}
+    public var sectionHit:Int -> Void;
+    public var safeSectionHit:Int -> Void;
 }

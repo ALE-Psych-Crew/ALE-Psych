@@ -2,7 +2,7 @@ import funkin.visuals.objects.Alphabet;
 
 import flixel.math.FlxPoint;
 
-final filesPath:String = 'hud/' + PlayState.instance.stage.data.hud;
+final filesPath:String = 'hud/' + PlayState.instance.stage.config.hud;
 
 final music:FlxSound = new FlxSound().loadEmbedded(Paths.music(filesPath + '/pauseMusic', true), true);
 music.play();

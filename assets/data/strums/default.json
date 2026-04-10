@@ -1,0 +1,50 @@
+{
+    "images": [
+        "default"
+    ],
+    "type": "sheet",
+    "animations": [
+        {
+            "name": "leftIdle"
+        },
+        {
+            "name": "downIdle"
+        },
+        {
+            "name": "upIdle"
+        },
+        {
+            "name": "rightIdle"
+        },
+        {
+            "name": "leftPress"
+        },
+        {
+            "name": "downPress"
+        },
+        {
+            "name": "upPress"
+        },
+        {
+            "name": "rightPress"
+        },
+        {
+            "name": "leftHit"
+        },
+        {
+            "name": "downHit"
+        },
+        {
+            "name": "upHit"
+        },
+        {
+            "name": "rightHit"
+        }
+    ],
+    "properties": {
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    }
+}

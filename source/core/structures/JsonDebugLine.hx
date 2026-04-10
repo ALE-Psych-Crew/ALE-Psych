@@ -3,7 +3,7 @@ package core.structures;
 import core.enums.DebugLineType;
 
 typedef JsonDebugLine = {
-    // > JsonBase,
+    > JsonBase,
     var type:DebugLineType;
     @:optional var value:String;
     @:optional var path:String;

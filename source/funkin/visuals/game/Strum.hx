@@ -1,59 +1,22 @@
 package funkin.visuals.game;
 
-import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBShaderReference;
+import core.structures.JsonStrumLineConfig;
 
-import flixel.input.keyboard.FlxKey;
-
-import core.structures.ALEStrum;
-
-class Strum extends FlxSprite
+class Strum extends StrumLineObject
 {
-    public var strumLine:StrumLine;
-
-    public var textureShader:RGBShaderReference;
-
-    public var allowShader:Bool;
-
-    public var data:Int;
-
-    public var returnToIdle:Bool = false;
-    public var returnToIdleTime:Float = 0.15;
+    public var idleTime:Float = 0.15;
 
     public var direction:Float = 0;
 
-    public function new(config:ALEStrum, data:Int, framerate:Float, skins:Array<String>, scale:Float, space:Float)
+    public function new(id:String, strlData:JsonStrumLineConfig)
     {
-        super();
+        allowOffset = false;
 
-        this.data = data;
+        pathPrefix = 'strums/';
 
-        frames = Paths.getMultiAtlas([for (skin in skins) 'notes/' + skin]);
+        super(id, strlData);
 
-        animation.addByPrefix('idle', config.idle, framerate, false);
-        animation.addByPrefix('hit', config.hit, framerate, false);
-        animation.addByPrefix('pressed', config.pressed, framerate, false);
-
-        animation.play('idle');
-
-        this.scale.x = this.scale.y = scale;
-        
-        updateHitbox();
-
-        x = data * space;
-        
-		textureShader = new RGBShaderReference(this, new RGBPalette());
-
-        allowShader = config.shader != null;
-
-        if (allowShader)
-        {
-            textureShader.r = CoolUtil.colorFromString(config.shader[0]);
-            textureShader.g = CoolUtil.colorFromString(config.shader[1]);
-            textureShader.b = CoolUtil.colorFromString(config.shader[2]);
-        }
-
-        textureShader.enabled = false;
+        playAnim(strumLineConfig.idle);
     }
 
     public var idleTimer:Float = 0;
@@ -62,25 +25,24 @@ class Strum extends FlxSprite
     {
         super.update(elapsed);
 
-        if (idleTimer > 0 && returnToIdle)
+        if (idleTimer > 0 && strumLine.botplay)
         {
             idleTimer -= elapsed;
 
             if (idleTimer <= 0)
-                playAnim('idle');
+                playAnim(strumLineConfig.idle);
         }
     }
 
-    public function playAnim(anim:String)
+    override function playAnim(name:String, ?force:Bool = true)
     {
-        textureShader.enabled = anim != 'idle' && allowShader;
+        super.playAnim(name, force);
+        
+        textureShader.enabled = animation.name != strumLineConfig.idle && strumLineConfig.shader != null;
 
-        idleTimer = anim == 'idle' ? -1 : returnToIdleTime;
-
-        animation.play(anim, true);
+        idleTimer = animation.name == strumLineConfig.idle ? -1 : idleTime;
         
         centerOffsets();
-        
         centerOrigin();
     }
 }

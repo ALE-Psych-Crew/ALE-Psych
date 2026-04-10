@@ -1,51 +1,16 @@
 package funkin.visuals.game;
 
-import funkin.visuals.shaders.RGBPalette;
-import funkin.visuals.shaders.RGBShaderReference;
+import core.structures.JsonStrumLineConfig;
 
-import flixel.input.keyboard.FlxKey;
-
-import core.structures.ALEStrum;
-
-class Splash extends FlxSprite
+class Splash extends StrumLineObject
 {
-    public var strumLine:StrumLine;
-
-    public var textureShader:RGBShaderReference;
-
-    public var allowShader:Bool;
-
-    public var data:Int;
-
-    public var animations:Array<String> = [];
-
     public var strum:Strum;
 
-    public function new(data:ALEStrum, strum:Strum, scale:Float, framerate:Float, skins:Array<String>)
+    public function new(id:String, strlData:JsonStrumLineConfig)
     {
-        super();
+        pathPrefix = 'splashes/';
 
-        this.animations = data.splash;
-
-        frames = Paths.getMultiAtlas([for (skin in skins) 'splashes/' + skin]);
-
-        for (anim in animations)
-            animation.addByPrefix(anim, anim, framerate, false);
-
-        this.scale.x = this.scale.y = scale;
-        
-		textureShader = new RGBShaderReference(this, new RGBPalette());
-
-        allowShader = data.shader != null;
-
-        if (allowShader)
-        {
-            textureShader.r = CoolUtil.colorFromString(data.shader[0]);
-            textureShader.g = CoolUtil.colorFromString(data.shader[1]);
-            textureShader.b = CoolUtil.colorFromString(data.shader[2]);
-        }
-
-        this.strum = strum;
+        super(id, strlData);
 
         exists = false;
 
@@ -58,11 +23,12 @@ class Splash extends FlxSprite
     {
         exists = true;
 
-        animation.play(animations[FlxG.random.int(0, animations.length - 1)], true);
+        playAnim(strumLineConfig.splash[FlxG.random.int(0, strumLineConfig.splash.length - 1)]);
 
-        updateHitbox();
-
-        x = strum.x + strum.width / 2 - width / 2;
-        y = strum.y + strum.height / 2 - height / 2;
+        if (strum != null)
+        {
+            x = strum.x + strum.width / 2 - width / 2;
+            y = strum.y + strum.height / 2 - height / 2;
+        }
     }
 }

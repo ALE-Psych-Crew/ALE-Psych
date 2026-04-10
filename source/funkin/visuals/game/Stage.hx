@@ -6,7 +6,7 @@ import flixel.FlxCamera;
 import flixel.FlxBasic;
 
 import core.structures.StageArray;
-import core.structures.ALEStage;
+import core.structures.JsonStage;
 
 import haxe.ds.StringMap;
 
@@ -14,13 +14,13 @@ class Stage
 {
     var game:PlayState;
 
-    public var data:ALEStage;
+    public var config:JsonStage;
 
-    public function new(game:PlayState, ?data:ALEStage)
+    public function new(game:PlayState, ?config:JsonStage)
     {
         this.game = game;
 
-        this.data = data;
+        this.config = config;
     }
 
     public var id:String;
@@ -56,11 +56,19 @@ class Stage
         cached.remove(id);
 
         for (obj in current.objects)
-            obj.object.exists = obj.highQuality ? !ClientPrefs.data.lowQuality : true;
+            obj.object.exists = switch (obj.quality)
+                {
+                    case ANY:
+                        true;
+                    case LOW:
+                        ClientPrefs.data.lowQuality;
+                    case HIGH:
+                        !ClientPrefs.data.lowQuality;
+                };
 
         this.id = id;
         
-        data = current.data;
+        config = current.config;
 
         @:privateAccess {
             if (game.characters != null)
@@ -72,7 +80,7 @@ class Stage
         {
             final camGame:FXCamera = cast game.camGame;
 
-            camGame.zoom = camGame.targetZoom = data.zoom;
+            camGame.zoom = camGame.targetZoom = config.zoom;
         }
     }
 
@@ -81,28 +89,25 @@ class Stage
         if (alreadyCached.contains(id))
             return;
 
-        final json:ALEStage = Formatter.getStage(id);
+        final json:JsonStage = Formatter.getStage(id);
 
         if (json == null)
             return;
 
         var result:StageArray = {
-            data: json,
+            config: json,
             objects: new StringMap(),
             id: id
         }
 
-        if (json.objectsConfig != null)
+        if (json.spritesConfig != null)
         {
-            for (object in json.objectsConfig.objects)
+            for (object in json.spritesConfig.sprites)
             {
-                final obj:FlxSprite = Type.createInstance(Type.resolveClass(object.classPath ?? 'flixel.FlxSprite'), object.classArguments ?? []);
-                
-                obj.loadGraphic(Paths.image('stages/' + json.objectsConfig.directory + '/' + (object.path ?? object.id)));
+                final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? 'funkin.visuals.objects.FunkinSprite'), object.classArguments ?? []), object);
 
-                for (props in [json.objectsConfig.properties, object.properties])
-                    if (props != null)
-                        CoolUtil.setMultiProperty(obj, props);
+                trace(obj);
+                trace(object);
 
                 if (object.cameras != null)
                 {
@@ -119,14 +124,12 @@ class Stage
 
                 obj.exists = false;
 
-                obj.updateHitbox();
-
                 final addMethod:FlxBasic -> Dynamic = Reflect.getProperty(game, object.addMethod ?? 'addBehindExtras');
 
                 if (addMethod != null)
                     Reflect.callMethod(game, addMethod, [obj]);
 
-                result.objects.set(object.id, {object: obj, highQuality: object.highQuality ?? false});
+                result.objects.set(object.id, {object: obj, quality: object.quality ?? ANY});
             }
         }
 
@@ -147,7 +150,7 @@ class Stage
         alreadyCached.resize(0);
 
         game = null;
-        data = null;
+        config = null;
         id = null;
     }
 }
