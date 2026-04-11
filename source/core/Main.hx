@@ -58,6 +58,8 @@ import api.MobileAPI;
 
 import utils.Formatter;
 
+import cpp.vm.tracy.TracyProfiler;
+
 #if WINDOWS_API
 @:buildXml('
 <target id="haxe">
@@ -154,11 +156,11 @@ class Main extends Sprite
 		);
 		#end
 
-		Lib.application.window.onClose.add(
-			() -> {
-				DesktopAPI.reset();
-			}
-		);
+		Lib.current.stage.addEventListener('exitFrame', (_) -> TracyProfiler.frameMark());
+		
+		TracyProfiler.setThreadName('main');
+		
+		Lib.application.window.onClose.add(DesktopAPI.reset);
 
 		#if android
 		final androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/.' + Lib.application?.meta?.get('file');

@@ -106,15 +106,19 @@
 
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug"/>
 	
-	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER"/>
-	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER"/>
-	<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER"/>
 
 	<define name="HX_WINDOWS" if="WINDOWS_API"/>
 	
 	<section if="cpp">
 		<setenv name="HAXEPATH" value="./"/>
-
+		<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER"/>
+		<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER"/>
+		<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER"/>
+        <haxedef name="HXCPP_TRACY"/>
+        <haxedef name="HXCPP_TELEMETRY"/>
+        <haxedef name="HXCPP_TRACY_MEMORY"/>
+        <haxedef name="HXCPP_TRACY_ON_DEMAND"/>
+		<haxedef name="HXCPP_H"/>
 		<haxedef name="HXCPP_DEBUG_LINK"/>
 		<haxedef name="HXCPP_CATCH_SEGV"/>
 		<haxedef name="HXCPP_GC_BIG_BLOCKS"/>

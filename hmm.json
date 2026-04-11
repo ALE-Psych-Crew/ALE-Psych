@@ -8,17 +8,17 @@
         {
             "name": "hxcpp",
             "type": "git",
-            "url": "https://github.com/AlejoGDOfficial/MobilePorting-hxcpp"
+            "url": "https://github.com/ALE-Psych-Crew/hxcpp"
         },
         {
             "name": "lime",
             "type": "haxelib",
-            "version": "8.3.0"
+            "version": "8.3.1"
         },
         {
             "name": "openfl",
             "type": "haxelib",
-            "version": "9.5.0"
+            "version": "9.5.1"
         },
         {
             "name": "flixel",
