@@ -104,10 +104,13 @@ class Stage
         {
             for (object in json.spritesConfig.sprites)
             {
-                final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? 'funkin.visuals.objects.FunkinSprite'), object.classArguments ?? []), object);
+                final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? 'funkin.visuals.objects.FunkinSprite'), object.classArguments ?? []), object, 'stages/' + json.spritesConfig.directory + '/');
 
-                trace(obj);
-                trace(object);
+                CoolUtil.setProperties(obj, json.spritesConfig.properties);
+
+                CoolUtil.setProperties(obj, object.properties);
+
+                obj.updateHitbox();
 
                 if (object.cameras != null)
                 {

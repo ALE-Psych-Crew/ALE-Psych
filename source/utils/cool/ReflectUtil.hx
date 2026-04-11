@@ -19,6 +19,9 @@ class ReflectUtil
 
     public static function setProperties(obj:Dynamic, props:Dynamic)
     {
+        if (props == null)
+            return;
+
         var fields = Reflect.fields(props);
 
         for (key in fields)

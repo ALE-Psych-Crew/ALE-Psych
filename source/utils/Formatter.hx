@@ -181,7 +181,7 @@ class Formatter
                     }
                 ],
                 fileCheck: (json) -> {
-                    return Paths.exists('data/' + config[HUD].path + '/' + json.hud + '.json');
+                    return Paths.exists('data/' + 'huds' /** PROVISIONAL FIX **/ + '/' + json.hud + '.json');
                 },
                 example: {
                     zoom: 0.9,
@@ -413,6 +413,13 @@ class Formatter
         ];
     }
 
+    public static function clear()
+    {
+        if (config != null)
+            for (val in config)
+                val.cache?.clear();
+    }
+
     public static function fix(example:Dynamic, data:Dynamic)
     {
         for (prop in Reflect.fields(example))
@@ -434,11 +441,10 @@ class Formatter
     {
         final data:FormatterConfig = config.get(type);
 
-        trace(data);
+        if (data?.cache[file] != null)
+            return data.cache[file];
 
         final rawJson:Dynamic = Paths.json('data/' + data.path + '/' + file, false, false);
-
-        trace(rawJson);
 
         var result:Dynamic = null;
 
@@ -447,8 +453,6 @@ class Formatter
             if (rawJson.format == data.format)
             {
                 result = fix(data.example, rawJson);
-
-                trace(result);
             } else if (data.resolvers != null) {
                 for (method in data.resolvers)
                 {
@@ -456,13 +460,9 @@ class Formatter
                     {
                         final curResult:Null<JsonCharacter> = method(rawJson, file, resolverArgs);
 
-                        trace(curResult);
-
                         if (curResult != null)
                         {
                             result = fix(data.example, curResult);
-
-                            trace(result);
 
                             break;
                         }
@@ -471,17 +471,15 @@ class Formatter
             }
         }
 
-        if (result != null)
-        {
-            final fileChecker:Any -> Bool = data.fileCheck ?? (_) -> true;
-            
-            trace(fileChecker);
+        if (result != null && !data.fileCheck(result))
+            result = null;
 
-            if (fileChecker(result))
-                return result;
-        }
+        final returnValue:Dynamic = result ?? data.example;
 
-        return data.example;
+        if (returnValue != null)
+            data.cache[file] = returnValue;
+
+        return returnValue;
     }
 
     public static function getSong(name:String, difficulty:String):ALESong

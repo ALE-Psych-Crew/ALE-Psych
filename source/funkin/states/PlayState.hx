@@ -85,6 +85,18 @@ class PlayState extends ScriptState
         return health;
     }
 
+    public var speed(default, set):Float = 1;
+    function set_speed(value:Float):Float
+    {
+        speed = value;
+
+        if (strumLines != null)
+            for (strl in strumLines)
+                strl.speed = speed;
+
+        return speed;
+    }
+
     public var startTime:Float = 0;
 
     public function new(?type:SongType = FREEPLAY, ?playlist:Array<String>, ?difficulty:String = 'normal', ?week:String, ?weekScore:Float = 0, ?songIndex:Int = 0)
@@ -160,6 +172,8 @@ class PlayState extends ScriptState
             initStrumLines();
 
             botplay = ClientPrefs.data.botplay;
+
+            speed = CHART.speed;
 
             initEvents();
             initControls();

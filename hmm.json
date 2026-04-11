@@ -87,7 +87,7 @@
         {
             "name": "ale-rulescript-wrapper",
             "type": "haxelib",
-            "version": "1.0.2"
+            "version": "1.0.3"
         },
         {
             "name": "hxluajit",

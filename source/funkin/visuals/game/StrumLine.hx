@@ -347,4 +347,14 @@ class StrumLine extends FlxSpriteGroup
 
         note.destroy();
     }
+
+    override function destroy()
+    {
+        while (!noteStack.isEmpty())
+            noteStack.pop().destroy();
+
+        keyPressed = null;
+
+        super.destroy();
+    }
 }

@@ -10,6 +10,8 @@ import hl.Gc;
 
 import api.MobileAPI;
 
+import utils.Formatter;
+
 class State extends FlxState
 {
     public var camGame:Camera;
@@ -69,6 +71,8 @@ class State extends FlxState
 	override function destroy()
 	{
         Paths.clear(shouldClearMemory);
+
+        Formatter.clear();
 
         if (shouldClearMemory)
             cleanMemory();

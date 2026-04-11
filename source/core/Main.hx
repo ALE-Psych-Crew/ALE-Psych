@@ -155,10 +155,6 @@ class Main extends Sprite
 			}
 		);
 		#end
-
-		Lib.current.stage.addEventListener('exitFrame', (_) -> TracyProfiler.frameMark());
-		
-		TracyProfiler.setThreadName('main');
 		
 		Lib.application.window.onClose.add(DesktopAPI.reset);
 

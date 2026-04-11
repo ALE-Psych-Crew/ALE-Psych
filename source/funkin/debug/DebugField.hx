@@ -17,6 +17,8 @@ class DebugField extends Sprite
         this.textFunction = textFunction ?? () -> '';
 
         label = new TextField();
+        label.antiAliasType = ADVANCED;
+        label.sharpness = 200;
         label.selectable = label.mouseEnabled = false;
         label.autoSize = LEFT;
         label.multiline = true;
