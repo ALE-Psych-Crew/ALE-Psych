@@ -6,6 +6,8 @@ import core.enums.PrintType;
 
 import core.Main;
 
+import haxe.Timer;
+
 class LogUtil
 {
 	public static function debugTrace(text:Dynamic, ?type:PrintType = TRACE, ?customType:String = '', ?customColor:FlxColor = FlxColor.GRAY, ?canTrace:Bool = true, ?canPrint:Bool = true, ?pos:haxe.PosInfos)
@@ -31,5 +33,23 @@ class LogUtil
 		debugTrace(title + ' | ' + message, POP_UP);
 
 		FlxG.stage.window.alert(message, title);
+	}
+
+	public static function benchmark(func:Void -> Void, ?title:String):Float
+	{
+		final initial:Float = Timer.stamp();
+
+		try
+		{
+			func();
+		} catch(e) {
+			debugTrace('During Benchmark: ' + e, ERROR);
+		}
+
+		final result:Float = Timer.stamp() - initial;
+
+		debugTrace((title == null ? '' : title + ': ') + result, BENCHMARK);
+
+		return result;
 	}
 }

@@ -140,9 +140,9 @@ class Main extends Sprite
 				errMsg += "\nUncaught Error: " + e.error;
 			
 				#if WINDOWS_API
-				DesktopAPI.showMessageBox(errMsg, ' Psych ' + CoolVars.engineVersion + ' | Crash Handler', ERROR);
+				DesktopAPI.showMessageBox(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler', ERROR);
 				#else
-				Application.current.window.alert(errMsg, ' Psych ' + CoolVars.engineVersion + ' | Crash Handler');
+				Application.current.window.alert(errMsg, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
 				#end
 
 				Sys.println(errMsg);

@@ -7,6 +7,8 @@ import core.enums.NoteType;
 import flixel.math.FlxAngle;
 import flixel.math.FlxRect;
 
+import funkin.visuals.shaders.RGBPalette;
+
 class Note extends StrumLineObject
 {
     public var time:Float = 0;
@@ -49,13 +51,13 @@ class Note extends StrumLineObject
 
     public var character:Array<Int> = [0, 0];
 
-    public function new(id:String, strlData:JsonStrumLineConfig, type:NoteType)
+    public function new(id:String, strlData:JsonStrumLineConfig, type:NoteType, palette:RGBPalette)
     {
         allowOffset = false;
         
         pathPrefix = 'notes/';
 
-        super(id, strlData);
+        super(id, strlData, palette);
 
         this.type = type;
 

@@ -1,5 +1,6 @@
 package utils.cool;
 
+import flixel.graphics.frames.FlxFrame;
 import flixel.graphics.FlxGraphic;
 
 import animate.FlxAnimate;
@@ -18,16 +19,21 @@ class SpriteUtil
         if (sprite is FunkinSprite)
             cast(sprite, FunkinSprite).config = json;
         
-        loadSpriteFrames(sprite, json.type, ArrayUtil.setArrayPrefix(json.images, imageDirectory), json.frames);
+        // LogUtil.benchmark(() -> {
+            loadSpriteFrames(sprite, json.type, ArrayUtil.setArrayPrefix(json.images, imageDirectory), json.frames);
+        // }, 'Frames Loading');
 
-        if (json.type != 'image' && json.animations != null)
-            for (index => animData in json.animations)
-                addSpriteAnim(sprite, json.type, animData);
+        // LogUtil.benchmark(() -> {
+            if (json.type != 'image' && json.animations != null) for (index => animData in json.animations) addSpriteAnim(sprite, json.type, animData);
+        // }, 'Animations Add');
 
-        if (json.properties != null)
-            ReflectUtil.setProperties(sprite, json.properties);
+        // LogUtil.benchmark(() -> {
+            if (json.properties != null) ReflectUtil.setProperties(sprite, json.properties);
+        // }, 'Properties Setting');
 
-        sprite.updateHitbox();
+        // LogUtil.benchmark(() -> {
+            sprite.updateHitbox();
+        // }, 'Hitbox Updating');
 
         return sprite;
     }
@@ -50,6 +56,8 @@ class SpriteUtil
         }
     }
 
+    static var framesCache:Map<String, FlxFrame> = new Map();
+
     public static function addSpriteAnim(sprite:FlxSprite, type:SpriteType, animData:JsonSpriteAnimation)
     {
         if (type == IMAGE)
@@ -65,9 +73,13 @@ class SpriteUtil
                 
             case SHEET:
                 if (animData.indices == null || animData.indices.length <= 0)
+                {
+
+
                     sprite.animation.addByPrefix(animData.name, animData.prefix, animData.frameRate, animData.loop);
-                else
+                } else {
                     sprite.animation.addByIndices(animData.name, animData.prefix, animData.indices, '', animData.frameRate, animData.loop);
+                }
             case FRAMES:
                 sprite.animation.add(animData.name, animData.indices, animData.frameRate, animData.loop);
             case MAP:

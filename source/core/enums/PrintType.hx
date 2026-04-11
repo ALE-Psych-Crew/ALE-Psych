@@ -16,6 +16,7 @@ enum abstract PrintType(String) from String to String
     var LOAD_WEEK = 'load_week';
     var RESET_STATE = 'reset_state';
     var DISCORD = 'discord';
+    var BENCHMARK = 'benchmark';
 
     public function unnecessary():Bool
     {
@@ -69,6 +70,8 @@ enum abstract PrintType(String) from String to String
                 'RESET STATE';
             case DISCORD:
                 'DISCORD';
+            case BENCHMARK:
+                'BENCHMARK';
             default:
                 'UNKNOWN';
         }
@@ -104,6 +107,8 @@ enum abstract PrintType(String) from String to String
                 FlxColor.YELLOW;
             case DISCORD:
                 0xFF5865F2;
+            case BENCHMARK:
+                FlxColor.PINK;
             default:
                 FlxColor.GRAY;
         }

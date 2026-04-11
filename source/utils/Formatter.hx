@@ -584,7 +584,7 @@ class Formatter
 
 		if (json.gfVersion == null)
 		{
-			json.gfVersion = json.player3;
+			json.gfVersion = json.player3 ?? 'gf';
 
 			json.player3 = null;
 		}

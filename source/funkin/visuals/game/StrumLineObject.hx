@@ -15,7 +15,7 @@ class StrumLineObject extends FunkinSprite
 
     public var data:Int = 0;
 
-    public function new(id:String, strlData:JsonStrumLineConfig)
+    public function new(id:String, strlData:JsonStrumLineConfig, ?palette:RGBPalette)
     {
         super();
 
@@ -23,7 +23,7 @@ class StrumLineObject extends FunkinSprite
 
         strumLineConfig = strlData;
         
-		textureShader = new RGBShaderReference(this, new RGBPalette());
+		textureShader = new RGBShaderReference(this, palette ?? new RGBPalette());
 
         if (strumLineConfig.shader != null)
             for (index => prop in ['r', 'g', 'b'])

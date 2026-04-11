@@ -12,6 +12,8 @@ import core.structures.JsonStrumLine;
 import core.enums.CharacterType;
 import core.enums.Rating;
 
+import funkin.visuals.shaders.RGBPalette;
+
 class StrumLine extends FlxSpriteGroup
 {
     public var config:JsonStrumLine;
@@ -23,6 +25,8 @@ class StrumLine extends FlxSpriteGroup
     public var type:CharacterType;
 
     var inputMap:Map<Int, Array<Int>>;
+
+    var notesShader:Array<RGBPalette> = [];
 
     public function new(id:String, type:CharacterType, strlIndex:Int, ?noteStackCallback:Note -> Bool, ?notes:Array<Array<Dynamic>>)
     {
@@ -60,6 +64,8 @@ class StrumLine extends FlxSpriteGroup
 
     public var noteStack:GenericStack<Note>;
 
+    var paletteCache:Array<RGBPalette> = [];
+    
     function initNotes(notesArray:Array<Array<Dynamic>>, strlIndex:Int, ?noteStackCallback:Note -> Bool)
     {
         add(notes = new FlxTypedSpriteGroup<Note>());
@@ -77,7 +83,11 @@ class StrumLine extends FlxSpriteGroup
 
             final strum:Strum = strums.members[data];
 
-            final note:Note = new Note(config.notes, config.config[data], ARROW);
+            paletteCache[data] ??= new RGBPalette();
+
+            final palette:RGBPalette = paletteCache[data];
+
+            final note:Note = new Note(config.notes, config.config[data], ARROW, palette);
             note.strum = strum;
             note.strumLine = this;
             note.time = time;
@@ -96,7 +106,7 @@ class StrumLine extends FlxSpriteGroup
                 
                 for (i in 0...floorLength)
                 {
-                    final sustain:Note = new Note(config.notes, config.config[data], i == floorLength - 1 ? END : SUSTAIN);
+                    final sustain:Note = new Note(config.notes, config.config[data], i == floorLength - 1 ? END : SUSTAIN, palette);
                     sustain.sustainHeight = crochet * 0.465;
                     sustain.strumLine = this;
                     sustain.strum = strum;
@@ -354,6 +364,8 @@ class StrumLine extends FlxSpriteGroup
             noteStack.pop().destroy();
 
         keyPressed = null;
+
+        paletteCache = null;
 
         super.destroy();
     }
