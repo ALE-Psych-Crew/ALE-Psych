@@ -305,6 +305,11 @@ class Formatter
             ICON => {
                 path: 'icons',
                 format: FormatterType.ICON.format(),
+                exampleModifier: (example, id, ?args) -> {
+                    example.images = [id];
+
+                    return example;
+                },
                 example: {
                     images: ['bf'],
                     type: 'frames',
@@ -437,7 +442,7 @@ class Formatter
         return data;
     }
 
-    public static function get(type:String, file:String, ?resolverArgs:Array<Dynamic>):Dynamic
+    public static function get(type:String, file:String, ?resolverArgs:Array<Dynamic>, ?exampleArgs:Array<Dynamic>):Dynamic
     {
         final data:FormatterConfig = config.get(type);
 
@@ -471,8 +476,8 @@ class Formatter
             }
         }
 
-        if (result != null && !data.fileCheck(result))
-            result = null;
+        if (result == null || !data.fileCheck(result))
+            result = data.exampleModifier(data.example, file, exampleArgs);
 
         final returnValue:Dynamic = result ?? data.example;
 

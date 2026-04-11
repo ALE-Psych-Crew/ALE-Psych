@@ -12,6 +12,8 @@
 	
 	<!-- _____________________________ ALE Defines _______________________________ -->
 
+	<define name="TRACY_ALLOWED" if="cpp windows"/>
+
 	<define name="HSCRIPT_ALLOWED"/>
 
 	<define name="LUA_ALLOWED" if="cpp"/>
@@ -114,11 +116,8 @@
 		<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER"/>
 		<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER"/>
 		<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER"/>
-        <haxedef name="HXCPP_TRACY"/>
-        <haxedef name="HXCPP_TELEMETRY"/>
-        <haxedef name="HXCPP_TRACY_MEMORY"/>
-        <haxedef name="HXCPP_TRACY_ON_DEMAND"/>
-		<haxedef name="HXCPP_H"/>
+        <haxedef name="HXCPP_TRACY" if="TRACY_ALLOWED"/>
+        <haxedef name="HXCPP_TELEMETRY" if="TRACY_ALLOWED"/>
 		<haxedef name="HXCPP_DEBUG_LINK"/>
 		<haxedef name="HXCPP_CATCH_SEGV"/>
 		<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
