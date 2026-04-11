@@ -19,21 +19,16 @@ class SpriteUtil
         if (sprite is FunkinSprite)
             cast(sprite, FunkinSprite).config = json;
         
-        // LogUtil.benchmark(() -> {
-            loadSpriteFrames(sprite, json.type, ArrayUtil.setArrayPrefix(json.images, imageDirectory), json.frames);
-        // }, 'Frames Loading');
+        loadSpriteFrames(sprite, json.type, ArrayUtil.setArrayPrefix(json.images, imageDirectory), json.frames);
 
-        // LogUtil.benchmark(() -> {
-            if (json.type != 'image' && json.animations != null) for (index => animData in json.animations) addSpriteAnim(sprite, json.type, animData);
-        // }, 'Animations Add');
+        if (json.type != 'image' && json.animations != null)
+            for (index => animData in json.animations)
+                addSpriteAnim(sprite, json.type, animData);
 
-        // LogUtil.benchmark(() -> {
-            if (json.properties != null) ReflectUtil.setProperties(sprite, json.properties);
-        // }, 'Properties Setting');
+        if (json.properties != null)
+            ReflectUtil.setProperties(sprite, json.properties);
 
-        // LogUtil.benchmark(() -> {
-            sprite.updateHitbox();
-        // }, 'Hitbox Updating');
+        sprite.updateHitbox();
 
         return sprite;
     }
@@ -73,13 +68,9 @@ class SpriteUtil
                 
             case SHEET:
                 if (animData.indices == null || animData.indices.length <= 0)
-                {
-
-
                     sprite.animation.addByPrefix(animData.name, animData.prefix, animData.frameRate, animData.loop);
-                } else {
+                else
                     sprite.animation.addByIndices(animData.name, animData.prefix, animData.indices, '', animData.frameRate, animData.loop);
-                }
             case FRAMES:
                 sprite.animation.add(animData.name, animData.indices, animData.frameRate, animData.loop);
             case MAP:
