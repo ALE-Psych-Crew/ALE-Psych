@@ -5,15 +5,15 @@ import sys.io.File;
 
 class Defines
 {
-	static final path:String = Paths.mods + '/';
+	static final path:String = 'defines/';
 
-	static final postfix:String = '.def';
+	static final extension:String = '.define';
 
 	static function exists(id:String):Bool
-		return FileSystem.exists(path + id + postfix);
+		return FileSystem.exists(path + id + extension);
 
 	static function get(id:String):Null<String>
-		return exists(id) ? File.getContent(path + id + postfix) : null;
+		return exists(id) ? File.getContent(path + id + extension) : null;
 
 	public static var CONTENT_MOD(default, null):Null<String> = null;
 
@@ -24,7 +24,5 @@ class Defines
 		CONTENT_MOD = get('CONTENT_MOD');
 
 		DISABLE_ADMINISTRATOR_EASTER_EGG = exists('DISABLE_ADMINISTRATOR_EASTER_EGG');
-
-		trace(CONTENT_MOD + ' | ' + DISABLE_ADMINISTRATOR_EASTER_EGG);
 	}
 }

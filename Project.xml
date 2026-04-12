@@ -47,7 +47,7 @@
 	<source path="source"/>
 
 	<assets path="assets" embed="false"/>
-
+	<assets path="defines" embed="false"/>
 	<assets path="mods" embed="false"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
