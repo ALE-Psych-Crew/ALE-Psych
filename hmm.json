@@ -118,7 +118,7 @@
             "name": "sl-windows-api",
             "type": "git",
             "url": "https://github.com/Slushi-Github/SL-Windows-API",
-            "ref": "da3774f27d8d49f22bfe3fa3585fe730a6891782"
+            "ref": "e07ae6c7b790207c178008e763ec0efa785bcfe6"
         },
         {
             "name": "window-modcharting",

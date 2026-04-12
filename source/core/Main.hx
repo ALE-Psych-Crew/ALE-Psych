@@ -323,6 +323,8 @@ class Main extends Sprite
 
 		Paths.clear(true, true);
 
+		Defines.init();
+
 		Paths.initMod();
 
         CoolVars.loadMetadata();

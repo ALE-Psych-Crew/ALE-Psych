@@ -46,8 +46,8 @@ class Paths
 
         final modCheckSteps:Array<Void -> Void> = [
             () -> {
-                if (FileSystem.exists(mods + '/UNIQUE_MOD.txt'))
-                    UNIQUE_MOD = mod = File.getContent(mods + '/UNIQUE_MOD.txt').split('\n')[0].trim();
+                if (Defines.CONTENT_MOD != null)
+                    UNIQUE_MOD = mod = File.getContent(Defines.CONTENT_MOD).split('\n')[0].trim();
             },
             () -> {
                 if (Sys.args()[0] != null && !usedCommandMod)

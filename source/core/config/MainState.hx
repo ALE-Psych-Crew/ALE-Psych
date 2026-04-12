@@ -10,6 +10,8 @@ import api.DesktopAPI;
 
 import core.Main;
 
+import sys.FileSystem;
+
 class MainState extends FlxState
 {
     @:unreflective static var showedModMenu:Bool = #if mobile false #else true #end;
@@ -21,7 +23,7 @@ class MainState extends FlxState
         Main.postResetConfig();
         
 		FlxTimer.wait(0.0001, () -> {
-            if (DesktopAPI.isRunningAsAdministrator() && !DesktopAPI.isRunningInWine())
+            if (DesktopAPI.isRunningAsAdministrator() && !DesktopAPI.isRunningInWine() && !Defines.DISABLE_ADMINISTRATOR_EASTER_EGG)
             {
                 CoolUtil.switchState(new AdminState());
             } else if (showedModMenu) {
