@@ -5,6 +5,9 @@ import utils.Formatter;
 import flixel.FlxCamera;
 import flixel.FlxBasic;
 
+import funkin.visuals.objects.Bopper;
+
+import core.structures.JsonBopper;
 import core.structures.StageArray;
 import core.structures.JsonStage;
 
@@ -104,7 +107,20 @@ class Stage
         {
             for (object in json.spritesConfig.sprites)
             {
-                final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? 'funkin.visuals.objects.FunkinSprite'), object.classArguments ?? []), object, 'stages/' + json.spritesConfig.directory + '/');
+                final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? Type.getClassName(Bopper)), object.classArguments ?? []), object, 'stages/' + json.spritesConfig.directory + '/');
+
+                if (obj is Bopper)
+                {
+                    final bop:Bopper = cast obj;
+                    final config:JsonBopper = cast bop.config;
+
+                    if (config.bopAnimations != null)
+                    {
+                        bop.safeBeatHit = (curBeat) -> bop.playAnim(config.bopAnimations[curBeat % config.bopAnimations.length]);
+
+                        bop.safeBeatHit(0);
+                    }
+                }
 
                 CoolUtil.setProperties(obj, json.spritesConfig.properties);
 
