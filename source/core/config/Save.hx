@@ -83,14 +83,7 @@ class Save
                                 Reflect.setField(ClientPrefs.custom, option.variable, Reflect.field(CoolUtil.save.custom.data.settings, option.variable) ?? option.initialValue);
         }
 
-		if (ClientPrefs.data.framerate > FlxG.drawFramerate)
-		{
-			FlxG.updateFramerate = ClientPrefs.data.framerate;
-			FlxG.drawFramerate = ClientPrefs.data.framerate;
-		} else {
-			FlxG.drawFramerate = ClientPrefs.data.framerate;
-			FlxG.updateFramerate = ClientPrefs.data.framerate;
-		}
+        FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
     }
 
     public function loadControls()

@@ -159,7 +159,10 @@ function onDestroy()
     CoolUtil.save.custom.data.optionsMenu = selInt;
 
     CoolUtil.save.save();
-    CoolUtil.save.load();
+
+    FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
+
+    FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
 }
 
 MobileAPI.createButtons(FlxG.width - 300, FlxG.height - 200, [
