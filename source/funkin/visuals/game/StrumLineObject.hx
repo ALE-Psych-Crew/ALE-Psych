@@ -21,7 +21,7 @@ class StrumLineObject extends FunkinSprite
 
         fromJson(Paths.json('data/' + pathPrefix + id));
 
-        strumLineConfig = strlData;
+        strumLineConfig = Json.copy(strlData);
         
 		textureShader = new RGBShaderReference(this, palette ?? new RGBPalette());
 

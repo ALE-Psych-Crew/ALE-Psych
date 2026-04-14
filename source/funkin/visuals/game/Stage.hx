@@ -165,6 +165,12 @@ class Stage
         if (current != null)
             current = null;
 
+        for (stage in cached)
+            if (stage != current)
+                for (obj in stage.objects)
+                    if (obj.object != null)
+                        obj.object.destroy();
+
         cached.clear();
         alreadyCached.resize(0);
 

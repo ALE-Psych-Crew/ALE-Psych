@@ -14,6 +14,8 @@ class SpriteUtil
 {
     public static function spriteFromJson(?sprite:FlxSprite, json:JsonSprite, ?imageDirectory:String = ''):FlxSprite
     {
+        json = Json.copy(json);
+
         sprite ??= new FunkinSprite();
 
         if (sprite is FunkinSprite)

@@ -62,7 +62,7 @@ class StrumLine extends FlxSpriteGroup
 
     public var notes:FlxTypedSpriteGroup<Note>;
 
-    public var noteStack:GenericStack<Note>;
+    public var notesStack:GenericStack<Note>;
 
     var paletteCache:Array<RGBPalette> = [];
     
@@ -136,11 +136,11 @@ class StrumLine extends FlxSpriteGroup
             }
         );
 
-        noteStack = new GenericStack<Note>();
+        notesStack = new GenericStack<Note>();
         
         for (note in tempNotes)
             if (noteStackCallback == null ? true : noteStackCallback(note))
-                noteStack.add(note);
+                notesStack.add(note);
     }
 
     public var splashes:FlxTypedSpriteGroup<Splash>;
@@ -192,9 +192,9 @@ class StrumLine extends FlxSpriteGroup
     {
         super.update(elapsed);
 
-        while (!noteStack.isEmpty() && noteStack.first().time < Conductor.songPosition + spawnWindow / speed)
+        while (!notesStack.isEmpty() && notesStack.first().time < Conductor.songPosition + spawnWindow / speed)
         {
-            final note:Note = noteStack.pop();
+            final note:Note = notesStack.pop();
 
             if (noteSpawnCallback == null ? true : noteSpawnCallback(note))
                 notes.add(note);
@@ -360,8 +360,8 @@ class StrumLine extends FlxSpriteGroup
 
     override function destroy()
     {
-        while (!noteStack.isEmpty())
-            noteStack.pop().destroy();
+        while (!notesStack.isEmpty())
+            notesStack.pop().destroy();
 
         keyPressed = null;
 

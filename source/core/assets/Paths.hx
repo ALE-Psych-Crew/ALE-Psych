@@ -22,6 +22,7 @@ import lime.system.CFFI;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
+import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSave;
 
 import animate.FlxAnimateFrames;
@@ -229,8 +230,12 @@ class Paths
         for (obj in config)
             if ((cleanAll || obj.forceCleaning) && obj.cache != null)
                 for (cacheID in obj.cache.keys())
-                    if (!obj.cache.get(cacheID).permanent || perm)
+                {
+                    final res:Dynamic = obj.cache.get(cacheID);
+
+                    if (!res.permanent || perm)
                         obj.cache.remove(cacheID);
+                }
 
         if (perm)
         {
@@ -414,7 +419,7 @@ class Paths
     // Data
 
     public static function json(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):Dynamic
-        return get(file, FileType.JSON, permanent, missingPrint);
+        return Json.copy(get(file, FileType.JSON, permanent, missingPrint));
 
     public static function ndll(fileName:String, funcName:String, ?args:Int = 0, ?missingPrint:Bool = true):Dynamic
     {
