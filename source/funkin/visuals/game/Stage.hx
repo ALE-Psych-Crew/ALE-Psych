@@ -109,16 +109,23 @@ class Stage
             {
                 final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? Type.getClassName(Bopper)), object.classArguments ?? []), object, 'stages/' + json.spritesConfig.directory + '/');
 
+                if (obj is FunkinSprite)
+                    cast(obj, FunkinSprite).playAnim(object.initialAnimation);
+                else if (object.initialAnimation != null)
+                    obj.animation?.play(object.initialAnimation);
+
                 if (obj is Bopper)
                 {
                     final bop:Bopper = cast obj;
+
                     final config:JsonBopper = cast bop.config;
 
-                    if (config.bopAnimations != null)
+                    if (config.bopAnimations != null && config.bopAnimations.length > 0)
                     {
                         bop.safeBeatHit = (curBeat) -> bop.playAnim(config.bopAnimations[curBeat % config.bopAnimations.length]);
 
-                        bop.safeBeatHit(0);
+                        if (config.initialAnimation == null)
+                            bop.safeBeatHit(0);
                     }
                 }
 

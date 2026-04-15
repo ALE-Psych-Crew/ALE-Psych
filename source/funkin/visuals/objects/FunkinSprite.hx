@@ -29,7 +29,7 @@ class FunkinSprite extends FlxAnimate
 
     public function playAnim(name:Null<String>, ?force:Bool = true)
     {
-        if (name == null || !anim.getNameList().contains(name) || (anim.curAnim == null ? false : anim.name == name && anim.curAnim.looped))
+        if (anim == null || name == null || !anim.getNameList().contains(name) || (anim.curAnim == null ? false : anim.name == name && anim.curAnim.looped))
             return;
 
         anim.play(name, force ?? true);

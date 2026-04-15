@@ -21,21 +21,22 @@ class Character extends Bopper
         pathPrefix = 'characters/';
 
         super();
-        
-        beatHit = (curBeat) -> {
-            if (bopTimer <= 0)
-                playAnim(_castConfig.bopAnimations[curBeat % _castConfig.bopAnimations.length]);
-        }
 
         change(name, type);
+        
+        if (_castConfig.bopAnimations != null && _castConfig.bopAnimations.length > 0)
+            beatHit = (curBeat) -> {
+                if (bopTimer <= 0)
+                    playAnim(_castConfig.bopAnimations[curBeat % _castConfig.bopAnimations.length]);
+            }
 
-        flipX = _castConfig.properties.flipX != (this.type == 'player');
-
-        beatHit(0);
+        playAnim(_castConfig.initialAnimation ?? _castConfig?.bopAnimations[0]);
 
         anim.onFinish.add((name) -> {
             playAnim(name + '-loop');
         });
+
+        flipX = _castConfig.properties.flipX != (this.type == 'player');
     }
 
     public function change(id:String, ?type:CharacterType)

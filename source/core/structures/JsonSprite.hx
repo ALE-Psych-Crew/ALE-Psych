@@ -8,5 +8,6 @@ typedef JsonSprite = {
     type:SpriteType,
     animations:Array<JsonSpriteAnimation>,
     properties:Dynamic,
+    ?initialAnimation:String,
     ?frames:Int
 }
