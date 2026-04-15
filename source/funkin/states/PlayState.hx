@@ -117,13 +117,13 @@ class PlayState extends ScriptState
         this.week = week;
         this.weekScore = weekScore;
 
+        songRoute = CoolUtil.searchComplexFile('songs/' + this.song);
+
         CHART ??= Formatter.getSong(this.song, this.difficulty);
 
         stage = new Stage(this, Formatter.getStage(CHART.stage));
 
         HUD ??= Formatter.getHud(stage.config.hud);
-
-        songRoute = CoolUtil.searchComplexFile('songs/' + this.song);
     }
 
     public var shouldMoveCamera:Bool = true;
@@ -1073,11 +1073,11 @@ class PlayState extends ScriptState
     {
         if (scriptCallbackCall(ON, 'SoundsInit'))
         {
-            soundsMap.set('::MUSIC', Paths.inst('songs/' + song));
+            soundsMap.set('::MUSIC', Paths.inst(songRoute));
 
             for (postfix in [null, 'Player', 'Opponent', 'Extra'])
             {
-                final audio:Sound = Paths.voices('songs/' + song, postfix ?? '', false, false);
+                final audio:Sound = Paths.voices(songRoute, postfix ?? '', false, false);
 
                 if (audio != null)
                     soundsMap.set('::' + (postfix == null ? 'VOICES' : postfix.toUpperCase()), audio);
@@ -1085,7 +1085,7 @@ class PlayState extends ScriptState
 
             for (char in characters)
             {
-                final audio:Sound = Paths.voices('songs/' + song, char.id, false, false);
+                final audio:Sound = Paths.voices(songRoute, char.id, false, false);
 
                 if (audio != null)
                     soundsMap.set(char.id, audio);
