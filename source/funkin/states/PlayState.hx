@@ -1548,6 +1548,46 @@ class PlayState extends ScriptState
     function get_strumLineNotes():FlxTypedGroup<Strum>
         return strums;
 
+    var bopModulo(never, set):Int;
+    function set_bopModulo(value:Int):Int
+    {
+        for (cam in [camGame, camHUD])
+            if (cam is FXCamera)
+                cast(cam, FXCamera).bopModulo = value;
+
+        return value;
+    }
+    
+    var bopZoom(never, set):Int;
+    function set_bopZoom(value:Int):Int
+    {
+        if (camGame is FXCamera)
+            cast(camGame, FXCamera).bopZoom = value;
+
+        if (camHUD is FXCamera)
+            cast(camHUD, FXCamera).bopZoom = value * 2;
+
+        return value;
+    }
+    
+    var defaultCamZoom(never, set):Float;
+    function set_defaultCamZoom(value:Float):Float
+    {
+        if (camGame is FXCamera)
+            cast(camGame, FXCamera).targetZoom = value;
+
+        return value;
+    }
+    
+    var defaultHudZoom(never, set):Float;
+    function set_defaultHudZoom(value:Float):Float
+    {
+        if (camHUD is FXCamera)
+            cast(camHUD, FXCamera).targetZoom = value;
+
+        return value;
+    }
+
     inline public function addBehindDad(obj:FlxBasic)
         addBehindOpponents(obj);
 
