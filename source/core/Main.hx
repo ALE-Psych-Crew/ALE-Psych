@@ -262,6 +262,8 @@ class Main extends Sprite
 
 		CoolVars.reset();
 
+		utils.TweenUtil.destroy();
+
 		debugCounter?.destroy();
 
 		FlxG.stage.removeChild(debugCounter);

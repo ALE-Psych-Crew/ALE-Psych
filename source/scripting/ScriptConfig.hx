@@ -35,6 +35,7 @@ package scripting;
         utils.CoolVars,
         utils.Controls,
         utils.Json,
+        utils.TweenUtil,
 
         core.backend.MusicBeatState,
         core.backend.MusicBeatSubState,

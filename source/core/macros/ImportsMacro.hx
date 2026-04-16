@@ -103,6 +103,8 @@ class ImportsMacro
             'windowmodcharting.framework',
             #end
 
+            'utils',
+
             'funkin.visuals.objects',
             'funkin.visuals.shaders',
             'funkin.states',
