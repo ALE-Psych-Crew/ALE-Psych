@@ -8,6 +8,8 @@ class EngineUtil
 {
 	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true, ?scale:Float = 1)
 	{
+		final previousFullscreen:Bool = FlxG.fullscreen;
+
 		Reflect.setProperty(FlxG, 'initialWidth', width);
 		Reflect.setProperty(FlxG, 'initialHeight', height);
 
@@ -31,5 +33,9 @@ class EngineUtil
 		}
 
 		FlxG.scaleMode = new RatioScaleMode();
+
+		#if !mobile
+		FlxG.fullscreen = previousFullscreen;
+		#end
 	}
 }

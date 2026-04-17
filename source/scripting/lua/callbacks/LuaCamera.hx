@@ -25,11 +25,18 @@ class LuaCamera extends LuaPresetBase
             }
         );
 
-        set('removeCamera', function(tag:String)
+        set('insertCamera', function(tag:String, pos:Int, defaultDraw:Bool)
+            {
+                if (tagIs(tag, FlxCamera))
+                    FlxG.cameras.insert(getTag(tag), pos, defaultDraw);
+            }
+        );
+
+        set('removeCamera', function(tag:String, destroy:Bool)
             {
                 if (tagIs(tag, FlxCamera))
                     if (FlxG.cameras.list.contains(getTag(tag)))
-                        FlxG.cameras.remove(getTag(tag));
+                        FlxG.cameras.remove(getTag(tag), destroy);
             }
         );
         

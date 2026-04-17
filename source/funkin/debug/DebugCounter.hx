@@ -106,16 +106,16 @@ class DebugCounter extends Sprite
         FlxG.stage.addEventListener('keyDown', keyDown);
         FlxG.stage.addEventListener('enterFrame', update);
 
-        nextMode();
+        setMode();
     }
 
     public var fields:Array<DebugField> = [];
 
     var currentMode:Int = -1;
 
-    public function nextMode()
+    public function setMode(?mode:Int)
     {
-        currentMode++;
+        currentMode = mode ?? (currentMode + 1);
 
         currentMode %= 3;
 
@@ -141,7 +141,7 @@ class DebugCounter extends Sprite
     function keyDown(e:Dynamic)
     {
         if (FlxG.keys.justPressed.F3)
-            nextMode();
+            setMode();
     }
 
     var currentHeight:Float = 0;
