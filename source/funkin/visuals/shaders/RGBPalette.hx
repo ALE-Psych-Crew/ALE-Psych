@@ -4,7 +4,7 @@ import funkin.visuals.game.Note;
 
 class RGBPalette
 {
-	public var shader(default, null):RuntimeShader = new RuntimeShader('noteRGB', true);
+	public var shader(default, null):RuntimeShader = new RuntimeShader('default/noteRGB', true);
 
 	public var r(default, set):FlxColor;
 	public var g(default, set):FlxColor;
