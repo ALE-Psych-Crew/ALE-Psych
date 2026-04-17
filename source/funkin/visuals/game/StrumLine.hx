@@ -197,7 +197,7 @@ class StrumLine extends FlxSpriteGroup
             final note:Note = notesStack.pop();
 
             if (noteSpawnCallback == null ? true : noteSpawnCallback(note))
-                notes.add(note);
+                addNote(note);
         }
 
         var noteIndex:Int = 0;
@@ -349,9 +349,18 @@ class StrumLine extends FlxSpriteGroup
             note.miss = true;
     }
 
+    public function addNote(note:Note)
+    {
+        notes.add(note);
+
+        note?.strum?.children.push(note);
+    }
+
     public function removeNote(note:Note)
     {
         note.kill();
+
+        note?.strum?.children.remove(note);
 
         notes.remove(note, true);
 

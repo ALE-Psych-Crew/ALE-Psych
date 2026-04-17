@@ -4,6 +4,10 @@ import core.structures.JsonStrumLineConfig;
 
 class Strum extends StrumLineObject
 {
+    public var modifier:Dynamic;
+
+    public var children:Array<Note> = [];
+
     public var idleTime:Float = 0.15;
 
     public var direction:Float = 0;
@@ -44,5 +48,12 @@ class Strum extends StrumLineObject
         
         centerOffsets();
         centerOrigin();
+    }
+
+    override function destroy()
+    {
+        super.destroy();
+
+        children = null;
     }
 }
