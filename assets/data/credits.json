@@ -6,30 +6,51 @@
                 {
                     "name": "Alejo GD Official",
                     "icon": "alejo",
-                    "link": "https://www.youtube.com/@alejogdofficial",
+                    "link": "https://github.com/AlejoGDOfficial",
                     "description": "Director\nLead Programmer",
                     "color": "32335E"
                 },
                 {
-                    "name": "THE VOID",
-                    "icon": "void",
-                    "link": "https://www.youtube.com/@THEE_VOIDDD",
-                    "description": "Co-Founder\nVoice Actress",
-                    "color": "830607"
+                    "name": "Slushi",
+                    "icon": "slushi",
+                    "link": "https://github.com/Slushi-Github",
+                    "description": "Helped with C++ related issues\nHelp with GitHub Actions",
+                    "color": "285C58"
+                },
+                {
+                    "name": "JonkIsKindaCool",
+                    "icon": "jonk",
+                    "link": "https://github.com/JonkIsKindaCool",
+                    "description": "Creator of the VS Code extension for Lua coders\nHelped with C++ related issues",
+                    "color": "0d4d1e"
                 },
                 {
                     "name": "Malloy",
                     "icon": "malloyboi",
                     "link": "https://x.com/ArtByHenry2010",
-                    "description": "GitHub Maintainer\nManaged Repositories and Wiki",
+                    "description": "Website Creator for the Engine",
+                    "color": "814B1F"
+                },
+                {
+                    "name": "Nezumieepy",
+                    "icon": "nezumieepy",
+                    "link": "https://github.com/Nezumieepy",
+                    "description": "Designer of the VS Code Extension Logo for Lua Coders",
                     "color": "814B1F"
                 },
                 {
                     "name": "ManuArtz",
                     "icon": "manu",
                     "link": "https://www.youtube.com/@MArtz_06",
-                    "description": "Artist",
+                    "description": "Designer of the Engine Logo",
                     "color": "43406E"
+                },
+                {
+                    "name": "THE VOID",
+                    "icon": "void",
+                    "link": "https://www.youtube.com/@THEE_VOIDDD",
+                    "description": "Artist for the Engine Banner's Waifu\nCo-Founder",
+                    "color": "830607"
                 }
             ]
         },
@@ -40,15 +61,8 @@
                     "name": "Kriptel",
                     "icon": "kriptel",
                     "link": "https://www.youtube.com/@kriptel_pro",
-                    "description": "RuleScript Implementation\nHe made some Macros",
+                    "description": "RuleScript Implementation\nMade some Macros",
                     "color": "731D1D"
-                },
-                {
-                    "name": "Slushi",
-                    "icon": "slushi",
-                    "link": "https://github.com/Slushi-Github",
-                    "description": "Helped compile on Nintendo Switch\nSlushi Windows API Creator",
-                    "color": "285C58"
                 },
                 {
                     "name": "Ina the Cat",
@@ -56,6 +70,25 @@
                     "link": "https://www.youtube.com/@InaTheCat",
                     "description": "Improved Video Support",
                     "color": "4D3C64"
+                }
+            ]
+        },
+        {
+            "name": "Special Thanks",
+            "developers": [
+                {
+                    "name": "Psych Engine",
+                    "icon": "psych",
+                    "link": "https://github.com/ShadowMario/FNF-PsychEngine",
+                    "description": "HUGE Inspiration\nRest in Peace, we will remember you as The Best",
+                    "color": "260C42"
+                },
+                {
+                    "name": "Friday Night Funkin'",
+                    "icon": "funkin",
+                    "link": "https://github.com/FunkinCrew/Funkin",
+                    "description": "The Original Game",
+                    "color": "0A2338"
                 }
             ]
         }
