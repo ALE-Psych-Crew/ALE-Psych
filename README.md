@@ -45,6 +45,11 @@
 
 ---
 
+> [!NOTE]
+> Although it may seem obvious, this project contains some code from [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngine) and [V-Slice](https://github.com/FunkinCrew/Funkin)
+
+---
+
 ## License
 
 ALE Psych is released under the Apache License 2.0

@@ -54,7 +54,9 @@ package scripting;
         'flixel.tweens.FlxTween.FlxTweenType'
     ];
 
-    public static final TYPEDEFS:Map<String, Class<Dynamic>> = [];
+    public static final TYPEDEFS:Map<String, Class<Dynamic>> = [
+        'Reflect' => rulescript.types.ScriptedReflect
+    ];
 
     public static final VARIABLES:Map<String, Dynamic> = [
         'debugTrace' => debugTrace,

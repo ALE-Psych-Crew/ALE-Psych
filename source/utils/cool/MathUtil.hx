@@ -34,4 +34,7 @@ class MathUtil
 	
 	public static function vectorFromIntArray(arr:Array<Int>):Vector<Int>
 		return Vector.ofArray(arr);
+	
+	public static function logBase(base:Float, value:Float):Float
+    	return Math.log(value) / Math.log(base);
 }

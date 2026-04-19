@@ -101,6 +101,8 @@ class ImportsMacro
             'windowmodcharting.backend.window',
             'windowmodcharting.engineImplementation',
             'windowmodcharting.framework',
+
+            'funkin.vis',
             #end
 
             'utils',

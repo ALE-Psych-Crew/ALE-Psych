@@ -55,10 +55,14 @@
 	<haxelib name="jsonmod"/>
 
 	<haxelib name="away3d"/>
-
+	
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-ui"/>
 	<haxelib name="flixel-addons"/>
+
+	<haxelib name="tink_core"/>
+	<haxelib name="grig.audio"/>
+	<haxelib name="funkin.vis"/>
 
 	<haxelib name="ale-ui"/>
 
@@ -108,7 +112,6 @@
 
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug"/>
 	
-
 	<define name="HX_WINDOWS" if="WINDOWS_API"/>
 	
 	<section if="cpp">

@@ -82,7 +82,7 @@
             "name": "rulescript",
             "type": "git",
             "url": "https://github.com/Kriptel/RuleScript",
-            "ref": "194aeb4173ed75e58f7e1a1d5f95cbac2653aa99"
+            "ref": "d9de5ac71473b816f69dc97ec85082947ca230aa"
         },
         {
             "name": "ale-rulescript-wrapper",
@@ -125,6 +125,23 @@
             "type": "git",
             "url": "https://github.com/Slushi-Github/WindowModcharting",
             "ref": "5b95a2d13b15a06890aae780d7e0c6c6d04cb11e"
+        },
+        {
+            "name": "tink_core",
+            "type": "haxelib",
+            "version": "1.26.0"
+        },
+        {
+            "name": "grig.audio",
+            "type": "git",
+            "url": "https://github.com/FunkinCrew/grig.audio",
+            "ref": "6409f3c6d1b4c52176813d3ede86c0d34e8af2c1"
+        },
+        {
+            "name": "funkin.vis",
+            "type": "git",
+            "url": "https://github.com/FunkinCrew/funkVis",
+            "ref": "02bada154b474c2554709b9d12aef0cbf0da3ec9"
         }
     ]
 }
