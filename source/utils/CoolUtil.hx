@@ -22,6 +22,7 @@ import core.Main;
 		'utils.cool.MapUtil',
 		'utils.cool.SpriteUtil',
 		'utils.cool.ArrayUtil',
+		'utils.cool.CameraUtil',
 	]
 ))
 class CoolUtil

@@ -4,55 +4,36 @@ import flixel.FlxBasic;
 
 class PluginsHandler
 {
-	public static var pluginsCamera:FlxCamera;
+	public static var topCamera:FlxCamera;
 
 	public static final plugins:Array<FlxBasic> = [];
 
-	static function moveCameraToTop(camera:FlxCamera)
+	static function onCameraAdd(camera:FlxCamera)
 	{
-		if (camera == pluginsCamera && pluginsCamera == null)
+		if (camera == topCamera && camera == null)
 			return;
 
 		if (FlxG.cameras.list.length == 0)
 		{
-			FlxG.signals.postStateSwitch.addOnce(moveCameraToTop.bind(null));
+			FlxG.signals.postStateSwitch.addOnce(onCameraAdd.bind(null));
 
 			return;
 		}
-
-		if (FlxG.cameras.list.contains(pluginsCamera))
-			FlxG.cameras.list.remove(pluginsCamera);
-
-		if (FlxG.game.contains(pluginsCamera.flashSprite))
-			FlxG.game.removeChild(pluginsCamera.flashSprite);
-
-		@:privateAccess FlxG.game.addChildAt(pluginsCamera.flashSprite, FlxG.game.getChildIndex(FlxG.game._inputContainer));
-
-		FlxG.cameras.list.push(pluginsCamera);
+		
+		CoolUtil.moveCameraToTop(topCamera);
 	}
 
-	static function resetCamera(camera:FlxCamera)
+	static function onCameraRemove(camera:FlxCamera)
 	{
-		if (camera == pluginsCamera)
+		if (camera == topCamera && !camera.exists)
 		{
-			if (!camera.exists)
-			{
-				pluginsCamera = new Camera();
+			topCamera = new Camera();
 
-				for (obj in plugins)
-					obj.cameras = [pluginsCamera];
-
-				moveCameraToTop(null);
-
-				pluginsCamera.bgColor.alpha = 0;
-
-				pluginsCamera.ID = FlxG.cameras.list.length - 1;
-			} else {
-				moveCameraToTop(null);
-			}
-		} else {
-			moveCameraToTop(null);
+			for (obj in plugins)
+				obj.cameras = [topCamera];
 		}
+
+		onCameraAdd(null);
 	}
 
 	static var initialized:Bool = false;
@@ -62,13 +43,11 @@ class PluginsHandler
 		if (initialized)
 			return;
 
-		pluginsCamera = new Camera();
-		FlxG.cameras.add(pluginsCamera, false);
+		topCamera = new Camera();
+		FlxG.cameras.add(topCamera, false);
 
-		FlxG.plugins.drawOnTop = true;
-
-		FlxG.cameras.cameraAdded.add(moveCameraToTop);
-		FlxG.cameras.cameraRemoved.add(resetCamera);
+		FlxG.cameras.cameraAdded.add(onCameraAdd);
+		FlxG.cameras.cameraRemoved.add(onCameraRemove);
 
 		initialized = true;
 	}
@@ -81,12 +60,12 @@ class PluginsHandler
 		for (plugin in plugins.copy())
 			remove(plugin);
 
-		FlxG.cameras.remove(pluginsCamera, true);
+		FlxG.cameras.remove(topCamera, true);
 
-		FlxG.cameras.cameraAdded.remove(moveCameraToTop);
-		FlxG.cameras.cameraRemoved.remove(resetCamera);
+		FlxG.cameras.cameraAdded.remove(onCameraAdd);
+		FlxG.cameras.cameraRemoved.remove(onCameraRemove);
 
-		pluginsCamera = null;
+		topCamera = null;
 		
 		initialized = false;
 	}
@@ -98,7 +77,7 @@ class PluginsHandler
 
 		FlxG.plugins.addPlugin(plugin);
 
-		plugin.cameras = [pluginsCamera];
+		plugin.cameras = [topCamera];
 
 		plugins.push(plugin);
 	}
@@ -110,8 +89,8 @@ class PluginsHandler
 
 		FlxG.plugins.remove(plugin);
 
-		if (plugin.cameras.contains(pluginsCamera))
-			plugin.cameras.remove(pluginsCamera);
+		if (plugin.cameras.contains(topCamera))
+			plugin.cameras.remove(topCamera);
 
 		if (plugin.cameras.length <= 0)
 			plugin.cameras = [FlxG.camera];
