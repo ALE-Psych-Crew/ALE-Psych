@@ -859,18 +859,16 @@ class PlayState extends ScriptState
     {
         lastHitNote = note;
 
-        final character:Character = characterFromNote(note);
+        lastHitNoteCharacter = characterFromNote(note);
 
-        lastHitNoteCharacter = character;
-
-        final result:Bool = scriptCallbackCall(ON, 'NoteHit', null, [note, rating, character, removeNote], [rating, removeNote]);
+        final result:Bool = scriptCallbackCall(ON, 'NoteHit', null, [note, rating, lastHitNoteCharacter, removeNote], [rating, removeNote]);
 
         if (result)
         {
-            if (character != null)
-                character.sing(character._castConfig.sustainAnimation || note.type == ARROW ? note.strumLineConfig.sing : null);
+            if (lastHitNoteCharacter != null)
+                lastHitNoteCharacter.sing(lastHitNoteCharacter._castConfig.sustainAnimation || note.type == ARROW ? note.strumLineConfig.sing : null);
 
-            if (character.type == PLAYER)
+            if (lastHitNoteCharacter.type == PLAYER)
             {
                 health += note.hitHealth;
 
@@ -889,7 +887,7 @@ class PlayState extends ScriptState
             }
         }
 
-        scriptCallbackCall(POST, 'NoteHit', null, [note, rating, character, removeNote], [rating, removeNote]);
+        scriptCallbackCall(POST, 'NoteHit', null, [note, rating, lastHitNoteCharacter, removeNote], [rating, removeNote]);
 
         return result;
     }
@@ -902,18 +900,16 @@ class PlayState extends ScriptState
     {
         lastMissNote = note;
 
-        final character:Character = characterFromNote(note);
+        lastMissNoteCharacter = characterFromNote(note);
 
-        lastMissNoteCharacter = character;
-
-        final result:Bool = scriptCallbackCall(ON, 'NoteMiss', null, [note, character], []);
+        final result:Bool = scriptCallbackCall(ON, 'NoteMiss', null, [note, lastMissNoteCharacter], []);
 
         if (result)
         {
-            if (character != null)
-                character.miss(character._castConfig.sustainAnimation || note.type == ARROW ? note.strumLineConfig.miss : null);
+            if (lastMissNoteCharacter != null)
+                lastMissNoteCharacter.miss(lastMissNoteCharacter._castConfig.sustainAnimation || note.type == ARROW ? note.strumLineConfig.miss : null);
 
-            if (character.type == PLAYER)
+            if (lastMissNoteCharacter.type == PLAYER)
             {
                 if (note.type == ARROW)
                 {
@@ -928,7 +924,7 @@ class PlayState extends ScriptState
             }
         }
 
-        scriptCallbackCall(POST, 'NoteMiss', null, [note, character], []);
+        scriptCallbackCall(POST, 'NoteMiss', null, [note, lastMissNoteCharacter], []);
 
         return result;
     }
