@@ -18,7 +18,7 @@
 [![MacOS](https://img.shields.io/badge/MacOS-LATEST-9B9B9B?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20Build.zip)
 [![MacOS x64](https://img.shields.io/badge/MacOS%20x64-LATEST-7A7A7A?style=for-the-badge)](https://nightly.link/ALE-Psych-Crew/ALE-Psych/workflows/builds.yaml/main/MacOS%20x64%20Build.zip)
 
-**ALE Psych** is a *rewrite* of [**Psych Engine**](https://github.com/ALE-Psych-Crew/ALE-Psych), focused on **SOFTCODING**, **customization**, and **adding more capabilities** to users through both **scripts** and **JSON**
+**ALE Psych** is a *new* **Friday Night Funkin' *Engine*** *heavily inspired* by [**Psych Engine**](https://github.com/ShadowMario/FNF-PsychEngine), focused on **SOFTCODING**, **customization**, and **adding more features** for users through **scripts** and **JSON** </br> <sub>This engine is not a fork of any other; it was built from scratch using [HaxeFlixel](https://haxeflixel.com/)</sub>
 
 > [!NOTE]
 > This is a WIP, but even so, you can make complete mods there. All you need is to have the Psych Engine Editors (preferably 0.7.3) handy. We will soon be working on new editors for the project to make it possible to take advantage of the new features
