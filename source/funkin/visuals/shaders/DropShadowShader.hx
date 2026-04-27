@@ -147,7 +147,7 @@ class DropShadowShader extends FXShader
 
         updateBounds();
 
-        target?.animation.onFrameChange.add((_, __, ___) -> this.updateBounds);
+        target?.animation.onFrameChange.add((_, __, ___) -> this.updateBounds());
 
         color = FlxColor.WHITE;
         strength = 1;
