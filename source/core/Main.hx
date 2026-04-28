@@ -203,6 +203,24 @@ class Main extends Sprite
 				event.stopImmediatePropagation();
 		}, false, 1);
 
+		function resetSpriteCache(sprite:Sprite)
+		{
+			@:privateAccess {
+		        sprite.__cacheBitmap = null;
+				sprite.__cacheBitmapData = null;
+			}
+		}
+		
+		FlxG.signals.gameResized.add((w, h) -> {
+		     if (FlxG.cameras != null)
+				for (cam in FlxG.cameras.list)
+					if (cam != null && cam.filters != null)
+						resetSpriteCache(cam.flashSprite);
+
+			if (FlxG.game != null)
+				resetSpriteCache(FlxG.game);
+		});
+
 		return;
 		
 		try

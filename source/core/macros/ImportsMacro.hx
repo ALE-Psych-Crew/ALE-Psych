@@ -7,8 +7,8 @@ class ImportsMacro
 {
 	public static function include()
 	{
+        #if COMPILE_ALL_CLASSES
         var packs:Array<String> = [
-            #if COMPILE_ALL_CLASSES
             'sys',
             'sys.io',
             
@@ -93,17 +93,7 @@ class ImportsMacro
             'haxe.sys.io',
             'haxe.runtime',
 
-            'windowmodcharting',
-            'windowmodcharting.modifiers',
-            'windowmodcharting.modifiers.modifiers',
-            'windowmodcharting.modifiers.modifiers.math',
-            'windowmodcharting.backend',
-            'windowmodcharting.backend.window',
-            'windowmodcharting.engineImplementation',
-            'windowmodcharting.framework',
-
             'funkin.vis',
-            #end
 
             'utils',
 
@@ -115,5 +105,6 @@ class ImportsMacro
 
         for (pack in packs)
             Compiler.include(pack);
+        #end
 	}
 }
