@@ -1190,11 +1190,11 @@ class PlayState extends ScriptState
         switch (json.type)
         {
             case SHEET:
-                Paths.getMultiAtlas(json.images);
+                Paths.getMultiAtlas(CoolUtil.setArrayPrefix(json.images, 'characters/'));
             case MAP:
-                Paths.getAnimateAtlas(json.images[0]);
+                Paths.getAnimateAtlas('characters/' + json.images[0]);
             case FRAMES, IMAGE:
-                Paths.image(json.images[0]);
+                Paths.image('characters/' + json.images[0]);
         }
     }
 
