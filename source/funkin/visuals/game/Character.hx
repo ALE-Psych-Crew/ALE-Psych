@@ -26,7 +26,7 @@ class Character extends Bopper
         
         if (_castConfig.bopAnimations != null && _castConfig.bopAnimations.length > 0)
             beatHit = (curBeat) -> {
-                if (bopTimer <= 0)
+                if (bopTimer <= 0 && !blockBop)
                     playAnim(_castConfig.bopAnimations[curBeat % _castConfig.bopAnimations.length]);
             }
 
@@ -59,6 +59,26 @@ class Character extends Bopper
             bopTimer -= elapsed;
     }
 
+    public var blockBop:Bool = false;
+    public var blockSing:Bool = false;
+    public var blockMiss:Bool = false;
+
+    override function playAnim(anim:String, ?force:Bool = true)
+    {
+        super.playAnim(anim, force);
+
+        blockBop = blockMiss = blockSing = false;
+    }
+
+    public function playSpecialAnim(?anim:String, ?force:Bool, ?blockBop:Bool = true, ?blockSing:Bool = false, ?blockMiss:Bool = false, ?applyTimer:Bool = false)
+    {
+        playTimedAnim(anim, applyTimer, force);
+
+        this.blockBop = blockBop;
+        this.blockSing = blockSing;
+        this.blockMiss = blockMiss;
+    }
+
     public function playTimedAnim(?anim:String, ?applyTimer:Bool = true, ?force:Bool = true)
     {
         playAnim(anim, force);
@@ -71,6 +91,9 @@ class Character extends Bopper
 
     public function sing(?anim:String, ?applyTimer:Bool = true, ?force:Bool)
     {
+        if (blockSing)
+            return;
+
         playTimedAnim(anim, applyTimer, force);
 
         for (vocal in vocals)
@@ -80,6 +103,9 @@ class Character extends Bopper
 
     public function miss(?anim:String, ?applyTimer:Bool = true, ?force:Bool)
     {
+        if (blockMiss)
+            return;
+
         playTimedAnim(anim, applyTimer, force);
 
         for (vocal in vocals)
