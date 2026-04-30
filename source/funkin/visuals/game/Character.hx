@@ -47,6 +47,8 @@ class Character extends Bopper
         fromJson(Formatter.getCharacter(id, type));
 
         this.id = id;
+
+        resetBlockers();
     }
 
     public var bopTimer:Float = 0;
@@ -66,8 +68,6 @@ class Character extends Bopper
     override function playAnim(anim:String, ?force:Bool = true)
     {
         super.playAnim(anim, force);
-
-        blockBop = blockMiss = blockSing = false;
     }
 
     public function playSpecialAnim(?anim:String, ?force:Bool, ?blockBop:Bool = true, ?blockSing:Bool = false, ?blockMiss:Bool = false, ?applyTimer:Bool = false)
@@ -112,4 +112,7 @@ class Character extends Bopper
             if (vocal != null)
                 vocal.volume = 0;
     }
+
+    function resetBlockers()
+        blockBop = blockMiss = blockSing = false;
 }

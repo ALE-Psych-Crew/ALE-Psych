@@ -6,6 +6,8 @@ import openfl.display.BlendMode;
 
 import flixel.util.FlxColor;
 
+import core.structures.JsonSprite;
+
 using StringTools;
 
 @:access(openfl.display.BlendMode)
@@ -14,6 +16,18 @@ class LuaSprite extends LuaPresetBase
     override public function new(lua:LuaScript)
     {
         super(lua);
+
+        set('makeLuaFunkinSprite', function(tag:String, data:JsonSprite, ?imageDirectory:String)
+        {
+            final sprite:FunkinSprite = cast CoolUtil.spriteFromJson(data, imageDirectory);
+
+            sprite.animation.finishCallback = function(name:String)
+            {
+                lua.call('onSpriteAnimationComplete', [tag, name]);
+            };
+
+            setTag(tag, sprite);
+        });
 
         set('makeLuaSprite', function(tag:String, ?image:String, ?x:Float, ?y:Float)
         {

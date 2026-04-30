@@ -1510,40 +1510,6 @@ class PlayState extends ScriptState
         scriptCallbackCall(POST, 'ComboDisplay', [rating]);
     }
 
-    // Psych Engine Compat.
-
-    var dad(get, never):Character;
-    function get_dad():Character
-        return opponents.members[0];
-
-    var boyfriend(get, never):Character;
-    function get_boyfriend():Character
-        return players.members[0];
-
-    var bf(get, never):Character;
-    function get_bf():Character
-        return players.members[0];
-
-    var gf(get, never):Character;
-    function get_gf():Character
-        return extras.members[0];
-
-    var iconP1(get, never):Icon;
-    function get_iconP1():Icon
-        return playerIcon;
-
-    var iconP2(get, never):Icon;
-    function get_iconP2():Icon
-        return opponentIcon;
-
-    var scoreTxt(get, never):FlxText;
-    function get_scoreTxt():FlxText
-        return scoreText;
-
-    var strumLineNotes(get, never):FlxTypedGroup<Strum>;
-    function get_strumLineNotes():FlxTypedGroup<Strum>
-        return strums;
-
     var bopModulo(never, set):Int;
     function set_bopModulo(value:Int):Int
     {
@@ -1584,14 +1550,30 @@ class PlayState extends ScriptState
         return value;
     }
 
-    inline public function addBehindDad(obj:FlxBasic)
-        addBehindOpponents(obj);
+    var iconsBopModulo(never, set):Int;
+    function set_iconsBopModulo(value:Int):Int
+    {
+        for (icon in icons)
+            icon._castConfig.bopModulo = value;
 
-    inline public function addBehindBF(obj:FlxBasic)
-        addBehindPlayers(obj);
+        return value;
+    }
 
-    inline public function addBehindGF(obj:FlxBasic)
-        addBehindExtras(obj);
+    var cameraSpeed(never, set):Float;
+    function set_cameraSpeed(value:Float):Float
+    {
+        cast(camGame, FXCamera).speed = value;
+
+        return value;
+    }
+
+    var cameraZoomSpeed(never, set):Float;
+    function set_cameraZoomSpeed(value:Float):Float
+    {
+        cast(camGame, FXCamera).zoomSpeed = cast(camGame, FXCamera).zoomSpeed = value;
+
+        return value;
+    }
 
     inline public function addAheadDad(obj:FlxBasic)
         addAheadOpponents(obj);
@@ -1601,4 +1583,47 @@ class PlayState extends ScriptState
 
     inline public function addAheadGF(obj:FlxBasic)
         addAheadExtras(obj);
+
+    // Psych Engine Compat.
+
+    var dad(get, never):Character;
+    function get_dad():Character
+        return opponents.members[0];
+
+    var boyfriend(get, never):Character;
+    function get_boyfriend():Character
+        return players.members[0];
+
+    var bf(get, never):Character;
+    function get_bf():Character
+        return players.members[0];
+
+    var gf(get, never):Character;
+    function get_gf():Character
+        return extras.members[0];
+
+    var iconP1(get, never):Icon;
+    function get_iconP1():Icon
+        return playerIcon;
+
+    var iconP2(get, never):Icon;
+    function get_iconP2():Icon
+        return opponentIcon;
+
+    var scoreTxt(get, never):FlxText;
+    function get_scoreTxt():FlxText
+        return scoreText;
+
+    var strumLineNotes(get, never):FlxTypedGroup<Strum>;
+    function get_strumLineNotes():FlxTypedGroup<Strum>
+        return strums;
+
+    inline public function addBehindDad(obj:FlxBasic)
+        addBehindOpponents(obj);
+
+    inline public function addBehindBF(obj:FlxBasic)
+        addBehindPlayers(obj);
+
+    inline public function addBehindGF(obj:FlxBasic)
+        addBehindExtras(obj);
 }

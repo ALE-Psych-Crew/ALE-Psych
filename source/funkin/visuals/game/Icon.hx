@@ -14,7 +14,7 @@ class Icon extends Bopper
 
     public var id:String;
 
-    @:unreflective var _castConfig(get, never):JsonIcon;
+    @:unreflective public var _castConfig(get, never):JsonIcon;
     function get__castConfig():JsonIcon
         return cast config;
 
