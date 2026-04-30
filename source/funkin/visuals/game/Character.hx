@@ -68,6 +68,8 @@ class Character extends Bopper
     override function playAnim(anim:String, ?force:Bool = true)
     {
         super.playAnim(anim, force);
+
+        resetBlockers();
     }
 
     public function playSpecialAnim(?anim:String, ?force:Bool, ?blockBop:Bool = true, ?blockSing:Bool = false, ?blockMiss:Bool = false, ?applyTimer:Bool = false)
