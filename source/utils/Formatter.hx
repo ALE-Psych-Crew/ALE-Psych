@@ -451,13 +451,15 @@ class Formatter
 
         final rawJson:Dynamic = Paths.json('data/' + data.path + '/' + file, false, false);
 
+        final example = Json.copy(data.example);
+
         var result:Dynamic = null;
 
         if (rawJson != null)
         {
             if (rawJson.format == data.format)
             {
-                result = fix(data.example, rawJson);
+                result = fix(example, rawJson);
             } else if (data.resolvers != null) {
                 for (method in data.resolvers)
                 {
@@ -467,7 +469,7 @@ class Formatter
 
                         if (curResult != null)
                         {
-                            result = fix(data.example, curResult);
+                            result = fix(example, curResult);
 
                             break;
                         }
@@ -477,9 +479,9 @@ class Formatter
         }
 
         if (result == null || !data.fileCheck(result))
-            result = data.exampleModifier(data.example, file, exampleArgs);
+            result = data.exampleModifier(example, file, exampleArgs);
 
-        final returnValue:Dynamic = result ?? data.example;
+        final returnValue:Dynamic = result ?? example;
 
         if (returnValue != null)
             data.cache[file] = returnValue;

@@ -97,6 +97,8 @@ class Icon extends Bopper
 
         fromJson(Formatter.getIcon(id));
 
+        animationIndex = -1;
+
         _castConfig.healthAnimations.sort((a, b) -> Math.floor(a.percent - b.percent));
 
         this.id = id;
