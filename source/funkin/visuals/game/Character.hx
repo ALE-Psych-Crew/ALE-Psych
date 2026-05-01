@@ -35,8 +35,6 @@ class Character extends Bopper
         anim.onFinish.add((name) -> {
             playAnim(name + '-loop');
         });
-
-        flipX = _castConfig.properties.flipX != (this.type == 'player');
     }
 
     public function change(id:String, ?type:CharacterType)
@@ -45,6 +43,8 @@ class Character extends Bopper
             this.type = type;
 
         fromJson(Formatter.getCharacter(id, type));
+
+        flipX = _castConfig.properties.flipX != (this.type == 'player');
 
         this.id = id;
 
