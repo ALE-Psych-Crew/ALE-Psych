@@ -21,17 +21,17 @@ import flixel.input.keyboard.FlxKey;
 		up: [FlxKey.W, FlxKey.UP],
 		right: [FlxKey.D, FlxKey.RIGHT],
 		accept: [FlxKey.ENTER, FlxKey.SPACE],
-		back: [FlxKey.ESCAPE, null],
+		back: [FlxKey.ESCAPE],
 		reset: [FlxKey.R, FlxKey.F5],
 		pause: [FlxKey.ENTER, FlxKey.ESCAPE]
 	};
 
 	public var engine:EngineControls = {
-		chart: [FlxKey.SEVEN, null],
-		character: [FlxKey.EIGHT, null],
-		switch_mod: [FlxKey.M, null],
-		reset_game: [FlxKey.N, null],
-		master_menu: [FlxKey.SEVEN, null],
-		fps_counter: [FlxKey.F3, null]
+		chart: [FlxKey.SEVEN],
+		character: [FlxKey.EIGHT],
+		switch_mod: [FlxKey.M],
+		reset_game: [FlxKey.N],
+		master_menu: [FlxKey.SEVEN],
+		fps_counter: [FlxKey.F3]
 	};
 }

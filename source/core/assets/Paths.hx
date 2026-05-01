@@ -411,10 +411,10 @@ class Paths
         return audio('sounds/' + file, permanent, missingPrint);
 
 	public static function inst(route:String, ?permanent:Bool = false, ?missingPrint:Bool = true):Sound
-		return audio(route + '/song/Inst', permanent, missingPrint);
+		return audio(route + '/audios/Inst', permanent, missingPrint);
 
 	public static function voices(route:String, ?postfix:String = null, ?permanent:Bool = false, ?missingPrint:Bool = true):Sound
-		return audio(route + '/song/Voices' + (postfix ?? ''), permanent, missingPrint);
+		return audio(route + '/audios/Voices' + (postfix ?? ''), permanent, missingPrint);
 
     // Data
 

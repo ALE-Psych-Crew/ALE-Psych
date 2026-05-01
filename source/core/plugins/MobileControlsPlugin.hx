@@ -29,10 +29,13 @@ class MobileControlsPlugin extends FlxTypedGroup<FlxBasic>
     public var stateButtons:IntMap<Array<ITactileButton>> = new IntMap();
     public var subStateButtons:IntMap<Array<ITactileButton>> = new IntMap();
     
-    public function checkKeys(keys:Array<Int>, prop:KeyCheck):Bool
+    public function checkKeys(keys:Array<Null<Int>>, prop:KeyCheck):Bool
     {
         for (key in keys)
         {
+            if (key == null)
+                continue;
+
             final group:Array<ITactileButton> = subStateButtons.get(key) ?? stateButtons.get(key);
 
             if (group == null)
