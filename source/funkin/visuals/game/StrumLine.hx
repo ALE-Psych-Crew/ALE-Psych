@@ -83,11 +83,13 @@ class StrumLine extends FlxSpriteGroup
 
             final strum:Strum = strums.members[data];
 
-            paletteCache[data] ??= new RGBPalette();
+            final strumLineConfig = config.config[data];
+
+            paletteCache[data] ??= strumLineConfig.shader == null ? new RGBPalette() : new RGBPalette(CoolUtil.colorFromString(strumLineConfig.shader[0]), CoolUtil.colorFromString(strumLineConfig.shader[1]), CoolUtil.colorFromString(strumLineConfig.shader[2]));
 
             final palette:RGBPalette = paletteCache[data];
 
-            final note:Note = new Note(config.notes, config.config[data], ARROW, palette);
+            final note:Note = new Note(config.notes, strumLineConfig, ARROW, palette);
             note.strum = strum;
             note.strumLine = this;
             note.time = time;
@@ -106,7 +108,7 @@ class StrumLine extends FlxSpriteGroup
                 
                 for (i in 0...floorLength)
                 {
-                    final sustain:Note = new Note(config.notes, config.config[data], i == floorLength - 1 ? END : SUSTAIN, palette);
+                    final sustain:Note = new Note(config.notes, strumLineConfig, i == floorLength - 1 ? END : SUSTAIN, palette);
                     sustain.sustainHeight = crochet * 0.465;
                     sustain.strumLine = this;
                     sustain.strum = strum;

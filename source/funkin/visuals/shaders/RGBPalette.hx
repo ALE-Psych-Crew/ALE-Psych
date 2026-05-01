@@ -35,12 +35,12 @@ class RGBPalette
 		return mult;
 	}
 
-	public function new()
+	public function new(r:FlxColor = 0xFFFF0000, g:FlxColor = 0xFF00FF00, b:FlxColor = 0xFF0000FF, mult:Float = 1)
 	{
-		r = 0xFFFF0000;
-		g = 0xFF00FF00;
-		b = 0xFF0000FF;
+		this.r = r;
+		this.g = g;
+		this.b = b;
 
-		mult = 1.0;
+		this.mult = mult;
 	}
 }

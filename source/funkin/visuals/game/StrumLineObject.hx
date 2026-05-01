@@ -21,12 +21,16 @@ class StrumLineObject extends FunkinSprite
 
         fromJson(Paths.json('data/' + pathPrefix + id));
 
-        strumLineConfig = Json.copy(strlData);
+        strumLineConfig = Reflect.copy(strlData);
         
-		textureShader = new RGBShaderReference(this, palette ?? new RGBPalette());
+        if (palette == null)
+        {
+            if (strumLineConfig.shader == null)
+                palette = new RGBPalette();
+            else
+                palette = new RGBPalette(CoolUtil.colorFromString(strumLineConfig.shader[0]), CoolUtil.colorFromString(strumLineConfig.shader[1]), CoolUtil.colorFromString(strumLineConfig.shader[2]));
+        }
 
-        if (strumLineConfig.shader != null)
-            for (index => prop in ['r', 'g', 'b'])
-                Reflect.setProperty(textureShader, prop, CoolUtil.colorFromString(strumLineConfig.shader[index]));
+		textureShader = new RGBShaderReference(this, palette);
     }
 }
