@@ -234,7 +234,12 @@ class Paths
                     final res:Dynamic = obj.cache.get(cacheID);
 
                     if (!res.permanent || perm)
+                    {
+                        if (res is IFlxDestroyable)
+                            FlxDestroyUtil.destroy(res);
+
                         obj.cache.remove(cacheID);
+                    }
                 }
 
         if (perm)
