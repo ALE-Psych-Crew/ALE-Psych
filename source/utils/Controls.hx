@@ -114,19 +114,7 @@ class Controls
 
     public static var BACK(get, never):Bool;
     static function get_BACK():Bool
-    {
-        var backKeys = ClientPrefs.controls.ui.back;
-
-        if (backKeys == null || backKeys.length == 0)
-            return false;
-
-        backKeys = backKeys.filter(k -> k > 0);
-
-        if (backKeys.length == 0)
-            return false;
-
-        return anyJustPressed(backKeys);
-    }
+        return anyJustPressed(ClientPrefs.controls.ui.back);
 
     public static var RESET(get, never):Bool;
     static function get_RESET():Bool
@@ -181,11 +169,11 @@ class Controls
         return FlxG.mouse.justReleased;
 
     public static function anyPressed(keys:Array<FlxKey>)
-        return (MobileAPI.checkKeys(keys, PRESSED) || FlxG.keys.anyPressed(keys));
+        return MobileAPI.checkKeys(keys, PRESSED) || FlxG.keys.anyPressed(keys);
     
     public static function anyJustPressed(keys:Array<FlxKey>)
-        return (MobileAPI.checkKeys(keys, JUST_PRESSED) || FlxG.keys.anyJustPressed(keys));
+        return MobileAPI.checkKeys(keys, JUST_PRESSED) || FlxG.keys.anyJustPressed(keys);
     
     public static function anyJustReleased(keys:Array<FlxKey>)
-        return (MobileAPI.checkKeys(keys, JUST_RELEASED) || FlxG.keys.anyJustReleased(keys));
+        return MobileAPI.checkKeys(keys, JUST_RELEASED) || FlxG.keys.anyJustReleased(keys);
 }

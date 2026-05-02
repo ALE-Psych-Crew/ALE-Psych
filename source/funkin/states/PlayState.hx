@@ -232,17 +232,17 @@ class PlayState extends ScriptState
 
         for (index => strum in strumLine.config.config)
         {
-            final keysArray:Array<Null<FlxKey>> = CoolUtil.getControl(strum.keyBind.group, strum.keyBind.id);
+            final keysArray:Array<Null<Int>> = CoolUtil.getControl(strum.keyBind.group, strum.keyBind.id);
 
             final hitbox:Hitbox = new Hitbox(strumLine.config.config.length, index, keysArray,
                 () -> {
                     for (key in keysArray)
-                        if (key != null)
+                        if (key != null && key > 0)
                             justPressedKey(new KeyboardEvent('keyDown', false, true, 0, key));
                 },
                 () -> {
                     for (key in keysArray)
-                        if (key != null)
+                        if (key != null && key > 0)
                             justReleasedKey(new KeyboardEvent('keyUp', false, true, 0, key));
                 }
             );

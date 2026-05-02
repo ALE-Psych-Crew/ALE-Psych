@@ -33,7 +33,7 @@ class MobileControlsPlugin extends FlxTypedGroup<FlxBasic>
     {
         for (key in keys)
         {
-            if (key == null)
+            if (key == null || key <= 0)
                 continue;
 
             final group:Array<ITactileButton> = subStateButtons.get(key) ?? stateButtons.get(key);
