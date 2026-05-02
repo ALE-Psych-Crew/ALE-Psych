@@ -32,6 +32,8 @@ import funkin.visuals.game.*;
 import funkin.visuals.objects.Bar;
 import funkin.visuals.FXCamera;
 
+import funkin.modchart.ModchartManager;
+
 import api.MobileAPI;
 
 class PlayState extends ScriptState
@@ -98,6 +100,8 @@ class PlayState extends ScriptState
     }
 
     public var startTime:Float = 0;
+
+    public var modchart:ModchartManager;
 
     public function new(?type:SongType = FREEPLAY, ?playlist:Array<String>, ?difficulty:String = 'normal', ?week:String, ?weekScore:Float = 0, ?songIndex:Int = 0)
     {

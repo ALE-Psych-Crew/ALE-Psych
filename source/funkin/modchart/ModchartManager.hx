@@ -65,6 +65,10 @@ class ModchartManager extends FlxBasic
                 setModifier(id, strlIndex, i, config);
     }
 
+    public function setGlobalModifier(id:Null<String>, ?config:Dynamic)
+        for (i in 0...strumLines.length)
+            setStrumLineModifier(id, i, config);
+
     public function configModifier(strlIndex:Int, strumIndex:Int, config:Dynamic)
     {
         final strum:Strum = getStrum(strlIndex, strumIndex);
@@ -81,6 +85,10 @@ class ModchartManager extends FlxBasic
             for (i in 0...strl.strums.members.length)
                 configModifier(strlIndex, i, config);
     }
+
+    public function configGlobalModifier(config:Dynamic)
+        for (i in 0...strumLines.length)
+            configStrumLineModifier(i, config);
 
     public function getStrum(strlIndex:Int, strumIndex:Int):Strum
         return strumLines.members[strlIndex].strums.members[strumIndex];
