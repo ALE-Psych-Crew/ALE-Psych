@@ -25,6 +25,8 @@ import flixel.input.keyboard.FlxKey;
 
 import funkin.debug.DebugCounter;
 
+import funkin.modchart.ModchartUtil;
+
 import core.config.MainState;
 
 import core.backend.SoundTray;
@@ -268,6 +270,8 @@ class Main extends Sprite
 			FlxG.sound.music = null;
 		}
 
+		ModchartUtil.destroy();
+
         Conductor.destroy();
 		
 		PluginsHandler.destroy();
@@ -362,6 +366,8 @@ class Main extends Sprite
 		PluginsHandler.init();
 
 		Formatter.init();
+
+		ModchartUtil.init();
 
 		Lib.current.stage.window.setIcon(Paths.library.getImage(CoolVars.data.icon + '.png'));
 

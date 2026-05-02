@@ -5,6 +5,8 @@ import core.structures.BPMChange;
 
 import flixel.util.FlxSignal.FlxTypedSignal;
 
+import openfl.media.Sound;
+
 @:access(core.backend.MusicBeatState)
 class Conductor
 {
@@ -171,6 +173,15 @@ class Conductor
 		bpmChangeIndex = 0;
 
 		bpmChangeMap = null;
+	}
+
+	public static function playMusic(sound:Sound, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int):FlxSound
+	{
+		FlxG.sound.playMusic(sound);
+
+		reset(bpm, stepsPerBeat, beatsPerSection);
+
+		return FlxG.sound.music;
 	}
 
 	public static function destroy()

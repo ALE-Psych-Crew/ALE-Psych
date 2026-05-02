@@ -2,9 +2,19 @@ package funkin.visuals.game;
 
 import core.structures.JsonStrumLineConfig;
 
+import funkin.modchart.ModchartModifier;
+
 class Strum extends StrumLineObject
 {
-    public var modifier:Dynamic;
+    public var modifier(default, set):ModchartModifier;
+    function set_modifier(value:ModchartModifier):ModchartModifier
+    {
+        modifier?.destroy();
+
+        modifier = value;
+
+        return modifier;
+    }
 
     public var children:Array<Note> = [];
 
