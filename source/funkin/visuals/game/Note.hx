@@ -87,6 +87,12 @@ class Note extends StrumLineObject
     public var copyDirection:Bool = true;
     public var directionOffset:Float = 90;
 
+    public var copyScaleX:Bool = true;
+    public var scaleXMultiplier:Float = 1;
+
+    public var copyScaleY:Bool = true;
+    public var scaleYMultiplier:Float = 1;
+
     public var copyAlpha:Bool = true;
     public var alphaMultiplier:Float = 1;
 
@@ -103,6 +109,12 @@ class Note extends StrumLineObject
         speed ??= 1;
 
         final distance:Float = timeDistance * speed * speedMultiplier * (strumLine.downScroll ? -1 : 1);
+
+        if (copyScaleX)
+            scale.x = strum.scale.x * scaleXMultiplier;
+            
+        if (copyScaleY && type == ARROW)
+            scale.y = strum.scale.y * scaleYMultiplier;
 
         if (copyAngle)
             angle = strum.angle + angleOffset;

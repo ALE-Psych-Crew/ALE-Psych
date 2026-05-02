@@ -85,5 +85,13 @@ class ModchartModifier implements IFlxDestroyable
     
     public function bop() {}
 
-    public function destroy() {}
+    public function destroy()
+    {
+        strum.x = baseX;
+        strum.y = baseY;
+        strum.angle = baseAngle;
+        strum.direction = baseDirection;
+        strum.scale.x = baseScaleX;
+        strum.scale.y = baseScaleY;
+    }
 }
