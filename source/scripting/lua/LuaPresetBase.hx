@@ -34,9 +34,6 @@ class LuaPresetBase
     public inline function errorPrint(text:String)
         debugTrace(text, ERROR);
 
-    public inline function deprecatedPrint(text:String)
-        debugTrace(text, DEPRECATED);
-
     public function getTag(tag:String):Dynamic
     {
         var split:Array<String> = tag.split('.');

@@ -17,43 +17,31 @@ class LuaTween extends LuaPresetBase
         
         set('doTweenX', function(tag:String, obj:String, value:Dynamic, ?time:Float, ?ease:String)
         {
-			deprecatedPrint('Use "tween" instead of "doTweenX"');
-
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, getTag(obj), {x: value}, time, {ease: ease}));
         });
         
         set('doTweenY', function(tag:String, obj:String, value:Dynamic, ?time:Float, ?ease:String)
         {
-			deprecatedPrint('Use "tween" instead of "doTweenY"');
-
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, getTag(obj), {y: value}, time, {ease: ease}));
         });
         
         set('doTweenAngle', function(tag:String, obj:String, value:Dynamic, ?time:Float, ?ease:String)
         {
-			deprecatedPrint('Use "tween" instead of "doTweenAngle"');
-
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, getTag(obj), {angle: value}, time, {ease: ease}));
         });
         
         set('doTweenAlpha', function(tag:String, obj:String, value:Dynamic, ?time:Float, ?ease:String)
         {
-			deprecatedPrint('Use "tween" instead of "doTweenAlpha"');
-
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, getTag(obj), {alpha: value}, time, {ease: ease}));
         });
         
         set('doTweenZoom', function(tag:String, obj:String, value:Dynamic, ?time:Float, ?ease:String)
         {
-			deprecatedPrint('Use "tween" instead of "doTweenZoom"');
-
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, getTag(obj), {zoom: value}, time, {ease: ease}));
         });
         
         set('doTweenColor', function(tag:String, obj:String, value:Dynamic, ?time:Float, ?ease:String)
         {
-			deprecatedPrint('Use "colorTween" instead of "doTweenColor"');
-
             setTag(tag, LuaPresetUtils.complexTween(lua, tag, getTag(obj), {color: value}, time, {ease: ease}));
         });
 

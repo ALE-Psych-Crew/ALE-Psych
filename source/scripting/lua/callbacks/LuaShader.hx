@@ -15,8 +15,6 @@ class LuaShader extends LuaPresetBase
 
         set('initLuaShader', function(tag:String, name:String)
         {
-            deprecatedPrint('Use "makeLuaShader" instead of "initLuaShader"');
-
             setTag(tag, new RuntimeShader(name));
         });
 

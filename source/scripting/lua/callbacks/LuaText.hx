@@ -50,16 +50,12 @@ class LuaText extends LuaPresetBase
 
         set('addLuaText', function(tag:String)
         {
-            deprecatedPrint('Use "add" instead of "addLuaText"');
-
             if (tagIs(tag, FlxSprite))
                 game.add(getTag(tag));
         });
 
         set('removeLuaText', function(tag:String, ?destroy:Bool)
         {
-            deprecatedPrint('Use "remove" instead of "removeLuaText"');
-
             if (tagIs(tag, FlxSprite))
                 game.remove(getTag(tag), destroy);
         });

@@ -124,16 +124,12 @@ class LuaSprite extends LuaPresetBase
 
         set('addLuaSprite', function(tag:String)
         {
-            deprecatedPrint('Use "add" instead of "addLuaSprite"');
-
             if (tagIs(tag, FlxSprite))
                 game.add(getTag(tag));
         });
 
         set('removeLuaSprite', function(tag:String, ?destroy:Bool)
         {
-            deprecatedPrint('Use "remove" instead of "removeLuaSprite"');
-
             if (tagIs(tag, FlxSprite))
                 game.remove(getTag(tag), destroy);
         });

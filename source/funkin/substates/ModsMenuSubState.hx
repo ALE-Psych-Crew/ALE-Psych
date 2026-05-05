@@ -18,26 +18,9 @@ import api.MobileAPI;
 
     var camPos = {x: 0.0, y: 0.0};
 
-    var ignoreFolders:Array<String> = [
-        '.git',
-        'characters',
-        'events',
-        'noteTypes',
-        'data',
-        'songs',
-        'music',
-        'sounds',
-        'shaders',
-        'videos',
-        'images',
-        'stages',
-        'weeks',
-        'fonts',
-        'scripts',
-        'Disable Mods'
-    ];
-
     var options:Array<String> = [];
+
+    final DISABLE_ID:String = '< Disable Mods >';
 
     override function create()
     {
@@ -46,10 +29,10 @@ import api.MobileAPI;
         if (FileSystem.exists('mods'))
             if (FileSystem.isDirectory('mods'))
                 for (folder in FileSystem.readDirectory('mods'))
-                    if (FileSystem.isDirectory('mods/' + folder) && !ignoreFolders.contains(folder))
+                    if (FileSystem.isDirectory('mods/' + folder) && folder != '.git')
                         options.push(folder);
 
-        options.push('Disable Mods');
+        options.push(DISABLE_ID);
 
         var bg:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0xFF141820, 0xFF1F232B));
         add(bg);
@@ -93,7 +76,7 @@ import api.MobileAPI;
         { 
             var save:FlxSave = new FlxSave();
             save.bind('ALEEngineData', CoolUtil.getSavePath(false));
-            save.data.currentMod = options[selInt] == 'Disable Mods' ? null : options[selInt];
+            save.data.currentMod = options[selInt] == DISABLE_ID ? null : options[selInt];
             save.flush();
 
             close();

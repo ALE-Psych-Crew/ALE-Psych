@@ -134,8 +134,6 @@ class LuaReflect extends LuaPresetBase
 
         set('addInstance', function(tag:String)
         {
-            deprecatedPrint('Use "add" instead of "addInstance"');
-
             if (tagIs(tag, flixel.FlxBasic))
                 game.add(getTag(tag));
         });

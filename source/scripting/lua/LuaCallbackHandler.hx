@@ -59,6 +59,22 @@ import haxe.Exception;
 			callbacks.remove(stateID);
 	}
 
+	@:unreflective static var deprecatedFunctions:Map<String, String> = [
+		'addLuaText' => 'add',
+		'addLuaSprite' => 'add',
+		'addInstance' => 'add',
+		'removeLuaText' => 'remove',
+		'removeLuaSprite' => 'remove',
+		'doTweenX' => 'tween',
+		'doTweenY' => 'tween',
+		'doTweenAngle' => 'tween',
+		'doTweenAlpha' => 'tween',
+		'doTweenZoom' => 'tween',
+		'doTweenColor' => 'colorTween',
+		'initLuaShader' => 'makeLuaShader',
+		'setObjectCamera' => 'setObjectCameras'
+	];
+
 	private static function functionHandler(L:RawPointer<Lua_State>):Int
 	{
 		final stateID = LuaUtils.getVariable(L, STATE_ID_VAR);
@@ -73,6 +89,9 @@ import haxe.Exception;
 
 			if (ret != null)
 			{
+				if (deprecatedFunctions[name] != null)
+					debugTrace('Use "' + deprecatedFunctions[name] + '" instead of "' + name + '"');
+
 				LuaConverter.toLua(L, ret);
 
 				return 1;
