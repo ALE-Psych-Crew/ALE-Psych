@@ -4,25 +4,11 @@ import openfl.events.UncaughtErrorEvent;
 import openfl.display.Sprite;
 import openfl.Lib;
 
+import api.DesktopAPI;
+
 import flixel.FlxGame;
 
 import haxe.CallStack;
-
-#if ALLOW_WINDOWS_API
-@:buildXml('
-<target id="haxe">
-	<lib name="wininet.lib" if="windows" />
-	<lib name="dwmapi.lib" if="windows" />
-</target>
-')
-
-@:cppFileCode('
-#include <windows.h>
-#include <winuser.h>
-#pragma comment(lib, "Shell32.lib")
-extern "C" HRESULT WINAPI SetCurrentProcessExplicitAppUserModelID(PCWSTR AppID);
-')
-#end
 
 @:unreflective
 class Main extends Sprite
@@ -64,19 +50,12 @@ class Main extends Sprite
 			Sys.exit(1);
 		});
 		#end
+		
+		DesktopAPI.setDPIAware();
 	}
 
 	static function postConfig()
 	{
-		#if ALLOW_WINDOWS_API
-		untyped __cpp__('SetProcessDPIAware();');
-
-		FlxG.stage.window.borderless = true;
-		FlxG.stage.window.borderless = false;
-
-		Lib.application.window.x = Std.int((Lib.application.window.display.bounds.width - Lib.application.window.width) / 2);
-		Lib.application.window.y = Std.int((Lib.application.window.display.bounds.height - Lib.application.window.height) / 2);
-		#end
 	}
 
 	@:allow(core.MainState)
