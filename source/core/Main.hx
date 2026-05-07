@@ -75,6 +75,8 @@ class Main extends Sprite
 	@:allow(core.MainState)
 	static function postResetConfig()
 	{
+		Lib.application.window.resizable = true;
+
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.keys.preventDefaultKeys = [TAB];
