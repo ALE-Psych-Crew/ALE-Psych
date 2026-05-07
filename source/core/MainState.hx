@@ -2,6 +2,8 @@ package core;
 
 import flixel.FlxState;
 
+import api.DesktopAPI;
+
 class MainState extends FlxState
 {
 	override public function create()
@@ -9,5 +11,9 @@ class MainState extends FlxState
 		super.create();
 
 		Main.postResetConfig();
+
+		DesktopAPI.setWindowTitle();
+		
+		DesktopAPI.setWindowBorderColor(33, 33, 33);
 	}
 }

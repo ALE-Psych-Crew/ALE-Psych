@@ -31,6 +31,8 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons"/>
 
+	<haxelib name="sl-windows-api"/>
+	
 	<!-- Flags -->
 
 	<set name="BUILD_DIR" value="export/release"/>
@@ -47,17 +49,16 @@
 
 	<haxedef name='lime_disable_assets_version'/>	
 
+	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
 	<haxedef name="FLX_NO_HEALTH"/>
 	<haxedef name="FLX_NO_DEBUG"/>
 
-	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER"/>
-	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER"/>
-	<haxedef name="HXCPP_STACK_TRACE" if="CRASH_HANDLER"/>
-	<haxedef name="HXCPP_TRACY" if="TRACY_ALLOWED"/>
-	<haxedef name="HXCPP_TELEMETRY" if="TRACY_ALLOWED"/>
+	<haxedef name="HXCPP_CHECK_POINTER" if="ALLOW_CRASH_HANDLER"/>
+	<haxedef name="HXCPP_STACK_LINE" if="ALLOW_CRASH_HANDLER"/>
+	<haxedef name="HXCPP_STACK_TRACE" if="ALLOW_CRASH_HANDLER"/>
+	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 	<haxedef name="HXCPP_DEBUG_LINK"/>
 	<haxedef name="HXCPP_CATCH_SEGV"/>
-	<haxedef name="HXCPP_GC_BIG_BLOCKS"/>
 
 	<haxedef name='no-deprecation-warnings'/>
 	<haxedef name="message.reporting" value="pretty"/>
