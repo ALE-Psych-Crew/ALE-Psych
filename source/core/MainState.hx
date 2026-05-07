@@ -15,5 +15,7 @@ class MainState extends FlxState
 		DesktopAPI.setWindowTitle();
 		
 		DesktopAPI.setWindowBorderColor(33, 33, 33);
+
+		add(new FlxSprite());
 	}
 }

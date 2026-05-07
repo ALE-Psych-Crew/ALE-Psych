@@ -28,24 +28,38 @@ class Main extends Sprite
 	{
 		#if ALLOW_CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, (error) -> {
-			var errorMessage:String = '';
+			final title:String = 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler';
+
+			var printMessage:String = '';
+
+			var consoleMessage:String = '\n' + title + '\n';
 
 			for (stackItem in CallStack.exceptionStack(true))
 			{
 				switch (stackItem)
 				{
-					case FilePos(_, file, line, _):
-						errorMessage += file + ':' + line;
+					case FilePos(item, file, line, _):
+						switch (item)
+						{
+							case Method(className, func):
+								printMessage += className + '.' + func + ' - Line ' + line;
+							default:
+								printMessage += file + ':' + line;
+						}
+
+						printMessage += '\n';
+
+						consoleMessage += file + '#' + line + '\n';
 					default:
 						Sys.println(stackItem);
 				}
 			}
 
-			errorMessage += '\n' + error.error;
-			
-			Lib.application.window.alert(errorMessage, 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler');
+			final errorMessage:String = '\n' + error.error;
 
-			Sys.println(errorMessage);
+			debugTrace(consoleMessage + errorMessage, PrintType.ERROR);
+			
+			Logs.popUp(title, printMessage + errorMessage, ERROR);
 
 			Sys.exit(1);
 		});
@@ -72,5 +86,9 @@ class Main extends Sprite
 		FlxG.mouse.unload();
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
+
+		Paths.init();
+
+		Logs.init();
 	}
 }
