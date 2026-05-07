@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<TextureAtlas imagePath="texture.png" width="369" height="316">
-	<SubTexture name="downNote0000" x="1" y="1" width="157" height="154"/>
-	<SubTexture name="upNote0000" x="158" y="161" width="157" height="154"/>
-	<SubTexture name="leftNote0000" x="161" y="1" width="154" height="157"/>
-	<SubTexture name="rightNote0000" x="1" y="158" width="154" height="157"/>
-	<SubTexture name="sustain0000" x="318" y="68" width="50" height="44"/>
-	<SubTexture name="end0000" x="318" y="1" width="50" height="64"/>
-</TextureAtlas>

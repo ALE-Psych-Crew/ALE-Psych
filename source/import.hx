@@ -1,49 +1,5 @@
-#if !macro
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.FlxCamera;
-import flixel.text.FlxText;
-import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
-import flixel.util.FlxColor;
-import flixel.util.FlxTimer;
-import flixel.sound.FlxSound;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
-import flixel.group.FlxSpriteGroup;
-import flixel.group.FlxGroup.FlxTypedGroup;
-
-import funkin.visuals.objects.FunkinSprite;
-import funkin.visuals.objects.Bopper;
-import funkin.visuals.Camera;
-import funkin.states.PlayState;
-
-import core.assets.Paths;
-
-import core.config.ClientPrefs;
-
-import utils.CoolUtil;
 import utils.CoolVars;
-import utils.Conductor;
-import utils.Controls;
-import utils.Defines;
-import utils.Json;
 
-import utils.cool.LogUtil.debugTrace;
-import utils.cool.LogUtil.benchmark;
-
-import core.backend.State;
-import core.backend.ScriptState;
-import core.backend.MusicBeatState;
-
-import core.backend.SubState;
-import core.backend.ScriptSubState;
-import core.backend.MusicBeatSubState;
-
-import core.config.Discord;
-
-import funkin.states.CustomState;
-import funkin.substates.CustomSubState;
+import flixel.FlxG;
 
 using StringTools;
-#end
