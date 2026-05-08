@@ -33,12 +33,10 @@ class CustomState extends ScriptedState
     override public function update(elapsed:Float)
     {
         if (scriptCallbackCall(ON, 'Update', [elapsed]))
-        {
             super.update(elapsed);
 
-            if (FlxG.keys.justPressed.R && CoolVars.data.developerMode && !UIUtils.usingInputs)
-                reset();
-        }
+        if (FlxG.keys.justPressed.R && CoolVars.data.developerMode && !UIUtils.usingInputs)
+            reset();
 
         scriptCallbackCall(POST, 'Update', [elapsed]);
     }

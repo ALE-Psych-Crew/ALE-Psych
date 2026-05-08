@@ -17,8 +17,6 @@ class HScriptConfig
         #if ALLOW_HSCRIPT
         RuleScriptGlobal.reset();
 
-        trace('oso');
-
         RuleScriptGlobal.FILE_CHECKER = (id:String) -> Paths.exists(id);
         RuleScriptGlobal.FILE_READER = (id:String) -> Paths.getContent(id);
 

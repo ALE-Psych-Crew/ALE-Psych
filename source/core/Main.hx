@@ -6,6 +6,9 @@ import openfl.Lib;
 
 import scripting.haxe.HScriptConfig;
 
+import core.plugins.DebugPrintPlugin;
+import core.plugins.PluginsHandler;
+
 import core.debug.DebugCounter;
 import core.debug.HotReloading;
 
@@ -62,7 +65,7 @@ class Main extends Sprite
 
 			final errorMessage:String = '\n' + error.error;
 
-			debugTrace(consoleMessage + errorMessage, PrintType.ERROR);
+			//debugTrace(consoleMessage + errorMessage, PrintType.ERROR);
 			
 			Logs.popUp(title, printMessage + errorMessage, ERROR);
 
@@ -86,11 +89,15 @@ class Main extends Sprite
 		Paths.clear(true, true);
 
 		HotReloading.destroy();
+
+		PluginsHandler.destroy();
 	}
 
 	public static var onlineVersion(default, null):String = '';
 
 	public static var debugCounter:DebugCounter;
+
+	public static var debugPrintPlugin:DebugPrintPlugin;
 
 	@:allow(core.states.MainState)
 	static function postResetConfig()
@@ -113,16 +120,21 @@ class Main extends Sprite
 
 		HotReloading.init();
 
+		Logs.init();
+
 		CoolVars.init();
 
 		Paths.init();
 
-		Logs.init();
-
 		Defines.init();
+		
+		PluginsHandler.init();
 
 		HScriptConfig.init();
-		
-		FlxG.stage.addChild(debugCounter = new DebugCounter());
+
+		if (CoolVars.data.debugPrint && CoolVars.data.developerMode)
+			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+
+		FlxG.stage.addChild(debugCounter = new DebugCounter());	
 	}
 }

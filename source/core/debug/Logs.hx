@@ -15,13 +15,29 @@ class Logs
 
     public static function debugTrace(text:Dynamic, ?type:String = PrintType.TRACE, ?allowTrace:Bool = true, ?allowPrint:Bool = true, ?pos:PosInfos)
     {
-        final data:PrintConfig = config[type];
+        final data:PrintConfig = config.get(type);
 
-        if (data == null || (data.verbose && CoolVars.data.verbose))
+        if (data == null || (data.verbose && !CoolVars.data.verbose))
             return;
 
         if (allowTrace && data.allowTrace)
             Sys.println(colorString(data.title, data.color) + colorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : colorString(pos.fileName + ':' + pos.lineNumber + ': ', 0xFF888888)) + text);
+        
+		if (data.allowPrint && allowPrint)
+			debugPrint(text, type);
+    }
+
+	public static function debugPrint(text:Dynamic, ?type:PrintType = PrintType.TRACE)
+    {
+        if (!CoolVars.data.developerMode || !CoolVars.data.debugPrint)
+            return;
+
+        final data:PrintConfig = config.get(type);
+
+        if (data == null)
+            return;
+
+		Main.debugPrintPlugin?.print(text, data.title, data.color);
     }
 
     public static function colorString(text:String, color:FlxColor):String

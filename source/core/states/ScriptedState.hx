@@ -32,13 +32,13 @@ class ScriptedState extends State implements IScriptedState
         {
             final script:HScript = new HScript(path, haxeScriptsContext, args, STATE);
 
+            HotReloading.files.push(fullPath);
+            
             if (!script.failedExecution)
             {
                 haxeScripts.push(script);
                 
                 scripts.push(script);
-
-                HotReloading.files.push(fullPath);
 
                 debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
             }

@@ -1,4 +1,4 @@
-package core.graphics;
+package core.visuals;
 
 import flixel.addons.display.FlxRuntimeShader;
 import flixel.system.FlxAssets.FlxShader;

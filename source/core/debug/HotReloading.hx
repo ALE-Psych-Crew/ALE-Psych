@@ -19,7 +19,7 @@ class HotReloading
         thread ??= CoolUtil.createSafeThread(() -> {
             while (true)
             {
-                if (CoolVars.data != null && CoolVars.data.hotReloading && CoolVars.data.developerMode && FlxG.state is ScriptedState && FlxG.state.subState == null)
+                if (CoolVars.data != null && CoolVars.data.hotReloading && CoolVars.data.developerMode && FlxG.state is ScriptedState)
                 {
                     for (file in files)
                     {
@@ -29,7 +29,8 @@ class HotReloading
                         {
                             times[file] = lastTime;
 
-                            cast(FlxG.state, ScriptedState).reset();
+                            if (FlxG.state.subState == null)
+                                cast(FlxG.state, ScriptedState).reset();
                         } else {
                             times[file] = lastTime;
                         }

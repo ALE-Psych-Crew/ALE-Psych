@@ -5,6 +5,10 @@ import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
 
+import flixel.text.FlxText;
+
+import flixel.group.FlxGroup;
+
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -17,7 +21,7 @@ import core.debug.Logs.debugTrace;
 import core.debug.Logs.benchmark;
 import core.debug.Logs;
 
-import core.graphics.Camera;
+import core.visuals.Camera;
 
 import core.enums.PrintType;
 
@@ -30,6 +34,8 @@ import core.substates.ScriptedSubState;
 import core.substates.SubState;
 
 import funkin.states.CustomState;
+
+import funkin.substates.CustomSubState;
 
 using StringTools;
 #end
