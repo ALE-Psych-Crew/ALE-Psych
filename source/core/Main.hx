@@ -7,6 +7,7 @@ import openfl.Lib;
 import scripting.haxe.HScriptConfig;
 
 import core.debug.DebugCounter;
+import core.debug.HotReloading;
 
 import api.DesktopAPI;
 
@@ -77,12 +78,14 @@ class Main extends Sprite
 	}
 
 	static function preResetConfig()
-	{
-		Paths.clear(true, true);
-		
+	{		
 		debugCounter?.destroy();
 
 		FlxG.stage.removeChild(debugCounter);
+
+		Paths.clear(true, true);
+
+		HotReloading.destroy();
 	}
 
 	public static var onlineVersion(default, null):String = '';
@@ -102,9 +105,13 @@ class Main extends Sprite
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
 
+		FlxG.autoPause = false;
+
 		FlxG.mouse.unload();
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
+
+		HotReloading.init();
 
 		CoolVars.init();
 

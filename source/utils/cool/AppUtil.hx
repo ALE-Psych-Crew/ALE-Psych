@@ -2,10 +2,24 @@ package utils.cool;
 
 import flixel.system.scaleModes.RatioScaleMode;
 
+import sys.thread.Thread;
+
 import openfl.Lib;
 
 class AppUtil
 {
+	public static function createSafeThread(func:Void -> Void):Thread
+	{
+		return Thread.create(function()
+		{
+			try {
+				func();
+			} catch(e) {
+				debugTrace(e.details(), ERROR);
+			}
+		});
+	}
+	
 	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true, ?scale:Float = 1)
 	{
 		final previousFullscreen:Bool = FlxG.fullscreen;

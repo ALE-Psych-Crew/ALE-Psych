@@ -5,6 +5,8 @@ import core.enums.ScriptCallType;
 import core.interfaces.IScriptedState;
 import core.interfaces.IScript;
 
+import core.debug.HotReloading;
+
 #if ALLOW_HSCRIPT
 import scripting.haxe.HScript;
 
@@ -24,7 +26,9 @@ class ScriptedState extends State implements IScriptedState
 
     public function loadHScript(path:String, ?args:Array<Dynamic>)
     {
-        if (Paths.exists(path + RuleScriptGlobal.SCRIPT_EXTENSION))
+        final fullPath:String = path + RuleScriptGlobal.SCRIPT_EXTENSION;
+
+        if (Paths.exists(fullPath))
         {
             final script:HScript = new HScript(path, haxeScriptsContext, args, STATE);
 
@@ -33,6 +37,8 @@ class ScriptedState extends State implements IScriptedState
                 haxeScripts.push(script);
                 
                 scripts.push(script);
+
+                HotReloading.files.push(fullPath);
 
                 debugTrace('"' + path + '.hx" has been Successfully Loaded', HSCRIPT);
             }
@@ -94,5 +100,21 @@ class ScriptedState extends State implements IScriptedState
 
         haxeScriptsContext = null;
         #end
+    }
+
+    override function create()
+    {
+        super.create();
+
+        if (CoolVars.data.hotReloading && CoolVars.data.developerMode)
+            FlxG.autoPause = false;
+    }
+
+    override function destroy()
+    {
+        super.destroy();
+
+        if (CoolVars.data.hotReloading && CoolVars.data.developerMode)
+            FlxG.autoPause = true;
     }
 }

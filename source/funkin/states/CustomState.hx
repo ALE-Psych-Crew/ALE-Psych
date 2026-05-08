@@ -37,7 +37,7 @@ class CustomState extends ScriptedState
             super.update(elapsed);
 
             if (FlxG.keys.justPressed.R && CoolVars.data.developerMode && !UIUtils.usingInputs)
-                resetCustomState();
+                reset();
         }
 
         scriptCallbackCall(POST, 'Update', [elapsed]);
@@ -86,7 +86,7 @@ class CustomState extends ScriptedState
         scriptCallbackCall(POST, 'CloseSubState');
     }
 
-    public function resetCustomState()
+    override public function reset()
     {
         allowMemoryCleaning = false;
 

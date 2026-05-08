@@ -54,7 +54,9 @@ class ScriptConfig
         funkin.visuals.Camera,
         */
 
-        core.assets.Paths
+        core.assets.Paths,
+
+        core.debug.HotReloading
     ];
 
     public static final ABSTRACTS:Array<String> = [

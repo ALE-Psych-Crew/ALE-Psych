@@ -53,6 +53,13 @@ class State extends FlxState
 		super.destroy();
 	}
 
+    public function reset()
+    {
+        allowMemoryCleaning = false;
+
+        FlxG.resetState();
+    }
+
     public var allowMemoryCleaning:Bool = true;
 
     function cleanMemory()
