@@ -4,6 +4,8 @@ import openfl.events.UncaughtErrorEvent;
 import openfl.display.Sprite;
 import openfl.Lib;
 
+import core.debug.DebugCounter;
+
 import api.DesktopAPI;
 
 import flixel.FlxGame;
@@ -75,7 +77,15 @@ class Main extends Sprite
 	static function preResetConfig()
 	{
 		Paths.clear(true, true);
+		
+		debugCounter?.destroy();
+
+		FlxG.stage.removeChild(debugCounter);
 	}
+
+	public static var onlineVersion(default, null):String = '';
+
+	public static var debugCounter:DebugCounter;
 
 	@:allow(core.states.MainState)
 	static function postResetConfig()
@@ -99,5 +109,7 @@ class Main extends Sprite
 		Logs.init();
 
 		Defines.init();
+		
+		FlxG.stage.addChild(debugCounter = new DebugCounter());
 	}
 }

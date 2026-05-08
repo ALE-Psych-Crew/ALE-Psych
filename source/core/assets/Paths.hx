@@ -164,4 +164,10 @@ class Paths
 
     public static function getContent(file:String, ?permanent:Bool = false, ?missingPrint:Bool = true):String
         return get(file, FileType.CONTENT, permanent, missingPrint, false);
+
+    public static function addCwd(path:String):String
+        return path == null ? null : #if android Sys.getCwd() + '/' + #end path;
+    
+    public static function font(file:String, ?missingPrint:Bool = true):String
+        return addCwd(getPath('fonts/' + file, missingPrint));
 }
