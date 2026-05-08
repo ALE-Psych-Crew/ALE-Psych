@@ -29,5 +29,7 @@ import core.states.State;
 import core.substates.ScriptedSubState;
 import core.substates.SubState;
 
+import funkin.states.CustomState;
+
 using StringTools;
 #end

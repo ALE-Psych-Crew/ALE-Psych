@@ -2,10 +2,8 @@ package scripting.haxe;
 
 import scripting.ScriptConfig;
 
-#if HSCRIPT_ALLOWED
+#if ALLOW_HSCRIPT
 import ale.rulescript.RuleScriptGlobal;
-
-import scripting.haxe.Extensible;
 #end
 
 import haxe.Exception;
@@ -16,8 +14,10 @@ class HScriptConfig
 {
 	public static function init()
 	{
-        #if HSCRIPT_ALLOWED
+        #if ALLOW_HSCRIPT
         RuleScriptGlobal.reset();
+
+        trace('oso');
 
         RuleScriptGlobal.FILE_CHECKER = (id:String) -> Paths.exists(id);
         RuleScriptGlobal.FILE_READER = (id:String) -> Paths.getContent(id);

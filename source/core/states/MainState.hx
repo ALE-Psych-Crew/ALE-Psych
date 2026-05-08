@@ -10,10 +10,6 @@ class MainState extends State
 
 		Main.postResetConfig();
 
-		DesktopAPI.setWindowTitle();
-		
-		DesktopAPI.setWindowBorderColor(33, 33, 33);
-
-		add(new FlxSprite());
+		CoolUtil.switchState(new CustomState(CoolVars.data.initialState));
 	}
 }

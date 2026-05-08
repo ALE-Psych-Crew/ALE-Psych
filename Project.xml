@@ -2,7 +2,7 @@
 <project>
 	<!-- App -->
 
-	<app title="Friday Night Funkin': ALE Psych" file="ALEPsych" main="core.Main" version="0.0.1" company="ALEPsychCrew"/>
+	<app title="ALE Psych" file="ALEPsych" main="core.Main" version="0.0.1" company="ALEPsychCrew"/>
 
 	<window width="1280" height="720" fps="120" background="#000000" hardware="true" vsync="false"/>
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true"/>

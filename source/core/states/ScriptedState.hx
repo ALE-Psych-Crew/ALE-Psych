@@ -49,7 +49,7 @@ class ScriptedState extends State implements IScriptedState
 
     public function loadScript(path:String, ?haxeArgs:Array<Dynamic>)
     {
-        #if HSCRIPT_ALLOWED
+        #if ALLOW_HSCRIPT
         if (path.endsWith('.hx'))
         {
             loadHScript(path.substring(0, path.length - 3), haxeArgs);
@@ -58,7 +58,7 @@ class ScriptedState extends State implements IScriptedState
         }
         #end
 
-        #if HSCRIPT_ALLOWED
+        #if ALLOW_HSCRIPT
         loadHScript(path, haxeArgs);
         #end
     }
@@ -74,11 +74,15 @@ class ScriptedState extends State implements IScriptedState
     {
         var result:Array<Dynamic> = [];
 
+        globalArgs ??= [];
+
         #if ALLOW_HSCRIPT
+        hxArgs ??= [];
+
         result = result.concat(callOnHScripts(Std.string(type) + id, globalArgs.concat(hxArgs)));
         #end
 
-        return result.contains(CoolVars.Function_Stop);
+        return !result.contains(CoolVars.Function_Stop);
     }
 
     public function destroyScripts()
@@ -90,12 +94,5 @@ class ScriptedState extends State implements IScriptedState
 
         haxeScriptsContext = null;
         #end
-    }
-
-    override function destroy()
-    {
-        destroyScripts();
-
-        super.destroy();
     }
 }

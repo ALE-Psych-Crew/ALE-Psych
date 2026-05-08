@@ -1,8 +1,8 @@
-package;
+package funkin.states;
 
 import ale.ui.UIUtils;
 
-class CustomState extends ScriptState
+class CustomState extends ScriptedState
 {
     public final scriptName:String;
 
@@ -36,10 +36,62 @@ class CustomState extends ScriptState
         {
             super.update(elapsed);
 
-            if (Controls.RESET && CoolVars.data.developerMode && !UIUtils.usingInputs)
+            if (FlxG.keys.justPressed.R && CoolVars.data.developerMode && !UIUtils.usingInputs)
                 resetCustomState();
         }
 
         scriptCallbackCall(POST, 'Update', [elapsed]);
+    }
+
+    override public function destroy()
+    {
+        scriptCallbackCall(ON, 'Destroy');
+
+        super.destroy();
+
+        scriptCallbackCall(POST, 'Destroy');
+
+        destroyScripts();
+    }
+
+    override public function onFocus()
+    {
+        if (scriptCallbackCall(ON, 'OnFocus'))
+            super.onFocus();
+
+        scriptCallbackCall(POST, 'OnFocus');
+    }
+
+    override public function onFocusLost()
+    {
+        if (scriptCallbackCall(ON, 'OnFocusLost'))
+            super.onFocusLost();
+
+        scriptCallbackCall(POST, 'OnFocusLost');
+    }
+
+    override public function openSubState(substate:flixel.FlxSubState):Void
+    {
+        if (scriptCallbackCall(ON, 'OpenSubState', null, [substate]))
+            super.openSubState(substate);
+
+        scriptCallbackCall(POST, 'OpenSubState', null, [substate]);
+    }
+
+    override public function closeSubState():Void
+    {
+        if (scriptCallbackCall(ON, 'CloseSubState'))
+            super.closeSubState();
+
+        scriptCallbackCall(POST, 'CloseSubState');
+    }
+
+    public function resetCustomState()
+    {
+        allowMemoryCleaning = false;
+
+        CoolUtil.switchState(new CustomState(scriptName, haxeArguments));
+
+        debugTrace('Current State: ' + scriptName, RESET_STATE);
     }
 }

@@ -40,7 +40,7 @@ class Paths
         assets = 'assets';
         mods = 'mods';
 
-        Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null || mods == null ? null : mods + '/' + mod, #if switch 'romfs:/' + #end assets, '']) if (root != null) root]));
+        Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null || mods == null ? null : mods + '/' + mod, #if switch 'romfs:/' + #end assets]) if (root != null) root]));
     }
 
     public static function clear(cleanAll:Bool, ?permanent:Bool = false)

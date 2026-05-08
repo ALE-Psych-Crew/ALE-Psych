@@ -106,6 +106,8 @@ class Main extends Sprite
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
 
+		CoolVars.init();
+
 		Paths.init();
 
 		Logs.init();

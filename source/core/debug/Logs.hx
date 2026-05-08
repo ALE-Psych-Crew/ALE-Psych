@@ -13,6 +13,49 @@ class Logs
 {
     public static var config:Map<String, PrintConfig> = null;
 
+    public static function debugTrace(text:Dynamic, ?type:String = PrintType.TRACE, ?allowTrace:Bool = true, ?allowPrint:Bool = true, ?pos:PosInfos)
+    {
+        final data:PrintConfig = config[type];
+
+        if (data == null || (data.verbose && CoolVars.data.verbose))
+            return;
+
+        if (allowTrace && data.allowTrace)
+            Sys.println(colorString(data.title, data.color) + colorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : colorString(pos.fileName + ':' + pos.lineNumber + ': ', 0xFF888888)) + text);
+    }
+
+    public static function colorString(text:String, color:FlxColor):String
+		return '\x1b[38;2;' + color.red + ';' + color.green + ';' + color.blue + 'm' + text + '\x1b[0m';
+
+    public static function popUp(title:String, message:String, ?icon:MessageBoxIcon = INFORMATION):Void
+    {
+        debugTrace(title + ' | ' + message, POP_UP);
+
+        #if ALLOW_WINDOWS_API
+        DesktopAPI.showMessageBox(message, title, icon);
+        #else
+        FlxG.stage.window.alert(message, title);
+        #end
+    }
+
+	public static function benchmark(func:Void -> Void, ?title:String):Float
+	{
+		final initial:Float = Timer.stamp();
+
+		try
+		{
+			func();
+		} catch(e) {
+			debugTrace('During Benchmark: ' + e, PrintType.ERROR);
+		}
+
+		final result:Float = Timer.stamp() - initial;
+
+		debugTrace((title == null ? '' : title + ': ') + result, BENCHMARK);
+
+		return result;
+	}
+
     public static function init()
     {
         config = [
@@ -83,47 +126,4 @@ class Logs
             }
         ];
     }
-
-    public static function debugTrace(text:Dynamic, ?type:String = PrintType.TRACE, ?allowTrace:Bool = true, ?allowPrint:Bool = true, ?pos:PosInfos)
-    {
-        final data:PrintConfig = config[type];
-
-        if (data == null || (data.verbose && true))
-            return;
-
-        if (allowTrace && data.allowTrace)
-            Sys.println(colorString(data.title, data.color) + colorString(' | ' + Date.now().toString().split(' ')[1] + ' | ', 0xFF505050) + (pos == null ? '' : colorString(pos.fileName + ':' + pos.lineNumber + ': ', 0xFF888888)) + text);
-    }
-
-    public static function colorString(text:String, color:FlxColor):String
-		return '\x1b[38;2;' + color.red + ';' + color.green + ';' + color.blue + 'm' + text + '\x1b[0m';
-
-    public static function popUp(title:String, message:String, ?icon:MessageBoxIcon = INFORMATION):Void
-    {
-        debugTrace(title + ' | ' + message, POP_UP);
-
-        #if ALLOW_WINDOWS_API
-        DesktopAPI.showMessageBox(message, title, icon);
-        #else
-        FlxG.stage.window.alert(message, title);
-        #end
-    }
-
-	public static function benchmark(func:Void -> Void, ?title:String):Float
-	{
-		final initial:Float = Timer.stamp();
-
-		try
-		{
-			func();
-		} catch(e) {
-			debugTrace('During Benchmark: ' + e, PrintType.ERROR);
-		}
-
-		final result:Float = Timer.stamp() - initial;
-
-		debugTrace((title == null ? '' : title + ': ') + result, BENCHMARK);
-
-		return result;
-	}
 }

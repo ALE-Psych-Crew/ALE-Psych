@@ -1,0 +1,15 @@
+flixel.input.keyboard.FlxKey
+
+flixel.math.FlxPoint
+
+flixel.util.FlxDirectionFlags
+flixel.util.FlxColor
+flixel.util.FlxAxes
+
+flixel.text.FlxText.FlxTextAlign
+
+flixel.tweens.FlxTween.FlxTweenType
+
+openfl.net.URLLoaderDataFormat
+
+openfl.display.BlendMode
