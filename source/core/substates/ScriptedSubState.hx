@@ -47,7 +47,7 @@ class ScriptedSubState extends SubState implements IScriptedState
         return [for (script in haxeScripts) script.call(name, args)];
     #end
 
-    public function loadScript(path:String, ?haxeArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>)
+    public function loadScript(path:String, ?haxeArgs:Array<Dynamic>)
     {
         #if HSCRIPT_ALLOWED
         if (path.endsWith('.hx'))
@@ -70,7 +70,7 @@ class ScriptedSubState extends SubState implements IScriptedState
     public function callOnScripts(name:String, ?args:Array<Dynamic>):Array<Dynamic>
         return [for (script in scripts) script.call(name, args)];
 
-    public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Bool
+    public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>):Bool
     {
         var result:Array<Dynamic> = [];
 

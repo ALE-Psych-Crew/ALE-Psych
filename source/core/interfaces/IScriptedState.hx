@@ -24,13 +24,13 @@ interface IScriptedState extends IGroup
     public function callOnHScripts(callback:String, ?arguments:Array<Dynamic>):Array<Dynamic>;
     #end
 
-    public function loadScript(path:String, ?haxeArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Void;
+    public function loadScript(path:String, ?haxeArgs:Array<Dynamic>):Void;
 
     public function setOnScripts(name:String, value:Dynamic):Void;
 
     public function callOnScripts(callback:String, ?arguments:Array<Dynamic>):Array<Dynamic>;
 
-    public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Bool;
+    public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>):Bool;
 
     public function destroyScripts():Void;
 }
