@@ -15,7 +15,7 @@
 
 	<!-- ALE Defines -->
 
-	<define name="HSCRIPT_ALLOWED"/>
+	<define name="ALLOW_HSCRIPT"/>
 
 	<define name="ALLOW_CRASH_HANDLER"/>
 
@@ -36,8 +36,8 @@
 
 	<haxelib name="sl-windows-api"/>
 
-	<haxelib name="rulescript" if="HSCRIPT_ALLOWED"/>
-	<haxelib name="ale-rulescript-wrapper" if="HSCRIPT_ALLOWED"/>
+	<haxelib name="rulescript" if="ALLOW_HSCRIPT"/>
+	<haxelib name="ale-rulescript-wrapper" if="ALLOW_HSCRIPT"/>
 	
 	<!-- Flags -->
 

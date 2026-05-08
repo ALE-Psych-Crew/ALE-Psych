@@ -6,7 +6,7 @@ interface IScript
 {
     public final type:ScriptType;
 
-    public function set(name:String, value:Dynamic);
+    public function set(name:String, value:Dynamic):Void;
 
-    public function call(name:String, args:Array<Dynamic>);
+    public function call(name:String, ?args:Array<Dynamic>):Dynamic;
 }
