@@ -5,17 +5,17 @@ import haxe.Timer;
 
 import api.DesktopAPI;
 
-import core.structures.PrintData;
+import core.structures.PrintConfig;
 
 import winapi.WindowsAPI.MessageBoxIcon;
 
 class Logs
 {
-    public static var printConfig:Map<String, PrintData> = null;
+    public static var config:Map<String, PrintConfig> = null;
 
     public static function init()
     {
-        printConfig = [
+        config = [
             PrintType.ERROR => {
                 title: 'ERROR',
                 color: 0xFFFF5555
@@ -86,7 +86,7 @@ class Logs
 
     public static function debugTrace(text:Dynamic, ?type:String = PrintType.TRACE, ?allowTrace:Bool = true, ?allowPrint:Bool = true, ?pos:PosInfos)
     {
-        final data:PrintData = printConfig[type];
+        final data:PrintConfig = config[type];
 
         if (data == null || (data.verbose && true))
             return;

@@ -72,6 +72,11 @@ class Main extends Sprite
 	{
 	}
 
+	static function preResetConfig()
+	{
+		Paths.clear(true, true);
+	}
+
 	@:allow(core.MainState)
 	static function postResetConfig()
 	{
@@ -92,5 +97,7 @@ class Main extends Sprite
 		Paths.init();
 
 		Logs.init();
+
+		Defines.init();
 	}
 }

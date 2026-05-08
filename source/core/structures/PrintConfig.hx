@@ -1,7 +1,7 @@
 package core.structures;
 
 @:structInit
-class PrintData
+class PrintConfig
 {
     public var verbose:Bool = false;
     public var allowTrace:Bool = true;

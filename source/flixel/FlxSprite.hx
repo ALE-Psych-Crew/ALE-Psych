@@ -787,15 +787,17 @@ class FlxSprite extends FlxObject
 	@:noCompletion
 	function checkEmptyFrame()
 	{
+		final crash:Bool = false;
+
 		if (_frame == null)
-			loadGraphic('flixel/NO_IMAGE.png');
+			loadGraphic(crash ? 'oso' : 'flixel/NO_IMAGE.png');
 		else if (graphic != null && graphic.isDestroyed)
 		{
 			// switch graphic but log and preserve size
 			final width = this.width;
 			final height = this.height;
 			FlxG.log.error('Cannot render a destroyed graphic, the placeholder image will be used instead');
-			loadGraphic('flixel/NO_IMAGE.png');
+			loadGraphic(crash ? 'oso' : 'flixel/NO_IMAGE.png');
 			this.width = width;
 			this.height = height;
 		}
