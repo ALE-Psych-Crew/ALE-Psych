@@ -1,4 +1,4 @@
-package debug;
+package core.debug;
 
 import haxe.PosInfos;
 import haxe.Timer;

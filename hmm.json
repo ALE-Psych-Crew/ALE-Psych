@@ -30,6 +30,23 @@
             "type": "git",
             "url": "https://github.com/Slushi-Github/SL-Windows-API",
             "ref": "bcc534dc78fc59dc2147b9b9d244a26109d70c67"
+        },
+        {
+            "name": "hscript",
+            "type": "git",
+            "url": "https://github.com/HaxeFoundation/hscript",
+            "ref": "dbe1b4908a71f186a07a706d18c23fb5fea9d51e"
+        },
+        {
+            "name": "rulescript",
+            "type": "git",
+            "url": "https://github.com/Kriptel/RuleScript",
+            "ref": "d9de5ac71473b816f69dc97ec85082947ca230aa"
+        },
+        {
+            "name": "ale-rulescript-wrapper",
+            "type": "haxelib",
+            "version": "1.0.3"
         }
     ]
 }

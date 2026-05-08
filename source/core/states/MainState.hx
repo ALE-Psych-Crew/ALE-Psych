@@ -1,10 +1,8 @@
-package core;
-
-import flixel.FlxState;
+package core.states;
 
 import api.DesktopAPI;
 
-class MainState extends FlxState
+class MainState extends State
 {
 	override public function create()
 	{

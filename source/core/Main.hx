@@ -19,7 +19,7 @@ class Main extends Sprite
 
 		preConfig();
 		
-		addChild(new FunkinGame(MainState));
+		addChild(new Game());
 
 		postConfig();
 	}
@@ -77,7 +77,7 @@ class Main extends Sprite
 		Paths.clear(true, true);
 	}
 
-	@:allow(core.MainState)
+	@:allow(core.states.MainState)
 	static function postResetConfig()
 	{
 		Lib.application.window.resizable = true;

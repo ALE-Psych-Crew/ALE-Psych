@@ -3,13 +3,15 @@ package core;
 import flixel.util.typeLimit.NextState.InitialState;
 import flixel.FlxGame;
 
+import core.states.MainState;
+
 import api.DesktopAPI;
 
-class FunkinGame extends FlxGame
+class Game extends FlxGame
 {
-	override public function new(initial:InitialState)
+	override public function new()
 	{
-		super(1280, 720, initial, 120, 120, true, false);
+		super(1280, 720, MainState, 120, 120, true, false);
 	}
 	
 	@:unreflective
