@@ -1,4 +1,4 @@
-package core.states;
+package core.interfaces;
 
 import flixel.FlxBasic;
 

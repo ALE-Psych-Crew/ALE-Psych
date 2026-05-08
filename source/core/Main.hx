@@ -4,6 +4,8 @@ import openfl.events.UncaughtErrorEvent;
 import openfl.display.Sprite;
 import openfl.Lib;
 
+import scripting.haxe.HScriptConfig;
+
 import core.debug.DebugCounter;
 
 import api.DesktopAPI;
@@ -109,6 +111,8 @@ class Main extends Sprite
 		Logs.init();
 
 		Defines.init();
+
+		HScriptConfig.init();
 		
 		FlxG.stage.addChild(debugCounter = new DebugCounter());
 	}

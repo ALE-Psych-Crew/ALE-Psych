@@ -1,4 +1,4 @@
-package;
+package core.interfaces;
 
 import core.enums.ScriptCallType;
 
@@ -21,14 +21,14 @@ interface IScriptedState extends IGroup
 
     public function setOnHScripts(name:String, value:Dynamic):Void;
 
-    public function callOnHScripts(callback:String, ?arguments:Array<Dynamic> = null):Array<Dynamic>;
+    public function callOnHScripts(callback:String, ?arguments:Array<Dynamic>):Array<Dynamic>;
     #end
 
-    public function loadScript(path:String, ?hsArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Void;
+    public function loadScript(path:String, ?haxeArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Void;
 
     public function setOnScripts(name:String, value:Dynamic):Void;
 
-    public function callOnScripts(callback:String, ?arguments:Array<Dynamic> = null):Array<Dynamic>;
+    public function callOnScripts(callback:String, ?arguments:Array<Dynamic>):Array<Dynamic>;
 
     public function scriptCallbackCall(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic>, ?hxArgs:Array<Dynamic>, ?luaArgs:Array<Dynamic>):Bool;
 

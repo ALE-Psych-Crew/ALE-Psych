@@ -14,7 +14,7 @@ using utils.cool.MapUtil;
 
 class HScriptConfig
 {
-	public static function config()
+	public static function init()
 	{
         #if HSCRIPT_ALLOWED
         RuleScriptGlobal.reset();

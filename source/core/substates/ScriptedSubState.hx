@@ -1,4 +1,4 @@
-package core.states;
+package core.substates;
 
 import core.enums.ScriptCallType;
 
@@ -13,7 +13,7 @@ import ale.rulescript.RuleScriptGlobal;
 import rulescript.Context;
 #end
 
-class ScriptedState extends State implements IScriptedState
+class ScriptedSubState extends SubState implements IScriptedState
 {
     public var scripts:Array<IScript> = [];
 
@@ -90,12 +90,5 @@ class ScriptedState extends State implements IScriptedState
 
         haxeScriptsContext = null;
         #end
-    }
-
-    override function destroy()
-    {
-        destroyScripts();
-
-        super.destroy();
     }
 }
