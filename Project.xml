@@ -19,6 +19,8 @@
 
 	<define name="ALLOW_CRASH_HANDLER"/>
 
+	<define name="ALLOW_VIDEOS"/>
+
 	<define name="ALLOW_WINDOWS_API" if="windows cpp"/>
 	
 	<define name="ALLOW_MOBILE_API" if="mobile cpp"/>
@@ -38,6 +40,8 @@
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons"/>
 	<haxelib name="flixel-animate"/>
+
+	<haxelib name="hxvlc" if="ALLOW_VIDEOS"/>
 
 	<haxelib name="sl-windows-api"/>
 

@@ -8,6 +8,7 @@ import flixel.math.FlxMath;
 
 import flixel.text.FlxText;
 
+import flixel.group.FlxSpriteGroup;
 import flixel.group.FlxGroup;
 
 import flixel.sound.FlxSound;
