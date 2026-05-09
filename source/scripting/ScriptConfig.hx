@@ -4,66 +4,50 @@ package scripting;
 class ScriptConfig
 {
     public static final CLASSES:Array<Class<Dynamic>> = [
-        flixel.FlxG,
+        flixel.util.FlxDestroyUtil,
+
+        flixel.math.FlxMath,
+
+        flixel.text.FlxText,
+
+        flixel.group.FlxGroup,
+
         flixel.sound.FlxSound,
-        flixel.FlxState,
+
         flixel.FlxSprite,
         flixel.FlxCamera,
-        flixel.math.FlxMath,
-        flixel.util.FlxTimer,
-        flixel.text.FlxText,
-        flixel.tweens.FlxEase,
-        flixel.tweens.FlxTween,
-        flixel.group.FlxSpriteGroup,
-        flixel.group.FlxGroup.FlxTypedGroup,
-
-        api.DesktopAPI,
-
-        /*
-        api.MobileAPI,
-        
-        core.config.Discord,
-        core.config.ClientPrefs,
-        */
-        
-        sys.FileSystem,
-        sys.io.Process,
-        sys.io.File,
-
-        haxe.ds.StringMap,
-        haxe.ds.IntMap,
-        haxe.ds.EnumValueMap,
+        flixel.FlxG,
 
         utils.CoolUtil,
-        /*
-        utils.Controls,
-        utils.Json,
-        utils.TweenUtil,
-        */
         utils.CoolVars,
+        utils.Controls,
+        utils.Defines,
+        utils.Json,
 
-        /*
-        core.backend.MusicBeatState,
-        core.backend.MusicBeatSubState,
-
-        funkin.states.PlayState,
-
-        funkin.visuals.Camera,
-        */
-
-        funkin.states.CustomState,
-        funkin.substates.CustomSubState,
-        
         core.audio.Conductor,
+
+        core.debug.Logs,
+
+        core.visuals.Camera,
 
         core.assets.Paths,
 
-        core.debug.HotReloading
+        core.states.ScriptedState,
+        core.states.State,
+
+        core.substates.ScriptedSubState,
+        core.substates.SubState,
+
+        funkin.states.CustomState,
+
+        funkin.substates.CustomSubState,
+
+        funkin.config.ClientPrefs
     ];
 
     public static final ABSTRACTS:Array<String> = [
-        'flixel.util.FlxColor',
-        'flixel.tweens.FlxTween.FlxTweenType'
+        'flixel.tweens.FlxTween.FlxTweenType',
+        'flixel.util.FlxColor'
     ];
 
     public static final TYPEDEFS:Map<String, Class<Dynamic>> = [
@@ -71,8 +55,9 @@ class ScriptConfig
     ];
 
     public static final VARIABLES:Map<String, Dynamic> = [
-        'debugTrace' => debugTrace,
+        'Function_Continue' => CoolVars.Function_Continue,
         'Function_Stop' => CoolVars.Function_Stop,
-        'Function_Continue' => CoolVars.Function_Continue
+        'debugTrace' => debugTrace,
+        'benchmark' => benchmark
     ];
 }

@@ -15,6 +15,10 @@ class CoolVars
 {
 	public static var data:JsonData = {};
 	
+	public static var BUILD_TARGET(get, never):String;
+	static function get_BUILD_TARGET():String
+		return #if windows 'windows' #elseif linux 'linux' #elseif mac 'mac' #elseif ios 'ios' #elseif android 'android' #else 'unknown' #end;
+
 	public static var onlineVersion(get, never):String;
 	static function get_onlineVersion():String
 		return Main.onlineVersion;

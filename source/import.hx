@@ -18,7 +18,9 @@ import flixel.FlxG;
 
 import utils.CoolUtil;
 import utils.CoolVars;
+import utils.Controls;
 import utils.Defines;
+import utils.Json;
 
 import core.audio.Conductor;
 
@@ -41,6 +43,8 @@ import core.substates.SubState;
 import funkin.states.CustomState;
 
 import funkin.substates.CustomSubState;
+
+import funkin.config.ClientPrefs;
 
 using StringTools;
 #end
