@@ -23,7 +23,7 @@
 	
 	<define name="ALLOW_MOBILE_API" if="mobile cpp"/>
 
-	<!-- define name="ALLOW_ALL_CLASSES"/ -->
+	<define name="ALLOW_ALL_CLASSES"/>
 
 	<!-- Assets -->
 
@@ -35,6 +35,7 @@
 
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons"/>
+	<haxelib name="flixel-animate"/>
 
 	<haxelib name="sl-windows-api"/>
 

@@ -93,12 +93,12 @@ class Conductor
     @:unreflective
     public static var allowMusicUpdating:Bool = true;
 
-    public static function playMusic(sound:String, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
+    public static function playMusic(sound:Sound, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
     {
         if (sound == null)
             return;
 
-        FlxG.sound.playMusic('music/' + sound + '.ogg');
+        FlxG.sound.playMusic(sound);
 
         music.onComplete = () -> {
             reset(bpm, stepsPerBeat, beatsPerSection);

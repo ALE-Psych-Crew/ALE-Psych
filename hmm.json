@@ -11,6 +11,12 @@
             "version": "8.3.1"
         },
         {
+            "name": "flixel-animate",
+            "type": "git",
+            "url": "https://github.com/MaybeMaru/flixel-animate",
+            "ref": "75870e160677ca4d310df94d775e7fad43c767ae"
+        },
+        {
             "name": "openfl",
             "type": "haxelib",
             "version": "9.5.1"
