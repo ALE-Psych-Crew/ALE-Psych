@@ -23,6 +23,8 @@
 	
 	<define name="ALLOW_MOBILE_API" if="mobile cpp"/>
 
+	<define name="COMPILE_ALL_CLASSES"/>
+
 	<!-- Assets -->
 
 	<source path="source"/>
@@ -46,7 +48,7 @@
 	<set name="BUILD_DIR" value="export/release"/>
 	<set name="BUILD_DIR" value="export/32bit" if="32bits"/>
 
-	<!-- haxeflag name="-dce" value="no"/-->
+	<haxeflag name="-dce" value="no"/>
 
 	<!-- Defines -->
 	
@@ -72,6 +74,10 @@
 
 	<haxedef name='no-deprecation-warnings'/>
 	<haxedef name="message.reporting" value="pretty"/>
+	
+	<!-- _________________________________ Macros ________________________________ -->
+	
+	<haxeflag name="--macro" value="core.macros.ImportsMacro.init()"/>
 
 	<!-- Android -->
 
