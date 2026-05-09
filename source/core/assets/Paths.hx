@@ -22,6 +22,8 @@ import core.enums.ReadDirectoryType;
 import core.enums.AtlasType;
 import core.enums.FileType;
 
+import lime.utils.Bytes;
+
 import lime.system.CFFI;
 
 class Paths
@@ -198,7 +200,7 @@ class Paths
     
     // File
 
-    public static function getBytes(file:String, ?permanent:Bool, ?missingPrint:Bool):String
+    public static function getBytes(file:String, ?permanent:Bool, ?missingPrint:Bool):Bytes
         return get(file, FileType.BYTES, permanent, missingPrint, null, false);
 
     public static function getContent(file:String, ?permanent:Bool, ?missingPrint:Bool):String
@@ -303,7 +305,7 @@ class Paths
         final path:String = data.prefix + file + data.postfix;
 
         if (data.cache.exists(path))
-            data.cache[path].content;
+            return data.cache[path].content;
 
         if (!exists(path) && data.checkExistence)
         {
