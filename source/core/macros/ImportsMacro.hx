@@ -7,7 +7,7 @@ class ImportsMacro
 {
 	public static function init()
 	{
-        #if COMPILE_ALL_CLASSES
+        #if ALLOW_ALL_CLASSES
         var packs:Array<String> = [
             'sys',
             'sys.io',

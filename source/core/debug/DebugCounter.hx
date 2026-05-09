@@ -60,6 +60,15 @@ class DebugCounter extends Sprite
         });
 
         addField(() -> {
+            return 'Song Position: ' + Math.floor(Conductor.songPosition) + 
+                '\nBPM: ' + Conductor.bpm +
+                '\nStep: ' + Conductor.curStep +
+                '\nBeat: ' + Conductor.curBeat +
+                '\nSection: ' + Conductor.curSection +
+                '\nTime Signature: ' + Conductor.beatsPerSection + ' | ' + Conductor.stepsPerBeat;
+        });
+
+        addField(() -> {
             return (FlxG.state is CustomState ? 'Custom State: ' + cast(FlxG.state, CustomState).scriptName : 'State: ' +  Type.getClassName(Type.getClass(FlxG.state))) +
                 '\n' + (FlxG.state.subState is CustomSubState ? 'Custom SubState: ' + cast(FlxG.state.subState, CustomSubState).scriptName : 'SubState: ' + Type.getClassName(Type.getClass(FlxG.state.subState))) +
                 '\nObjects: ' + (FlxG.state.members.length + (FlxG.state.subState == null ? 0 : FlxG.state.subState.members.length)) +

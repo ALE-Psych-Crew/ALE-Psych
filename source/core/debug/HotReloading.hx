@@ -23,6 +23,9 @@ class HotReloading
                 {
                     for (file in files)
                     {
+                        if (!Paths.exists(file))
+                            continue;
+
                         final lastTime:Float = Paths.stat(file).mtime.getTime();
 
                         if (times.exists(file) && times[file] != lastTime)

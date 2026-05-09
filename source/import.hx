@@ -1,5 +1,6 @@
 #if !macro
 import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxSignal;
 import flixel.util.FlxColor;
 
 import flixel.math.FlxPoint;
@@ -9,6 +10,8 @@ import flixel.text.FlxText;
 
 import flixel.group.FlxGroup;
 
+import flixel.sound.FlxSound;
+
 import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -16,6 +19,8 @@ import flixel.FlxG;
 import utils.CoolUtil;
 import utils.CoolVars;
 import utils.Defines;
+
+import core.audio.Conductor;
 
 import core.debug.Logs.debugTrace;
 import core.debug.Logs.benchmark;

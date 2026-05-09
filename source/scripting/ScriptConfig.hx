@@ -34,9 +34,8 @@ class ScriptConfig
         haxe.ds.IntMap,
         haxe.ds.EnumValueMap,
 
-        /*
-        utils.Conductor,
         utils.CoolUtil,
+        /*
         utils.Controls,
         utils.Json,
         utils.TweenUtil,
@@ -48,11 +47,14 @@ class ScriptConfig
         core.backend.MusicBeatSubState,
 
         funkin.states.PlayState,
-        funkin.states.CustomState,
-        funkin.substates.CustomSubState,
 
         funkin.visuals.Camera,
         */
+
+        funkin.states.CustomState,
+        funkin.substates.CustomSubState,
+        
+        core.audio.Conductor,
 
         core.assets.Paths,
 

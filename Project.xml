@@ -23,7 +23,7 @@
 	
 	<define name="ALLOW_MOBILE_API" if="mobile cpp"/>
 
-	<define name="COMPILE_ALL_CLASSES"/>
+	<!-- define name="ALLOW_ALL_CLASSES"/ -->
 
 	<!-- Assets -->
 

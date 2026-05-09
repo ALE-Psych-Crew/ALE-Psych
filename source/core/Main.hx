@@ -91,6 +91,8 @@ class Main extends Sprite
 		HotReloading.destroy();
 
 		PluginsHandler.destroy();
+
+		Conductor.destroy();
 	}
 
 	public static var onlineVersion(default, null):String = '';
@@ -131,6 +133,8 @@ class Main extends Sprite
 		PluginsHandler.init();
 
 		HScriptConfig.init();
+
+		Conductor.init();
 
 		if (CoolVars.data.debugPrint && CoolVars.data.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
