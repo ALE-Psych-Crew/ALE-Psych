@@ -13,7 +13,7 @@ import ale.rulescript.RuleScriptGlobal;
 import rulescript.Context;
 #end
 
-class ScriptedSubState extends SubState implements IScriptedState
+class ScriptedSubState extends MusicBeatSubState implements IScriptedState
 {
     public var scripts:Array<IScript> = [];
 

@@ -64,6 +64,54 @@ class CustomSubState extends ScriptedSubState
         destroyScripts();
     }
 
+    override public function stepHit(curStep:Int)
+    {
+        if (scriptCallbackCall(ON, 'StepHit', [curStep]))
+            super.stepHit(curStep);
+
+        scriptCallbackCall(POST, 'StepHit', [curStep]);
+    }
+
+    override public function beatHit(curBeat:Int)
+    {
+        if (scriptCallbackCall(ON, 'BeatHit', [curBeat]))
+            super.beatHit(curBeat);
+
+        scriptCallbackCall(POST, 'BeatHit', [curBeat]);
+    }
+
+    override public function sectionHit(curSection:Int)
+    {
+        if (scriptCallbackCall(ON, 'SectionHit', [curSection]))
+            super.sectionHit(curSection);
+
+        scriptCallbackCall(POST, 'SectionHit', [curSection]);
+    }
+
+    override public function safeStepHit(safeStep:Int)
+    {
+        if (scriptCallbackCall(ON, 'SafeStepHit', [safeStep]))
+            super.safeStepHit(safeStep);
+
+        scriptCallbackCall(POST, 'SafeStepHit', [safeStep]);
+    }
+
+    override public function safeBeatHit(safeBeat:Int)
+    {
+        if (scriptCallbackCall(ON, 'SafeBeatHit', [safeBeat]))
+            super.safeBeatHit(safeBeat);
+
+        scriptCallbackCall(POST, 'SafeBeatHit', [safeBeat]);
+    }
+
+    override public function safeSectionHit(safeSection:Int)
+    {
+        if (scriptCallbackCall(ON, 'SafeSectionHit', [safeSection]))
+            super.safeSectionHit(safeSection);
+
+        scriptCallbackCall(POST, 'SafeSectionHit', [safeSection]);
+    }
+
     override public function onFocus()
     {
         if (scriptCallbackCall(ON, 'OnFocus'))

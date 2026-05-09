@@ -15,7 +15,7 @@ import ale.rulescript.RuleScriptGlobal;
 import rulescript.Context;
 #end
 
-class ScriptedState extends State implements IScriptedState
+class ScriptedState extends MusicBeatState implements IScriptedState
 {
     public var scripts:Array<IScript> = [];
 
@@ -32,7 +32,7 @@ class ScriptedState extends State implements IScriptedState
         {
             final script:HScript = new HScript(path, haxeScriptsContext, args, STATE);
 
-            HotReloading.files.push(fullPath);
+            HotReloading.add(fullPath);
             
             if (!script.failedExecution)
             {

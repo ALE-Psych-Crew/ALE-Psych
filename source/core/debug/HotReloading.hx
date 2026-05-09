@@ -4,7 +4,7 @@ import sys.thread.Thread;
 
 class HotReloading
 {
-    public static var files:Array<String> = null;
+    static var files:Array<String> = null;
 
     @:unreflective static var thread:Thread;
 
@@ -23,9 +23,6 @@ class HotReloading
                 {
                     for (file in files)
                     {
-                        if (!Paths.exists(file))
-                            continue;
-
                         final lastTime:Float = Paths.stat(file).mtime.getTime();
 
                         if (times.exists(file) && times[file] != lastTime)
@@ -48,9 +45,14 @@ class HotReloading
     }
 
     public static function destroy()
-    {
         FlxG.signals.preStateSwitch.remove(reset);
-    }
+
+    public static function add(file:String)
+        if (Paths.exists(file))
+            files.push(file);
+
+    public static function remove(file:String)
+        files.remove(file);
 
     static function reset()
         files = [];

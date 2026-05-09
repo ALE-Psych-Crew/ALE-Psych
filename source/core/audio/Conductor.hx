@@ -66,8 +66,6 @@ class Conductor
     {
         FlxG.signals.preUpdate.remove(update);
 
-        updateMusic = false;
-
         synchronizedSounds = null;
 
         stepHit?.removeAll();
@@ -93,8 +91,6 @@ class Conductor
     }
 
     @:unreflective
-    public static var updateMusic:Bool = false;
-
     public static var allowMusicUpdating:Bool = true;
 
     public static function playMusic(sound:String, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
@@ -110,22 +106,13 @@ class Conductor
             onMusicComplete?.dispatch();
         };
 
-        updateMusic = true;
-
         reset(bpm, stepsPerBeat, beatsPerSection);
-    }
-
-    public static function pauseMusic()
-    {
-        updateMusic = false;
     }
 
     public static function stopMusic()
     {
         if (FlxG.sound.music == null)
             return;
-
-        updateMusic = false;
 
         music.stop();
 
@@ -162,7 +149,7 @@ class Conductor
 
     public static function update()
     {
-        if (!updateMusic || !allowMusicUpdating)
+        if (music == null || !allowMusicUpdating)
             return;
 
         if (music.playing)
