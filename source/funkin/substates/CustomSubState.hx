@@ -47,7 +47,7 @@ class CustomSubState extends ScriptedSubState
         if (scriptCallbackCall(ON, 'Update', [elapsed]))
             super.update(elapsed);
 
-        if (Controls.BACK && CoolVars.data.developerMode && !UIUtils.usingInputs)
+        if (Controls.BACK && CoolVars.meta.developerMode && !UIUtils.usingInputs)
             close();
 
         scriptCallbackCall(POST, 'Update', [elapsed]);

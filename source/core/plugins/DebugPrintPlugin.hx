@@ -6,6 +6,9 @@ class DebugPrintPlugin extends FlxTypedGroup<DebugPrintText>
 {
     public function print(debugText:String, ?prefix:String, ?color:FlxColor)
     {
+        if (members == null)
+            return;
+
         var text:DebugPrintText = recycle(DebugPrintText);
 
         members.remove(text);

@@ -35,7 +35,7 @@ class CustomState extends ScriptedState
         if (scriptCallbackCall(ON, 'Update', [elapsed]))
             super.update(elapsed);
 
-        if (Controls.RESET && CoolVars.data.developerMode && !UIUtils.usingInputs)
+        if (Controls.RESET && CoolVars.meta.developerMode && !UIUtils.usingInputs)
             reset();
 
         scriptCallbackCall(POST, 'Update', [elapsed]);

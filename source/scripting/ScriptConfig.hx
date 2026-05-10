@@ -12,6 +12,9 @@ class ScriptConfig
 
         flixel.group.FlxGroup,
 
+        flixel.tweens.FlxTween,
+        flixel.tweens.FlxEase,
+
         flixel.sound.FlxSound,
 
         flixel.FlxSprite,

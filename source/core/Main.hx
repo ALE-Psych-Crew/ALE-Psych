@@ -2,6 +2,7 @@ package core;
 
 import openfl.events.UncaughtErrorEvent;
 import openfl.display.Sprite;
+import openfl.ui.Mouse;
 import openfl.Lib;
 
 import scripting.haxe.HScriptConfig;
@@ -65,7 +66,7 @@ class Main extends Sprite
 
 			final errorMessage:String = '\n' + error.error;
 
-			//debugTrace(consoleMessage + errorMessage, PrintType.ERROR);
+			debugTrace(consoleMessage + errorMessage, PrintType.ERROR);
 			
 			Logs.popUp(title, printMessage + errorMessage, ERROR);
 
@@ -80,19 +81,29 @@ class Main extends Sprite
 	{
 	}
 
+	@:allow(utils.cool.AppUtil)
 	static function preResetConfig()
-	{		
-		debugCounter?.destroy();
+	{
+		DesktopAPI.reset();
 
-		FlxG.stage.removeChild(debugCounter);
+		#if desktop
+		Mouse.cursor = ARROW;
+		#end
 
-		Paths.clear(true, true);
+		if (FlxG.state.subState != null)
+			FlxG.state.subState.close();
+
+		FlxTween.globalManager.clear();
 
 		HotReloading.destroy();
 
 		PluginsHandler.destroy();
 
 		Conductor.destroy();
+
+		debugCounter?.destroy();
+
+		FlxG.stage.removeChild(debugCounter);
 	}
 
 	public static var onlineVersion(default, null):String = '';
@@ -120,13 +131,15 @@ class Main extends Sprite
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
 
+		Paths.clear(true, true);
+		Paths.loadMod();
+		Paths.init();
+		
+		CoolVars.init();
+
 		HotReloading.init();
 
 		Logs.init();
-
-		CoolVars.init();
-
-		Paths.init();
 
 		Defines.init();
 		
@@ -136,7 +149,7 @@ class Main extends Sprite
 
 		Conductor.init();
 
-		if (CoolVars.data.debugPrint && CoolVars.data.developerMode)
+		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
 
 		FlxG.stage.addChild(debugCounter = new DebugCounter());	

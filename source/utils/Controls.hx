@@ -122,17 +122,25 @@ class Controls
     static function get_PAUSE():Bool
         return anyJustPressed(ClientPrefs.controls.ui.pause);
 
-    public static var ENGINE_CHART(get, never):Bool;
-    static function get_ENGINE_CHART():Bool
+    public static var CHART(get, never):Bool;
+    static function get_CHART():Bool
         return anyJustPressed(ClientPrefs.controls.engine.chart);
 
-    public static var ENGINE_CHARACTER(get, never):Bool;
-    static function get_ENGINE_CHARACTER():Bool
+    public static var CHARACTER(get, never):Bool;
+    static function get_CHARACTER():Bool
         return anyJustPressed(ClientPrefs.controls.engine.character);
 
-    public static var ENGINE_MASTER_EDITOR(get, never):Bool;
-    static function get_ENGINE_MASTER_EDITOR():Bool
+    public static var MASTER_EDITOR(get, never):Bool;
+    static function get_MASTER_EDITOR():Bool
         return anyJustPressed(ClientPrefs.controls.engine.master_menu);
+
+    public static var RESET_GAME(get, never):Bool;
+    static function get_RESET_GAME():Bool
+        return anyJustPressed(ClientPrefs.controls.engine.reset_game);
+
+    public static var SWITCH_MOD(get, never):Bool;
+    static function get_SWITCH_MOD():Bool
+        return anyJustPressed(ClientPrefs.controls.engine.switch_mod);
 
     public static var CONTROL(get, never):Bool;
     static function get_CONTROL():Bool

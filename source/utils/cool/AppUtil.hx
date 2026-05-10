@@ -6,8 +6,17 @@ import sys.thread.Thread;
 
 import openfl.Lib;
 
+import core.Main;
+
 class AppUtil
 {
+	public static function resetGame()
+	{
+		Main.preResetConfig();
+
+		FlxG.resetGame();
+	}
+
 	public static function createSafeThread(func:Void -> Void):Thread
 	{
 		return Thread.create(function()

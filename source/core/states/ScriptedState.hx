@@ -106,7 +106,7 @@ class ScriptedState extends MusicBeatState implements IScriptedState
     {
         super.create();
 
-        if (CoolVars.data.hotReloading && CoolVars.data.developerMode)
+        if (CoolVars.meta.hotReloading && CoolVars.meta.developerMode)
             FlxG.autoPause = false;
     }
 
@@ -114,7 +114,7 @@ class ScriptedState extends MusicBeatState implements IScriptedState
     {
         super.destroy();
 
-        if (CoolVars.data.hotReloading && CoolVars.data.developerMode)
+        if (CoolVars.meta.hotReloading && CoolVars.meta.developerMode)
             FlxG.autoPause = true;
     }
 }

@@ -2,6 +2,7 @@ package core.assets;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
+import flixel.util.FlxSave;
 
 import core.assets.RootsLibrary;
 
@@ -21,6 +22,8 @@ import core.structures.PathConfig;
 import core.enums.ReadDirectoryType;
 import core.enums.AtlasType;
 import core.enums.FileType;
+
+import utils.cool.FileUtil;
 
 import lime.utils.Bytes;
 
@@ -44,13 +47,53 @@ class Paths
     public static function get_mods()
         return 'mods';
 
+    public static var content(get, never):String;
+    public static function get_content()
+        return 'content';
+
     public static var mod:Null<String>;
+
+    public static var modSave(get, never):String;
+    public static function get_modSave()
+        return 'ALEPsychData';
 
     public static var config:Map<String, PathConfig>;
 
+    public static function loadMod()
+    {
+        mod = null;
+        
+        final modCheckSteps:Array<Void -> Void> = [
+            () -> {
+                if (Defines.CONTENT_MOD != null)
+                    mod = File.getContent(Defines.CONTENT_MOD).split('\n')[0].trim();
+            },
+            () -> {
+                final save:FlxSave = new FlxSave();
+
+                save.bind(Paths.modSave, FileUtil.getSavePath(false));
+
+                if (save != null)
+                    mod = save.data.currentMod;
+            }
+        ];
+
+        var i:Int = 0;
+
+        while (mod == null && i < modCheckSteps.length)
+        {
+            modCheckSteps[i]();
+                
+            if (!FileSystem.exists(mods + '/' + mod))
+                mod = null;
+
+            i++;
+        }
+    }
+
     public static function init()
     {
-        Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null ? null : mods + '/' + mod, #if switch 'romfs:/' + #end assets]) if (root != null) root]));
+        Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null ? null : mods + '/' + mod, content, #if switch 'romfs:/' + #end assets]) if (root != null) root]));
 
         config = [
             FileType.CONTENT => {
@@ -161,23 +204,24 @@ class Paths
 
     public static function clear(cleanAll:Bool, ?permanent:Bool = false)
     {
-        for (obj in config)
-            if (obj != null)
-                if ((cleanAll || obj.forceCleaning) && obj.cache != null)
-                    for (id in obj.cache.keys())
-                    {
-                        var result:Dynamic = obj.cache[id];
-
-                        if (!result.permanent || permanent)
+        if (config != null)
+            for (obj in config)
+                if (obj != null)
+                    if ((cleanAll || obj.forceCleaning) && obj.cache != null)
+                        for (id in obj.cache.keys())
                         {
-                            if (result is IFlxDestroyable)
-                                FlxDestroyUtil.destroy(result);
+                            var result:Dynamic = obj.cache[id];
 
-                            obj.cache.remove(id);
+                            if (!result.permanent || permanent)
+                            {
+                                if (result is IFlxDestroyable)
+                                    FlxDestroyUtil.destroy(result);
+
+                                obj.cache.remove(id);
+                            }
+
+                            result = null;
                         }
-
-                        result = null;
-                    }
 
         if (permanent)
         {

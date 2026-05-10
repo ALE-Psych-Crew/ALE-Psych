@@ -6,6 +6,9 @@ import flixel.util.FlxColor;
 import flixel.math.FlxPoint;
 import flixel.math.FlxMath;
 
+import flixel.tweens.FlxTween;
+import flixel.tweens.FlxEase;
+
 import flixel.text.FlxText;
 
 import flixel.group.FlxSpriteGroup;

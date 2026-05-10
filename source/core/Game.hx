@@ -3,6 +3,8 @@ package core;
 import flixel.util.typeLimit.NextState.InitialState;
 import flixel.FlxGame;
 
+import funkin.substates.ModsMenuSubState;
+
 import core.states.MainState;
 
 import api.DesktopAPI;
@@ -10,9 +12,7 @@ import api.DesktopAPI;
 class Game extends FlxGame
 {
 	override public function new()
-	{
 		super(1280, 720, MainState, 120, 120, true, false);
-	}
 	
 	@:unreflective
 	var visibleConsole:Bool = false;
@@ -22,6 +22,23 @@ class Game extends FlxGame
 		DesktopAPI.setWindowTitle();
 
 		super.update();
+
+		if (Controls.CONTROL && Controls.SHIFT)
+		{
+			if (CoolVars.data.developerMode)
+			{
+				if (Controls.RESET_GAME)
+					CoolUtil.resetGame();
+			}
+
+			if (Defines.CONTENT_MOD == null && Controls.SWITCH_MOD)
+			{
+				if (FlxG.state.subState != null)
+					FlxG.state.subState.close();
+
+				CoolUtil.openSubState(new ModsMenuSubState());
+			}
+		}
 
 		#if ALLOW_WINDOWS_API
 		if (FlxG.keys.justPressed.F2)

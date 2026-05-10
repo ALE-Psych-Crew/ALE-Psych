@@ -2,7 +2,7 @@ package utils;
 
 import api.DesktopAPI;
 
-import core.structures.JsonData;
+import core.structures.MetaData;
 import core.Main;
 
 import utils.cool.ColorUtil;
@@ -13,8 +13,12 @@ import openfl.Lib;
 @:build(core.macros.CoolVarsMacro.build())
 class CoolVars
 {
-	public static var data:JsonData = {};
+	public static var meta:MetaData = null;
 	
+	public static var data(get, never):MetaData;
+	static function get_data():MetaData
+		return meta;
+
 	public static var BUILD_TARGET(get, never):String;
 	static function get_BUILD_TARGET():String
 		return #if windows 'windows' #elseif linux 'linux' #elseif mac 'mac' #elseif ios 'ios' #elseif android 'android' #else 'unknown' #end;
@@ -40,15 +44,26 @@ class CoolVars
 	public static function init()
 	{
 		globalVars = [];
-		
-		Lib.application.window.title = data.title;
+
+		meta = {};
+
+		if (Paths.exists('data/meta.json'))
+		{
+			final json = Paths.json('data/meta');
+
+			for (field in Reflect.fields(json))
+				if (Reflect.field(meta, field) != null)
+					Reflect.setProperty(meta, field, Reflect.field(json, field));
+		}
+
+		Lib.application.window.title = meta.title;
 
 		DesktopAPI.setWindowTitle();
 		
-		final windowColor:FlxColor = ColorUtil.colorFromString(data.windowColor);
+		final windowColor:FlxColor = ColorUtil.colorFromString(meta.windowColor);
 
 		DesktopAPI.setWindowBorderColor(windowColor.red, windowColor.green, windowColor.blue);
 
-		AppUtil.resizeGame(data.width, data.height);
+		AppUtil.resizeGame(meta.width, meta.height);
 	}
 }

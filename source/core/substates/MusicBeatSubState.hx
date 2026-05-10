@@ -30,14 +30,14 @@ class MusicBeatSubState extends SubState implements IMusicState
 
         removedConductorListeners = false;
 
-        Conductor.stepHit.add(onStepHit);
-        Conductor.safeStepHit.add(onSafeStepHit);
+        Conductor.stepHit?.add(onStepHit);
+        Conductor.safeStepHit?.add(onSafeStepHit);
 
-        Conductor.beatHit.add(onBeatHit);
-        Conductor.safeBeatHit.add(onSafeBeatHit);
+        Conductor.beatHit?.add(onBeatHit);
+        Conductor.safeBeatHit?.add(onSafeBeatHit);
 
-        Conductor.sectionHit.add(onSectionHit);
-        Conductor.safeSectionHit.add(onSafeSectionHit);
+        Conductor.sectionHit?.add(onSectionHit);
+        Conductor.safeSectionHit?.add(onSafeSectionHit);
     }
 
     var removedConductorListeners:Bool = false;
@@ -51,14 +51,14 @@ class MusicBeatSubState extends SubState implements IMusicState
 
         addedConductorListeners = false;
 
-        Conductor.stepHit.remove(onStepHit);
-        Conductor.safeStepHit.remove(onSafeStepHit);
+        Conductor.stepHit?.remove(onStepHit);
+        Conductor.safeStepHit?.remove(onSafeStepHit);
 
-        Conductor.beatHit.remove(onBeatHit);
-        Conductor.safeBeatHit.remove(onSafeBeatHit);
+        Conductor.beatHit?.remove(onBeatHit);
+        Conductor.safeBeatHit?.remove(onSafeBeatHit);
 
-        Conductor.sectionHit.remove(onSectionHit);
-        Conductor.safeSectionHit.remove(onSafeSectionHit);
+        Conductor.sectionHit?.remove(onSectionHit);
+        Conductor.safeSectionHit?.remove(onSafeSectionHit);
     }
 
     function onStepHit(step:Int):Void

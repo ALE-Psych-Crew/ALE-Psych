@@ -49,7 +49,7 @@ class DebugCounter extends Sprite
             }
 
             return 'FPS: ' + Math.floor(fps) + ' | GC: ' + memoryString + ' / ' + memoryPeakString +
-                '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.data.developerMode ? ' - Developer Mode' : '');
+                '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.meta.developerMode ? ' - Developer Mode' : '');
         });
 
         addField(() -> {

@@ -19,7 +19,7 @@ class HotReloading
         thread ??= CoolUtil.createSafeThread(() -> {
             while (true)
             {
-                if (CoolVars.data != null && CoolVars.data.hotReloading && CoolVars.data.developerMode && FlxG.state is ScriptedState)
+                if (CoolVars.meta != null && CoolVars.meta.hotReloading && CoolVars.meta.developerMode && FlxG.state is ScriptedState)
                 {
                     for (file in files)
                     {

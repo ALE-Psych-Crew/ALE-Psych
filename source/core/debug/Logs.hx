@@ -17,7 +17,7 @@ class Logs
     {
         final data:PrintConfig = config.get(type);
 
-        if (data == null || (data.verbose && !CoolVars.data.verbose))
+        if (data == null || (data.verbose && !CoolVars.meta.verbose))
             return;
 
         if (allowTrace && data.allowTrace)
@@ -29,7 +29,7 @@ class Logs
 
 	public static function debugPrint(text:Dynamic, ?type:PrintType = PrintType.TRACE)
     {
-        if (!CoolVars.data.developerMode || !CoolVars.data.debugPrint)
+        if (!CoolVars.meta.developerMode || !CoolVars.meta.debugPrint)
             return;
 
         final data:PrintConfig = config.get(type);

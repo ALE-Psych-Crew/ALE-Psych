@@ -59,12 +59,16 @@ class Conductor
 		safeBeatHit = new FlxTypedSignal<Int -> Void>();
 		safeSectionHit = new FlxTypedSignal<Int -> Void>();
 
+        onMusicComplete = new FlxTypedSignal<Void -> Void>();
+
         FlxG.signals.preUpdate.add(update);
     }
 
     public static function destroy()
     {
         FlxG.signals.preUpdate.remove(update);
+
+        stop();
 
         synchronizedSounds = null;
 
@@ -83,17 +87,17 @@ class Conductor
         safeBeatHit?.removeAll();
         safeBeatHit = null;
 
-        safeSectionHit.removeAll();
+        safeSectionHit?.removeAll();
         safeSectionHit = null;
 
-        onMusicComplete.removeAll();
+        onMusicComplete?.removeAll();
         onMusicComplete = null;
     }
 
     @:unreflective
     public static var allowMusicUpdating:Bool = true;
 
-    public static function playMusic(sound:Sound, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
+    public static function play(sound:Sound, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
     {
         if (sound == null)
             return;
@@ -109,7 +113,7 @@ class Conductor
         reset(bpm, stepsPerBeat, beatsPerSection);
     }
 
-    public static function stopMusic()
+    public static function stop()
     {
         if (FlxG.sound.music == null)
             return;

@@ -1,5 +1,7 @@
 package core.plugins;
 
+import utils.cool.CameraUtil;
+
 import flixel.FlxBasic;
 
 class PluginsHandler
@@ -20,7 +22,7 @@ class PluginsHandler
 			return;
 		}
 		
-		CoolUtil.moveCameraToTop(topCamera);
+		CameraUtil.moveCameraToTop(topCamera);
 	}
 
 	static function onCameraRemove(camera:FlxCamera)
