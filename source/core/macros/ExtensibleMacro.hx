@@ -11,20 +11,24 @@ class ExtensibleMacro
     macro public static function init()
     {
         final packages:Array<String> = [
-            'flixel',
-            'flixel.text',
-            'flixel.graphics',
             'flixel.addons.display',
+            'flixel.graphics',
+            'flixel.effects',
+            'flixel.tweens',
+            'flixel.system',
+            'flixel.sound',
+            'flixel.text',
+            'flixel',
             
             'animate',
 
             'openfl.display.Sprite',
             'openfl.text.TextField',            
 
-            'funkin.visuals',
-            'funkin.visuals.objects',
             'funkin.visuals.shaders',
+            'funkin.visuals.objects',
             'funkin.modchart',
+            'funkin.visuals',
 
             'ale.ui.MouseSprite',
             'ale.ui.UISprite'
