@@ -89,6 +89,8 @@
 	
 	<haxeflag name="--macro" value="core.macros.ImportsMacro.init()"/>
 
+	<haxeflag name="--macro" value="core.macros.ExtensibleMacro.init()"/>
+
 	<!-- Android -->
 
 	<config:android>

@@ -14,9 +14,11 @@ class DebugCounter extends Sprite
 {
     public final fpsField:DebugField;
 
-    public function new(?extraFields:Array<Array<JsonDebugLine>>)
+    public function new()
     {
         super();
+
+        final extraFields:Array<Array<JsonDebugLine>> = Paths.exists('data/debug.json') ? cast Paths.json('data/debug').fields : [];
 
         x = 10;
         y = 10;
@@ -76,7 +78,7 @@ class DebugCounter extends Sprite
                 '\nChilds: ' + FlxG.game.numChildren;
         });
 
-        for (field in extraFields ?? [])
+        for (field in extraFields)
         {
             var funcs:Array<Void -> String> = [];
 

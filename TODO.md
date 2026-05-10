@@ -55,8 +55,8 @@
   - [ ] CharacterEditorState
 
 - [ ] Config
-  - [ ] Data
-  - [ ] Debug
+  - [x] Meta
+  - [x] Debug
   - [ ] Options
   - [ ] Controls
   - [x] Defines
