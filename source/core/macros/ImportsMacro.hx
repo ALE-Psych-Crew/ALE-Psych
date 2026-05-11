@@ -100,7 +100,9 @@ class ImportsMacro
             'funkin.visuals.objects',
             'funkin.visuals.shaders',
             'funkin.states',
-            'funkin.substates'
+            'funkin.substates',
+            
+            'scripting.haxe'
         ];
 
         for (pack in packs)
