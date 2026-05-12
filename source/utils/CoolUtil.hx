@@ -8,7 +8,10 @@ package utils;
 		'utils.cool.CameraUtil',
 		'utils.cool.AppUtil',
 		'utils.cool.FileUtil',
-		'utils.cool.MapUtil'
+		'utils.cool.MapUtil',
+		'utils.cool.SpriteUtil',
+		'utils.cool.ReflectUtil',
+		'utils.cool.ArrayUtil',
 	]
 ))
 class CoolUtil {}

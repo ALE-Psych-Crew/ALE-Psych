@@ -44,6 +44,8 @@ import core.states.State;
 import core.substates.ScriptedSubState;
 import core.substates.SubState;
 
+import funkin.visuals.objects.FunkinSprite;
+
 import funkin.states.CustomState;
 
 import funkin.substates.CustomSubState;
