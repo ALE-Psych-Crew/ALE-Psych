@@ -24,8 +24,13 @@ class SpriteUtil
         loadSpriteFrames(sprite, json.type, ArrayUtil.setArrayPrefix(json.images, imageDirectory), json.frames);
 
         if (json.type != 'image' && json.animations != null)
+        {
             for (index => animData in json.animations)
                 addSpriteAnim(sprite, json.type, animData);
+
+            if (json.initialAnimation != null)
+                sprite.animation.play(json.initialAnimation, true);
+        }
 
         if (json.properties != null)
             ReflectUtil.setProperties(sprite, json.properties);
