@@ -115,12 +115,24 @@ class FunkinSprite extends FlxAnimate
 
     public var pathPrefix:String;
 
-    public function fromJson(json:JsonSprite, ?imageDirectory:String)
+    public function fromJson(json:JsonSprite, ?imageDirectory:String):FunkinSprite
+    {
         SpriteUtil.spriteFromJson(this, json, imageDirectory ?? pathPrefix);
 
-    public function loadFrames(type:SpriteType, images:Array<String>, ?framesNum:Int)
+        return this;
+    }
+
+    public function loadFrames(type:SpriteType, images:Array<String>, ?framesNum:Int):FunkinSprite
+    {
         SpriteUtil.loadSpriteFrames(this, type, images, framesNum);
 
-    public function addAnim(type:SpriteType, animData:JsonSpriteAnimation)
+        return this;
+    }
+
+    public function addAnim(type:SpriteType, animData:JsonSpriteAnimation):FunkinSprite
+    {
         SpriteUtil.addSpriteAnim(this, type, animData);
+        
+        return this;
+    }
 }
