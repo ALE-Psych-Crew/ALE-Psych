@@ -214,8 +214,8 @@ class Paths
 
                             if (!result.permanent || permanent)
                             {
-                                if (result is IFlxDestroyable)
-                                    FlxDestroyUtil.destroy(result);
+                                if (result.content is IFlxDestroyable)
+                                    FlxDestroyUtil.destroy(result.content);
 
                                 obj.cache.remove(id);
                             }
@@ -339,7 +339,7 @@ class Paths
 
     // Utils
 
-    public static function get(file:String, configID:String, ?permanent:Bool = true, ?missingPrint:Bool = false, ?arg:Dynamic, ?cache:Bool = true):Dynamic
+    public static function get(file:String, configID:String, ?permanent:Bool = false, ?missingPrint:Bool = true, ?arg:Dynamic, ?cache:Bool = true):Dynamic
     {
         final data:PathConfig = config[configID];
 
