@@ -30,6 +30,9 @@ class SpriteUtil
         if (json.properties != null)
             ReflectUtil.setProperties(sprite, json.properties);
 
+        if (json.color != null)
+            sprite.color = ColorUtil.colorFromString(json.color);
+
         sprite.updateHitbox();
 
         return sprite;
