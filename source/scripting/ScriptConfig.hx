@@ -4,6 +4,10 @@ package scripting;
 class ScriptConfig
 {
     public static final CLASSES:Array<Class<Dynamic>> = [
+        core.debug.HotReloading,
+
+        flixel.util.FlxTimer,
+
         flixel.util.FlxDestroyUtil,
 
         flixel.math.FlxMath,
