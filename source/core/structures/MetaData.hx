@@ -15,6 +15,7 @@ class MetaData
     public var storyMenuState:String = 'StoryMenuState';
     public var freeplayState:String = 'FreeplayState';
     public var mainMenuState:String = 'MainMenuState';
+    public var creditsState:String = 'CreditsState';
     public var optionsState:String = 'OptionsState';
     public var masterState:String = 'MasterState';
     
