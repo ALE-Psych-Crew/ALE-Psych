@@ -9,7 +9,9 @@ class MetaData
     public var debugPrint:Bool = true;
     public var verbose:Bool = false;
 
-    public var initialState:String = 'TitleState';
+    public var initialState:String = 'InitialState';
+
+    public var titleState:String = 'TitleState';
     public var storyMenuState:String = 'StoryMenuState';
     public var freeplayState:String = 'FreeplayState';
     public var mainMenuState:String = 'MainMenuState';
