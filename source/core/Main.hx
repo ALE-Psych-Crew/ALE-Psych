@@ -13,6 +13,8 @@ import core.plugins.PluginsHandler;
 import core.debug.DebugCounter;
 import core.debug.HotReloading;
 
+import core.audio.SoundTray;
+
 import api.DesktopAPI;
 
 import flixel.FlxGame;
@@ -130,7 +132,7 @@ class Main extends Sprite
 		FlxG.mouse.unload();
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
-
+		
 		Paths.clear(true, true);
 		Paths.loadMod();
 		Paths.init();
@@ -148,6 +150,14 @@ class Main extends Sprite
 		HScriptConfig.init();
 
 		Conductor.init();
+
+		final soundTray:SoundTray = cast FlxG.game.soundTray;
+
+		if (soundTray != null)
+		{
+			soundTray.font = Paths.font('jetbrains.ttf');
+			soundTray.sound = Paths.sound('tick');
+		}
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());

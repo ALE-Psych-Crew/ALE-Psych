@@ -204,8 +204,6 @@ class Paths
 
     public static function clear(cleanAll:Bool, ?permanent:Bool = false)
     {
-        trace(cleanAll);
-
         if (config != null)
             for (obj in config)
                 if (obj != null)

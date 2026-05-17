@@ -7,12 +7,18 @@ import funkin.substates.ModsMenuSubState;
 
 import core.states.MainState;
 
+import core.audio.SoundTray;
+
 import api.DesktopAPI;
 
 class Game extends FlxGame
 {
 	override public function new()
+	{
 		super(1280, 720, MainState, 120, 120, true, false);
+		
+		_customSoundTray = SoundTray;
+	}
 	
 	@:unreflective
 	var visibleConsole:Bool = false;
