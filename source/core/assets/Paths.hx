@@ -240,8 +240,6 @@ class Paths
                 result = null;
             }
         }
-
-        trace(permanent);
     }
     
     // File
