@@ -214,7 +214,7 @@ class Paths
 
                             if (!result.permanent || permanent)
                             {
-                                if (result.content is IFlxDestroyable)
+                                if (result.content is IFlxDestroyable && permanent)
                                     FlxDestroyUtil.destroy(result.content);
 
                                 obj.cache.remove(id);
@@ -240,6 +240,8 @@ class Paths
                 result = null;
             }
         }
+
+        trace(permanent);
     }
     
     // File
