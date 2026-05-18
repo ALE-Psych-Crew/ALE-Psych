@@ -1,10 +1,10 @@
 # TODO
 
 - [ ] PlayState
-  - [x] Character
-  - [x] Icon
-  - [x] Bar
-  - [x] StrumLine
+  - [ ] Character
+  - [ ] Icon
+  - [ ] Bar
+  - [ ] StrumLine
   - [ ] Strum
   - [ ] Note
   - [ ] Factories
@@ -12,17 +12,17 @@
   - [ ] HUD
 
 - [ ] Menus
-  - [ ] TitleState
+  - [x] TitleState
   - [ ] StoryMenuState
   - [ ] FreeplayState
-  - [ ] MainMenuState
+  - [x] MainMenuState
   - [ ] OptionsState
   - [ ] MasterState
 
 - [ ] Sub-Menus
   - [ ] PauseSubState
   - [ ] GameOverSubState
-  - [ ] FadeTransition
+  - [x] FadeTransition
 
 - [ ] Discord Rich Precense
 
@@ -48,7 +48,7 @@
   - [x] Content
   - [x] ModsMenuSubState
   - [x] Imports
-  - [ ] Addition Libraries
+  - [ ] Additional Libraries
 
 - [ ] Editors
   - [ ] ChartEditorState

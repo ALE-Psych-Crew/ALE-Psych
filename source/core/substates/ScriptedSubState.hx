@@ -26,7 +26,7 @@ class ScriptedSubState extends MusicBeatSubState implements IScriptedState
     {
         if (Paths.exists(path + RuleScriptGlobal.SCRIPT_EXTENSION))
         {
-            final script:HScript = new HScript(path, haxeScriptsContext, args, STATE);
+            final script:HScript = new HScript(path, haxeScriptsContext, args, SUBSTATE);
 
             if (!script.failedExecution)
             {
@@ -49,16 +49,16 @@ class ScriptedSubState extends MusicBeatSubState implements IScriptedState
 
     public function loadScript(path:String, ?haxeArgs:Array<Dynamic>)
     {
-        #if HSCRIPT_ALLOWED
-        if (path.endsWith('.hx'))
+        #if ALLOW_HSCRIPT
+        if (path.endsWith(RuleScriptGlobal.SCRIPT_EXTENSION))
         {
-            loadHScript(path.substring(0, path.length - 3), haxeArgs);
+            loadHScript(path.substring(0, path.length - RuleScriptGlobal.SCRIPT_EXTENSION.length), haxeArgs);
 
             return;
         }
         #end
 
-        #if HSCRIPT_ALLOWED
+        #if ALLOW_HSCRIPT
         loadHScript(path, haxeArgs);
         #end
     }
@@ -74,11 +74,15 @@ class ScriptedSubState extends MusicBeatSubState implements IScriptedState
     {
         var result:Array<Dynamic> = [];
 
+        globalArgs ??= [];
+
         #if ALLOW_HSCRIPT
+        hxArgs ??= [];
+
         result = result.concat(callOnHScripts(Std.string(type) + id, globalArgs.concat(hxArgs)));
         #end
 
-        return result.contains(CoolVars.Function_Stop);
+        return !result.contains(CoolVars.Function_Stop);
     }
 
     public function destroyScripts()

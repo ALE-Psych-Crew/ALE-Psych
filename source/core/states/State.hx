@@ -25,6 +25,16 @@ class State extends FlxState
 		camHUD = new Camera();
 		
 		FlxG.cameras.add(camHUD, false);
+        
+        if (CoolVars.skipTransOut)
+        {
+            CoolVars.skipTransOut = false;
+        } else {
+            CoolUtil.openSubState(new CustomSubState(
+                CoolVars.meta.transition,
+                [false, null]
+            ));
+        }
     }
 
 	override function tryUpdate(elapsed:Float):Void

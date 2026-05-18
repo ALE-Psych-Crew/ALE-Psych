@@ -136,7 +136,7 @@ class CustomState extends ScriptedState
     {
         allowMemoryCleaning = false;
 
-        CoolUtil.switchState(new CustomState(scriptName, haxeArguments));
+        CoolUtil.switchState(new CustomState(scriptName, haxeArguments), true, true);
 
         debugTrace('Current State: ' + scriptName, RESET_STATE);
     }

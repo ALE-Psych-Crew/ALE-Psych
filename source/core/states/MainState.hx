@@ -1,8 +1,10 @@
 package core.states;
 
+import flixel.FlxState;
+
 import api.DesktopAPI;
 
-class MainState extends State
+class MainState extends FlxState
 {
 	override public function create()
 	{
@@ -12,6 +14,6 @@ class MainState extends State
 
 		FlxSprite.defaultAntialiasing = true;
 
-		CoolUtil.switchState(new CustomState(CoolVars.meta.initialState));
+		CoolUtil.switchState(new CustomState(CoolVars.meta.initialState), true, true);
 	}
 }

@@ -27,9 +27,25 @@ class StateUtil
 		}
 	}
 
-	public static function transitionSwitch(state:FlxState, skipTransIn:Bool = false, skipTransOut:Bool = false)
+	public static function transitionSwitch(state:FlxState, ?skipTransIn:Bool, ?skipTransOut:Bool)
 	{
-		FlxG.switchState(state);
+		if (skipTransIn != null)
+			CoolVars.skipTransIn = skipTransIn;
+
+		if (skipTransOut != null)
+			CoolVars.skipTransOut = skipTransOut; 
+
+        if (CoolVars.skipTransIn)
+		{
+            CoolVars.skipTransIn = false;
+
+			FlxG.switchState(state);
+		} else {
+			openSubState(new CustomSubState(
+				CoolVars.data.transition,
+                [true, () -> FlxG.switchState(state)]
+			));
+		}
 	}
 
 	public static function openSubState(subState:FlxSubState = null)

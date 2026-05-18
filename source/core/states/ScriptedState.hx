@@ -56,9 +56,9 @@ class ScriptedState extends MusicBeatState implements IScriptedState
     public function loadScript(path:String, ?haxeArgs:Array<Dynamic>)
     {
         #if ALLOW_HSCRIPT
-        if (path.endsWith('.hx'))
+        if (path.endsWith(RuleScriptGlobal.SCRIPT_EXTENSION))
         {
-            loadHScript(path.substring(0, path.length - 3), haxeArgs);
+            loadHScript(path.substring(0, path.length - RuleScriptGlobal.SCRIPT_EXTENSION.length - 3), haxeArgs);
 
             return;
         }

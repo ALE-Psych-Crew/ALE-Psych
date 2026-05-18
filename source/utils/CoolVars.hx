@@ -13,6 +13,9 @@ import openfl.Lib;
 @:build(core.macros.CoolVarsMacro.build())
 class CoolVars
 {
+	public static var skipTransIn:Bool = false;
+	public static var skipTransOut:Bool = false;
+	
 	public static var meta:MetaData = null;
 	
 	public static var data(get, never):MetaData;
