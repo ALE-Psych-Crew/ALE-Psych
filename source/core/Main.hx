@@ -17,6 +17,7 @@ import core.audio.SoundTray;
 
 import api.DesktopAPI;
 
+import flixel.input.keyboard.FlxKey;
 import flixel.FlxGame;
 
 import haxe.CallStack;
@@ -75,6 +76,11 @@ class Main extends Sprite
 			Sys.exit(1);
 		});
 		#end
+
+		FlxG.stage.addEventListener('keyDown', (event) -> {
+			if (event.altKey && event.keyCode == FlxKey.ENTER)
+				event.stopImmediatePropagation();
+		}, false, 1);
 		
 		DesktopAPI.setDPIAware();
 	}
