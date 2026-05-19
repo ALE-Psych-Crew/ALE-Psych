@@ -33,10 +33,13 @@ class ExtensibleMacro
             'openfl.display.Sprite',
             'openfl.text.TextField',
 
-            'funkin.visuals.shaders',
+            'funkin.visuals.shaders.FXShader',
+            'funkin.visuals.shaders.RuntimeShader',
             'funkin.visuals.objects',
             'funkin.modchart',
             'funkin.visuals',
+
+            'scripting.lua.LuaPresetBase',
 
             'ale.ui.MouseSprite',
             'ale.ui.UISprite'

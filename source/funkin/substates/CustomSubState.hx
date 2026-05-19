@@ -6,15 +6,11 @@ class CustomSubState extends ScriptedSubState
 {
     public var scriptName:String = '';
 
-    var haxeArguments:Array<Dynamic>;
-
-    override public function new(script:String, ?haxeArguments:Array<Dynamic>)
+    override public function new(script:String, ?haxeArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>)
     {
-        super();
+        super(haxeArguments, luaArguments);
 
         scriptName = script;
-
-        this.haxeArguments = haxeArguments;
     }
 
     override public function create()

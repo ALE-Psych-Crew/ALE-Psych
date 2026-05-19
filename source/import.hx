@@ -1,6 +1,7 @@
 #if !macro
 import flixel.util.FlxDestroyUtil;
 import flixel.util.FlxSignal;
+import flixel.util.FlxTimer;
 import flixel.util.FlxColor;
 
 import flixel.math.FlxPoint;

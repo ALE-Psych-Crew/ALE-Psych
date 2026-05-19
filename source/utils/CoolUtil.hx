@@ -12,7 +12,8 @@ package utils;
 		'utils.cool.SpriteUtil',
 		'utils.cool.ReflectUtil',
 		'utils.cool.ArrayUtil',
-		'utils.cool.SoundUtil'
+		'utils.cool.SoundUtil',
+		'utils.cool.StringUtil'
 	]
 ))
 class CoolUtil {}

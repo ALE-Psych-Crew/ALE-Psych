@@ -60,6 +60,16 @@
             "ref": "d9de5ac71473b816f69dc97ec85082947ca230aa"
         },
         {
+            "name": "hxluajit",
+            "type": "haxelib",
+            "version": "1.0.5"
+        },
+        {
+            "name": "hxluajit-wrapper",
+            "type": "haxelib",
+            "version": "1.0.0"
+        },
+        {
             "name": "ale-ui",
             "type": "haxelib",
             "version": "1.0.8"

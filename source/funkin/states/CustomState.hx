@@ -6,15 +6,11 @@ class CustomState extends ScriptedState
 {
     public final scriptName:String;
 
-    var haxeArguments:Array<Dynamic>;
-
-    public function new(scriptName:String, ?haxeArguments:Array<Dynamic>)
+    public function new(scriptName:String, ?haxeArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>)
     {
-        super();
+        super(haxeArguments, luaArguments);
 
         this.scriptName = scriptName;
-
-        this.haxeArguments = haxeArguments;
     }
 
     override function create()
