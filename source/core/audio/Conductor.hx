@@ -70,6 +70,8 @@ class Conductor
     {
         FlxG.signals.preUpdate.remove(update);
 
+        reset(100, 4, 4);
+
         stop();
 
         synchronizedSounds = null;
@@ -99,7 +101,7 @@ class Conductor
     @:unreflective
     public static var allowMusicUpdating:Bool = true;
 
-    public static function play(sound:OpenFLSound, ?loop:Bool = true, ?volume:Float = 1, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
+    public static function play(sound:OpenFLSound, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int, ?loop:Bool = true, ?volume:Float = 1)
     {
         if (sound == null)
             return;
@@ -137,9 +139,14 @@ class Conductor
 
     public static function reset(?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
     {
-        Conductor.bpm = bpm ?? 100;
-        Conductor.stepsPerBeat = stepsPerBeat ?? 4;
-        Conductor.beatsPerSection = beatsPerSection ?? 4;
+        if (bpm != null)
+            Conductor.bpm = bpm;
+
+        if (stepsPerBeat != null)
+            Conductor.stepsPerBeat = stepsPerBeat;
+
+        if (beatsPerSection != null)
+            Conductor.beatsPerSection = beatsPerSection;
 
         time = curStep = safeStep = curBeat = safeBeat = curSection = safeSection = 0;
     }
