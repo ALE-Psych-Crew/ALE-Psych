@@ -1,12 +1,14 @@
 package core.audio;
 
-import openfl.media.Sound;
+import openfl.media.Sound as OpenFLSound;
 
 class Conductor
 {
-    public static var music(get, never):Null<FlxSound>;
+    public static var music(get, set):Null<FlxSound>;
     static function get_music():Null<FlxSound>
         return FlxG.sound.music;
+    static function set_music(value:Null<FlxSound>):Null<FlxSound>
+        return FlxG.sound.music = value;
 
     public static var bpm:Float = 100;
 
@@ -97,12 +99,20 @@ class Conductor
     @:unreflective
     public static var allowMusicUpdating:Bool = true;
 
-    public static function play(sound:Sound, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
+    public static function play(sound:OpenFLSound, ?loop:Bool = true, ?volume:Float = 1, ?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
     {
         if (sound == null)
             return;
 
-        FlxG.sound.playMusic(sound);
+        if (music == null || !(music is Sound))
+        {
+            music?.stop();
+            music?.destroy();
+
+            music = new Sound();
+        }
+
+        FlxG.sound.playMusic(sound, volume, loop);
 
         music.onComplete = () -> {
             reset(bpm, stepsPerBeat, beatsPerSection);

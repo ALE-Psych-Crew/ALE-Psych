@@ -6,6 +6,8 @@ flixel.util.FlxDirectionFlags
 flixel.util.FlxColor
 flixel.util.FlxAxes
 
+flixel.sound.filters.FlxSoundFilterType
+
 flixel.text.FlxText.FlxTextAlign
 
 flixel.tweens.FlxTween.FlxTweenType

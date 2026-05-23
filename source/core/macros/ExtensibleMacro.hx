@@ -19,6 +19,9 @@ class ExtensibleMacro
         final packs:Array<String> = [
             'flixel.group',
             
+            'flixel.sound.filters.FlxSoundBaseEffect',
+            'flixel.sound.filters.FlxSoundFilter',
+            'flixel.sound.filters.effects',
             'flixel.addons.display',
             'flixel.graphics',
             'flixel.effects',
