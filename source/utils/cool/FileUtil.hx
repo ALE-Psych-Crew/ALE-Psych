@@ -41,7 +41,7 @@ class FileUtil
 
             if (FileSystem.exists(path) && FileSystem.isDirectory(path))
                 for (searchAsset in FileSystem.readDirectory(path))
-                    if (formatToSongPath(searchAsset) == formatToSongPath(file))
+                    if (StringUtil.formatString(searchAsset) == StringUtil.formatString(file))
                         return parent + (parent.length > 0 ? '/' : '') + searchAsset;
         }
         
@@ -66,9 +66,6 @@ class FileUtil
 
         Sys.command(command, [folder]);
 	}
-
-	public static function formatToSongPath(string:String):String
-		return string.trim().toLowerCase().replace(' ', '-');
     
 	@:access(flixel.util.FlxSave.validate)
 	public static function getSavePath(modSupport:Bool = true):String

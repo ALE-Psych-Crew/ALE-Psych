@@ -88,6 +88,9 @@ class StringUtil
         }
     }
 
+	public static function formatString(str:String):String
+		return str.trim().toLowerCase().replace(' ', '-');
+
     public static function intToHex(value:Int):String
     {
         #if !neko

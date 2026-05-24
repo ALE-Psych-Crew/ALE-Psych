@@ -58,12 +58,6 @@ class LuaCoolUtil extends LuaPresetBase
             CoolUtil.openFolder(folder, absolute);
         });
 
-        set('formatToSongPath', function(str:String):String
-        {
-            return CoolUtil.formatToSongPath(str);
-        });
-
-
         set('floorDecimal', function(num:Float, decimals:Int):Float
         {
             return CoolUtil.floorDecimal(num, decimals);
