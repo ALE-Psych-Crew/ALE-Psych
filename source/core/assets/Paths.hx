@@ -204,47 +204,30 @@ class Paths
 
     public static function clear(cleanAll:Bool, ?permanent:Bool = false)
     {
-        if (config != null)
-            for (obj in config)
-                if (obj != null)
-                    if ((cleanAll || obj.forceCleaning) && obj.cache != null)
-                        for (id in obj.cache.keys())
+        if (config == null)
+            return;
+
+        for (obj in config)
+            if (cleanAll || obj.forceCleaning)
+                for (id in obj.cache.keys())
+                {
+                    var result:Dynamic = obj.cache[id];
+
+                    if (!result.permanent || permanent)
+                    {
+                        if (result.content is IFlxDestroyable)
                         {
-                            var result:Dynamic = obj.cache[id];
+                            @:privateAccess
+                            FlxG.bitmap._cache.remove(id);
 
-                            if (!result.permanent || permanent)
-                            {
-                                if (result.content is IFlxDestroyable)
-                                {
-                                    @:privateAccess
-                                    FlxG.bitmap._cache.remove(id);
-
-                                    FlxDestroyUtil.destroy(result.content);
-                                }
-
-                                obj.cache.remove(id);
-                            }
-
-                            result = null;
+                            FlxDestroyUtil.destroy(result.content);
                         }
 
-        if (permanent)
-        {
-            @:privateAccess
-            for (key in FlxG.bitmap._cache.keys())
-            {
-                var result:FlxGraphic = FlxG.bitmap._cache.get(key);
+                        obj.cache.remove(id);
+                    }
 
-                if (result != null && !config.get(FileType.IMAGE).cache.exists(key))
-                {
-                    FlxG.bitmap._cache.remove(key);
-
-                    FlxDestroyUtil.destroy(result);
+                    result = null;
                 }
-
-                result = null;
-            }
-        }
     }
     
     // File
