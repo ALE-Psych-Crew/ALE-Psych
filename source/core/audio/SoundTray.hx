@@ -77,6 +77,9 @@ class SoundTray extends Sprite
 
         if (Controls.VOLUME_UP || Controls.VOLUME_DOWN)
         {
+            if (FlxG.sound.muted)
+                FlxG.sound.muted = false;
+
             FlxG.sound.volume = FlxMath.bound(FlxG.sound.volume + (Controls.VOLUME_UP ? 0.1 : -0.1), 0, 1);
 
             display();
