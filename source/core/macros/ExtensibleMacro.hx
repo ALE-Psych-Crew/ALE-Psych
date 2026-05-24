@@ -38,6 +38,10 @@ class ExtensibleMacro
 
             'funkin.visuals.shaders.RuntimeShader',
             'funkin.visuals.shaders.FXShader',
+            'funkin.visuals.game.Character',
+            'funkin.visuals.game.Strum',
+            'funkin.visuals.game.Note',
+            'funkin.visuals.game.Icon',
             'funkin.visuals.objects',
             'funkin.visuals',
 
