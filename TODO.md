@@ -13,8 +13,8 @@
 
 - [ ] Menus
   - [x] TitleState
-  - [ ] StoryMenuState
-  - [ ] FreeplayState
+  - [x] StoryMenuState
+  - [x] FreeplayState
   - [x] MainMenuState
   - [ ] OptionsState
   - [ ] MasterState
