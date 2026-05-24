@@ -15,6 +15,9 @@ class ScriptConfig
         flixel.text.FlxText,
 
         flixel.group.FlxGroup,
+        flixel.group.FlxTypedGroup,
+        flixel.group.FlxSpriteGroup,
+        flixel.group.FlxTypedSpriteGroup,
 
         flixel.tweens.FlxTween,
         flixel.tweens.FlxEase,
@@ -32,6 +35,7 @@ class ScriptConfig
         utils.Json,
 
         core.audio.Conductor,
+        core.audio.Sound,
 
         core.debug.Logs,
 

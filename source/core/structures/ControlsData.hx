@@ -23,7 +23,10 @@ import flixel.input.keyboard.FlxKey;
 		accept: [FlxKey.ENTER, FlxKey.SPACE],
 		back: [FlxKey.ESCAPE],
 		reset: [FlxKey.R, FlxKey.F5],
-		pause: [FlxKey.ENTER, FlxKey.ESCAPE]
+		pause: [FlxKey.ENTER, FlxKey.ESCAPE],
+		mute: [FlxKey.ZERO],
+		volume_up: [FlxKey.PLUS],
+		volume_down: [FlxKey.MINUS]
 	};
 
 	public var engine:EngineControls = {

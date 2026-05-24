@@ -13,12 +13,10 @@ import api.DesktopAPI;
 
 class Game extends FlxGame
 {
+	public var soundTraySprite:SoundTray;
+
 	override public function new()
-	{
 		super(1280, 720, MainState, 120, 120, true, false);
-		
-		_customSoundTray = SoundTray;
-	}
 	
 	@:unreflective
 	var visibleConsole:Bool = false;
@@ -55,5 +53,8 @@ class Game extends FlxGame
 			visibleConsole = true;
 		}
 		#end
+
+		if (soundTraySprite != null)
+			soundTraySprite.update(FlxG.elapsed);
 	}
 }

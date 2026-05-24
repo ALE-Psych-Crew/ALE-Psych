@@ -25,6 +25,10 @@ import haxe.CallStack;
 @:unreflective
 class Main extends Sprite
 {
+	public static var game(get, never):Game;
+	static function get_game():Game
+		return cast FlxG.game;
+
 	public function new()
 	{
 		super();
@@ -109,6 +113,9 @@ class Main extends Sprite
 
 		Conductor.destroy();
 
+		game.removeChild(game.soundTraySprite);
+		game.soundTraySprite = null;
+
 		debugCounter?.destroy();
 
 		FlxG.stage.removeChild(debugCounter);
@@ -132,6 +139,10 @@ class Main extends Sprite
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
+		
+		FlxG.keys.preventDefaultKeys = [TAB];
+
+		FlxG.sound.muteKeys = FlxG.sound.volumeDownKeys = FlxG.sound.volumeUpKeys = [];
 
 		FlxG.autoPause = false;
 
@@ -157,13 +168,8 @@ class Main extends Sprite
 
 		Conductor.init();
 
-		final soundTray:SoundTray = cast FlxG.game.soundTray;
-
-		if (soundTray != null)
-		{
-			soundTray.font = Paths.font('jetbrains.ttf');
-			soundTray.sound = Paths.sound('tick');
-		}
+		game.soundTraySprite = new SoundTray();
+		game.addChild(game.soundTraySprite);
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());

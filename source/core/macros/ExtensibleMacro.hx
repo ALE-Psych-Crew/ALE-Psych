@@ -36,8 +36,8 @@ class ExtensibleMacro
             'openfl.display.Sprite',
             'openfl.text.TextField',
 
-            'funkin.visuals.shaders.FXShader',
             'funkin.visuals.shaders.RuntimeShader',
+            'funkin.visuals.shaders.FXShader',
             'funkin.visuals.objects',
             'funkin.modchart',
             'funkin.visuals',

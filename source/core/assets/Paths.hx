@@ -274,7 +274,7 @@ class Paths
         if (!isDirectory(path) && missingPrint)
         {
             if (missingPrint)
-                debugTrace(path, 'missing_folder');
+                debugTrace(path, MISSING_FOLDER);
 
             return null;
         }

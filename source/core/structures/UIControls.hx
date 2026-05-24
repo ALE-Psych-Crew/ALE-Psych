@@ -9,4 +9,7 @@ typedef UIControls = {
     var back:Array<Null<Int>>;
     var reset:Array<Null<Int>>;
     var pause:Array<Null<Int>>;
+    var mute:Array<Null<Int>>;
+    var volume_up:Array<Null<Int>>;
+    var volume_down:Array<Null<Int>>;
 }

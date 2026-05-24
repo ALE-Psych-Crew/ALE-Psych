@@ -121,6 +121,18 @@ class Controls
     public static var PAUSE(get, never):Bool;
     static function get_PAUSE():Bool
         return anyJustPressed(ClientPrefs.controls.ui.pause);
+    
+    public static var MUTE(get, never):Bool;
+    static function get_MUTE():Bool
+        return anyJustPressed(ClientPrefs.controls.ui.mute);
+    
+    public static var VOLUME_UP(get, never):Bool;
+    static function get_VOLUME_UP():Bool
+        return anyJustPressed(ClientPrefs.controls.ui.volume_up);
+    
+    public static var VOLUME_DOWN(get, never):Bool;
+    static function get_VOLUME_DOWN():Bool
+        return anyJustPressed(ClientPrefs.controls.ui.volume_down);
 
     public static var CHART(get, never):Bool;
     static function get_CHART():Bool

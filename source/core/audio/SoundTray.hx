@@ -1,88 +1,110 @@
 package core.audio;
 
-import flixel.system.FlxAssets.FlxSoundAsset;
-import flixel.system.ui.FlxSoundTray;
+import openfl.display.BitmapData;
+import openfl.display.Bitmap;
+import openfl.display.Sprite;
+import openfl.utils.Assets;
+import openfl.Lib;
 
-import openfl.text.TextFormat;
-
-import openfl.media.Sound;
-
-class SoundTray extends FlxSoundTray
+class SoundTray extends Sprite
 {
-	public var targetY:Float = 0;
-	public var targetAlpha:Float = 1;
+    function createBitmap(img:Dynamic)
+    {
+        final bitmap = new Bitmap(Assets.getBitmapData('images/soundTray/' + img + '.png'));
+        bitmap.smoothing = true;
 
-	public function new()
-	{
-		super();
+        addChild(bitmap);
 
-		y = -height;
+        return bitmap;
+    }
 
-		alpha = 0;
+    final bars:Array<Bitmap> = [];
 
-		active = false;
-	}
+    public function new()
+    {
+        super();
 
-	override public function update(elapsed:Float):Void
-	{
-		y = CoolUtil.fpsLerp(y, targetY, 0.15);
+        final bg = createBitmap('bg');
+        addChild(bg);
 
-		alpha = CoolUtil.fpsLerp(alpha, targetAlpha, 0.15);
+        final text = createBitmap('text');
+        text.x = bg.width / 2 - text.width / 2;
+        text.y = bg.height + 5;
+        addChild(text);
 
-		if (_timer > 0)
-		{
-			_timer -= elapsed / 750;
-		} else if (targetY != -height) {
-			targetY = -height;
+        var offset:Float = 0;
 
-			targetAlpha = 0;
-		}
+        var longest:Bitmap = null;
 
-		visible = active = Math.floor(y) >= -height;
-	}
+        for (i in 0...10)
+        {
+            final bar = createBitmap(i);
+            bar.x = offset;
 
-	public var font(default, set):String = null;
-	function set_font(value:String)
-	{
-		font = value;
+            offset += bar.width;
 
-		final format:TextFormat = new TextFormat(font, 10, FlxColor.WHITE);
+            if (longest == null || bar.height > longest.height)
+                longest = bar;
 
-		_label.defaultTextFormat = format;
-		_label.setTextFormat(format);
+            bars.push(bar);
 
-		return font;
-	}
+            addChild(bar);
+        }
 
-	public var sound:Sound = null;
+        for (bar in bars)
+        {
+            bar.x += bg.width / 2 - offset / 2;
 
-	override public function showAnim(volume:Float, ?snd:FlxSoundAsset, duration:Float = 1.25, label:String = 'VOLUME'):Void
-	{
-		if (!silent && sound != null)
-			FlxG.sound.play(sound, 0.75);
+            bar.y = longest.height - bar.height + bg.height / 2 - longest.height / 2;
+        }
 
-		_timer = duration;
+        scaleX = scaleY = 0.55;
 
-		targetY = 0;
-		targetAlpha = 1;
+        y = -height;
+        alpha = 0;
+    }
 
-		visible = true;
-		active = true;
+    var timer:Float = 0;
 
-		final numBars = Math.round(volume * 10);
+    public function update(elapsed:Float)
+    {
+        if (Controls.MUTE)
+        {
+            FlxG.sound.muted = !FlxG.sound.muted;
 
-		for (i in 0..._bars.length)
-			_bars[i].alpha = i < numBars ? 1.0 : 0.5;
+            display();
+        }
 
-		_label.text = label;
+        if (Controls.VOLUME_UP || Controls.VOLUME_DOWN)
+        {
+            FlxG.sound.volume = FlxMath.bound(FlxG.sound.volume + (Controls.VOLUME_UP ? 0.1 : -0.1), 0, 1);
 
-		updateSize();
-		
-		if (FlxG.save.isBound)
-		{
-			FlxG.save.data.mute = FlxG.sound.muted;
-			FlxG.save.data.volume = FlxG.sound.volume;
-			FlxG.save.flush();
-		}
-	}
+            display();
+        }
+
+        if (timer <= 0)
+        {
+            y = CoolUtil.fpsLerp(y, -height, 0.2);
+            alpha = CoolUtil.fpsLerp(alpha, 0, 0.2);
+        } else {
+            y = CoolUtil.fpsLerp(y, 5, 0.2);
+            alpha = CoolUtil.fpsLerp(alpha, 1, 0.2);
+
+            timer -= elapsed;
+        }
+        
+		x = Lib.current.stage.stageWidth / 2 - width / 2;
+    }
+
+    function display()
+    {
+        final funcVal:Int = FlxG.sound.muted ? 0 : Math.round(FlxG.sound.volume * 10);
+
+        for (index => bar in bars)
+            bar.alpha = (index + 1) <= funcVal ? 1 : 0.5;
+
+        timer = 1;
+
+        CoolUtil.playSound('volume');
+    }
 }

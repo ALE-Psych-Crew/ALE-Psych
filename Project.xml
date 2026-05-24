@@ -78,6 +78,7 @@
 	<haxedef name='lime_disable_assets_version'/>	
 
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
+	<haxedef name="FLX_NO_SOUND_TRAY"/>
 	<haxedef name="FLX_NO_HEALTH"/>
 	<haxedef name="FLX_NO_DEBUG"/>
 
