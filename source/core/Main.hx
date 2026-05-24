@@ -22,6 +22,8 @@ import flixel.FlxGame;
 
 import haxe.CallStack;
 
+import utils.Formatter;
+
 @:unreflective
 class Main extends Sprite
 {
@@ -164,6 +166,8 @@ class Main extends Sprite
 		HScriptConfig.init();
 
 		Conductor.init();
+
+		Formatter.init();
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
