@@ -214,8 +214,13 @@ class Paths
 
                             if (!result.permanent || permanent)
                             {
-                                if (result.content is IFlxDestroyable && permanent)
+                                if (result.content is IFlxDestroyable)
+                                {
+                                    @:privateAccess
+                                    FlxG.bitmap._cache.remove(id);
+
                                     FlxDestroyUtil.destroy(result.content);
+                                }
 
                                 obj.cache.remove(id);
                             }
