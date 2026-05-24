@@ -61,7 +61,7 @@ class Conductor
 		safeBeatHit = new FlxTypedSignal<Int -> Void>();
 		safeSectionHit = new FlxTypedSignal<Int -> Void>();
 
-        onMusicComplete = new FlxTypedSignal<Void -> Void>();
+        musicComplete = new FlxTypedSignal<Void -> Void>();
 
         FlxG.signals.preUpdate.add(update);
     }
@@ -94,8 +94,8 @@ class Conductor
         safeSectionHit?.removeAll();
         safeSectionHit = null;
 
-        onMusicComplete?.removeAll();
-        onMusicComplete = null;
+        musicComplete?.removeAll();
+        musicComplete = null;
     }
 
     @:unreflective
@@ -119,7 +119,7 @@ class Conductor
         music.onComplete = () -> {
             reset(bpm, stepsPerBeat, beatsPerSection);
 
-            onMusicComplete?.dispatch();
+            musicComplete?.dispatch();
         };
 
         reset(bpm, stepsPerBeat, beatsPerSection);
@@ -151,7 +151,7 @@ class Conductor
         time = curStep = safeStep = curBeat = safeBeat = curSection = safeSection = 0;
     }
 
-    public static var onMusicComplete:FlxTypedSignal<Void -> Void>;
+    public static var musicComplete:FlxTypedSignal<Void -> Void>;
 
 	public static var curStep:Int = 0;
 	public static var stepHit:FlxTypedSignal<Int -> Void>;

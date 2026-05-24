@@ -108,6 +108,14 @@ class CustomSubState extends ScriptedSubState
         scriptCallbackCall(POST, 'SafeSectionHit', [safeSection]);
     }
 
+    override public function musicComplete()
+    {
+        if (scriptCallbackCall(ON, 'MusicComplete', []))
+            super.musicComplete();
+
+        scriptCallbackCall(POST, 'MusicComplete', []);
+    }
+
     override public function onFocus()
     {
         if (scriptCallbackCall(ON, 'OnFocus'))

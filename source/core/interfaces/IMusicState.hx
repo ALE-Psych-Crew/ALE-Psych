@@ -20,6 +20,8 @@ interface IMusicState
 
     private function onSectionHit(section:Int):Void;
     private function onSafeSectionHit(safeSection:Int):Void;
+    
+    private function onMusicComplete():Void;
 
     public function stepHit(curStep:Int):Void;
     public function safeStepHit(safeStep:Int):Void;
@@ -29,4 +31,6 @@ interface IMusicState
 
     public function sectionHit(curSection:Int):Void;
     public function safeSectionHit(safeSection:Int):Void;
+
+    public function musicComplete():Void;
 }

@@ -10,4 +10,6 @@ interface IMusicObject
 
     public var sectionHit:Int -> Void;
     public var safeSectionHit:Int -> Void;
+    
+    public var musicComplete:Void -> Void;
 }

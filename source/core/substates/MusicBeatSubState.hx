@@ -38,6 +38,8 @@ class MusicBeatSubState extends SubState implements IMusicState
 
         Conductor.sectionHit?.add(onSectionHit);
         Conductor.safeSectionHit?.add(onSafeSectionHit);
+
+        Conductor.musicComplete?.add(onMusicComplete);
     }
 
     var removedConductorListeners:Bool = false;
@@ -59,6 +61,8 @@ class MusicBeatSubState extends SubState implements IMusicState
 
         Conductor.sectionHit?.remove(onSectionHit);
         Conductor.safeSectionHit?.remove(onSafeSectionHit);
+
+        Conductor.musicComplete?.remove(onMusicComplete);
     }
 
     function onStepHit(step:Int):Void
@@ -78,6 +82,9 @@ class MusicBeatSubState extends SubState implements IMusicState
 
     function onSafeSectionHit(section:Int):Void
         safeSectionHit(section);
+
+    function onMusicComplete():Void
+        musicComplete();
     
     function recursiveMusicHit(obj:Dynamic, handler:IMusicObject->Void)
     {
@@ -128,6 +135,13 @@ class MusicBeatSubState extends SubState implements IMusicState
     {
         forEachAlive((obj) -> {
             recursiveMusicHit(obj, (m) -> m.safeSectionHit(safeSection));
+        });
+    }
+
+    public function musicComplete()
+    {
+        forEachAlive((obj) -> {
+            recursiveMusicHit(obj, m -> if (m.musicComplete != null) m.musicComplete());
         });
     }
 }

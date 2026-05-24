@@ -15,6 +15,8 @@ class Bopper extends FunkinSprite implements IMusicObject
     public var sectionHit:Int -> Void;
     public var safeSectionHit:Int -> Void;
 
+    public var musicComplete:Void -> Void;
+
     public function configBeatHitAnimations():Bopper
     {
         final castConfig:JsonBopper = cast config;
