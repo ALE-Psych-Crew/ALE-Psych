@@ -11,10 +11,10 @@ class SoundTray extends GameObject
     {
         super();
 
-        final bg = createBitmap('bg');
+        final bg = createBitmap('soundTray/bg');
         add(bg);
 
-        final text = createBitmap('text');
+        final text = createBitmap('soundTray/text');
         text.x = bg.width / 2 - text.width / 2;
         text.y = bg.height + 5;
         add(text);
@@ -25,7 +25,7 @@ class SoundTray extends GameObject
 
         for (i in 0...10)
         {
-            final bar = createBitmap(i);
+            final bar = createBitmap('soundTray/' + i);
             bar.x = offset;
 
             offset += bar.width;

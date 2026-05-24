@@ -18,7 +18,7 @@ class GameObject extends Sprite
     
     public function createBitmap(img:Dynamic):Bitmap
     {
-        final bitmap = new Bitmap(Assets.getBitmapData('images/soundTray/' + img + '.png'));
+        final bitmap = new Bitmap(Assets.getBitmapData('images/' + img + '.png'));
         bitmap.smoothing = ClientPrefs.data.antialiasing;
 
         return bitmap;
