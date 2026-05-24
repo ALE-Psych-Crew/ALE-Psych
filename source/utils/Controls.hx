@@ -154,6 +154,10 @@ class Controls
     static function get_SWITCH_MOD():Bool
         return anyJustPressed(ClientPrefs.controls.engine.switch_mod);
 
+    public static var FPS_COUNTER(get, never):Bool;
+    static function get_FPS_COUNTER():Bool
+        return anyJustPressed(ClientPrefs.controls.engine.fps_counter);
+
     public static var CONTROL(get, never):Bool;
     static function get_CONTROL():Bool
         return FlxG.keys.pressed.CONTROL;

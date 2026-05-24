@@ -1,10 +1,10 @@
-package core.debug;
+package core.objects;
 
 import openfl.display.Sprite;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 
-class DebugField extends Sprite
+class DebugField extends GameObject
 {
     final label:TextField;
 
@@ -26,11 +26,11 @@ class DebugField extends Sprite
         label.x = 5;
         label.y = 5;
 
-        addChild(label);
+        add(label);
 
         showBG = true;
 
-        update();
+        updateField();
     }
 
     var currentWidth:Float = 0;
@@ -44,12 +44,19 @@ class DebugField extends Sprite
         if (!showBG)
             graphics.clear();
         else
-            update(true);
+            updateField(true);
 
         return showBG;
     }
 
-    public function update(?drawBG:Bool = false)
+    override function update(elapsed:Float)
+    {
+        super.update(elapsed);
+
+        updateField();
+    }
+
+    function updateField(?drawBG:Bool = false)
     {
         label.text = textFunction();
 
@@ -67,17 +74,5 @@ class DebugField extends Sprite
                 graphics.endFill();
             }
         }
-    }
-
-    public function destroy()
-    {
-        for (i in 0...numChildren)
-        {
-            final child = getChildAt(i);
-
-            removeChild(child);
-        }
-        
-        graphics.clear();
     }
 }

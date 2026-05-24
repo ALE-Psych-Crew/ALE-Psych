@@ -10,10 +10,10 @@ import scripting.haxe.HScriptConfig;
 import core.plugins.DebugPrintPlugin;
 import core.plugins.PluginsHandler;
 
-import core.debug.DebugCounter;
 import core.debug.HotReloading;
 
-import core.audio.SoundTray;
+import core.objects.SoundTray;
+import core.objects.DebugTray;
 
 import api.DesktopAPI;
 
@@ -113,19 +113,16 @@ class Main extends Sprite
 
 		Conductor.destroy();
 
-		game.removeChild(game.soundTraySprite);
+		game.soundTraySprite?.destroy();
 		game.soundTraySprite = null;
 
-		debugCounter?.destroy();
-
-		FlxG.stage.removeChild(debugCounter);
+		game.debugTray?.destroy();
+		game.debugTray = null;
 	}
 
-	public static var onlineVersion(default, null):String = '';
-
-	public static var debugCounter:DebugCounter;
-
 	public static var debugPrintPlugin:DebugPrintPlugin;
+
+	public static var onlineVersion(default, null):String = '';
 
 	@:allow(core.states.MainState)
 	static function postResetConfig()
@@ -168,12 +165,11 @@ class Main extends Sprite
 
 		Conductor.init();
 
-		game.soundTraySprite = new SoundTray();
-		game.addChild(game.soundTraySprite);
-
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
 
-		FlxG.stage.addChild(debugCounter = new DebugCounter());	
+		game.addChild(game.soundTraySprite = new SoundTray());
+
+		FlxG.stage.addChild(game.debugTray = new DebugTray());	
 	}
 }

@@ -1,6 +1,4 @@
-package core.debug;
-
-import openfl.display.Sprite;
+package core.objects;
 
 import flixel.util.FlxStringUtil;
 
@@ -10,7 +8,7 @@ import api.DesktopAPI;
 
 import cpp.vm.Gc;
 
-class DebugCounter extends Sprite
+class DebugTray extends GameObject
 {
     public final fpsField:DebugField;
 
@@ -105,9 +103,6 @@ class DebugCounter extends Sprite
             });
         }
 
-        FlxG.stage.addEventListener('keyDown', keyDown);
-        FlxG.stage.addEventListener('enterFrame', update);
-
         setMode();
     }
 
@@ -140,9 +135,11 @@ class DebugCounter extends Sprite
         }
     }
 
-    function keyDown(e:Dynamic)
+    override function update(elapsed:Float)
     {
-        if (FlxG.keys.justPressed.F3)
+        super.update(elapsed);
+
+        if (Controls.FPS_COUNTER)
             setMode();
     }
 
@@ -153,42 +150,13 @@ class DebugCounter extends Sprite
         final field:DebugField = new DebugField(func);
         field.y += currentHeight;
 
-        addChild(field);
+        add(field);
 
         fields.push(field);
 
         currentHeight += field.height + 5;
 
         return field;
-    }
-
-    public function update(_)
-    {
-        for (i in 0...numChildren)
-        {
-            final child = getChildAt(i);
-
-            if (child.visible && child is DebugField)
-                cast(child, DebugField).update();
-        }
-    }
-
-    public function destroy()
-    {
-        for (i in 0...numChildren)
-        {
-            final child = getChildAt(i);
-
-            if (child is DebugField)
-                cast(child, DebugField).destroy();
-
-            removeChild(child);
-        }
-        
-        graphics.clear();
-        
-        FlxG.stage.removeEventListener('keyDown', keyDown);
-        FlxG.stage.removeEventListener('enterFrame', update);
     }
 
     function getFunction(daClass:String, daVar:String):Void -> String
@@ -199,7 +167,7 @@ class DebugCounter extends Sprite
         var obj:Dynamic = Type.resolveClass(daClass);
 
         if (obj == null)
-            return function() return daClass + '.' + daVar;
+            return () -> daClass + '.' + daVar;
         
         return () -> getRecursiveProperty(obj, daVar.split('.'));
     }

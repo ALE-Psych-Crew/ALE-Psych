@@ -7,13 +7,14 @@ import funkin.substates.ModsMenuSubState;
 
 import core.states.MainState;
 
-import core.audio.SoundTray;
+import core.objects.GameObject;
 
 import api.DesktopAPI;
 
 class Game extends FlxGame
 {
-	public var soundTraySprite:SoundTray;
+	public var soundTraySprite:GameObject;
+	public var debugTray:GameObject;
 
 	override public function new()
 		super(1280, 720, MainState, 120, 120, true, false);
@@ -53,8 +54,5 @@ class Game extends FlxGame
 			visibleConsole = true;
 		}
 		#end
-
-		if (soundTraySprite != null)
-			soundTraySprite.update(FlxG.elapsed);
 	}
 }

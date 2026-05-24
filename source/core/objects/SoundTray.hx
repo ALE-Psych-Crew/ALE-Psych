@@ -1,23 +1,10 @@
-package core.audio;
+package core.objects;
 
-import openfl.display.BitmapData;
 import openfl.display.Bitmap;
-import openfl.display.Sprite;
-import openfl.utils.Assets;
 import openfl.Lib;
 
-class SoundTray extends Sprite
+class SoundTray extends GameObject
 {
-    function createBitmap(img:Dynamic)
-    {
-        final bitmap = new Bitmap(Assets.getBitmapData('images/soundTray/' + img + '.png'));
-        bitmap.smoothing = true;
-
-        addChild(bitmap);
-
-        return bitmap;
-    }
-
     final bars:Array<Bitmap> = [];
 
     public function new()
@@ -25,12 +12,12 @@ class SoundTray extends Sprite
         super();
 
         final bg = createBitmap('bg');
-        addChild(bg);
+        add(bg);
 
         final text = createBitmap('text');
         text.x = bg.width / 2 - text.width / 2;
         text.y = bg.height + 5;
-        addChild(text);
+        add(text);
 
         var offset:Float = 0;
 
@@ -48,7 +35,7 @@ class SoundTray extends Sprite
 
             bars.push(bar);
 
-            addChild(bar);
+            add(bar);
         }
 
         for (bar in bars)
@@ -66,8 +53,10 @@ class SoundTray extends Sprite
 
     var timer:Float = 0;
 
-    public function update(elapsed:Float)
+    override function update(elapsed:Float)
     {
+        super.update(elapsed);
+
         if (Controls.MUTE)
         {
             FlxG.sound.muted = !FlxG.sound.muted;
