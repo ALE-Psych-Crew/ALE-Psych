@@ -488,7 +488,7 @@ class Formatter
         return returnValue;
     }
 
-    public static function getSong(name:String, difficulty:String):ALESong
+    public static function getChart(name:String, difficulty:String):ALESong
     {
         final path:String = 'songs/' + name + '/charts/' + difficulty + '.json';
 
