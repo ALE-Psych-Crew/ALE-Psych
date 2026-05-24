@@ -198,4 +198,14 @@ class Controls
     
     public static function anyJustReleased(keys:Array<FlxKey>)
         return FlxG.keys.anyJustReleased(keys);
+
+	public static function getKeybind(groupID:String, id:String):Null<Array<Int>>
+	{
+		final group = Reflect.field(ClientPrefs.controls, groupID) ?? Reflect.field(ClientPrefs.customControls, groupID);
+
+		if (group == null)
+			return null;
+
+		return cast Reflect.getProperty(group, id);
+	}
 }

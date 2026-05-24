@@ -39,7 +39,6 @@ class ExtensibleMacro
             'funkin.visuals.shaders.RuntimeShader',
             'funkin.visuals.shaders.FXShader',
             'funkin.visuals.objects',
-            'funkin.modchart',
             'funkin.visuals',
 
             'scripting.lua.LuaPresetBase',
@@ -54,7 +53,9 @@ class ExtensibleMacro
 
             'animate.FlxAnimateAssets',
 
-            'funkin.visuals.objects.Alphabet'
+            'funkin.visuals.objects.Alphabet',
+            'funkin.visuals.objects.Letter',
+            'funkin.visuals.objects.Bar'
         ];
 
         final forceOverride:Array<String> = [

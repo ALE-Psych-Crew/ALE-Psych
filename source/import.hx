@@ -47,6 +47,7 @@ import core.substates.ScriptedSubState;
 import core.substates.SubState;
 
 import funkin.visuals.objects.FunkinSprite;
+import funkin.visuals.objects.Bopper;
 
 import funkin.states.CustomState;
 

@@ -99,8 +99,10 @@ class ImportsMacro
 
             'funkin.visuals.objects',
             'funkin.visuals.shaders',
-            'funkin.states',
+            'funkin.visuals.game',
+            'funkin.visuals',
             'funkin.substates',
+            'funkin.states',
             
             'scripting.haxe'
         ];
