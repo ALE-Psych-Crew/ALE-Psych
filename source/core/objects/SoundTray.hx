@@ -98,5 +98,12 @@ class SoundTray extends GameObject
         timer = 1;
 
         CoolUtil.playSound('volume');
+
+		if (FlxG.save.isBound)
+		{
+			FlxG.save.data.mute = FlxG.sound.muted;
+			FlxG.save.data.volume = FlxG.sound.volume;
+			FlxG.save.flush();
+		}
     }
 }
