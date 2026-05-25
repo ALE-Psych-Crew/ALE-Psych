@@ -194,7 +194,7 @@ class Formatter
                 path: 'strumLines',
                 format: FormatterType.STRUMLINE.format(),
                 fileCheck: (json) -> {
-                    for (obj in [[json.strums, 'strums'], [json.notes, 'notes'], [json.splashes, 'splashes']])
+                    for (obj in [[json.notes, 'notes'], [json.splashes, 'splashes']])
                         if (!Paths.exists('data/' + obj[1] + '/' + obj[0] + '.json'))
                             return false;
 

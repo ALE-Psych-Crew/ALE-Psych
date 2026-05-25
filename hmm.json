@@ -13,7 +13,12 @@
         {
             "name": "lime",
             "type": "haxelib",
-            "version": "8.3.1"
+            "version": "8.3.2"
+        },
+        {
+            "name": "openfl",
+            "type": "haxelib",
+            "version": "9.5.2"
         },
         {
             "name": "flixel-animate",
@@ -26,11 +31,6 @@
             "type": "git",
             "url": "https://github.com/TheZoroForce240/FlxSoundFilters",
             "ref": "a89bb537684111a6ff85737981f4b2d8ef4b4f68"
-        },
-        {
-            "name": "openfl",
-            "type": "haxelib",
-            "version": "9.5.1"
         },
         {
             "name": "flixel",
