@@ -520,7 +520,7 @@ class Formatter
                                     x: 92,
                                     y: 50
                                 },
-                                rightToLeft: i == 1,
+                                leftToRight: i == 1,
                                 visible: i != 0,
                                 characters: [[psychSong.gfVersion, psychSong.player2, psychSong.player1][i]],
                                 type: cast ['extra', 'opponent', 'player'][i]
