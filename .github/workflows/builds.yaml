@@ -21,7 +21,7 @@ jobs:
             build_cmd: haxelib run lime build windows
             extra_libs:
             pre_build_commands:
-            artifact_path: export/release/windows/bin
+            artifact_path: export/windows/bin
             
     steps:
       - name: Pull the New Commit
