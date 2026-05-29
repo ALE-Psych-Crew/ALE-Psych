@@ -117,6 +117,8 @@ class Main extends Sprite
 
 		Conductor.destroy();
 
+		RGBShader.destroy();
+
 		game.soundTraySprite?.destroy();
 		game.soundTraySprite = null;
 
