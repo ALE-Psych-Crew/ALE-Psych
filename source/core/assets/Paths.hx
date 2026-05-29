@@ -296,8 +296,8 @@ class Paths
 	public static function inst(route:String, ?permanent:Bool, ?missingPrint:Bool):Sound
 		return audio(route + '/audios/Inst', permanent, missingPrint);
 
-	public static function voices(route:String, ?postfix:String = null, ?permanent:Bool, ?missingPrint:Bool):Sound
-		return audio(route + '/audios/Voices' + (postfix ?? ''), permanent, missingPrint);
+	public static function voices(route:String, ?postfix:String, ?permanent:Bool, ?missingPrint:Bool):Sound
+		return audio(route + '/audios/Voices' + (postfix == null ? '' : '-' + postfix), permanent, missingPrint);
 
     // Data
 
