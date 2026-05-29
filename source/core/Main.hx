@@ -20,8 +20,6 @@ import api.DesktopAPI;
 import flixel.input.keyboard.FlxKey;
 import flixel.FlxGame;
 
-import funkin.visuals.shaders.RGBShader;
-
 import haxe.CallStack;
 
 import utils.Formatter;
@@ -117,8 +115,6 @@ class Main extends Sprite
 
 		Conductor.destroy();
 
-		RGBShader.destroy();
-
 		game.soundTraySprite?.destroy();
 		game.soundTraySprite = null;
 
@@ -172,8 +168,6 @@ class Main extends Sprite
 		Conductor.init();
 
 		Formatter.init();
-
-		RGBShader.init();
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());

@@ -45,28 +45,4 @@ class RGBShader extends FXShader
         this.b = b;
         this.multiplier = multiplier;
     }
-
-    public static function init()
-    {
-        reset();
-
-        FlxG.signals.preStateSwitch.add(reset);
-    }
-
-    public static function destroy()
-        FlxG.signals.preStateSwitch.remove(reset);
-
-    static var cache:Array<RGBShader>;
-
-    public static function get(index:Int)
-    {
-        final shader:RGBShader = cache[index] ?? new RGBShader();
-
-        cache[index] ??= shader;
-
-        return shader;
-    }
-
-    static function reset()
-        cache = [];
 }
