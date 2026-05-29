@@ -52,7 +52,7 @@ class WaveShader extends FXShader
         return speed;
     }
 
-    public function new(target:FlxSprite)
+    public function new()
     {
         super('default/wave');
 
