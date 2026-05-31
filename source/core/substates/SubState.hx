@@ -6,11 +6,21 @@ class SubState extends FlxSubState
 {
     public var subCamera:Camera;
 
+    var allowCamerasConfig:Bool = true;
+
     override function create()
     {
         super.create();
-		
-		FlxG.cameras.add(subCamera = new Camera(), false);
+
+        if (allowCamerasConfig)
+            initCameras();
+    }
+
+    function initCameras()
+    {
+        subCamera = new Camera();
+
+		FlxG.cameras.add(subCamera, false);
     }
 
 	override function destroy()

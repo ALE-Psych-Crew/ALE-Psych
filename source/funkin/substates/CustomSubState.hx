@@ -14,7 +14,9 @@ class CustomSubState extends ScriptedSubState
     }
 
     override public function create()
-    {        
+    {
+        allowCamerasConfig = false;
+
         super.create();
 
         loadScript('scripts/substates/' + scriptName, haxeArguments);
@@ -35,7 +37,17 @@ class CustomSubState extends ScriptedSubState
 
         scriptCallbackCall(ON, 'Create');
 
+        initCameras();
+
         scriptCallbackCall(POST, 'Create');
+    }
+
+    override function initCameras()
+    {
+        if (scriptCallbackCall(ON, 'CamerasInit'))
+            super.initCameras();
+
+        scriptCallbackCall(POST, 'CamerasInit');
     }
 
     override public function update(elapsed:Float)

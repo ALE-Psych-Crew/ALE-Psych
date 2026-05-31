@@ -15,6 +15,8 @@ class CustomState extends ScriptedState
 
     override function create()
     {
+        allowCamerasConfig = false;
+        
         super.create();
 
         loadScript('scripts/states/' + scriptName, haxeArguments);
@@ -22,8 +24,18 @@ class CustomState extends ScriptedState
         loadScript('scripts/states/global', haxeArguments);
         
         scriptCallbackCall(ON, 'Create');
+
+        initCameras();
         
         scriptCallbackCall(POST, 'Create');
+    }
+
+    override function initCameras()
+    {
+        if (scriptCallbackCall(ON, 'CamerasInit'))
+            super.initCameras();
+
+        scriptCallbackCall(POST, 'CamerasInit');
     }
     
     override public function update(elapsed:Float)

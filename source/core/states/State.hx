@@ -13,18 +13,14 @@ class State extends FlxState
     function get_updating():Bool
         return subState == null || persistentUpdate || FlxState.transitioning;
 
+    var allowCamerasConfig:Bool = true;
+
     override function create()
     {
         super.create();
 
-		camGame = new Camera();
-		
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.setDefaultDrawTarget(camGame, true);
-        
-		camHUD = new Camera();
-		
-		FlxG.cameras.add(camHUD, false);
+        if (allowCamerasConfig)
+            initCameras();
         
         if (CoolVars.skipTransOut)
         {
@@ -37,9 +33,21 @@ class State extends FlxState
         }
     }
 
+    function initCameras()
+    {
+		camGame = new Camera();
+		
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+        
+		camHUD = new Camera();
+		
+		FlxG.cameras.add(camHUD, false);
+    }
+
 	override function tryUpdate(elapsed:Float):Void
 	{
-		if (persistentUpdate || (subState == null || FlxState.transitioning))
+		if (persistentUpdate || subState == null || FlxState.transitioning)
 			update(elapsed);
 
 		if (_requestSubStateReset)
