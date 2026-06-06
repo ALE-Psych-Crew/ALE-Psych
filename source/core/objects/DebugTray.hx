@@ -76,6 +76,10 @@ class DebugTray extends GameObject
                 '\nChilds: ' + FlxG.game.numChildren;
         });
 
+        final assetsRootsText:String = 'Asset Search Paths\n' + [for (root in Paths.library.roots) '- ' + root + '/'].join('\n');
+
+        addField(() -> assetsRootsText);
+
         for (field in extraFields)
         {
             var funcs:Array<Void -> String> = [];
