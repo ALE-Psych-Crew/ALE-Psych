@@ -93,9 +93,10 @@
 	
 	<!-- _________________________________ Macros ________________________________ -->
 	
-	<haxeflag name="--macro" value="core.macros.ImportsMacro.init()"/>
-	<haxeflag name="--macro" value="core.macros.ExtensibleMacro.init()"/>
 	<haxeflag name="--macro" value="core.macros.FieldsMacro.init()"/>
+	<haxeflag name="--macro" value="core.macros.ImportsMacro.init()"/>
+	<haxeflag name="--macro" value="core.macros.TypedefsMacro.init()"/>
+	<haxeflag name="--macro" value="core.macros.ExtensibleMacro.init()"/>
 
 	<!-- Android -->
 

@@ -9,10 +9,11 @@ class FieldsMacro
     macro public static function init():Void
     {
         for (cls in [
+            'utils.CoolVars',
             'flixel.FlxBasic',
             'flixel.FlxState',
             'flixel.FlxSprite',
-            'utils.CoolVars'
+            'rulescript.types.Typedefs'
         ])
             Compiler.addGlobalMetadata(cls, '@:build(core.macros.FieldsMacro.build())', true);
     }
@@ -130,6 +131,28 @@ class FieldsMacro
 
                     break;
                 }
+
+            case 'rulescript.types.Typedefs':
+                fields = fields.filter(f -> f.name != 'typedefs');
+
+                fields.push({
+                    name: 'get_typedefs',
+                    access: [APrivate, AStatic, AInline],
+                    kind: FFun({
+                        args: [],
+                        ret: macro:Map<String, Dynamic>,
+                        expr: macro return core.macros.TypedefsMacro.list
+                    }),
+                    pos: Context.currentPos()
+                });
+
+                fields.push({
+                    name: 'typedefs',
+                    access: [APrivate, AStatic],
+                    meta: [{ name: ':unreflective', pos: Context.currentPos() }],
+                    kind: FProp('get', 'never', macro:Map<String, Dynamic>, null),
+                    pos: Context.currentPos()
+                });
         }
 
         return fields;
