@@ -10,7 +10,6 @@ import utils.cool.AppUtil;
 
 import openfl.Lib;
 
-@:build(core.macros.CoolVarsMacro.build())
 class CoolVars
 {
 	public static var skipTransIn:Bool = false;

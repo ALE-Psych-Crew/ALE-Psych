@@ -47,22 +47,6 @@ class State extends FlxState implements IState
 		FlxG.cameras.add(camHUD, false);
     }
 
-	override function tryUpdate(elapsed:Float):Void
-	{
-		if (updating)
-			update(elapsed);
-
-		if (_requestSubStateReset)
-		{
-			_requestSubStateReset = false;
-
-			resetSubState();
-		}
-
-        if (subState != null)
-            subState.tryUpdate(elapsed);
-	}
-
 	override function destroy()
 	{
         Paths.clear(allowMemoryCleaning);
