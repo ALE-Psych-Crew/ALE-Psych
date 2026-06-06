@@ -61,6 +61,10 @@ class Conductor
 		safeBeatHit = new FlxTypedSignal<Int -> Void>();
 		safeSectionHit = new FlxTypedSignal<Int -> Void>();
 
+        musicPlay = new FlxTypedSignal<Void -> Void>();
+        musicPause = new FlxTypedSignal<Void -> Void>();
+        musicResume = new FlxTypedSignal<Void -> Void>();
+        musicStop = new FlxTypedSignal<Void -> Void>();
         musicComplete = new FlxTypedSignal<Void -> Void>();
 
         FlxG.signals.preUpdate.add(update);
@@ -94,8 +98,23 @@ class Conductor
         safeSectionHit?.removeAll();
         safeSectionHit = null;
 
+        musicPlay?.removeAll();
+        musicPlay = null;
+
+        musicPause?.removeAll();
+        musicPause = null;
+
+        musicResume?.removeAll();
+        musicResume = null;
+
+        musicStop?.removeAll();
+        musicStop = null;
+
         musicComplete?.removeAll();
         musicComplete = null;
+
+        musicResync?.removeAll();
+        musicResync = null;
     }
 
     @:unreflective
@@ -123,18 +142,50 @@ class Conductor
         };
 
         reset(bpm, stepsPerBeat, beatsPerSection);
+
+        musicPlay?.dispatch();
+    }
+
+    public static function pause()
+    {
+        music?.pause();
+
+        for (sound in synchronizedSounds)
+            sound?.pause();
+
+        musicPause?.dispatch();
+    }
+
+
+    public static function resume()
+    {
+        music?.resume();
+
+        for (sound in synchronizedSounds)
+            sound?.resume();
+
+        synchronize();
+
+        musicResume?.dispatch();
     }
 
     public static function stop()
     {
-        if (FlxG.sound.music == null)
-            return;
+        music?.stop();
 
-        music.stop();
+        music?.destroy();
 
-        music.destroy();
+        music = null;
 
-        FlxG.sound.music = null;
+        for (sound in synchronizedSounds.copy())
+        {
+            sound?.stop();
+            sound?.destroy();
+
+            synchronizedSounds.remove(sound);
+        }
+
+        musicStop?.dispatch();
     }
 
     public static function reset(?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
@@ -151,8 +202,6 @@ class Conductor
         time = curStep = safeStep = curBeat = safeBeat = curSection = safeSection = 0;
     }
 
-    public static var musicComplete:FlxTypedSignal<Void -> Void>;
-
 	public static var curStep:Int = 0;
 	public static var stepHit:FlxTypedSignal<Int -> Void>;
 	public static var safeStep:Int = 0;
@@ -167,6 +216,13 @@ class Conductor
 	public static var sectionHit:FlxTypedSignal<Int -> Void>;
 	public static var safeSection:Int = 0;
 	public static var safeSectionHit:FlxTypedSignal<Int -> Void>;
+
+    public static var musicPlay:FlxTypedSignal<Void -> Void>;
+    public static var musicPause:FlxTypedSignal<Void -> Void>;
+    public static var musicResume:FlxTypedSignal<Void -> Void>;
+    public static var musicStop:FlxTypedSignal<Void -> Void>;
+    public static var musicComplete:FlxTypedSignal<Void -> Void>;
+    public static var musicResync:FlxTypedSignal<Void -> Void>;
 
     public static function update()
     {
@@ -199,6 +255,8 @@ class Conductor
 
         for (sound in synchronizedSounds)
             sound.time = time;
+
+        musicResync?.dispatch();
     }
 
     public static function stepHandler()

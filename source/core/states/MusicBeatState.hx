@@ -1,182 +1,40 @@
 package core.states;
 
+import core.audio.MusicStateEventsDispatcher;
+
 import core.interfaces.IMusicState;
-import core.interfaces.IMusicObject;
 
 class MusicBeatState extends State implements IMusicState
 {
-    override function create()
-    {
-        addConductorListeners();
+    var musicEventsDispatcher:MusicStateEventsDispatcher;
 
-        super.create();
+    public function new()
+    {
+        super();
+
+        musicEventsDispatcher = new MusicStateEventsDispatcher(this);
     }
 
     override function destroy()
     {
-        removeConductorListeners();
+        musicEventsDispatcher.destroy();
 
         super.destroy();
     }
 
-    var addedConductorListeners:Bool = false;
+    public function stepHit(curStep:Int) {}
+    public function safeStepHit(safeStep:Int) {}
 
-    public function addConductorListeners()
-    {
-        if (addedConductorListeners)
-            return;
+    public function beatHit(curBeat:Int) {}
+    public function safeBeatHit(safeBeat:Int) {}
 
-        addedConductorListeners = true;
+    public function sectionHit(curSection:Int) {}
+    public function safeSectionHit(safeSection:Int) {}
 
-        removedConductorListeners = false;
-
-        Conductor.stepHit?.add(onStepHit);
-        Conductor.safeStepHit?.add(onSafeStepHit);
-
-        Conductor.beatHit?.add(onBeatHit);
-        Conductor.safeBeatHit?.add(onSafeBeatHit);
-
-        Conductor.sectionHit?.add(onSectionHit);
-        Conductor.safeSectionHit?.add(onSafeSectionHit);
-
-        Conductor.musicComplete?.add(onMusicComplete);
-    }
-
-    var removedConductorListeners:Bool = false;
-
-    public function removeConductorListeners()
-    {
-        if (removedConductorListeners)
-            return;
-
-        removedConductorListeners = true;
-
-        addedConductorListeners = false;
-
-        Conductor.stepHit?.remove(onStepHit);
-        Conductor.safeStepHit?.remove(onSafeStepHit);
-
-        Conductor.beatHit?.remove(onBeatHit);
-        Conductor.safeBeatHit?.remove(onSafeBeatHit);
-
-        Conductor.sectionHit?.remove(onSectionHit);
-        Conductor.safeSectionHit?.remove(onSafeSectionHit);
-
-        Conductor.musicComplete?.remove(onMusicComplete);
-    }
-
-    function onStepHit(step:Int):Void
-    {
-        if (!updating)
-            return;
-
-        stepHit(step);
-    }
-
-    function onSafeStepHit(step:Int):Void
-    {
-        if (!updating)
-            return;
-
-        safeStepHit(step);
-    }
-
-    function onBeatHit(beat:Int):Void
-    {
-        if (!updating)
-            return;
-
-        beatHit(beat);
-    }
-
-    function onSafeBeatHit(beat:Int):Void
-    {
-        if (!updating)
-            return;
-
-        safeBeatHit(beat);
-    }
-
-    function onSectionHit(section:Int):Void
-    {
-        if (!updating)
-            return;
-
-        sectionHit(section);
-    }
-
-    function onSafeSectionHit(section:Int):Void
-    {
-        if (!updating)
-            return;
-
-        safeSectionHit(section);
-    }
-
-    function onMusicComplete():Void
-    {
-        if (!updating)
-            return;
-
-        musicComplete();
-    }
-    
-    function recursiveMusicHit(obj:Dynamic, handler:IMusicObject->Void)
-    {
-        if (obj is IMusicObject)
-            handler(cast obj);
-        else if (obj is FlxTypedGroup)
-            cast(obj, FlxTypedGroup<Dynamic>).forEachAlive((subObj) -> {
-                recursiveMusicHit(subObj, handler);
-            });
-    }
-
-    public function stepHit(curStep:Int)
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.stepHit != null) m.stepHit(curStep));
-        });
-    }
-
-    public function safeStepHit(safeStep:Int)
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.safeStepHit != null) m.safeStepHit(safeStep));
-        });
-    }
-
-    public function beatHit(curBeat:Int)
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.beatHit != null) m.beatHit(curBeat));
-        });
-    }
-
-    public function safeBeatHit(safeBeat:Int)
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.safeBeatHit != null) m.safeBeatHit(safeBeat));
-        });
-    }
-
-    public function sectionHit(curSection:Int)
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.sectionHit != null) m.sectionHit(curSection));
-        });
-    }
-
-    public function safeSectionHit(safeSection:Int)
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.safeSectionHit != null) m.safeSectionHit(safeSection));
-        });
-    }
-
-    public function musicComplete()
-    {
-        forEachAlive((obj) -> {
-            recursiveMusicHit(obj, m -> if (m.musicComplete != null) m.musicComplete());
-        });
-    }
+    public function musicPlay() {}
+    public function musicPause() {}
+    public function musicResume() {}
+    public function musicStop() {}
+    public function musicComplete() {}
+    public function musicResync() {}
 }

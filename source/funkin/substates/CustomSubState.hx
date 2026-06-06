@@ -120,12 +120,52 @@ class CustomSubState extends ScriptedSubState
         scriptCallbackCall(POST, 'SafeSectionHit', [safeSection]);
     }
 
+    override public function musicPlay()
+    {
+        if (scriptCallbackCall(ON, 'MusicPlay', []))
+            super.musicPlay();
+
+        scriptCallbackCall(POST, 'MusicPlay', []);
+    }
+
+    override public function musicPause()
+    {
+        if (scriptCallbackCall(ON, 'MusicPause', []))
+            super.musicPause();
+
+        scriptCallbackCall(POST, 'MusicPause', []);
+    }
+
+    override public function musicResume()
+    {
+        if (scriptCallbackCall(ON, 'MusicResume', []))
+            super.musicResume();
+
+        scriptCallbackCall(POST, 'MusicResume', []);
+    }
+
+    override public function musicStop()
+    {
+        if (scriptCallbackCall(ON, 'MusicStop', []))
+            super.musicStop();
+
+        scriptCallbackCall(POST, 'MusicStop', []);
+    }
+
     override public function musicComplete()
     {
         if (scriptCallbackCall(ON, 'MusicComplete', []))
             super.musicComplete();
 
         scriptCallbackCall(POST, 'MusicComplete', []);
+    }
+
+    override public function musicResync()
+    {
+        if (scriptCallbackCall(ON, 'MusicResync', []))
+            super.musicResync();
+
+        scriptCallbackCall(POST, 'MusicResync', []);
     }
 
     override public function onFocus()

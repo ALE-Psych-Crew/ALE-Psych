@@ -1,10 +1,12 @@
 package core.states;
 
+import core.interfaces.IState;
+
 import flixel.FlxState;
 
 import cpp.vm.Gc;
 
-class State extends FlxState
+class State extends FlxState implements IState
 {
     public var camGame:Camera;
     public var camHUD:Camera;
@@ -47,7 +49,7 @@ class State extends FlxState
 
 	override function tryUpdate(elapsed:Float):Void
 	{
-		if (persistentUpdate || subState == null || FlxState.transitioning)
+		if (updating)
 			update(elapsed);
 
 		if (_requestSubStateReset)

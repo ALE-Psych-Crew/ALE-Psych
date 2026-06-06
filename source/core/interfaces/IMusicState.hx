@@ -1,28 +1,7 @@
 package core.interfaces;
 
-interface IMusicState
+interface IMusicState extends IState
 {
-    private var addedConductorListeners:Bool;
-
-    public function addConductorListeners():Void;
-
-    private var removedConductorListeners:Bool;
-
-    public function removeConductorListeners():Void;
-
-    private function recursiveMusicHit(obj:Dynamic, handler:IMusicObject -> Void):Void;
-
-    private function onStepHit(step:Int):Void;
-    private function onSafeStepHit(safeStep:Int):Void;
-
-    private function onBeatHit(beat:Int):Void;
-    private function onSafeBeatHit(safeBeat:Int):Void;
-
-    private function onSectionHit(section:Int):Void;
-    private function onSafeSectionHit(safeSection:Int):Void;
-    
-    private function onMusicComplete():Void;
-
     public function stepHit(curStep:Int):Void;
     public function safeStepHit(safeStep:Int):Void;
 
@@ -32,5 +11,10 @@ interface IMusicState
     public function sectionHit(curSection:Int):Void;
     public function safeSectionHit(safeSection:Int):Void;
 
+    public function musicPlay():Void;
+    public function musicPause():Void;
+    public function musicResume():Void;
+    public function musicStop():Void;
     public function musicComplete():Void;
+    public function musicResync():Void;
 }

@@ -12,7 +12,7 @@ import rulescript.Context;
 import scripting.lua.LuaScript;
 #end
 
-interface IScriptedState extends IGroup
+interface IScriptedState extends IState
 {
     public var scripts:Array<IScript>;
 

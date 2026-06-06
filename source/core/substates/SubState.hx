@@ -1,12 +1,18 @@
 package core.substates;
 
+import core.interfaces.IState;
+
 import flixel.FlxSubState;
 
-class SubState extends FlxSubState
+class SubState extends FlxSubState implements IState
 {
     public var subCamera:Camera;
 
     var allowCamerasConfig:Bool = true;
+
+    public var updating(get, never):Bool;
+    function get_updating():Bool
+        return persistentUpdate || subState == null;
 
     override function create()
     {
