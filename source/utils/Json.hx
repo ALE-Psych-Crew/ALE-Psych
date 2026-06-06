@@ -2,12 +2,12 @@ package utils;
 
 import haxe.format.JsonPrinter;
 
-import jsonmod.Json as OGJson;
+import ale.json.Parser;
 
 class Json
 {
     public static function parse(raw:String)
-        return OGJson.parse(raw);
+        return new Parser(raw).parse();
 
     public static function stringify(object:Dynamic, ?space:String)
         return JsonPrinter.print(object, null, space ?? '\t');

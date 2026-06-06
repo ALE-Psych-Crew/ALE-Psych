@@ -1,89 +1,96 @@
 {
-    "dependencies": [
-        {
-            "name": "jsonmod",
-            "type": "haxelib",
-            "version": "1.2.0"
-        },
-        {
-            "name": "hxcpp",
-            "type": "git",
-            "url": "https://github.com/ALE-Psych-Crew/hxcpp"
-        },
-        {
-            "name": "lime",
-            "type": "haxelib",
-            "version": "8.3.2"
-        },
-        {
-            "name": "openfl",
-            "type": "haxelib",
-            "version": "9.5.2"
-        },
-        {
-            "name": "flixel-animate",
-            "type": "git",
-            "url": "https://github.com/MaybeMaru/flixel-animate",
-            "ref": "75870e160677ca4d310df94d775e7fad43c767ae"
-        },
-        {
-            "name": "flxsoundfilters",
-            "type": "git",
-            "url": "https://github.com/TheZoroForce240/FlxSoundFilters",
-            "ref": "a89bb537684111a6ff85737981f4b2d8ef4b4f68"
-        },
-        {
-            "name": "flixel",
-            "type": "haxelib",
-            "version": "6.1.2"
-        },
-        {
-            "name": "flixel-addons",
-            "type": "haxelib",
-            "version": "3.3.2"
-        },
-        {
-            "name": "hxvlc",
-            "type": "haxelib",
-            "version": "2.2.6"
-        },
-        {
-            "name": "sl-windows-api",
-            "type": "git",
-            "url": "https://github.com/Slushi-Github/SL-Windows-API",
-            "ref": "bcc534dc78fc59dc2147b9b9d244a26109d70c67"
-        },
-        {
-            "name": "hscript",
-            "type": "git",
-            "url": "https://github.com/HaxeFoundation/hscript",
-            "ref": "dbe1b4908a71f186a07a706d18c23fb5fea9d51e"
-        },
-        {
-            "name": "rulescript",
-            "type": "git",
-            "url": "https://github.com/Kriptel/RuleScript",
-            "ref": "d9de5ac71473b816f69dc97ec85082947ca230aa"
-        },
-        {
-            "name": "hxluajit",
-            "type": "haxelib",
-            "version": "1.0.5"
-        },
-        {
-            "name": "hxluajit-wrapper",
-            "type": "haxelib",
-            "version": "1.0.0"
-        },
-        {
-            "name": "ale-ui",
-            "type": "haxelib",
-            "version": "1.0.8"
-        },
-        {
-            "name": "ale-rulescript-wrapper",
-            "type": "haxelib",
-            "version": "1.0.3"
-        }
-    ]
+	"dependencies": [
+		{
+			"name": "ale-rulescript-wrapper",
+			"type": "haxelib",
+			"version": "1.0.3"
+		},
+		{
+			"name": "ale-json",
+			"type": "haxelib",
+			"version": "1.0.0"
+		},
+		{
+			"name": "ale-ui",
+			"type": "haxelib",
+			"version": "1.0.8"
+		},
+		{
+			"name": "flixel",
+			"type": "haxelib",
+			"version": "6.1.2"
+		},
+		{
+			"name": "flixel-addons",
+			"type": "haxelib",
+			"version": "3.3.2"
+		},
+		{
+			"name": "flixel-animate",
+			"type": "git",
+			"dir": null,
+			"ref": "75870e160677ca4d310df94d775e7fad43c767ae",
+			"url": "https://github.com/MaybeMaru/flixel-animate"
+		},
+		{
+			"name": "flxsoundfilters",
+			"type": "git",
+			"dir": null,
+			"ref": "a89bb537684111a6ff85737981f4b2d8ef4b4f68",
+			"url": "https://github.com/TheZoroForce240/FlxSoundFilters"
+		},
+		{
+			"name": "hscript",
+			"type": "git",
+			"dir": null,
+			"ref": "dbe1b4908a71f186a07a706d18c23fb5fea9d51e",
+			"url": "https://github.com/HaxeFoundation/hscript"
+		},
+		{
+			"name": "hxcpp",
+			"type": "git",
+			"dir": null,
+			"ref": null,
+			"url": "https://github.com/ALE-Psych-Crew/hxcpp"
+		},
+		{
+			"name": "hxluajit",
+			"type": "haxelib",
+			"version": "1.0.5"
+		},
+		{
+			"name": "hxluajit-wrapper",
+			"type": "haxelib",
+			"version": "1.0.0"
+		},
+		{
+			"name": "hxvlc",
+			"type": "haxelib",
+			"version": "2.2.6"
+		},
+		{
+			"name": "lime",
+			"type": "haxelib",
+			"version": "8.3.2"
+		},
+		{
+			"name": "openfl",
+			"type": "haxelib",
+			"version": "9.5.2"
+		},
+		{
+			"name": "rulescript",
+			"type": "git",
+			"dir": null,
+			"ref": "d9de5ac71473b816f69dc97ec85082947ca230aa",
+			"url": "https://github.com/Kriptel/RuleScript"
+		},
+		{
+			"name": "sl-windows-api",
+			"type": "git",
+			"dir": null,
+			"ref": "bcc534dc78fc59dc2147b9b9d244a26109d70c67",
+			"url": "https://github.com/Slushi-Github/SL-Windows-API"
+		}
+	]
 }

@@ -40,8 +40,6 @@
 
 	<!-- Libraries -->
 
-	<haxelib name="jsonmod"/>
-
 	<haxelib name="flixel"/>
 	<haxelib name="flixel-addons"/>
 	<haxelib name="flixel-animate"/>
@@ -57,6 +55,7 @@
 	<haxelib name="hxluajit-wrapper" if="ALLOW_LUA"/>
 
 	<haxelib name="ale-ui"/>
+	<haxelib name="ale-json"/>
 	<haxelib name="ale-rulescript-wrapper" if="ALLOW_HSCRIPT"/>
 	
 	<!-- Flags -->
