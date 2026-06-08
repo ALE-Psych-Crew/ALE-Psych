@@ -2,6 +2,13 @@ package api;
 
 import openfl.Lib;
 
+/**
+ * A simple list of functions that connect to the operating system API
+ * Designed for Desktop Devices
+ * 
+ * Most of the functions are located in the Slushi Windows API library
+ * @see https://github.com/Slushi-Github/SL-Windows-API/
+ */
 @:build(core.macros.FunctionsMergeMacro.build(
 	[
 		'winapi.WindowsAPI',
@@ -15,6 +22,11 @@ import openfl.Lib;
 ))
 class DesktopAPI 
 {
+	/**
+	 * Set the window name for the API
+	 * 
+	 * Useful when you rename the window and use any of this class's functions before the game updates the window name in the API
+	 */
 	public static function setWindowTitle()
 	{
 		#if ALLOW_WINDOWS_API
@@ -22,6 +34,9 @@ class DesktopAPI
 		#end
 	}
 
+	/**
+	 * Prevents the game window from appearing out of place when the screen scale is changed
+	 */
 	public static function setDPIAware()
 	{
 		#if ALLOW_WINDOWS_API

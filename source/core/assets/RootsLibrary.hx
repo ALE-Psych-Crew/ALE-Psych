@@ -12,10 +12,23 @@ import lime.text.Font;
 import sys.FileSystem;
 import sys.io.File;
 
+/**
+ * A utility that overrides the OpenFL/Lime Asset Library so that it uses `sys.io.File` and `sys.FileSystem` instead
+ * 
+ * It also searches for the file(s) in the specified folders
+ */
 class RootsLibrary extends AssetLibrary
 {
+    /**
+     * Specified search folders
+     */
     public final roots:Array<String>;
 
+    /**
+     * This creates the modified asset library
+     * 
+     * @param roots Specified search folders
+     */
     public function new(roots:Array<String>)
     {
         this.roots = roots;
@@ -55,6 +68,7 @@ class RootsLibrary extends AssetLibrary
         return path == null ? null : File.getContent(path);
     }
 
+    @:dox(hide)
     public function resolve<T>(id:String, method:Bytes -> T):T
     {
         final bytes:Bytes = getBytes(id);

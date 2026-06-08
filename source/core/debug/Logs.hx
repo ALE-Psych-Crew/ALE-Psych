@@ -9,10 +9,24 @@ import core.structures.PrintConfig;
 
 import winapi.WindowsAPI.MessageBoxIcon;
 
+/**
+ * A utility that includes several debugging tools
+ */
 class Logs
 {
+    /**
+     * Map showing how a certain type of print should be printed
+     */
     public static var config:Map<String, PrintConfig> = null;
 
+    /**
+     * Prints text to the console and on the screen 
+     * 
+     * @param text Text to print
+     * @param type Print type
+     * @param allowTrace This determines whether or not the text should be printed to the console
+     * @param allowPrint This determines whether or not the text should be displayed on the screen
+     */
     public static function debugTrace(text:Dynamic, ?type:String = PrintType.TRACE, ?allowTrace:Bool = true, ?allowPrint:Bool = true, ?pos:PosInfos)
     {
         final data:PrintConfig = config.get(type);
@@ -27,6 +41,12 @@ class Logs
 			debugPrint(text, type);
     }
 
+	/**
+	 * This prints text on the screen
+     * 
+     * @param text Text to print
+     * @param type Print type
+	 */
 	public static function debugPrint(text:Dynamic, ?type:PrintType = PrintType.TRACE)
     {
         if (!CoolVars.meta.developerMode || !CoolVars.meta.debugPrint)
@@ -40,9 +60,23 @@ class Logs
 		Main.debugPrintPlugin?.print(text, data.title, data.color);
     }
 
+    /**
+     * This converts a FlxColor into a `String` that is displayed in color in the console
+     * 
+     * @param text Text to color
+     * @param color Text color
+     * @return Resulting `String`
+     */
     public static function colorString(text:String, color:FlxColor):String
 		return '\x1b[38;2;' + color.red + ';' + color.green + ';' + color.blue + 'm' + text + '\x1b[0m';
 
+    /**
+     * This displays text in the console and in a window separate from the game window
+     * 
+     * @param title Window Title
+     * @param message Text
+     * @param icon Window icon (available on Windows only)
+     */
     public static function popUp(title:String, message:String, ?icon:MessageBoxIcon = INFORMATION):Void
     {
         debugTrace(title + ' | ' + message, POP_UP);
@@ -54,6 +88,13 @@ class Logs
         #end
     }
 
+	/**
+	 * Helps determine how long it takes for a function to execute
+     * 
+	 * @param func Selected function
+	 * @param title Title of the text
+	 * @return Time taken by the function
+	 */
 	public static function benchmark(func:Void -> Void, ?title:String):Float
 	{
 		final initial:Float = Timer.stamp();
@@ -72,6 +113,7 @@ class Logs
 		return result;
 	}
 
+    @:dox(hide)
     public static function init()
     {
         config = [

@@ -2,6 +2,9 @@ package core.debug;
 
 import sys.thread.Thread;
 
+/**
+ * Utility that detects whether any of the specified files have been modified; if so, it will reset the current state
+ */
 class HotReloading
 {
     static var files:Array<String> = null;
@@ -10,6 +13,7 @@ class HotReloading
 
     static var times:Map<String, Float> = null;
 
+    @:dox(hide)
     public static function init()
     {
         files = [];
@@ -44,16 +48,30 @@ class HotReloading
         FlxG.signals.preStateSwitch.add(reset);
     }
 
+    @:dox(hide)
     public static function destroy()
         FlxG.signals.preStateSwitch.remove(reset);
 
-    public static function add(file:String)
+    /**
+     * This adds a file so that it can be detected
+     * 
+     * @param file 
+     */
+    public static function add(file:String):Void
         if (Paths.exists(file))
             files.push(file);
 
-    public static function remove(file:String)
+    /**
+     * This removes a file so that it is no longer detected
+     * 
+     * @param file 
+     */
+    public static function remove(file:String):Void
         files.remove(file);
 
-    static function reset()
+    /**
+     * This removes all files to be detected
+     */
+    static function reset():Void
         files = [];
 }

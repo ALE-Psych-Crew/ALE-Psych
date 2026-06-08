@@ -6,10 +6,20 @@ import core.interfaces.IMusicState;
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
 import flixel.group.FlxGroup.FlxTypedGroup;
 
+/**
+ * This class helps connect Conductor to a FlxState with callbacks related to the game's music
+ * 
+ * It was created to avoid copying and pasting the same code between MusicBeatState and MusicBeatSubState
+ */
 class MusicStateEventsDispatcher implements IFlxDestroyable
 {
     final parent:IMusicState;
 
+    /**
+     * This creates the event handler
+     * 
+     * @param parent State with callbacks
+     */
     public function new(parent:IMusicState)
     {
         this.parent = parent;
