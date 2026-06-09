@@ -10,7 +10,10 @@
 -lib flixel-addons
 -lib flixel-animate
 -lib flxsoundfilters
+-lib hxvlc
 -lib sl-windows-api
+-lib hxluajit
+-lib hxluajit-wrapper
 -lib rulescript
 -lib ale-ui
 -lib ale-json
