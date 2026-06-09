@@ -3,10 +3,19 @@ package core.objects;
 import openfl.display.Bitmap;
 import openfl.Lib;
 
+/**
+ * A tray that displays the current volume whenever it is changed
+ */
 class SoundTray extends GameObject
 {
+    /**
+     * Volume bars
+     */
     final bars:Array<Bitmap> = [];
 
+    /**
+     * This creates the volume tray
+     */
     public function new()
     {
         super();
@@ -51,6 +60,9 @@ class SoundTray extends GameObject
         alpha = 0;
     }
 
+    /**
+     * Time remaining until the tray retracts (in seconds)
+     */
     var timer:Float = 0;
 
     override function update(elapsed:Float)
@@ -88,6 +100,9 @@ class SoundTray extends GameObject
 		x = Lib.current.stage.stageWidth / 2 - width / 2;
     }
 
+    /**
+     * This shows the tray
+     */
     function display()
     {
         final funcVal:Int = FlxG.sound.muted ? 0 : Math.round(FlxG.sound.volume * 10);

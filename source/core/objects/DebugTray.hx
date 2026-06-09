@@ -10,10 +10,40 @@ import api.DesktopAPI;
 import cpp.vm.Gc;
 #end
 
+/**
+ * This is the primary source of information for debugging, including:
+ * 
+ * 1. Frames per Second
+ * 2. Memory Usage
+ * 
+ * 3. Current Engine Version
+ * 4. Online Engine Version
+ * 5. Current Engine Commit
+ * 6. Compilation Date
+ * 
+ * 7. Song Position
+ * 8. Song BPM
+ * 9. Song Step
+ * 10. Song Beat
+ * 11. Song Section
+ * 12. Time Signature
+ * 
+ * 13. Current State
+ * 14. Current Substate
+ * 15. Number of Objects
+ * 16. Number of Cameras
+ * 17. Number of Flixel Children
+ */
 class DebugTray extends GameObject
 {
+    /**
+     * A special category for FPS games, as they behave slightly differently from other games
+     */
     public final fpsField:DebugField;
 
+    /**
+     * This creates the tray with the information
+     */
     public function new()
     {
         super();
@@ -114,10 +144,25 @@ class DebugTray extends GameObject
         setMode();
     }
 
+    /**
+     * Tray fields
+     */
     public var fields:Array<DebugField> = [];
 
+    /**
+     * Current tray mode
+     * 
+     * 0. Show only FPS without background
+     * 1. Show all fields with their backgrounds
+     * 2. Hide all fields
+     */
     var currentMode:Int = -1;
 
+    /**
+     * Set the current mode by making the necessary adjustments
+     * 
+     * @param mode If the target mode is not specified, the system will simply proceed to the next mode
+     */
     public function setMode(?mode:Int)
     {
         currentMode = mode ?? (currentMode + 1);
@@ -151,8 +196,15 @@ class DebugTray extends GameObject
             setMode();
     }
 
+    @:dox(hide)
     var currentHeight:Float = 0;
 
+    /**
+     * Just create a field and add it to the tray
+     * 
+     * @param func Function that determines how the text in the new field should be displayed
+     * @return `DebugField` created
+     */
     public function addField(func:Void -> String):DebugField
     {
         final field:DebugField = new DebugField(func);
@@ -167,6 +219,7 @@ class DebugTray extends GameObject
         return field;
     }
 
+    @:dox(hide)
     function getFunction(daClass:String, daVar:String):Void -> String
     {
         if (daClass.length <= 0)
@@ -180,6 +233,7 @@ class DebugTray extends GameObject
         return () -> getRecursiveProperty(obj, daVar.split('.'));
     }
 
+    @:dox(hide)
     function getRecursiveProperty(instance:Dynamic, split:Array<String>):Dynamic
     {
         var result:Dynamic = instance;
