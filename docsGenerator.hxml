@@ -34,4 +34,4 @@
 
 --no-output
 -xml docs.xml
--neko _
+-cpp _
