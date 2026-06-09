@@ -28,6 +28,7 @@
 -D ALLOW_WINDOWS_API
 -D ALLOW_MOBILE_API
 -D ALLOW_ALL_CLASSES
+-D HX_WINDOWS
 
 -D hscriptPos
 -D lime_disable_assets_version
