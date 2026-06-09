@@ -17,11 +17,11 @@
 
 	<define name="ALLOW_HSCRIPT"/>
 	
-	<define name="ALLOW_LUA"/>
+	<define name="ALLOW_LUA" if="cpp"/>
 
 	<define name="ALLOW_CRASH_HANDLER"/>
 
-	<define name="ALLOW_VIDEOS"/>
+	<define name="ALLOW_VIDEOS" if="cpp"/>
 
 	<define name="ALLOW_WINDOWS_API" if="windows cpp"/>
 	

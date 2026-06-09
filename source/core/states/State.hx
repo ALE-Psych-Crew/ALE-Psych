@@ -4,7 +4,9 @@ import core.interfaces.IState;
 
 import flixel.FlxState;
 
+#if cpp
 import cpp.vm.Gc;
+#end
 
 class State extends FlxState implements IState
 {
@@ -68,8 +70,10 @@ class State extends FlxState implements IState
 
     function cleanMemory()
     {
+        #if cpp
         Gc.run(true);
         Gc.compact();
+        #end
 
         FlxG.bitmap.clearUnused();
         FlxG.bitmap.clearCache();

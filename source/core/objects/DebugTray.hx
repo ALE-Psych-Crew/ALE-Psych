@@ -6,7 +6,9 @@ import core.structures.JsonDebugLine;
 
 import api.DesktopAPI;
 
+#if cpp
 import cpp.vm.Gc;
+#end
 
 class DebugTray extends GameObject
 {
@@ -32,6 +34,7 @@ class DebugTray extends GameObject
         fpsField = addField(() -> {
             fps = CoolUtil.fpsLerp(fps, FlxG.elapsed <= 0 ? 0 : 1 / FlxG.elapsed, 0.1);
 
+            #if cpp
             final curMemory:Null<Float> = Gc.memInfo64(Gc.MEM_INFO_USAGE);
 
             if (memory != curMemory && curMemory != null)
@@ -47,8 +50,9 @@ class DebugTray extends GameObject
                     memoryPeakString = memoryString;
                 }
             }
+            #end
 
-            return 'FPS: ' + Math.floor(fps) + ' | GC: ' + memoryString + ' / ' + memoryPeakString +
+            return 'FPS: ' + Math.floor(fps) #if cpp + ' | GC: ' + memoryString + ' / ' + memoryPeakString #end +
                 '\n' + (Paths.mod == null ? 'ALE Psych' : Paths.mod) + (CoolVars.meta.developerMode ? ' - Developer Mode' : '');
         });
 
