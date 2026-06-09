@@ -31,6 +31,9 @@ class Main extends Sprite
 	static function get_game():Game
 		return cast FlxG.game;
 
+	static function main()
+		new Main();
+
 	public function new()
 	{
 		super();
