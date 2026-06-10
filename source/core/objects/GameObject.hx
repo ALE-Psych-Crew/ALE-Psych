@@ -109,7 +109,7 @@ class GameObject extends Sprite
     /**
      * This function is called every time Flixel is updated
      * 
-     * @param elapsed 
+     * @param elapsed Time elapsed since the last frame
      */
     public function update(elapsed:Float) {}
 
