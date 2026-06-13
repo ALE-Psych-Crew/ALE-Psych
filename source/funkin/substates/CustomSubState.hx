@@ -23,6 +23,8 @@ class CustomSubState extends ScriptedSubState
         
         scriptsManager.load('scripts/substates/global');
 
+        scriptsManager.loadFolder('scripts/global');
+
         openCallback = function() {
             scriptsManager.callback(ON, 'Open');
 

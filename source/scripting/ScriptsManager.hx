@@ -79,6 +79,19 @@ class ScriptsManager implements IFlxDestroyable
         #end
     }
 
+    function loadFolder(path:String, ?recursive:Bool = true, ?args:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
+    {
+        for (file in Paths.readDirectory(path, MULTIPLE))
+        {
+            final fullPath:String = path + '/' + file;
+
+            if (Paths.isDirectory(fullPath) && recursive)
+                loadFolder(fullPath, recursive, args #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
+            else if (file.endsWith('.lua') || file.endsWith(RuleScriptGlobal.SCRIPT_EXTENSION))
+                load(fullPath, args #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
+        }
+    }
+
     function set(name:String, value:Dynamic)
         for (script in members)
             script.set(name, value);

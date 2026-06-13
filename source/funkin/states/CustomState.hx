@@ -22,6 +22,8 @@ class CustomState extends ScriptedState
         scriptsManager.load('scripts/states/' + name);
         
         scriptsManager.load('scripts/states/global');
+
+        scriptsManager.loadFolder('scripts/global');
         
         scriptsManager.callback(ON, 'Create');
 

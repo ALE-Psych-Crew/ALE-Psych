@@ -624,10 +624,9 @@ class Paths
      * 
      * @param path Folder path
      * @param type This determines whether to search all available paths or just the first one found
-     * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
      * @return List of files in the folder(s)
      */
-    public static function readDirectory(path:String, ?type:ReadDirectoryType = 'unique', ?missingPrint:Bool):Array<String>
+    public static function readDirectory(path:String, ?type:ReadDirectoryType = 'unique'):Array<String>
     {
         var result:Array<String> = [];
 
