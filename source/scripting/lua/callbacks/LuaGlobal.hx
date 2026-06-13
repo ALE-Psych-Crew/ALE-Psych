@@ -140,7 +140,7 @@ class LuaGlobal extends LuaPresetBase
 
     function globalFunctionLua(name:String)
     {
-        for (script in game.luaScripts)
+        for (script in game.scriptsManager.lua)
         {
             if (script == lua)
                 continue;
@@ -155,7 +155,7 @@ class LuaGlobal extends LuaPresetBase
     #if ALLOW_HSCRIPT
     function globalFunctionHScript(name:String)
     {
-        for (script in game.haxeScripts)
+        for (script in game.scriptsManager.haxe)
         {
             script.set(name, Reflect.makeVarArgs(function(?args:Array<Dynamic>):Dynamic
             {
@@ -172,7 +172,7 @@ class LuaGlobal extends LuaPresetBase
         if (object == null)
             return;
 
-        for (script in game.luaScripts)
+        for (script in game.scriptsManager.lua)
         {
             if (script == lua)
                 continue;
@@ -190,7 +190,7 @@ class LuaGlobal extends LuaPresetBase
         if (object == null)
             return;
 
-        for (script in game.haxeScripts)
+        for (script in game.scriptsManager.haxe)
             if (!script.variables.exists(tag))
                 script.set(tag, object);
     }

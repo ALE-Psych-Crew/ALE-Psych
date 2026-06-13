@@ -4,13 +4,13 @@ import ale.ui.UIUtils;
 
 class CustomState extends ScriptedState
 {
-    public final scriptName:String;
+    public final name:String;
 
-    public function new(scriptName:String, ?haxeArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>)
+    public function new(name:String, ?globalArgs:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
     {
-        super(haxeArguments, luaArguments);
+        super(globalArgs, haxeArgs, luaArgs);
 
-        this.scriptName = scriptName;
+        this.name = name;
     }
 
     override function create()
@@ -19,181 +19,181 @@ class CustomState extends ScriptedState
         
         super.create();
 
-        loadScript('scripts/states/' + scriptName, haxeArguments);
+        scriptsManager.load('scripts/states/' + name);
         
-        loadScript('scripts/states/global', haxeArguments);
+        scriptsManager.load('scripts/states/global');
         
-        scriptCallbackCall(ON, 'Create');
+        scriptsManager.callback(ON, 'Create');
 
         initCameras();
         
-        scriptCallbackCall(POST, 'Create');
+        scriptsManager.callback(POST, 'Create');
     }
 
     override function initCameras()
     {
-        if (scriptCallbackCall(ON, 'CamerasInit'))
+        if (scriptsManager.callback(ON, 'CamerasInit'))
             super.initCameras();
 
-        scriptCallbackCall(POST, 'CamerasInit');
+        scriptsManager.callback(POST, 'CamerasInit');
     }
     
     override public function update(elapsed:Float)
     {
-        if (scriptCallbackCall(ON, 'Update', [elapsed]))
+        if (scriptsManager.callback(ON, 'Update', [elapsed]))
             super.update(elapsed);
 
         if (Controls.RESET && CoolVars.meta.developerMode && !UIUtils.usingInputs)
             reset();
 
-        scriptCallbackCall(POST, 'Update', [elapsed]);
+        scriptsManager.callback(POST, 'Update', [elapsed]);
     }
 
     override public function destroy()
     {
-        scriptCallbackCall(ON, 'Destroy');
+        scriptsManager.callback(ON, 'Destroy');
 
         super.destroy();
 
-        scriptCallbackCall(POST, 'Destroy');
+        scriptsManager.callback(POST, 'Destroy');
 
-        destroyScripts();
+        scriptsManager.destroy();
     }
 
     override public function stepHit(curStep:Int)
     {
-        if (scriptCallbackCall(ON, 'StepHit', [curStep]))
+        if (scriptsManager.callback(ON, 'StepHit', [curStep]))
             super.stepHit(curStep);
 
-        scriptCallbackCall(POST, 'StepHit', [curStep]);
+        scriptsManager.callback(POST, 'StepHit', [curStep]);
     }
 
     override public function beatHit(curBeat:Int)
     {
-        if (scriptCallbackCall(ON, 'BeatHit', [curBeat]))
+        if (scriptsManager.callback(ON, 'BeatHit', [curBeat]))
             super.beatHit(curBeat);
 
-        scriptCallbackCall(POST, 'BeatHit', [curBeat]);
+        scriptsManager.callback(POST, 'BeatHit', [curBeat]);
     }
 
     override public function sectionHit(curSection:Int)
     {
-        if (scriptCallbackCall(ON, 'SectionHit', [curSection]))
+        if (scriptsManager.callback(ON, 'SectionHit', [curSection]))
             super.sectionHit(curSection);
 
-        scriptCallbackCall(POST, 'SectionHit', [curSection]);
+        scriptsManager.callback(POST, 'SectionHit', [curSection]);
     }
 
     override public function safeStepHit(safeStep:Int)
     {
-        if (scriptCallbackCall(ON, 'SafeStepHit', [safeStep]))
+        if (scriptsManager.callback(ON, 'SafeStepHit', [safeStep]))
             super.safeStepHit(safeStep);
 
-        scriptCallbackCall(POST, 'SafeStepHit', [safeStep]);
+        scriptsManager.callback(POST, 'SafeStepHit', [safeStep]);
     }
 
     override public function safeBeatHit(safeBeat:Int)
     {
-        if (scriptCallbackCall(ON, 'SafeBeatHit', [safeBeat]))
+        if (scriptsManager.callback(ON, 'SafeBeatHit', [safeBeat]))
             super.safeBeatHit(safeBeat);
 
-        scriptCallbackCall(POST, 'SafeBeatHit', [safeBeat]);
+        scriptsManager.callback(POST, 'SafeBeatHit', [safeBeat]);
     }
 
     override public function safeSectionHit(safeSection:Int)
     {
-        if (scriptCallbackCall(ON, 'SafeSectionHit', [safeSection]))
+        if (scriptsManager.callback(ON, 'SafeSectionHit', [safeSection]))
             super.safeSectionHit(safeSection);
 
-        scriptCallbackCall(POST, 'SafeSectionHit', [safeSection]);
+        scriptsManager.callback(POST, 'SafeSectionHit', [safeSection]);
     }
 
     override public function musicPlay()
     {
-        if (scriptCallbackCall(ON, 'MusicPlay', []))
+        if (scriptsManager.callback(ON, 'MusicPlay'))
             super.musicPlay();
 
-        scriptCallbackCall(POST, 'MusicPlay', []);
+        scriptsManager.callback(POST, 'MusicPlay');
     }
 
     override public function musicPause()
     {
-        if (scriptCallbackCall(ON, 'MusicPause', []))
+        if (scriptsManager.callback(ON, 'MusicPause'))
             super.musicPause();
 
-        scriptCallbackCall(POST, 'MusicPause', []);
+        scriptsManager.callback(POST, 'MusicPause');
     }
 
     override public function musicResume()
     {
-        if (scriptCallbackCall(ON, 'MusicResume', []))
+        if (scriptsManager.callback(ON, 'MusicResume'))
             super.musicResume();
 
-        scriptCallbackCall(POST, 'MusicResume', []);
+        scriptsManager.callback(POST, 'MusicResume');
     }
 
     override public function musicStop()
     {
-        if (scriptCallbackCall(ON, 'MusicStop', []))
+        if (scriptsManager.callback(ON, 'MusicStop'))
             super.musicStop();
 
-        scriptCallbackCall(POST, 'MusicStop', []);
+        scriptsManager.callback(POST, 'MusicStop');
     }
 
     override public function musicComplete()
     {
-        if (scriptCallbackCall(ON, 'MusicComplete', []))
+        if (scriptsManager.callback(ON, 'MusicComplete'))
             super.musicComplete();
 
-        scriptCallbackCall(POST, 'MusicComplete', []);
+        scriptsManager.callback(POST, 'MusicComplete');
     }
 
     override public function musicResync()
     {
-        if (scriptCallbackCall(ON, 'MusicResync', []))
+        if (scriptsManager.callback(ON, 'MusicResync'))
             super.musicResync();
 
-        scriptCallbackCall(POST, 'MusicResync', []);
+        scriptsManager.callback(POST, 'MusicResync');
     }
 
     override public function onFocus()
     {
-        if (scriptCallbackCall(ON, 'OnFocus'))
+        if (scriptsManager.callback(ON, 'OnFocus'))
             super.onFocus();
 
-        scriptCallbackCall(POST, 'OnFocus');
+        scriptsManager.callback(POST, 'OnFocus');
     }
 
     override public function onFocusLost()
     {
-        if (scriptCallbackCall(ON, 'OnFocusLost'))
+        if (scriptsManager.callback(ON, 'OnFocusLost'))
             super.onFocusLost();
 
-        scriptCallbackCall(POST, 'OnFocusLost');
+        scriptsManager.callback(POST, 'OnFocusLost');
     }
 
     override public function openSubState(substate:flixel.FlxSubState):Void
     {
-        if (scriptCallbackCall(ON, 'OpenSubState', null, [substate]))
+        if (scriptsManager.callback(ON, 'OpenSubState', null, [substate]))
             super.openSubState(substate);
 
-        scriptCallbackCall(POST, 'OpenSubState', null, [substate]);
+        scriptsManager.callback(POST, 'OpenSubState', null, [substate]);
     }
 
     override public function closeSubState():Void
     {
-        if (scriptCallbackCall(ON, 'CloseSubState'))
+        if (scriptsManager.callback(ON, 'CloseSubState'))
             super.closeSubState();
 
-        scriptCallbackCall(POST, 'CloseSubState');
+        scriptsManager.callback(POST, 'CloseSubState');
     }
 
     override public function reset()
     {
         allowMemoryCleaning = false;
 
-        CoolUtil.switchState(new CustomState(scriptName, haxeArguments), true, true);
+        CoolUtil.switchState(new CustomState(name, scriptsManager.globalArguments #if ALLOW_HSCRIPT , scriptsManager.haxeArguments #end #if ALLOW_LUA , scriptsManager.luaArguments #end), true, true);
 
-        debugTrace('Current State: ' + scriptName, RESET_STATE);
+        debugTrace('Current State: ' + name, RESET_STATE);
     }
 }

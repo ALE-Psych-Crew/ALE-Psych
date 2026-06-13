@@ -103,8 +103,8 @@ class DebugTray extends GameObject
         });
 
         addField(() -> {
-            return (FlxG.state is CustomState ? 'Custom State: ' + cast(FlxG.state, CustomState).scriptName : 'State: ' +  Type.getClassName(Type.getClass(FlxG.state))) +
-                '\n' + (FlxG.state.subState is CustomSubState ? 'Custom SubState: ' + cast(FlxG.state.subState, CustomSubState).scriptName : 'SubState: ' + Type.getClassName(Type.getClass(FlxG.state.subState))) +
+            return (FlxG.state is CustomState ? 'Custom State: ' + cast(FlxG.state, CustomState).name : 'State: ' +  Type.getClassName(Type.getClass(FlxG.state))) +
+                '\n' + (FlxG.state.subState is CustomSubState ? 'Custom SubState: ' + cast(FlxG.state.subState, CustomSubState).name : 'SubState: ' + Type.getClassName(Type.getClass(FlxG.state.subState))) +
                 '\nObjects: ' + (FlxG.state.members.length + (FlxG.state.subState == null ? 0 : FlxG.state.subState.members.length)) +
                 '\nCameras: ' + FlxG.cameras.list.length +
                 '\nChilds: ' + FlxG.game.numChildren;

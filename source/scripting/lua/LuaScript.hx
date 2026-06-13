@@ -76,7 +76,7 @@ class LuaScript implements IScript
 
 		current = lastLua;
 
-        call('new', args ?? []);
+        call('new', args);
     }
 
     public function call(name:String, ?args:Array<Dynamic>):Dynamic

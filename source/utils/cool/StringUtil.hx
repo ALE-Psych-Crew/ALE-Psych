@@ -118,4 +118,14 @@ class StringUtil
 
 	public static function fromCharCode(code:Int):String
 		return String.fromCharCode(code);
+
+    public static function removeExtension(str:String):String
+    {
+        final split:Array<String> = str.split('.');
+
+        if (split.length > 1)
+            split.pop();
+
+        return split.join('.');
+    }
 }

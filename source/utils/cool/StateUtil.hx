@@ -16,7 +16,7 @@ class StateUtil
 
 		if (state is CustomState)
 		{
-            final custom:String = Std.downcast(state, CustomState).scriptName;
+            final custom:String = Std.downcast(state, CustomState).name;
 			
             if (Paths.exists('scripts/states/' + custom + RuleScriptGlobal.SCRIPT_EXTENSION) || Paths.exists('scripts/states/' + custom + '.lua'))
                 transitionSwitch(state, skipTransIn, skipTransOut);
@@ -55,7 +55,7 @@ class StateUtil
 
         if (subState is CustomSubState)
         {
-            final custom:String = Std.downcast(subState, CustomSubState).scriptName;
+            final custom:String = Std.downcast(subState, CustomSubState).name;
             
             if (Paths.exists('scripts/substates/' + custom + RuleScriptGlobal.SCRIPT_EXTENSION) || Paths.exists('scripts/substates/' + custom + '.lua'))
                 FlxG.state.openSubState(subState);

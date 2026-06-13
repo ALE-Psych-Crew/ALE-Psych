@@ -4,13 +4,13 @@ import ale.ui.UIUtils;
 
 class CustomSubState extends ScriptedSubState
 {
-    public var scriptName:String = '';
+    public final name:String = '';
 
-    override public function new(script:String, ?haxeArguments:Array<Dynamic>, ?luaArguments:Array<Dynamic>)
+    public function new(name:String, ?globalArgs:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
     {
-        super(haxeArguments, luaArguments);
+        super(globalArgs, haxeArgs, luaArgs);
 
-        scriptName = script;
+        this.name = name;
     }
 
     override public function create()
@@ -19,168 +19,168 @@ class CustomSubState extends ScriptedSubState
 
         super.create();
 
-        loadScript('scripts/substates/' + scriptName, haxeArguments);
+        scriptsManager.load('scripts/substates/' + name);
         
-        loadScript('scripts/substates/global', haxeArguments);
+        scriptsManager.load('scripts/substates/global');
 
         openCallback = function() {
-            scriptCallbackCall(ON, 'Open');
+            scriptsManager.callback(ON, 'Open');
 
-            scriptCallbackCall(POST, 'Open');
+            scriptsManager.callback(POST, 'Open');
         };
 
         closeCallback = function() {
-            scriptCallbackCall(ON, 'Close');
+            scriptsManager.callback(ON, 'Close');
 
-            scriptCallbackCall(POST, 'Close');
+            scriptsManager.callback(POST, 'Close');
         };
 
-        scriptCallbackCall(ON, 'Create');
+        scriptsManager.callback(ON, 'Create');
 
         initCameras();
 
-        scriptCallbackCall(POST, 'Create');
+        scriptsManager.callback(POST, 'Create');
     }
 
     override function initCameras()
     {
-        if (scriptCallbackCall(ON, 'CamerasInit'))
+        if (scriptsManager.callback(ON, 'CamerasInit'))
             super.initCameras();
 
-        scriptCallbackCall(POST, 'CamerasInit');
+        scriptsManager.callback(POST, 'CamerasInit');
     }
 
     override public function update(elapsed:Float)
     {
-        if (scriptCallbackCall(ON, 'Update', [elapsed]))
+        if (scriptsManager.callback(ON, 'Update', [elapsed]))
             super.update(elapsed);
 
         if (Controls.BACK && CoolVars.meta.developerMode && !UIUtils.usingInputs)
             close();
 
-        scriptCallbackCall(POST, 'Update', [elapsed]);
+        scriptsManager.callback(POST, 'Update', [elapsed]);
     }
 
     override public function destroy()
     {
-        scriptCallbackCall(ON, 'Destroy');
+        scriptsManager.callback(ON, 'Destroy');
 
         super.destroy();
 
-        scriptCallbackCall(POST, 'Destroy');
+        scriptsManager.callback(POST, 'Destroy');
 
-        destroyScripts();
+        scriptsManager.destroy();
     }
 
     override public function stepHit(curStep:Int)
     {
-        if (scriptCallbackCall(ON, 'StepHit', [curStep]))
+        if (scriptsManager.callback(ON, 'StepHit', [curStep]))
             super.stepHit(curStep);
 
-        scriptCallbackCall(POST, 'StepHit', [curStep]);
+        scriptsManager.callback(POST, 'StepHit', [curStep]);
     }
 
     override public function beatHit(curBeat:Int)
     {
-        if (scriptCallbackCall(ON, 'BeatHit', [curBeat]))
+        if (scriptsManager.callback(ON, 'BeatHit', [curBeat]))
             super.beatHit(curBeat);
 
-        scriptCallbackCall(POST, 'BeatHit', [curBeat]);
+        scriptsManager.callback(POST, 'BeatHit', [curBeat]);
     }
 
     override public function sectionHit(curSection:Int)
     {
-        if (scriptCallbackCall(ON, 'SectionHit', [curSection]))
+        if (scriptsManager.callback(ON, 'SectionHit', [curSection]))
             super.sectionHit(curSection);
 
-        scriptCallbackCall(POST, 'SectionHit', [curSection]);
+        scriptsManager.callback(POST, 'SectionHit', [curSection]);
     }
 
     override public function safeStepHit(safeStep:Int)
     {
-        if (scriptCallbackCall(ON, 'SafeStepHit', [safeStep]))
+        if (scriptsManager.callback(ON, 'SafeStepHit', [safeStep]))
             super.safeStepHit(safeStep);
 
-        scriptCallbackCall(POST, 'SafeStepHit', [safeStep]);
+        scriptsManager.callback(POST, 'SafeStepHit', [safeStep]);
     }
 
     override public function safeBeatHit(safeBeat:Int)
     {
-        if (scriptCallbackCall(ON, 'SafeBeatHit', [safeBeat]))
+        if (scriptsManager.callback(ON, 'SafeBeatHit', [safeBeat]))
             super.safeBeatHit(safeBeat);
 
-        scriptCallbackCall(POST, 'SafeBeatHit', [safeBeat]);
+        scriptsManager.callback(POST, 'SafeBeatHit', [safeBeat]);
     }
 
     override public function safeSectionHit(safeSection:Int)
     {
-        if (scriptCallbackCall(ON, 'SafeSectionHit', [safeSection]))
+        if (scriptsManager.callback(ON, 'SafeSectionHit', [safeSection]))
             super.safeSectionHit(safeSection);
 
-        scriptCallbackCall(POST, 'SafeSectionHit', [safeSection]);
+        scriptsManager.callback(POST, 'SafeSectionHit', [safeSection]);
     }
 
     override public function musicPlay()
     {
-        if (scriptCallbackCall(ON, 'MusicPlay', []))
+        if (scriptsManager.callback(ON, 'MusicPlay'))
             super.musicPlay();
 
-        scriptCallbackCall(POST, 'MusicPlay', []);
+        scriptsManager.callback(POST, 'MusicPlay');
     }
 
     override public function musicPause()
     {
-        if (scriptCallbackCall(ON, 'MusicPause', []))
+        if (scriptsManager.callback(ON, 'MusicPause'))
             super.musicPause();
 
-        scriptCallbackCall(POST, 'MusicPause', []);
+        scriptsManager.callback(POST, 'MusicPause');
     }
 
     override public function musicResume()
     {
-        if (scriptCallbackCall(ON, 'MusicResume', []))
+        if (scriptsManager.callback(ON, 'MusicResume'))
             super.musicResume();
 
-        scriptCallbackCall(POST, 'MusicResume', []);
+        scriptsManager.callback(POST, 'MusicResume');
     }
 
     override public function musicStop()
     {
-        if (scriptCallbackCall(ON, 'MusicStop', []))
+        if (scriptsManager.callback(ON, 'MusicStop'))
             super.musicStop();
 
-        scriptCallbackCall(POST, 'MusicStop', []);
+        scriptsManager.callback(POST, 'MusicStop');
     }
 
     override public function musicComplete()
     {
-        if (scriptCallbackCall(ON, 'MusicComplete', []))
+        if (scriptsManager.callback(ON, 'MusicComplete'))
             super.musicComplete();
 
-        scriptCallbackCall(POST, 'MusicComplete', []);
+        scriptsManager.callback(POST, 'MusicComplete');
     }
 
     override public function musicResync()
     {
-        if (scriptCallbackCall(ON, 'MusicResync', []))
+        if (scriptsManager.callback(ON, 'MusicResync'))
             super.musicResync();
 
-        scriptCallbackCall(POST, 'MusicResync', []);
+        scriptsManager.callback(POST, 'MusicResync');
     }
 
     override public function onFocus()
     {
-        if (scriptCallbackCall(ON, 'OnFocus'))
+        if (scriptsManager.callback(ON, 'OnFocus'))
             super.onFocus();
 
-        scriptCallbackCall(POST, 'OnFocus');
+        scriptsManager.callback(POST, 'OnFocus');
     }
 
     override public function onFocusLost()
     {
-        if (scriptCallbackCall(ON, 'OnFocusLost'))
+        if (scriptsManager.callback(ON, 'OnFocusLost'))
             super.onFocusLost();
 
-        scriptCallbackCall(POST, 'OnFocusLost');
+        scriptsManager.callback(POST, 'OnFocusLost');
     }
 }
