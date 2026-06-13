@@ -4,7 +4,7 @@ import ale.ui.UIUtils;
 
 class CustomSubState extends ScriptedSubState
 {
-    public final name:String = '';
+    public final name:String;
 
     public function new(name:String, ?globalArgs:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
     {
@@ -20,9 +20,9 @@ class CustomSubState extends ScriptedSubState
         super.create();
 
         scriptsManager.load('scripts/substates/' + name);
-        
         scriptsManager.load('scripts/substates/global');
 
+        scriptsManager.loadFolder('scripts/substates/' + name);
         scriptsManager.loadFolder('scripts/global');
 
         openCallback = function() {

@@ -16,9 +16,9 @@ class StateUtil
 
 		if (state is CustomState)
 		{
-            final custom:String = Std.downcast(state, CustomState).name;
+            final custom:String = cast(state, CustomState).name;
 			
-            if (Paths.exists('scripts/states/' + custom + RuleScriptGlobal.SCRIPT_EXTENSION) || Paths.exists('scripts/states/' + custom + '.lua'))
+            if (Paths.exists('scripts/states/' + custom + RuleScriptGlobal.SCRIPT_EXTENSION) || Paths.exists('scripts/states/' + custom + '.lua') || Paths.isDirectory('scripts/states/' + custom))
                 transitionSwitch(state, skipTransIn, skipTransOut);
             else
                 debugTrace('Custom State called "' + custom + '" doesn\'t Exist', MISSING_FILE);
@@ -55,9 +55,9 @@ class StateUtil
 
         if (subState is CustomSubState)
         {
-            final custom:String = Std.downcast(subState, CustomSubState).name;
+            final custom:String = cast(subState, CustomSubState).name;
             
-            if (Paths.exists('scripts/substates/' + custom + RuleScriptGlobal.SCRIPT_EXTENSION) || Paths.exists('scripts/substates/' + custom + '.lua'))
+            if (Paths.exists('scripts/substates/' + custom + RuleScriptGlobal.SCRIPT_EXTENSION) || Paths.exists('scripts/substates/' + custom + '.lua') || Paths.isDirectory('scripts/substates/' + custom))
                 FlxG.state.openSubState(subState);
             else
                 debugTrace('Custom SubState called "' + custom + '" doesn\'t Exist', MISSING_FILE);
