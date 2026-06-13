@@ -14,7 +14,7 @@ class ScriptedState extends MusicBeatState implements IScriptedState
     {
         super();
 
-        scriptsManager = new ScriptsManager(STATE, globalArgs #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
+        scriptsManager = new ScriptsManager(STATE, globalArgs #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end , true);
     }
 
     override function create()
