@@ -1,6 +1,7 @@
 package core.debug;
 
 import sys.thread.Thread;
+import sys.thread.Mutex;
 
 /**
  * Utility that detects whether any of the specified files have been modified; if so, it will reset the current state
@@ -8,6 +9,8 @@ import sys.thread.Thread;
 class HotReloading
 {
     static var files:Array<String> = null;
+
+    @:unreflective static var mutex:Mutex;
 
     @:unreflective static var thread:Thread;
 
@@ -20,6 +23,8 @@ class HotReloading
 
         times = [];
 
+        mutex ??= new Mutex();
+
         thread ??= CoolUtil.createSafeThread(() -> {
             while (true)
             {
@@ -27,14 +32,20 @@ class HotReloading
                 {
                     for (file in files)
                     {
-                        final lastTime:Float = Paths.stat(file).mtime.getTime();
+                        final lastTime:Float = Paths.exists(file) ? Paths.stat(file).mtime.getTime() : -1;
 
                         if (times.exists(file) && times[file] != lastTime)
                         {
                             times[file] = lastTime;
 
                             if (FlxG.state.subState == null)
+                            {
+                                mutex.acquire();
+
                                 cast(FlxG.state, ScriptedState).reset();
+
+                                mutex.release();
+                            }
                         } else {
                             times[file] = lastTime;
                         }
