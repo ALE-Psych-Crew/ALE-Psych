@@ -31,4 +31,25 @@ class Bopper extends FunkinSprite implements IMusicObject
 
         return this;
     }
+
+    override function restart():FunkinSprite
+    {
+        stepHit = null;
+        safeStepHit = null;
+
+        beatHit = null;
+        safeBeatHit = null;
+
+        sectionHit = null;
+        safeSectionHit = null;
+
+        musicPlay = null;
+        musicPause = null;
+        musicResume = null;
+        musicStop = null;
+        musicComplete = null;
+        musicResync = null;
+
+        return this;
+    }
 }
