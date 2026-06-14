@@ -2,9 +2,11 @@ package funkin.visuals.objects;
 
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxAngle;
+import flixel.FlxObject;
 
 import utils.cool.SpriteUtil;
 
+import animate.FlxAnimateController;
 import animate.FlxAnimate;
 
 import core.structures.JsonSpriteAnimation;
@@ -133,6 +135,135 @@ class FunkinSprite extends FlxAnimate
     {
         SpriteUtil.addSpriteAnim(this, type, animData);
         
+        return this;
+    }
+
+    public function restart():FunkinSprite
+    {
+        // FlxBasic
+
+        active = true;
+        visible = true;
+        alive = true;
+        exists = true;
+
+        _cameras = null;
+
+        // FlxObject
+
+        x = 0;
+        y = 0;
+
+        width = 0;
+        height = 0;
+
+        last.set();
+
+        scrollFactor.set(1, 1);
+
+        pixelPerfectPosition = FlxObject.defaultPixelPerfectPosition;
+
+        velocity.set();
+        acceleration.set();
+        drag.set();
+
+        maxVelocity.set(10000, 10000);
+
+        moves = FlxObject.defaultMoves;
+
+        immovable = false;
+
+        angle = 0;
+
+        angularVelocity = 0;
+        angularAcceleration = 0;
+        angularDrag = 0;
+        maxAngular = 0;
+
+        touching = NONE;
+        wasTouching = NONE;
+
+        path = null;
+
+        // FlxSprite
+
+        loadGraphic('flixel/NO_IMAGE.png');
+
+        // animation?.destroy();
+        // animation = new FlxAnimationController(this);
+
+        offset.set();
+        origin.set();
+        scale.set(1, 1);
+
+        alpha = 1;
+
+        color = FlxColor.WHITE;
+
+        flipX = false;
+        flipY = false;
+
+        blend = null;
+        shader = null;
+        clipRect = null;
+
+        antialiasing = FlxSprite.defaultAntialiasing;
+
+        bakedRotationAngle = 0;
+
+        dirty = true;
+
+        // FlxAnimate
+
+        anim?.destroy();
+        anim = new FlxAnimateController(this);
+        
+        animation = anim;
+
+        skew.set();
+
+        library = null;
+        timeline = null;
+
+        isAnimate = false;
+
+        applyStageMatrix = false;
+        postStageMatrixApply = false;
+
+        renderStage = false;
+        useRenderTexture = false;
+
+        _renderTextureDirty = true;
+
+        // FunkinSprite
+
+        offsets = new Map();
+
+        allowUpdateHitboxOffset = false;
+
+        lastScaleX = 1;
+        lastScaleY = 1;
+        lastAngle = 0;
+
+        allowOffset = true;
+        allowOffsetX = true;
+        allowOffsetY = true;
+
+        allowUpdateOffset = true;
+
+        allowScaleFix = true;
+        allowScaleXFix = true;
+        allowScaleYFix = true;
+
+        allowAngleFix = true;
+
+        config = null;
+        pathPrefix = null;
+
+        update(0);
+        draw();
+        updateHitbox();
+
         return this;
     }
 }
