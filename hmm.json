@@ -82,8 +82,8 @@
 			"name": "rulescript",
 			"type": "git",
 			"dir": null,
-			"ref": "9aa455a88433a889d2a31088684c7b808bb5c26c",
-			"url": "https://github.com/AlejoGDOfficial/RuleScript"
+			"ref": "2226cb658efa63712befa119a6b30a678a63023e",
+			"url": "https://github.com/Kriptel/RuleScript"
 		},
 		{
 			"name": "sl-windows-api",
