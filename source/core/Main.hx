@@ -153,6 +153,8 @@ class Main extends Sprite
 		FlxG.mouse.unload();
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
+
+		Defines.init();
 		
 		Paths.clear(true, true);
 		Paths.loadMod();
@@ -163,8 +165,6 @@ class Main extends Sprite
 		HotReloading.init();
 
 		Logs.init();
-
-		Defines.init();
 		
 		PluginsHandler.init();
 

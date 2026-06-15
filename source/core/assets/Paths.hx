@@ -94,7 +94,7 @@ class Paths
         final modCheckSteps:Array<Void -> Void> = [
             () -> {
                 if (Defines.CONTENT_MOD != null)
-                    mod = File.getContent(Defines.CONTENT_MOD).split('\n')[0].trim();
+                    mod = Defines.CONTENT_MOD.split('\n')[0].trim();
             },
             () -> {
                 final save:FlxSave = new FlxSave();
