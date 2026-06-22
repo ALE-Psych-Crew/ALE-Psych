@@ -17,6 +17,7 @@ class CoolVars
 	
 	public static var meta:MetaData = null;
 	
+	@:deprecated('"data" is deprecated, use "meta" instead')
 	public static var data(get, never):MetaData;
 	static function get_data():MetaData
 		return meta;

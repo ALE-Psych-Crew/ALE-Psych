@@ -8,14 +8,18 @@ import utils.Formatter;
 
 class Stage
 {
-    var parent:Dynamic = FlxG.state;
+    var parent:Dynamic;
 
     public var id:String;
     
     public var config:JsonStage;
 
-    public function new(initial:JsonStage)
+    public function new(initial:JsonStage, ?parent:Dynamic)
+    {
         config = initial;
+
+        this.parent = parent ?? FlxG.state;
+    }
 
     var current:StageArray;
 
@@ -23,7 +27,7 @@ class Stage
 
     var alreadyCached:Array<String> = [];
 
-    function change(id:String)
+    public function change(id:String)
     {
         if (current != null && current.id == id)
             return;
@@ -63,14 +67,12 @@ class Stage
         config = current.config;
 
         @:privateAccess {
-            /*
             if (parent is PlayState)
             {
                 final game:PlayState = cast FlxG.state;
 
-                if (game.characters != null)
-                    for (char in game.characters)
-                        game.resetCharacterPosition(char);
+                for (char in game.characters)
+                    game.resetCharacterPosition(char);
 
                 if (game.camGame is FXCamera)
                 {
@@ -79,7 +81,6 @@ class Stage
                     camGame.zoom = camGame.targetZoom = config.zoom;
                 }
             }
-            */
         }
     }
 

@@ -8,18 +8,18 @@ class MusicBeatSubState extends SubState implements IMusicState
 {
     var musicEventsDispatcher:MusicStateEventsDispatcher;
 
-    public function new()
+    override function create()
     {
-        super();
-
         musicEventsDispatcher = new MusicStateEventsDispatcher(this);
+
+        super.create();
     }
 
     override function destroy()
     {
-        musicEventsDispatcher.destroy();
-
         super.destroy();
+        
+        musicEventsDispatcher.destroy();
     }
 
     public function stepHit(curStep:Int) {}

@@ -50,6 +50,7 @@ import funkin.visuals.objects.FunkinSprite;
 import funkin.visuals.objects.Bopper;
 
 import funkin.states.CustomState;
+import funkin.states.PlayState;
 
 import funkin.substates.CustomSubState;
 

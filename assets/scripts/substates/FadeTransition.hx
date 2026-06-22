@@ -14,7 +14,10 @@ function new(trnsIn:Bool, ?callback:Void -> Void)
 	transIn = trnsIn;
 
 	finishCallback = callback;
+}
 
+function postCreate()
+{
 	FlxState.transitioning = true;
 	
 	transGradient = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, (transIn ? [FlxColor.BLACK, 0x0] : [0x0, FlxColor.BLACK]));

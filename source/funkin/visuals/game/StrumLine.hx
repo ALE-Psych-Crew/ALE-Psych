@@ -157,7 +157,7 @@ class StrumLine extends FlxSpriteGroup
 
     public var spawnWindow:Float = 2000;
     public var despawnWindow:Float = 1000;
-    public var missWindow:Int = 180;
+    public var missWindow:Float = 180;
 
     public var speed:Float = 1;
 

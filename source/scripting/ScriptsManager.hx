@@ -101,6 +101,9 @@ class ScriptsManager implements IFlxDestroyable
 
     function callback(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end):Bool
     {
+        if (members.length <= 0)
+            return true;
+
         final callID:String = Std.string(type) + id;
 
         var result:Bool = true;

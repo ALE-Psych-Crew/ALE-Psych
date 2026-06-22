@@ -50,6 +50,7 @@ class ScriptConfig
         core.substates.SubState,
 
         funkin.states.CustomState,
+        funkin.states.PlayState,
 
         funkin.substates.CustomSubState,
 

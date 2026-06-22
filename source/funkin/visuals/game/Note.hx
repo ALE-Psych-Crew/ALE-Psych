@@ -27,8 +27,8 @@ class Note extends StrumLineObject
 
     public var sustainHeightFactor:Float = 1.0285;
 
-    public var speed(default, set):Float;
-    function set_speed(value:Float):Float
+    public var speed(default, set):Null<Float>;
+    function set_speed(value:Null<Float>):Null<Float>
     {
         speed = value;
 
@@ -63,8 +63,6 @@ class Note extends StrumLineObject
 
         singHealth = type == 'arrow' ? 1.25 : 0.625;
         missHealth = type == 'arrow' ? 2.5 : 1.25;
-
-        speed = 1;
     }
 
     public var timeDistance:Float = 0;
@@ -101,6 +99,8 @@ class Note extends StrumLineObject
 
     public function followStrum()
     {
+        speed ??= 1;
+
         final distance:Float = timeDistance * speed * speedMultiplier * (strumLine.downScroll ? -1 : 1) - (strumLine.downScroll && type != 'arrow' ? height : 0);
 
         if (copyAngle)

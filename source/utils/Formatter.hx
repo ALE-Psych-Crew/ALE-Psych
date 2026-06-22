@@ -181,7 +181,7 @@ class Formatter
                     }
                 ],
                 fileCheck: (json) -> {
-                    return Paths.exists('data/' + 'huds' /** PROVISIONAL FIX **/ + '/' + json.hud + '.json');
+                    return Paths.exists('data/' + config[HUD].path + '/' + json.hud + '.json');
                 },
                 example: {
                     zoom: 0.9,
@@ -413,6 +413,130 @@ class Formatter
                     difficulties: ['Easy', 'Normal', 'Hard'],
                     format: FormatterType.WEEK.format()
                 }
+            },
+            HUD => {
+                path: 'huds',
+                format: FormatterType.HUD.format(),
+                exampleModifier: (example, id, ?args) -> {
+                    example.directory = id;
+                    
+                    return example;
+                },
+                example: {
+                    format: FormatterType.HUD.format(),
+                    directory: 'default',
+                    ratings: [
+                        {
+                            id: 'sick',
+                            score: 350,
+                            accuracy: 100,
+                            time: 45,
+                            splash: true
+                        },
+                        {
+                            id: 'good',
+                            score: 200,
+                            accuracy: 66,
+                            time: 90,
+                            splash: false
+                        },
+                        {
+                            id: 'bad',
+                            score: 100,
+                            accuracy: 33,
+                            time: 135,
+                            splash: false
+                        },
+                        {
+                            id: 'shit',
+                            score: 50,
+                            accuracy: 0,
+                            time: 180,
+                            splash: false
+                        }
+                    ],
+                    combo: {
+                        properties: {
+                            x: 175,
+                            y: 575
+                        },
+                        rating: {
+                            ease: 'circInOut',
+                            duration: 0.75,
+                            start: {
+                                x: 0,
+                                y: 0,
+                                alpha: 1
+                            },
+                            end: {
+                                x: 0,
+                                y: -20,
+                                alpha: 0
+                            },
+                            properties: {
+                                scale: {
+                                    x: 0.8,
+                                    y: 0.8
+                                }
+                            }
+                        },
+                        number: {
+                            spacing: 35,
+                            ease: 'circInOut',
+                            duration: 0.75,
+                            start: {
+                                x: 50,
+                                y: 60,
+                                alpha: 1
+                            },
+                            end: {
+                                x: 50,
+                                y: 30,
+                                alpha: 0
+                            },
+                            properties: {
+                                scale: {
+                                    x: 0.4,
+                                    y: 0.4
+                                }
+                            }
+                        }
+                    },
+                    countdown: {
+                        ease: 'circInOut',
+                        beats: 1,
+                        list: [
+                            'three',
+                            'two',
+                            'one',
+                            'go'
+                        ],
+                        properties: {},
+                        start: {
+                            x: 0,
+                            y: 0,
+                            alpha: 1,
+
+                            scale: {
+                                x: 1,
+                                y: 1
+                            }
+                        },
+                        end: {
+                            x: 0,
+                            y: 0,
+                            alpha: 0,
+
+                            scale: {
+                                x: 0.9,
+                                y: 0.9
+                            }
+                        }
+                    },
+                    textFont: 'vcr.ttf',
+                    bar: 'bar',
+                    barFilling: 'barFilling'
+                }
             }
         ];
     }
@@ -635,4 +759,7 @@ class Formatter
 
     public static function getWeek(id:String):JsonWeek
         return cast get(WEEK, id);
+
+    public static function getHud(id:String):JsonHud
+        return cast get(HUD, id);
 }
