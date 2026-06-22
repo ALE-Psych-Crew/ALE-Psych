@@ -1,0 +1,100 @@
+{
+	"directory": "main",
+	"cameraSpread": 0.25,
+	"text": "Friday Night Funkin' Rewrite",
+	"textCorner": "bottom_left",
+	"textMargin": {
+		"x": 10,
+		"y": 10
+	},
+	"bg": {
+		"images": [
+			"yellowBG"
+		],
+		"type": "image",
+		"properties": {
+			"scale": {
+				"x": 1.125,
+				"y": 1.125
+			}
+		}
+	},
+	"options": [
+		{
+			"images": [
+				"storyMode"
+			],
+			"type": "sheet",
+			"animations": [
+				{
+					"loop": true,
+					"name": "idle"
+				},
+				{
+					"loop": true,
+					"name": "selected"
+				}
+			],
+			"state": "meta:storyMenuState"
+		},
+		{
+			"images": [
+				"freeplay"
+			],
+			"type": "sheet",
+			"animations": [
+				{
+					"loop": true,
+					"name": "idle"
+				},
+				{
+					"loop": true,
+					"name": "selected"
+				}
+			],
+			"state": "meta:freeplayState"
+		},
+		{
+			"images": [
+				"credits"
+			],
+			"type": "sheet",
+			"animations": [
+				{
+					"loop": true,
+					"name": "idle"
+				},
+				{
+					"loop": true,
+					"name": "selected"
+				}
+			],
+			"state": "meta:creditsState"
+		},
+		{
+			"images": [
+				"options"
+			],
+			"type": "sheet",
+			"animations": [
+				{
+					"loop": true,
+					"name": "idle"
+				},
+				{
+					"loop": true,
+					"name": "selected"
+				}
+			],
+			"state": "meta:optionsState"
+		}
+	],
+	"optionsOffset": {
+		"x": 0,
+		"y": 0
+	},
+	"optionsSpacing": 170,
+	"optionsAlignment": "center",
+	"optionsSelectedAnimation": "selected",
+	"optionsIdleAnimation": "idle"
+}

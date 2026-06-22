@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="ui.png">
+	<SubTexture name="left0000" x="2" y="2" width="48" height="85"/>
+	<SubTexture name="push left0000" x="60" y="2" width="42" height="75"/>
+	<SubTexture name="right0000" x="163" y="2" width="47" height="85"/>
+	<SubTexture name="push right0000" x="112" y="2" width="41" height="74"/>
+	<SubTexture name="lock0000" x="220" y="2" width="67" height="93"/>
+</TextureAtlas>

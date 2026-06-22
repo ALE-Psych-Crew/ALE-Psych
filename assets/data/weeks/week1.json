@@ -1,0 +1,32 @@
+{
+	"songs": [
+		{
+			"icon": "dad",
+			"name": "Bopeebo",
+			"color": "#9271FD"
+		},
+		{
+			"icon": "dad",
+			"name": "Fresh",
+			"color": "#9271FD"
+		},
+		{
+			"icon": "dad",
+			"name": "Dad Battle",
+			"color": "#9271FD"
+		}
+	],
+	"background": "stage",
+	"image": "week1",
+	"phrase": "Daddy Dearest",
+	"locked": false,
+	"hideFreeplay": false,
+	"hideStoryMode": false,
+	"previousWeek": "tutorial",
+	"difficulties": [
+		"Easy",
+		"Normal",
+		"Hard"
+	],
+	"format": "ale-week-v0.1"
+}

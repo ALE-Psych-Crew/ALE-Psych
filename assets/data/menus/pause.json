@@ -1,0 +1,12 @@
+{
+	"cameraOffset": {
+		"x": -150,
+		"y": -300
+	},
+	"optionsSpacing": {
+		"x": 50,
+		"y": 150
+	},
+	"cameraSpeed": 0.25,
+	"infoCorner": "top_right"
+}

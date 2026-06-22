@@ -1,0 +1,86 @@
+{
+    "images": [
+        "default"
+    ],
+    "type": "sheet",
+    "animations": [
+        {
+            "name": "strum left idle"
+        },
+        {
+            "name": "strum left hit"
+        },
+        {
+            "name": "strum left press"
+        },
+        {
+            "name": "strum down idle"
+        },
+        {
+            "name": "strum down hit"
+        },
+        {
+            "name": "strum down press"
+        },
+        {
+            "name": "strum up idle"
+        },
+        {
+            "name": "strum up hit"
+        },
+        {
+            "name": "strum up press"
+        },
+        {
+            "name": "strum right idle"
+        },
+        {
+            "name": "strum right hit"
+        },
+        {
+            "name": "strum right press"
+        },
+        {
+            "name": "note left idle"
+        },
+        {
+            "name": "note left sustain"
+        },
+        {
+            "name": "note left end"
+        },
+        {
+            "name": "note down idle"
+        },
+        {
+            "name": "note down sustain"
+        },
+        {
+            "name": "note down end"
+        },
+        {
+            "name": "note up idle"
+        },
+        {
+            "name": "note up sustain"
+        },
+        {
+            "name": "note up end"
+        },
+        {
+            "name": "note right idle"
+        },
+        {
+            "name": "note right sustain"
+        },
+        {
+            "name": "note right end"
+        }
+    ],
+    "properties": {
+        "scale": {
+            "x": 0.7,
+            "y": 0.7
+        }
+    }
+}

@@ -1,0 +1,26 @@
+{
+	"directory": "freeplay",
+	"bg": {
+		"images": [
+			"bg"
+		],
+		"type": "image",
+		"properties": {
+			"scrollFactor": {
+				"x": 0,
+				"y": 0
+			}
+		}
+	},
+	"cameraOffset": {
+		"x": -150,
+		"y": -300
+	},
+	"songsSpacing": {
+		"x": 50,
+		"y": 150
+	},
+	"cameraSpeed": 0.25,
+	"changeBGColor": true,
+	"infoCorner": "top_right"
+}

@@ -1,0 +1,135 @@
+{
+    "directory": "title",
+    "logo": {
+        "type": "sheet",
+        "images": [
+            "logo"
+        ],
+        "properties": {
+            "x": -130,
+            "y": -100
+        },
+        "animations": [
+            {
+                "name": "idle"
+            }
+        ],
+        "bopAnimations": [
+            "idle"
+        ]
+    },
+    "gf": {
+        "type": "sheet",
+        "images": [
+            "gf"
+        ],
+        "properties": {
+            "x": 550,
+            "y": 50
+        },
+        "animations": [
+            {
+                "name": "left"
+            },
+            {
+                "name": "right"
+            }
+        ],
+        "bopAnimations": [
+            "left",
+            "right"
+        ],
+        "initialAnimation": "left"
+    },
+    "enter": {
+        "type": "sheet",
+        "images": [
+            "enter"
+        ],
+        "properties": {
+            "x": 140,
+            "y": 600
+        },
+        "animations": [
+            {
+                "name": "idle"
+            },
+            {
+                "name": "press",
+                "loop": true,
+                "frameRate": 16
+            }
+        ],
+        "color": "0xFF00FFFF",
+        "initialAnimation": "idle"
+    },
+    "enterPressAnimation": "press",
+    "texts": {
+        "0": {
+            "text": "Ninjamuffin\nPhantomArcade\nKawaiiSprite\nEvilsk",
+            "offset": 150
+        },
+        "2": {
+            "text": "Present",
+            "offset": 150
+        },
+        "3": {
+            "text": ""
+        },
+        "4": {
+            "text": "Not Associated With"
+        },
+        "6": {
+            "text": "Newgrounds"
+        },
+        "7": {
+            "text": ""
+        },
+        "8": {},
+        "10": {},
+        "11": {
+            "text": ""
+        },
+        "12": {
+            "text": "Friday",
+            "offset": 170
+        },
+        "13": {
+            "text": "Night",
+            "offset": 170
+        },
+        "14": {
+            "text": "Funkin'",
+            "offset": 170
+        },
+        "15": {
+            "text": "ALE Psych",
+            "offset": 170
+        }
+    },
+    "textsOffset": 250,
+    "randomTexts": [
+        "ALE Psych::Supremacy",
+        "Oso::Donde que Tu Ta Oso",
+        "Oso::Tengo Hambre Oso",
+        "Dame de Comer::Oso",
+        "Si te Mueve'::Te Metemo' el Güevo",
+        "oso::forever",
+        "Nezumi Es::El Goat",
+        "Diablo::Tenía que Ser Pedrito",
+        "Weekend Afternoon::Extended (WIP)",
+        "saqueme de Venezuela::don pool",
+        "AdrianoSH x::Khorix",
+        "Malloy::Estuvo Aqui",
+        "Piffu::Piffu",
+        " ::hola khorix",
+        "Oye Ina::No nada",
+        "Oye alejo::No nada",
+        "Brainy made it into ale psych::@let's go",
+        "codex::no wey :v",
+        "Idiot =::Jazzy",
+        "AJ::Chambea en calvin",
+        "Amo las furras::Hagan furras tetonas"
+    ],
+    "introDuration": 16
+}
