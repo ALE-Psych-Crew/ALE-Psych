@@ -240,13 +240,14 @@ class Conductor
 
         music = null;
 
-        for (sound in synchronizedSounds.copy())
-        {
-            sound?.stop();
-            sound?.destroy();
+        if (synchronizedSounds != null)
+            for (sound in synchronizedSounds.copy())
+            {
+                sound?.stop();
+                sound?.destroy();
 
-            synchronizedSounds.remove(sound);
-        }
+                synchronizedSounds.remove(sound);
+            }
 
         musicStop?.dispatch();
     }

@@ -46,6 +46,7 @@ class Paths
      * Shortcut to access the (modified) OpenFL asset library
      */
     public static var library(get, never):RootsLibrary;
+    @:dox(hide)
     public static function get_library():RootsLibrary
         return cast Assets.getLibrary('default');
 
@@ -53,6 +54,7 @@ class Paths
      * Location of the assets folder
      */
     public static var assets(get, never):String;
+    @:dox(hide)
     public static function get_assets()
         return 'assets';
 
@@ -60,6 +62,7 @@ class Paths
      * Location of the mods folder
      */
     public static var mods(get, never):String;
+    @:dox(hide)
     public static function get_mods()
         return 'mods';
 
@@ -67,6 +70,7 @@ class Paths
      * Location of the folder containing additional assets
      */
     public static var content(get, never):String;
+    @:dox(hide)
     public static function get_content()
         return 'content';
 
@@ -234,7 +238,6 @@ class Paths
     /**
      * This clears the cached files and the Flixel bitmap cache
      * It's usually not necessary to use it, since the game typically deletes files that are no longer needed
-     * 
      * @param cleanAll Indicate whether to delete all files or only those that must be forcibly deleted
      * @param permanent Specify whether to delete files marked as having a permanent cache
      */
@@ -270,7 +273,6 @@ class Paths
 
     /**
      * This retrieves the bytes from a file
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -281,7 +283,6 @@ class Paths
 
     /**
      * This retrieves the contents of a file
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -294,7 +295,6 @@ class Paths
 
     /**
      * Retrieves an image and returns it as a `FlxGraphic`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -305,7 +305,6 @@ class Paths
 
     /**
      * Retrieves a Sparrow-type sprite sheet and returns it as `FlxAtlasFrames`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -316,7 +315,6 @@ class Paths
 
     /**
      * Retrieves a Packer-type sprite sheet and returns it as `FlxAtlasFrames`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -327,7 +325,6 @@ class Paths
 
     /**
      * Retrieves a sprite sheet from Aseprite and returns it as `FlxAtlasFrames`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -338,7 +335,6 @@ class Paths
 
     /**
      * Retrieves a sprite sheet of any type and returns it as `FlxAtlasFrames`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -349,7 +345,6 @@ class Paths
 
     /**
      * Retrieves an Atlas from Adobe Animate and returns it as `FlxAnimateFrames`
-     * 
      * @param folder Folder Path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -372,7 +367,6 @@ class Paths
 
     /**
      * This retrieves several Sparrow-type sprite sheets and combines them into a `FlxAtlasFrames`
-     * 
      * @param files File paths
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -383,7 +377,6 @@ class Paths
 
     /**
      * This retrieves several Packer-type sprite sheets and combines them into a `FlxAtlasFrames`
-     * 
      * @param files File paths
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -394,7 +387,6 @@ class Paths
 
     /**
      * This retrieves several sprite sheets from Aseprite and combines them into an `FlxAtlasFrames`
-     * 
      * @param files File paths
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -405,7 +397,6 @@ class Paths
 
     /**
      * This retrieves multiple sprite sheets of any type and combines them into a `FlxAtlasFrames`
-     * 
      * @param files File paths
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -418,7 +409,6 @@ class Paths
 
     /**
      * This retrieves an audio file and converts it into a `Sound`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -429,7 +419,6 @@ class Paths
 
     /**
      * This retrieves an audio file located in `music/` and converts it into a `Sound`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -440,7 +429,6 @@ class Paths
 
     /**
      * This retrieves an audio file located in `sounds/` and converts it into a `Sound`
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -451,7 +439,6 @@ class Paths
 
 	/**
 	 * This retrieves the instrumental track from a song and converts it into a `Sound`
-     * 
 	 * @param route Location of the song
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -462,7 +449,6 @@ class Paths
 
 	/**
 	 * This retrieves the vocal from a song and converts it into a `Sound`
-     * 
 	 * @param route Location of the song
 	 * @param postfix Vocal Suffix
      * @param permanent This determines whether your cache should be persistent
@@ -476,7 +462,6 @@ class Paths
 
     /**
      * This fetches and parses a JSON file
-     * 
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
@@ -487,7 +472,6 @@ class Paths
 
     /**
      * This retrieves a function located in an *ndll*
-     * 
      * @param fileName File path
      * @param funcName Function name
      * @param args Number of arguments
@@ -509,7 +493,6 @@ class Paths
     
     /**
      * This simply helps you locate the model file
-     * 
      * @param file File path
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
      * @return File path
@@ -519,7 +502,6 @@ class Paths
 
     /**
      * This simply helps you find where the video file is located
-     * 
      * @param file File path
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
      * @return File path
@@ -529,7 +511,6 @@ class Paths
 
     /**
      * This simply helps you locate the font file
-     * 
      * @param file File path
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
      * @return File path
@@ -541,7 +522,6 @@ class Paths
 
     /**
      * Follow the procedure described in `config`, taking into account the file name and the file format
-     * 
      * @param file File path(s)
      * @param configID File type
      * @param permanent This determines whether your cache should be persistent
@@ -580,7 +560,6 @@ class Paths
 
     /**
      * This helps you specify exactly where a file is located
-     * 
      * @param file File path
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
      * @return File Path
@@ -599,7 +578,6 @@ class Paths
 
     /**
      * This determines whether or not a file exists
-     * 
      * @param path File path
      * @return Whether or not the file exists
      */
@@ -608,7 +586,6 @@ class Paths
 
     /**
      * This determines whether or not a path refers to a folder
-     * 
      * @param path Path
      * @return Whether the path refers to a folder or not
      */
@@ -621,7 +598,6 @@ class Paths
 
     /**
      * This creates a list based on the files in the specified folder(s)
-     * 
      * @param path Folder path
      * @param type This determines whether to search all available paths or just the first one found
      * @return List of files in the folder(s)
@@ -650,7 +626,6 @@ class Paths
 
     /**
      * This retrieves information from a file or folder
-     * 
      * @param path File/folder path
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
      * @return File/Folder Information
