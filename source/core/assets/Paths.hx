@@ -124,6 +124,7 @@ class Paths
     }
 
     @:dox(hide)
+    @:access(openfl.display.BitmapData)
     public static function init()
     {
         Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null ? null : mods + '/' + mod, content, #if switch 'romfs:/' + #end assets]) if (root != null) root]));
@@ -140,6 +141,19 @@ class Paths
                 postfix: '.png',
                 get: (id, _, _, _) -> {
                     final bitmap:BitmapData = BitmapData.fromImage(library.getImage(id));
+
+                    if (ClientPrefs.data.cacheOnGPU && bitmap.image != null && FlxG.stage.context3D != null)
+                    {
+                        bitmap.lock();
+                        bitmap.getTexture(FlxG.stage.context3D);
+                        bitmap.getSurface();
+                        bitmap.disposeImage();
+
+                        bitmap.image.data = null;
+                        bitmap.image = null;
+                        
+                        bitmap.readable = true;
+                    }
 
                     final graphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, id);
                     graphic.persist = true;

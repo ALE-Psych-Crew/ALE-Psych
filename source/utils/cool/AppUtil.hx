@@ -29,12 +29,13 @@ class AppUtil
 		});
 	}
 	
+	@:access(flixel.FlxG)
 	public static function resizeGame(width:Int, height:Int, ?centerWindow:Bool = true, ?scale:Float = 1)
 	{
 		final previousFullscreen:Bool = FlxG.fullscreen;
 
-		Reflect.setProperty(FlxG, 'initialWidth', width);
-		Reflect.setProperty(FlxG, 'initialHeight', height);
+		FlxG.initialWidth = width;
+		FlxG.initialHeight = height;
 
 		FlxG.resizeGame(width, height);
 		FlxG.resizeWindow(Math.floor(width / scale), Math.floor(height / scale));
