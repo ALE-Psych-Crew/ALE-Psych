@@ -74,6 +74,14 @@ class CustomSubState extends ScriptedSubState
         scriptsManager.destroy();
     }
 
+    override public function draw()
+    {
+        if (scriptsManager.callback(ON, 'Draw'))
+            super.draw();
+
+        scriptsManager.callback(POST, 'Draw');
+    }
+
     override public function stepHit(curStep:Int)
     {
         if (scriptsManager.callback(ON, 'StepHit', [curStep]))

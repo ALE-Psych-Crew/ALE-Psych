@@ -27,6 +27,8 @@ import ale.ui.UIUtils;
 
 class PlayState extends ScriptedState
 {
+    public static var instance:PlayState;
+
     public var startTime:Float = 0;
 
     public var spawnNotes:Bool = true;
@@ -108,6 +110,8 @@ class PlayState extends ScriptedState
 
     override function create()
     {
+        instance = this;
+
         super.create();
 
         Conductor.stop();
@@ -259,6 +263,8 @@ class PlayState extends ScriptedState
         }
 
         scriptsManager.callback(POST, 'Destroy');
+
+        instance = null;
     }
 
 
