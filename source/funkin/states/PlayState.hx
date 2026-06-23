@@ -5,6 +5,7 @@ import core.structures.ALESong;
 import core.structures.JsonHud;
 import core.structures.Point;
 
+import core.enums.CharacterType;
 import core.enums.SongType;
 
 import funkin.visuals.objects.Bar;
@@ -177,11 +178,21 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'Update', [elapsed]);
     }
 
+    override function draw()
+    {
+        if (scriptsManager.callback(ON, 'Draw'))
+            super.draw();
+
+        scriptsManager.callback(POST, 'Draw');
+    }
+
+    var cameraFactory:Void -> FXCamera = () -> new FXCamera();
+
     override function initCameras()
     {
         if (scriptsManager.callback(ON, 'CamerasInit'))
         {
-            camGame = new FXCamera();
+            camGame = cameraFactory();
 
             final camGame:FXCamera = cast camGame;
             
@@ -193,55 +204,16 @@ class PlayState extends ScriptedState
             FlxG.cameras.reset(camGame);
             FlxG.cameras.setDefaultDrawTarget(camGame, true);
             
-            camHUD = new FXCamera();
+            camHUD = cameraFactory();
 
             FlxG.cameras.add(camHUD, false);
                 
-            camOther = new FXCamera();
+            camOther = cameraFactory();
 
             FlxG.cameras.add(camOther, false);
         }
 
         scriptsManager.callback(POST, 'CamerasInit');
-    }
-
-    function pause(?force:Bool = false)
-    {
-        if (scriptsManager.callback(ON, 'Pause'))
-        {
-            if (allowPausing || force)
-            {
-                FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = false);
-                FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = false);
-
-                CoolUtil.openSubState(new CustomSubState(CoolVars.meta.pauseSubState));
-            }
-        }
-
-        scriptsManager.callback(POST, 'Pause');
-    }
-
-    function resume()
-    {
-        if (scriptsManager.callback(ON, 'Resume'))
-        {
-            FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = true);
-            FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = true);
-        }
-
-        scriptsManager.callback(POST, 'Resume');
-    }
-
-    override function sectionHit(curSection:Int)
-    {
-        if (scriptsManager.callback(ON, 'SectionHit', [curSection]))
-        {
-            super.sectionHit(curSection);
-
-            moveCamera(curSection);
-        }
-
-        scriptsManager.callback(POST, 'SectionHit', [curSection]);
     }
 
     override public function reset()
@@ -289,6 +261,168 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'Destroy');
     }
 
+
+    function pause(?force:Bool = false)
+    {
+        if (scriptsManager.callback(ON, 'Pause'))
+        {
+            if (allowPausing || force)
+            {
+                FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = false);
+                FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = false);
+
+                CoolUtil.openSubState(new CustomSubState(CoolVars.meta.pauseSubState));
+            }
+        }
+
+        scriptsManager.callback(POST, 'Pause');
+    }
+
+    function resume()
+    {
+        if (scriptsManager.callback(ON, 'Resume'))
+        {
+            FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = true);
+            FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = true);
+        }
+
+        scriptsManager.callback(POST, 'Resume');
+    }
+
+
+    override public function stepHit(curStep:Int)
+    {
+        if (scriptsManager.callback(ON, 'StepHit', [curStep]))
+            super.stepHit(curStep);
+
+        scriptsManager.callback(POST, 'StepHit', [curStep]);
+    }
+
+    override public function beatHit(curBeat:Int)
+    {
+        if (scriptsManager.callback(ON, 'BeatHit', [curBeat]))
+            super.beatHit(curBeat);
+
+        scriptsManager.callback(POST, 'BeatHit', [curBeat]);
+    }
+
+    override function sectionHit(curSection:Int)
+    {
+        if (scriptsManager.callback(ON, 'SectionHit', [curSection]))
+            super.sectionHit(curSection);
+
+        scriptsManager.callback(POST, 'SectionHit', [curSection]);
+    }
+
+    override public function safeStepHit(safeStep:Int)
+    {
+        if (scriptsManager.callback(ON, 'SafeStepHit', [safeStep]))
+            super.safeStepHit(safeStep);
+
+        scriptsManager.callback(POST, 'SafeStepHit', [safeStep]);
+    }
+
+    override public function safeBeatHit(safeBeat:Int)
+    {
+        if (scriptsManager.callback(ON, 'SafeBeatHit', [safeBeat]))
+            super.safeBeatHit(safeBeat);
+
+        scriptsManager.callback(POST, 'SafeBeatHit', [safeBeat]);
+    }
+
+    override public function safeSectionHit(safeSection:Int)
+    {
+        if (scriptsManager.callback(ON, 'SafeSectionHit', [safeSection]))
+        {
+            super.safeSectionHit(safeSection);
+
+            moveCamera(safeSection);
+        }
+
+        scriptsManager.callback(POST, 'SafeSectionHit', [safeSection]);
+    }
+
+    override public function musicPlay()
+    {
+        if (scriptsManager.callback(ON, 'MusicPlay'))
+            super.musicPlay();
+
+        scriptsManager.callback(POST, 'MusicPlay');
+    }
+
+    override public function musicPause()
+    {
+        if (scriptsManager.callback(ON, 'MusicPause'))
+            super.musicPause();
+
+        scriptsManager.callback(POST, 'MusicPause');
+    }
+
+    override public function musicResume()
+    {
+        if (scriptsManager.callback(ON, 'MusicResume'))
+            super.musicResume();
+
+        scriptsManager.callback(POST, 'MusicResume');
+    }
+
+    override public function musicStop()
+    {
+        if (scriptsManager.callback(ON, 'MusicStop'))
+            super.musicStop();
+
+        scriptsManager.callback(POST, 'MusicStop');
+    }
+
+    override public function musicComplete()
+    {
+        if (scriptsManager.callback(ON, 'MusicComplete'))
+            super.musicComplete();
+
+        scriptsManager.callback(POST, 'MusicComplete');
+    }
+
+    override public function musicResync()
+    {
+        if (scriptsManager.callback(ON, 'MusicResync'))
+            super.musicResync();
+
+        scriptsManager.callback(POST, 'MusicResync');
+    }
+
+    override public function onFocus()
+    {
+        if (scriptsManager.callback(ON, 'OnFocus'))
+            super.onFocus();
+
+        scriptsManager.callback(POST, 'OnFocus');
+    }
+
+    override public function onFocusLost()
+    {
+        if (scriptsManager.callback(ON, 'OnFocusLost'))
+            super.onFocusLost();
+
+        scriptsManager.callback(POST, 'OnFocusLost');
+    }
+
+    override public function openSubState(substate:flixel.FlxSubState):Void
+    {
+        if (scriptsManager.callback(ON, 'OpenSubState', null, [substate]))
+            super.openSubState(substate);
+
+        scriptsManager.callback(POST, 'OpenSubState', null, [substate]);
+    }
+
+    override public function closeSubState():Void
+    {
+        if (scriptsManager.callback(ON, 'CloseSubState'))
+            super.closeSubState();
+
+        scriptsManager.callback(POST, 'CloseSubState');
+    }
+    
+
     public var characters:FlxTypedGroup<Character>;
 
     public var charactersArray:Array<Array<Character>> = [];
@@ -309,6 +443,8 @@ class PlayState extends ScriptedState
     public function get_gf():Character
         return extraCharacters.members[0];
 
+    var characterFactory:(String, CharacterType) -> Character = (char, type) -> new Character(char, type);
+
     public function initCharacters()
     {
         if (scriptsManager.callback(ON, 'CharactersInit'))
@@ -323,7 +459,7 @@ class PlayState extends ScriptedState
             {
                 for (index => char in strl.characters)
                 {
-                    final character:Character = new Character(char, strl.type);
+                    final character:Character = characterFactory(char, strl.type);
                     
                     addCharacter(character);
 
@@ -617,6 +753,8 @@ class PlayState extends ScriptedState
     public function get_iconP3():Icon
         return extraIcons.members[0];
 
+    var iconFactory:(String, CharacterType) -> Icon = (icon, type) -> new Icon(icon, type);
+
     public function initIcons()
     {
         if (scriptsManager.callback(ON, 'IconsInit'))
@@ -629,7 +767,7 @@ class PlayState extends ScriptedState
 
             for (char in [dad ?? gf ?? bf, bf ?? gf ?? dad])
             {
-                final icon:Icon = new Icon(char._castConfig.icon, char.type);
+                final icon:Icon = iconFactory(char._castConfig.icon, char.type);
                 addIcon(icon);
             }
         }
@@ -689,6 +827,8 @@ class PlayState extends ScriptedState
     public var opponentStrums:FlxTypedGroup<Strum>;
     public var extraStrums:FlxTypedGroup<Strum>;
 
+    var strumLineFactory:(String, CharacterType, Int, Array<Array<Dynamic>>, Note -> Bool) -> StrumLine = (id, type, index, notes, stack) -> new StrumLine(id, type, index, notes, stack);
+
     public function initStrumLines()
     {
         if (scriptsManager.callback(ON, 'StrumLinesInit'))
@@ -738,7 +878,7 @@ class PlayState extends ScriptedState
 
             for (index => strl in chart.strumLines)
             {
-                final strumLine:StrumLine = new StrumLine(strl.file, strl.type, index, notes[index], stackNote);
+                final strumLine:StrumLine = strumLineFactory(strl.file, strl.type, index, notes[index], stackNote);
                 strumLine.noteSpawnCallback = spawnNote;
                 strumLine.noteHitCallback = hitNote;
                 strumLine.noteMissCallback = missNote;

@@ -51,6 +51,14 @@ class CustomState extends ScriptedState
         scriptsManager.callback(POST, 'Update', [elapsed]);
     }
 
+    override public function draw()
+    {
+        if (scriptsManager.callback(ON, 'Draw'))
+            super.draw();
+
+        scriptsManager.callback(POST, 'Draw');
+    }
+
     override public function destroy()
     {
         scriptsManager.callback(ON, 'Destroy');
