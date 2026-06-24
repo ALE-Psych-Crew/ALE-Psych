@@ -2,7 +2,6 @@ package core.assets;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
-import flixel.util.FlxSave;
 
 import core.assets.RootsLibrary;
 
@@ -28,6 +27,8 @@ import utils.cool.FileUtil;
 import lime.utils.Bytes;
 
 import lime.system.CFFI;
+
+import funkin.config.SaveFile;
 
 /**
  * It is responsible for resolving, locating, and caching game resources
@@ -101,12 +102,7 @@ class Paths
                     mod = Defines.CONTENT_MOD.split('\n')[0].trim();
             },
             () -> {
-                final save:FlxSave = new FlxSave();
-
-                save.bind(Paths.modSave, FileUtil.getSavePath(false));
-
-                if (save != null)
-                    mod = save.data.currentMod;
+                mod = new SaveFile('mod', true).data.mod;
             }
         ];
 

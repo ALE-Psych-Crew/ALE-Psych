@@ -3,7 +3,7 @@ package utils.cool;
 import sys.FileSystem;
 import sys.io.File;
 
-import flixel.util.FlxSave;
+import Type;
 
 class FileUtil
 {
@@ -66,8 +66,4 @@ class FileUtil
 
         Sys.command(command, [folder]);
 	}
-    
-	@:access(flixel.util.FlxSave.validate)
-	public static function getSavePath(modSupport:Bool = true):String
-		return FlxG.stage.application.meta.get('company') + '/' + FlxSave.validate(FlxG.stage.application.meta.get('file')) + (modSupport ? ((Paths.mod == null ? '' : '/' + (CoolVars.meta.save ?? Paths.mod))) : '');
 }

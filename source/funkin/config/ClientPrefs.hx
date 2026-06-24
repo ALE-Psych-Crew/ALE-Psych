@@ -3,8 +3,6 @@ package funkin.config;
 import core.structures.ControlsData;
 import core.structures.SaveData;
 
-import funkin.config.SaveFile;
-
 class ClientPrefs
 {
     public static var data:SaveData = {};

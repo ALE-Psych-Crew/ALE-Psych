@@ -1,12 +1,12 @@
 package funkin.substates;
 
 import funkin.visuals.objects.Alphabet;
+import funkin.config.SaveFile;
 
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.display.FlxBackdrop;
 
 import flixel.math.FlxPoint;
-import flixel.util.FlxSave;
 
 import ale.ui.UIUtils;
 
@@ -68,10 +68,9 @@ class ModsMenuSubState extends SubState
         {
             final curOption:String = list.members[selInt].text;
 
-            final save:FlxSave = new FlxSave();
-            save.bind(Paths.modSave, CoolUtil.getSavePath(false));
-            save.data.currentMod = curOption == NO_MODS ? null : curOption;
-            save.flush();
+            final save:SaveFile = new SaveFile('mod', true);
+            save.data.mod = curOption == NO_MODS ? null : curOption;
+            save.save();
 
             close();
 

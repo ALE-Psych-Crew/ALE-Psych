@@ -1,7 +1,5 @@
 package funkin.config;
 
-import core.structures.Object;
-
 import lime.system.System;
 
 import haxe.io.Path;
@@ -9,54 +7,53 @@ import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 
-import Type;
-
 class SaveFile
 {
-    public final path:String;
+    public final folderPath:String;
+    public final filePath:String;
 
-    public var data(default, set):Object = {};
-    function set_data(value:Object):Object
+    public var data(default, set):Dynamic = {};
+    function set_data(value:Dynamic):Dynamic
         return merge(value);
 
-    public function new(id:String)
+    public function new(id:String, ?ignoreMod:Bool = false)
     {
-        path = Path.join([System.applicationStorageDirectory, Paths.mod, id + '.json']);
+        folderPath = Path.join([System.applicationStorageDirectory, ignoreMod ? null : Paths.mod]);
+
+        filePath = Path.join([folderPath, id + '.json']);
 
         load();
     }
 
     public function load()
-        if (FileSystem.exists(path))
-            data = Json.parse(File.getContent(path));
+        if (FileSystem.exists(filePath))
+            data = Json.parse(File.getContent(filePath));
 
     public function save()
     {
-        final folderPath:String = Path.join([System.applicationStorageDirectory, Paths.mod]);
-
         if (!FileSystem.exists(folderPath))
             FileSystem.createDirectory(folderPath);
 
-        File.saveContent(path, Json.stringify(data));
+        File.saveContent(filePath, Json.stringify(data));
     }
 
     public function delete()
-        if (FileSystem.exists(path))
-            FileSystem.deleteFile(path);
+        if (FileSystem.exists(filePath))
+            FileSystem.deleteFile(filePath);
 
-    public function merge(newData:Object, ?original:Object):Object
+    public function merge(newData:Dynamic, ?original:Dynamic):Dynamic
     {
         original ??= data;
 
-        function isObject(obj:Dynamic)
-            return Type.typeof(obj) == ValueType.TObject;
+        if (!CoolUtil.isObject(newData) || !CoolUtil.isObject(original))
+            return {};
 
         for (field in Reflect.fields(newData))
         {
             final originalRes:Dynamic = Reflect.field(original, field);
             final newRes:Dynamic = Reflect.field(newData, field);
 
-            if (isObject(originalRes) && isObject(newRes))
+            if (CoolUtil.isObject(originalRes) && CoolUtil.isObject(newRes))
                 merge(newRes, originalRes);
             else
                 Reflect.setField(original, field, newRes);

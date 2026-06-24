@@ -1,5 +1,7 @@
 package utils.cool;
 
+import Type;
+
 class ReflectUtil
 {
     public static function getRecursiveProperty(instance:Dynamic, split:Array<String>):Dynamic
@@ -38,4 +40,7 @@ class ReflectUtil
             }
         }
     }
+
+    public static function isObject(obj:Dynamic):Bool
+        return Type.typeof(obj) == ValueType.TObject;
 }
