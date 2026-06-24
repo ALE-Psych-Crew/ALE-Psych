@@ -68,7 +68,7 @@ class ModsMenuSubState extends SubState
         {
             final curOption:String = list.members[selInt].text;
 
-            final save:SaveFile = new SaveFile('mod', true);
+            final save:SaveFile = new SaveFile('data', true);
             save.data.mod = curOption == NO_MODS ? null : curOption;
             save.save();
 

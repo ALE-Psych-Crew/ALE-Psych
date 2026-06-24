@@ -102,7 +102,7 @@ class Paths
                     mod = Defines.CONTENT_MOD.split('\n')[0].trim();
             },
             () -> {
-                mod = new SaveFile('mod', true).data.mod;
+                mod = new SaveFile('data', true).data.mod;
             }
         ];
 
