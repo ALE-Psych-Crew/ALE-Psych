@@ -21,7 +21,7 @@ class SaveFile
             data = Json.parse(File.getContent(path));
     }
 
-    public function save():Dynamic
+    public function save()
     {
         final folderPath:String = Path.join([System.applicationStorageDirectory, Paths.mod]);
 
@@ -29,7 +29,9 @@ class SaveFile
             FileSystem.createDirectory(folderPath);
 
         File.saveContent(path, Json.stringify(data));
-
-        return data;
     }
+
+    public function delete()
+        if (FileSystem.exists(path))
+            FileSystem.deleteFile(path);
 }
