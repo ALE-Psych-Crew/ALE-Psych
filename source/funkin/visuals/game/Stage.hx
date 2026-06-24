@@ -65,23 +65,6 @@ class Stage
         this.id = id;
 
         config = current.config;
-
-        @:privateAccess {
-            if (parent is PlayState)
-            {
-                final game:PlayState = cast FlxG.state;
-
-                for (char in game.characters)
-                    game.resetCharacterPosition(char);
-
-                if (game.camGame is FXCamera)
-                {
-                    final camGame:FXCamera = cast game.camGame;
-
-                    camGame.zoom = camGame.targetZoom = config.zoom;
-                }
-            }
-        }
     }
 
     public function cache(id:String)

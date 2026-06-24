@@ -143,7 +143,7 @@ class PlayState extends ScriptedState
 
             initSong();
 
-            stage.change(chart.stage);
+            changeStage(chart.stage);
 
             moveCamera(0);
 
@@ -268,14 +268,34 @@ class PlayState extends ScriptedState
     }
 
 
+    function changeStage(id:String)
+    {
+        if (scriptsManager.callback(ON, 'StageChange', [id]))
+        {
+            stage.change(id);
+
+            if (characters != null)
+                for (char in characters)
+                    resetCharacterPosition(char);
+
+            final camGame:FXCamera = cast camGame;
+
+            camGame.targetZoom = stage.config.zoom;
+        }
+
+        scriptsManager.callback(POST, 'StageChange', [id]);
+    }
+
+
     function pause(?force:Bool = false)
     {
         if (scriptsManager.callback(ON, 'Pause'))
         {
             if (allowPausing || force)
             {
-                FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = false);
-                FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = false);
+                Conductor.pause();
+
+                toggleTweensAndTimers(false);
 
                 CoolUtil.openSubState(new CustomSubState(CoolVars.meta.pauseSubState));
             }
@@ -288,11 +308,73 @@ class PlayState extends ScriptedState
     {
         if (scriptsManager.callback(ON, 'Resume'))
         {
-            FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = true);
-            FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = true);
+            Conductor.resume();
+
+            toggleTweensAndTimers(true);
         }
 
         scriptsManager.callback(POST, 'Resume');
+    }
+
+    function restart()
+    {
+        if (scriptsManager.callback(ON, 'Restart'))
+            reset();
+
+        scriptsManager.callback(POST, 'Restart');
+    }
+
+    function endSong()
+    {
+        if (scriptsManager.callback(ON, 'SongEnd'))
+        {
+            Conductor.pause();
+
+            if (songIndex + 1 < playlist.length)
+                CoolUtil.switchState(new PlayState(type, playlist, difficulty, week, weekScore + score, songIndex + 1), true, true);
+            else
+                exit();
+        }
+
+        scriptsManager.callback(POST, 'SongEnd');
+    }
+
+    function overGame()
+    {
+        if (scriptsManager.callback(ON, 'GameOver'))
+        {
+            Conductor.pause();
+
+            CoolUtil.openSubState(new CustomSubState(CoolVars.data.gameOverSubState));
+        }
+
+        scriptsManager.callback(POST, 'GameOver');
+    }
+
+    function exit()
+    {
+        if (scriptsManager.callback(ON, 'Exit'))
+        {
+            allowPausing = false;
+
+            toggleTweensAndTimers(false);
+
+            CoolUtil.switchState(new CustomState(type == STORY ? CoolVars.meta.storyMenuState : CoolVars.meta.freeplayState));
+        }
+
+        scriptsManager.callback(POST, 'Exit');
+    }
+
+
+    function toggleTweensAndTimers(toggle:Bool)
+    {
+        if (scriptsManager.callback(ON, 'TweensAndTimersToggle', [toggle]))
+        {
+            FlxTimer.globalManager.forEach(tmr -> if (tmr != null && !tmr.finished) tmr.active = toggle);
+            FlxTween.globalManager.forEach(twn ->  if (twn != null && !twn.finished) twn.active = toggle);
+        }
+
+        scriptsManager.callback(POST, 'TweensAndTimersToggle', [toggle]);
     }
 
 
@@ -307,7 +389,12 @@ class PlayState extends ScriptedState
     override public function beatHit(curBeat:Int)
     {
         if (scriptsManager.callback(ON, 'BeatHit', [curBeat]))
+        {
             super.beatHit(curBeat);
+
+            for (cam in [camGame, camHUD])
+                cast(cam, FXCamera).bop(curBeat);
+        }
 
         scriptsManager.callback(POST, 'BeatHit', [curBeat]);
     }
@@ -383,7 +470,11 @@ class PlayState extends ScriptedState
     override public function musicComplete()
     {
         if (scriptsManager.callback(ON, 'MusicComplete'))
+        {
             super.musicComplete();
+
+            endSong();
+        }
 
         scriptsManager.callback(POST, 'MusicComplete');
     }
@@ -736,7 +827,12 @@ class PlayState extends ScriptedState
     public function updateHealth()
     {
         if (scriptsManager.callback(ON, 'HealthUpdate'))
+        {
             healthBar.percent = health;
+
+            if (health <= 0 && !ClientPrefs.data.practice)
+                overGame();
+        }
 
         scriptsManager.callback(POST, 'HealthUpdate');
     }
