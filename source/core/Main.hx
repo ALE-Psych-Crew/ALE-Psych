@@ -24,7 +24,9 @@ import haxe.CallStack;
 
 import utils.Formatter;
 
+#if ALLOW_LINUX_API
 import hxgamemode.GamemodeClient;
+#end
 
 @:unreflective
 class Main extends Sprite
