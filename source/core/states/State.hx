@@ -3,6 +3,7 @@ package core.states;
 import core.interfaces.IState;
 
 import flixel.FlxState;
+import flixel.FlxBasic;
 
 #if cpp
 import cpp.vm.Gc;
@@ -58,6 +59,28 @@ class State extends FlxState implements IState
         
 		super.destroy();
 	}
+
+    
+    public function addBehind(target:FlxBasic, obj:FlxBasic):FlxBasic
+    {
+        insert(members.indexOf(target), obj);
+
+        return obj;
+    }
+
+    public function addAhead(target:FlxBasic, obj:FlxBasic):FlxBasic
+    {
+        insert(members.indexOf(target) + 1, obj);
+
+        return obj;
+    }
+
+    public function addBehindGroup<T:FlxBasic>(group:FlxTypedGroup<T>, obj:FlxBasic):FlxBasic
+        return addBehind(group.members[0], obj);
+
+    public function addAheadGroup<T:FlxBasic>(group:FlxTypedGroup<T>, obj:FlxBasic):FlxBasic
+        return addAhead(group.members[group.members.length - 1], obj);
+
 
     public function reset()
     {

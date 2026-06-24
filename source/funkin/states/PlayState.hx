@@ -1,6 +1,8 @@
 package funkin.states;
 
 import core.structures.JsonHudRating;
+import core.structures.ALEEventList;
+import core.structures.ALEEvent;
 import core.structures.ALESong;
 import core.structures.JsonHud;
 import core.structures.Point;
@@ -19,9 +21,12 @@ import utils.Formatter;
 import flixel.util.typeLimit.OneOfTwo;
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
+import flixel.FlxBasic;
 
 import openfl.media.Sound as OpenFLSound;
 import openfl.events.KeyboardEvent;
+
+import haxe.ds.GenericStack;
 
 import ale.ui.UIUtils;
 
@@ -38,7 +43,7 @@ class PlayState extends ScriptedState
     public var hud:JsonHud;
 
     public var hudRoute(get, never):String;
-    public function get_hudRoute():String
+    function get_hudRoute():String
         return 'huds/' + hud.directory;
 
     public final song:String;
@@ -60,7 +65,7 @@ class PlayState extends ScriptedState
     public var stage:Stage;
 
     public var accuracy(get, never):Float;
-    public function get_accuracy():Float
+    function get_accuracy():Float
         return totalNotes == 0 ? 100 : accuracyMod / totalNotes;
 
     public var botplay(default, set):Bool;
@@ -108,6 +113,10 @@ class PlayState extends ScriptedState
         hud.ratings.sort((a, b) -> Reflect.compare(a.time, b.time));
     }
 
+
+    var totalNoteTypes:Array<String> = [];
+    var totalEvents:Array<String> = [];
+
     override function create()
     {
         instance = this;
@@ -125,6 +134,8 @@ class PlayState extends ScriptedState
 
         if (scriptsManager.callback(ON, 'Create'))
         {
+            initEvents();
+
             initCharacters();
 
             initCombo();
@@ -148,6 +159,12 @@ class PlayState extends ScriptedState
             moveCamera(0);
 
             camGame.snapToTarget();
+
+            for (noteType in totalNoteTypes)
+                scriptsManager.load('scripts/noteTypes/' + noteType);
+
+            for (event in totalEvents)
+                scriptsManager.load('scripts/events/' + event);
         }
 
         scriptsManager.callback(POST, 'Create');
@@ -174,6 +191,10 @@ class PlayState extends ScriptedState
 
                 updateHealth();
             }
+
+            while (!eventsListStack.isEmpty() && eventsListStack.first().time <= Conductor.songPosition)
+                for (event in eventsListStack.pop().events)
+                    eventHit(event);
 
             if (Controls.PAUSE && allowPausing)
                 pause();
@@ -265,6 +286,61 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'Destroy');
 
         instance = null;
+    }
+
+
+    final eventsListStack:GenericStack<ALEEventList> = new GenericStack();
+
+    function initEvents()
+    {
+        if (scriptsManager.callback(ON, 'EventsInit'))
+        {
+            final sortedEvents = chart.events.copy();
+
+            sortedEvents.sort((a, b) -> {
+                final timeA:Float = a[0];
+                final timeB:Float = b[0];
+
+                return timeA > timeB ? -1 : timeA < timeB ? 1 : 0;
+            });
+
+            for (targetEvent in sortedEvents)
+            {
+                stackEventList({
+                    time: targetEvent[0],
+                    events: [
+                        for (event in cast(targetEvent[1], Array<Dynamic>))
+                        {
+                            id: event.shift(),
+                            values: event
+                        }
+                    ]
+                });
+            }
+        }
+
+        scriptsManager.callback(POST, 'EventsInit');
+    }
+
+    function stackEventList(eventList:ALEEventList)
+    {
+        eventsListStack.add(eventList);
+
+        if (scriptsManager.callback(ON, 'EventListStack', [eventList]))
+            for (event in eventList.events)
+                if (!totalEvents.contains(event.id))
+                    totalEvents.push(event.id);
+
+        scriptsManager.callback(POST, 'EventListStack', [eventList]);
+    }
+
+    function eventHit(event:ALEEvent)
+    {
+        final args:Array<Dynamic> = cast([event.id], Array<Dynamic>).concat(event.values);
+
+        scriptsManager.callback(ON, 'EventHit', args);
+
+        scriptsManager.callback(POST, 'EventHit', args);
     }
 
 
@@ -527,18 +603,6 @@ class PlayState extends ScriptedState
     public var playerCharacters:FlxTypedGroup<Character>;
     public var opponentCharacters:FlxTypedGroup<Character>;
     public var extraCharacters:FlxTypedGroup<Character>;
-
-    public var bf(get, never):Character;
-    public function get_bf():Character
-        return playerCharacters.members[0];
-
-    public var dad(get, never):Character;
-    public function get_dad():Character
-        return opponentCharacters.members[0];
-
-    public var gf(get, never):Character;
-    public function get_gf():Character
-        return extraCharacters.members[0];
 
     var characterFactory:(String, CharacterType) -> Character = (char, type) -> new Character(char, type);
 
@@ -843,18 +907,6 @@ class PlayState extends ScriptedState
     public var opponentIcons:FlxTypedGroup<Icon>;
     public var extraIcons:FlxTypedGroup<Icon>;
 
-    public var iconP1(get, never):Icon;
-    public function get_iconP1():Icon
-        return playerIcons.members[0];
-
-    public var iconP2(get, never):Icon;
-    public function get_iconP2():Icon
-        return opponentIcons.members[0];
-
-    public var iconP3(get, never):Icon;
-    public function get_iconP3():Icon
-        return extraIcons.members[0];
-
     var iconFactory:(String, CharacterType) -> Icon = (icon, type) -> new Icon(icon, type);
 
     public function initIcons()
@@ -1017,6 +1069,10 @@ class PlayState extends ScriptedState
 
         final result:Bool = scriptsManager.callback(ON, 'NoteStack', null, [nextNoteToStack]);
 
+        if (result)
+            if (!totalNoteTypes.contains(nextNoteToStack.noteType))
+                totalNoteTypes.push(nextNoteToStack.noteType);
+
         scriptsManager.callback(POST, 'NoteStack', null, [nextNoteToStack]);
 
         return result;
@@ -1107,12 +1163,10 @@ class PlayState extends ScriptedState
 
             if (nextNoteToMissCharacter.type == PLAYER)
             {
-                health -= note.missHealth;
-
-                combo = 0;
-                
                 if (note.type == ARROW)
                 {
+                    health -= note.missHealth;
+                    
                     combo = 0;
 
                     misses++;
@@ -1489,4 +1543,142 @@ class PlayState extends ScriptedState
 
         scriptsManager.callback(POST, 'CameraMove', null, [cameraTarget]);
     }
+
+
+    var bopModulo(never, set):Int;
+    function set_bopModulo(value:Int):Int
+    {
+        for (cam in [camGame, camHUD])
+            if (cam is FXCamera)
+                cast(cam, FXCamera).bopModulo = value;
+
+        return value;
+    }
+    
+    var bopZoom(never, set):Int;
+    function set_bopZoom(value:Int):Int
+    {
+        if (camGame is FXCamera)
+            cast(camGame, FXCamera).bopZoom = value;
+
+        if (camHUD is FXCamera)
+            cast(camHUD, FXCamera).bopZoom = value * 2;
+
+        return value;
+    }
+    
+    var defaultCamZoom(never, set):Float;
+    function set_defaultCamZoom(value:Float):Float
+    {
+        if (camGame is FXCamera)
+            cast(camGame, FXCamera).targetZoom = value;
+
+        return value;
+    }
+    
+    var defaultHudZoom(never, set):Float;
+    function set_defaultHudZoom(value:Float):Float
+    {
+        if (camHUD is FXCamera)
+            cast(camHUD, FXCamera).targetZoom = value;
+
+        return value;
+    }
+
+    var iconsBopModulo(never, set):Int;
+    function set_iconsBopModulo(value:Int):Int
+    {
+        for (icon in icons)
+            icon._castConfig.bopModulo = value;
+
+        return value;
+    }
+
+    var cameraSpeed(never, set):Float;
+    function set_cameraSpeed(value:Float):Float
+    {
+        cast(camGame, FXCamera).speed = value;
+
+        return value;
+    }
+
+    var cameraZoomSpeed(never, set):Float;
+    function set_cameraZoomSpeed(value:Float):Float
+    {
+        cast(camGame, FXCamera).zoomSpeed = cast(camGame, FXCamera).zoomSpeed = value;
+
+        return value;
+    }
+    
+    public var boyfriend(get, never):Character;
+    function get_boyfriend():Character
+        return bf;
+
+    public var bf(get, never):Character;
+    function get_bf():Character
+        return playerCharacters.members[0];
+
+    public var dad(get, never):Character;
+    function get_dad():Character
+        return opponentCharacters.members[0];
+
+    public var gf(get, never):Character;
+    function get_gf():Character
+        return extraCharacters.members[0];
+
+    public var iconP1(get, never):Icon;
+    function get_iconP1():Icon
+        return playerIcons.members[0];
+
+    public var iconP2(get, never):Icon;
+    function get_iconP2():Icon
+        return opponentIcons.members[0];
+
+    public var iconP3(get, never):Icon;
+    function get_iconP3():Icon
+        return extraIcons.members[0];
+
+    var scoreTxt(get, never):FlxText;
+    function get_scoreTxt():FlxText
+        return scoreText;
+
+    var strumLineNotes(get, never):FlxTypedGroup<Strum>;
+    function get_strumLineNotes():FlxTypedGroup<Strum>
+        return strums;
+
+    inline public function addBehindOpponents(obj:FlxBasic):FlxBasic
+        return addBehindGroup(opponentCharacters, obj);
+
+    inline public function addBehindPlayers(obj:FlxBasic):FlxBasic
+        return addBehindGroup(playerCharacters, obj);
+
+    inline public function addBehindExtras(obj:FlxBasic):FlxBasic
+        return addBehindGroup(extraCharacters, obj);
+
+    inline public function addAheadOpponents(obj:FlxBasic):FlxBasic
+        return addAheadGroup(opponentCharacters, obj);
+
+    inline public function addAheadPlayers(obj:FlxBasic):FlxBasic
+        return addAheadGroup(playerCharacters, obj);
+
+    inline public function addAheadExtras(obj:FlxBasic):FlxBasic
+        return addAheadGroup(extraCharacters, obj);
+
+    inline public function addBehindDad(obj:FlxBasic):FlxBasic
+        return addBehindOpponents(obj);
+
+    inline public function addBehindBF(obj:FlxBasic):FlxBasic
+        return addBehindPlayers(obj);
+
+    inline public function addBehindGF(obj:FlxBasic):FlxBasic
+        return addBehindExtras(obj);
+
+    inline public function addAheadDad(obj:FlxBasic):FlxBasic
+        return addAheadOpponents(obj);
+
+    inline public function addAheadBF(obj:FlxBasic):FlxBasic
+        return addAheadPlayers(obj);
+
+    inline public function addAheadGF(obj:FlxBasic):FlxBasic
+        return addAheadExtras(obj);
 }

@@ -6,6 +6,8 @@ import core.structures.JsonStage;
 
 import utils.Formatter;
 
+import flixel.FlxBasic;
+
 class Stage
 {
     var parent:Dynamic;
@@ -47,8 +49,9 @@ class Stage
 
         current = cached.get(id);
 
+        cached.remove(id);
+
         for (obj in current.objects)
-        {
             obj.object.exists = switch (obj.quality)
             {
                 case 'any':
@@ -60,7 +63,6 @@ class Stage
                 case 'high':
                     !ClientPrefs.data.lowQuality;
             }
-        }
         
         this.id = id;
 
@@ -82,6 +84,46 @@ class Stage
             objects: new Map<String, StageArrayObject>(),
             id: id
         };
+
+        if (json.spritesConfig != null)
+            for (object in json.spritesConfig.sprites)
+            {
+                final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? Type.getClassName(Bopper)), object.classArguments ?? []), object, 'stages/' + json.spritesConfig.directory + '/');
+
+                if (obj is Bopper)
+                    cast(obj, Bopper).configBeatHitAnimations();
+
+                CoolUtil.setProperties(obj, json.spritesConfig.properties);
+
+                CoolUtil.setProperties(obj, object.properties);
+
+                obj.updateHitbox();
+
+                if (object.cameras != null)
+                {
+                    obj.cameras = [];
+
+                    for (camera in object.cameras)
+                    {
+                        final result:Dynamic = Reflect.getProperty(parent, camera);
+
+                        if (result != null && result is FlxCamera)
+                            obj.cameras.push(result);
+                    }
+                }
+
+                obj.exists = false;
+
+                final addMethod:FlxBasic -> Dynamic = Reflect.getProperty(parent, object.addMethod ?? 'addBehindExtras');
+
+                if (addMethod != null)
+                    Reflect.callMethod(parent, addMethod, [obj]);
+
+                result.objects.set(object.id, {
+                    object: obj,
+                    quality: object.quality ?? ANY
+                });
+            }
 
         cached.set(id, result);
 
