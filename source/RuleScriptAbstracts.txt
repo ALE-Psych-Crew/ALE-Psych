@@ -1,17 +1,11 @@
-flixel.input.keyboard.FlxKey
-
-flixel.math.FlxPoint
-
+flixel.sound.filters.FlxSoundFilterType
+flixel.tweens.FlxTween.FlxTweenType
+flixel.text.FlxText.FlxTextAlign
 flixel.util.FlxDirectionFlags
+flixel.input.keyboard.FlxKey
 flixel.util.FlxColor
+flixel.math.FlxPoint
 flixel.util.FlxAxes
 
-flixel.sound.filters.FlxSoundFilterType
-
-flixel.text.FlxText.FlxTextAlign
-
-flixel.tweens.FlxTween.FlxTweenType
-
 openfl.net.URLLoaderDataFormat
-
 openfl.display.BlendMode
