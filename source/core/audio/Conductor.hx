@@ -199,6 +199,8 @@ class Conductor
         reset(bpm, stepsPerBeat, beatsPerSection);
 
         musicPlay?.dispatch();
+
+        synchronize();
     }
 
     /**
@@ -352,9 +354,7 @@ class Conductor
         {
             time += FlxG.elapsed * 1000;
 
-            final musicOffset:Float = Math.abs(music.time - time);
-
-            if (musicOffset >= 25)
+            if (Math.abs(music.time - time) >= 20)
                 synchronize();
 
             final newStep:Int = Math.floor(time / stepCrochet);
