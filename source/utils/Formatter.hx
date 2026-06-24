@@ -348,7 +348,7 @@ class Formatter
                     ],
                     properties: {
                         flipX: false,
-                        antialiasing: false,
+                        antialiasing: true,
                         scale: {
                             x: 1,
                             y: 1,
