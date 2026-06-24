@@ -79,6 +79,17 @@ class PlayState extends ScriptedState
         return botplay;
     }
 
+    public var speed(default, set):Float = 1;
+    function set_speed(value:Float):Float
+    {
+        speed = value;
+
+        for (strl in strumLines)
+            strl.speed = speed;
+
+        return speed;
+    }
+
     public var health(default, set):Float = 50;
     function set_health(value:Float)
         return health = FlxMath.bound(value, 0, 100);
@@ -147,6 +158,8 @@ class PlayState extends ScriptedState
             initStrumLines();
 
             botplay = ClientPrefs.data.botplay;
+
+            speed = chart.speed;
 
             initControls();
 
