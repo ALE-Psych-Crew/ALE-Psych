@@ -193,4 +193,11 @@ class CustomSubState extends ScriptedSubState
 
         scriptsManager.callback(POST, 'OnFocusLost');
     }
+
+    override public function reset()
+    {
+        close();
+
+        CoolUtil.openSubState(new CustomSubState(name, scriptsManager.globalArguments #if ALLOW_HSCRIPT , scriptsManager.haxeArguments #end #if ALLOW_LUA , scriptsManager.luaArguments #end));
+    }
 }

@@ -14,7 +14,7 @@ class ScriptedSubState extends MusicBeatSubState implements IScriptedState
     {
         super();
 
-        scriptsManager = new ScriptsManager(SUBSTATE, globalArgs #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
+        scriptsManager = new ScriptsManager(SUBSTATE, globalArgs #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end, true);
     }
 
     override function create()
@@ -29,5 +29,12 @@ class ScriptedSubState extends MusicBeatSubState implements IScriptedState
         super.destroy();
 
         instance = null;
+    }
+
+    public function reset()
+    {
+        close();
+
+        CoolUtil.openSubState(new ScriptedSubState(scriptsManager.globalArguments #if ALLOW_HSCRIPT , scriptsManager.haxeArguments #end #if ALLOW_LUA , scriptsManager.luaArguments #end));
     }
 }

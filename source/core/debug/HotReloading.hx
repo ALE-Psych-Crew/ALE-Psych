@@ -38,14 +38,14 @@ class HotReloading
                         {
                             times[file] = lastTime;
 
+                            mutex.acquire();
+
                             if (FlxG.state.subState == null)
-                            {
-                                mutex.acquire();
-
                                 cast(FlxG.state, ScriptedState).reset();
+                            else if (FlxG.state.subState is ScriptedSubState)
+                                cast(FlxG.state.subState, ScriptedSubState).reset();
 
-                                mutex.release();
-                            }
+                            mutex.release();
                         } else {
                             times[file] = lastTime;
                         }
