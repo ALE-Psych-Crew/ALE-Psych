@@ -18,14 +18,6 @@ class LuaCoolUtil extends LuaPresetBase
             return CoolUtil.colorFromString(str);
         });
 
-        set('getDominantColor', function(tag:String):FlxColor
-        {
-            if (tagIs(tag, FlxSprite))
-                return CoolUtil.dominantColor(getTag(tag));
-
-            return FlxColor.BLACK;
-        });
-
         set('colorFromArray', function(arr:Array<Int>):FlxColor
         {
             return CoolUtil.colorFromArray(arr);
