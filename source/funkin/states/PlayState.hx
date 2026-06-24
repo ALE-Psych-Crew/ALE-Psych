@@ -76,6 +76,9 @@ class PlayState extends ScriptedState
         for (strl in strumLines)
             strl.botplay = botplay || strl.type != PLAYER;
 
+        if (scoreText != null)
+            updateScoreText();
+
         return botplay;
     }
 
@@ -897,7 +900,7 @@ class PlayState extends ScriptedState
     public function updateScoreText()
     {
         if (scriptsManager.callback(ON, 'ScoreTextUpdate'))
-            scoreText.text = 'Score: ' + score + '    Misses: ' + misses + '    Accuracy: ' + CoolUtil.floorDecimal(get_accuracy(), 2) + '%';
+            scoreText.text = botplay ? 'BOTPLAY' : 'Score: ' + score + '    Misses: ' + misses + '    Accuracy: ' + CoolUtil.floorDecimal(get_accuracy(), 2) + '%';
 
         scriptsManager.callback(POST, 'ScoreTextUpdate');
     }
