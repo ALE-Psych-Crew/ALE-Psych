@@ -373,6 +373,9 @@ class Conductor
      */
     public static function synchronize()
     {
+        if (music == null)
+            return;
+
         time = music.time;
 
         for (sound in synchronizedSounds)
