@@ -60,14 +60,14 @@
 	
 	<!-- Flags -->
 
-	<set name="BUILD_DIR" value="export/release"/>
+	<set name="BUILD_DIR" value="export/debug" if="debug"/>
+	<set name="BUILD_DIR" value="export/release" unless="debug"/>
 	<set name="BUILD_DIR" value="export/32bit" if="32bits"/>
 
 	<haxeflag name="-dce" value="no"/>
 
 	<!-- Defines -->
 	
-	<set name="BUILD_DIR" value="export"/>
 	<set name="SWF_VERSION" value="11.8"/>
 	
 	<define name="HX_WINDOWS" if="ALLOW_WINDOWS_API"/>
