@@ -109,14 +109,15 @@ class Conductor
         musicResume = new FlxTypedSignal<Void -> Void>();
         musicStop = new FlxTypedSignal<Void -> Void>();
         musicComplete = new FlxTypedSignal<Void -> Void>();
+        musicResync = new FlxTypedSignal<Void -> Void>();
 
-        FlxG.signals.preUpdate.add(update);
+        FlxG.signals.postUpdate.add(update);
     }
 
     @:dox(hide)
     public static function destroy()
     {
-        FlxG.signals.preUpdate.remove(update);
+        FlxG.signals.postUpdate.remove(update);
 
         reset(100, 4, 4);
 
@@ -354,7 +355,7 @@ class Conductor
         {
             time += FlxG.elapsed * 1000;
 
-            if (Math.abs(music.time - time) >= 20)
+            if (Math.abs(music.time - time) >= 25)
                 synchronize();
 
             final newStep:Int = Math.floor(time / stepCrochet);
@@ -364,6 +365,9 @@ class Conductor
                 curStep = newStep;
 
                 stepHandler();
+
+                if (needsResync())
+                    synchronize();
             }
         }
     }
@@ -384,17 +388,29 @@ class Conductor
         musicResync?.dispatch();
     }
 
+    /**
+     * This simply checks to see if any of the audio tracks linked to Conductor are out of sync so that they can be resynchronized
+     * @return This determines whether or not the audio should be resynchronized
+     */
+    static function needsResync():Bool
+    {
+        if (Math.abs(music.time - time) >= 20)
+            return true;
+
+        for (sound in synchronizedSounds)
+            if (sound != null && Math.abs(sound.time - time) >= 20)
+                return true;
+
+        return false;
+    }
+
     @:dox(hide)
     public static function stepHandler()
     {
         stepHit?.dispatch(curStep);
 
         while (safeStep < curStep)
-        {
-            safeStep++;
-
-            safeStepHit?.dispatch(safeStep);
-        }
+            safeStepHit?.dispatch(++safeStep);
 
         final newBeat:Int = Math.floor(curStep / stepsPerBeat);
 

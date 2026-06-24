@@ -370,6 +370,7 @@ class PlayState extends ScriptedState
             final camGame:FXCamera = cast camGame;
 
             camGame.targetZoom = stage.config.zoom;
+            camGame.speed = stage.config.speed;
         }
 
         scriptsManager.callback(POST, 'StageChange', [id]);
