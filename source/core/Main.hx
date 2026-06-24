@@ -24,6 +24,8 @@ import haxe.CallStack;
 
 import utils.Formatter;
 
+import hxgamemode.GamemodeClient;
+
 @:unreflective
 class Main extends Sprite
 {
@@ -49,6 +51,10 @@ class Main extends Sprite
 
 	static function preConfig()
 	{
+		#if ALLOW_LINUX_API
+		GamemodeClient.request_start();
+		#end
+
 		#if ALLOW_CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, (error) -> {
 			final title:String = 'ALE Psych ' + CoolVars.engineVersion + ' | Crash Handler';
@@ -84,9 +90,13 @@ class Main extends Sprite
 			
 			Logs.popUp(title, printMessage + errorMessage, ERROR);
 
+			destroy();
+
 			Sys.exit(1);
 		});
 		#end
+		
+		Lib.application.window.onClose.add(() -> destroy());
 
 		FlxG.stage.addEventListener('keyDown', (event) -> {
 			if (event.altKey && event.keyCode == FlxKey.ENTER)
@@ -96,9 +106,7 @@ class Main extends Sprite
 		DesktopAPI.setDPIAware();
 	}
 
-	static function postConfig()
-	{
-	}
+	static function postConfig() {}
 
 	@:allow(utils.cool.AppUtil)
 	static function preResetConfig()
@@ -180,5 +188,14 @@ class Main extends Sprite
 		game.addChild(game.soundTraySprite = new SoundTray());
 
 		FlxG.stage.addChild(game.debugTray = new DebugTray());	
+	}
+
+	static function destroy()
+	{
+		DesktopAPI.reset();
+
+		#if ALLOW_LINUX_API
+		GamemodeClient.request_end();
+		#end
 	}
 }

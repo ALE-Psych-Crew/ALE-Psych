@@ -91,6 +91,11 @@
 			"dir": null,
 			"ref": "2deeb71a07801fcedd55712356f0044c7cfbf2a0",
 			"url": "https://github.com/Slushi-Github/SL-Windows-API"
+		},
+		{
+			"name": "hxgamemode",
+			"type": "haxelib",
+			"version": "1.0.1"
 		}
 	]
 }

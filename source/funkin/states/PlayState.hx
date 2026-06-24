@@ -30,46 +30,47 @@ import haxe.ds.GenericStack;
 
 import ale.ui.UIUtils;
 
+@:publicFields
 class PlayState extends ScriptedState
 {
-    public static var instance:PlayState;
+    static var instance:PlayState;
 
-    public var startTime:Float = 0;
+    var startTime:Float = 0;
 
-    public var spawnNotes:Bool = true;
-    public var skipCountdown:Bool = false;
+    var spawnNotes:Bool = true;
+    var skipCountdown:Bool = false;
 
-    public var chart:ALESong;
-    public var hud:JsonHud;
+    var chart:ALESong;
+    var hud:JsonHud;
 
-    public var hudRoute(get, never):String;
+    var hudRoute(get, never):String;
     function get_hudRoute():String
         return 'huds/' + hud.directory;
 
-    public final song:String;
-    public final week:String;
-    public final playlist:Array<String>;
-    public final difficulty:String;
-    public final songIndex:Int;
-    public final songRoute:String;
+    final song:String;
+    final week:String;
+    final playlist:Array<String>;
+    final difficulty:String;
+    final songIndex:Int;
+    final songRoute:String;
 
-    public final type:SongType;
-    public var weekScore:Float = 0;
+    final type:SongType;
+    var weekScore:Float = 0;
 
-    public var score:Float = 0;
-    public var totalNotes:Int = 0;
-    public var accuracyMod:Float = 0;
-    public var misses:Int = 0;
-    public var combo:Int = 0;
+    var score:Float = 0;
+    var totalNotes:Int = 0;
+    var accuracyMod:Float = 0;
+    var misses:Int = 0;
+    var combo:Int = 0;
 
-    public var stage:Stage;
+    var stage:Stage;
 
-    public var accuracy(get, never):Float;
+    var accuracy(get, never):Float;
     function get_accuracy():Float
         return totalNotes == 0 ? 100 : accuracyMod / totalNotes;
 
-    public var botplay(default, set):Bool;
-    public function set_botplay(value:Bool):Bool
+    var botplay(default, set):Bool;
+    function set_botplay(value:Bool):Bool
     {
         botplay = value;
 
@@ -82,7 +83,7 @@ class PlayState extends ScriptedState
         return botplay;
     }
 
-    public var speed(default, set):Float = 1;
+    var speed(default, set):Float = 1;
     function set_speed(value:Float):Float
     {
         speed = value;
@@ -93,11 +94,11 @@ class PlayState extends ScriptedState
         return speed;
     }
 
-    public var health(default, set):Float = 50;
+    var health(default, set):Float = 50;
     function set_health(value:Float)
         return health = FlxMath.bound(value, 0, 100);
 
-    public function new(?newType:SongType, ?newPlaylist:Array<String>, ?newDifficulty:String, ?newWeek:String, ?newWeekScore:Float, ?newSongIndex:Int)
+    function new(?newType:SongType, ?newPlaylist:Array<String>, ?newDifficulty:String, ?newWeek:String, ?newWeekScore:Float, ?newSongIndex:Int)
     {
         super();
 
@@ -257,7 +258,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'CamerasInit');
     }
 
-    override public function reset()
+    override function reset()
     {
         allowMemoryCleaning = false;
 
@@ -471,7 +472,7 @@ class PlayState extends ScriptedState
     }
 
 
-    override public function stepHit(curStep:Int)
+    override function stepHit(curStep:Int)
     {
         if (scriptsManager.callback(ON, 'StepHit', [curStep]))
             super.stepHit(curStep);
@@ -479,7 +480,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'StepHit', [curStep]);
     }
 
-    override public function beatHit(curBeat:Int)
+    override function beatHit(curBeat:Int)
     {
         if (scriptsManager.callback(ON, 'BeatHit', [curBeat]))
         {
@@ -500,7 +501,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'SectionHit', [curSection]);
     }
 
-    override public function safeStepHit(safeStep:Int)
+    override function safeStepHit(safeStep:Int)
     {
         if (scriptsManager.callback(ON, 'SafeStepHit', [safeStep]))
             super.safeStepHit(safeStep);
@@ -508,7 +509,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'SafeStepHit', [safeStep]);
     }
 
-    override public function safeBeatHit(safeBeat:Int)
+    override function safeBeatHit(safeBeat:Int)
     {
         if (scriptsManager.callback(ON, 'SafeBeatHit', [safeBeat]))
             super.safeBeatHit(safeBeat);
@@ -516,7 +517,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'SafeBeatHit', [safeBeat]);
     }
 
-    override public function safeSectionHit(safeSection:Int)
+    override function safeSectionHit(safeSection:Int)
     {
         if (scriptsManager.callback(ON, 'SafeSectionHit', [safeSection]))
         {
@@ -528,7 +529,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'SafeSectionHit', [safeSection]);
     }
 
-    override public function musicPlay()
+    override function musicPlay()
     {
         if (scriptsManager.callback(ON, 'MusicPlay'))
             super.musicPlay();
@@ -536,7 +537,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'MusicPlay');
     }
 
-    override public function musicPause()
+    override function musicPause()
     {
         if (scriptsManager.callback(ON, 'MusicPause'))
             super.musicPause();
@@ -544,7 +545,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'MusicPause');
     }
 
-    override public function musicResume()
+    override function musicResume()
     {
         if (scriptsManager.callback(ON, 'MusicResume'))
             super.musicResume();
@@ -552,7 +553,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'MusicResume');
     }
 
-    override public function musicStop()
+    override function musicStop()
     {
         if (scriptsManager.callback(ON, 'MusicStop'))
             super.musicStop();
@@ -560,7 +561,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'MusicStop');
     }
 
-    override public function musicComplete()
+    override function musicComplete()
     {
         if (scriptsManager.callback(ON, 'MusicComplete'))
         {
@@ -572,7 +573,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'MusicComplete');
     }
 
-    override public function musicResync()
+    override function musicResync()
     {
         if (scriptsManager.callback(ON, 'MusicResync'))
             super.musicResync();
@@ -580,7 +581,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'MusicResync');
     }
 
-    override public function onFocus()
+    override function onFocus()
     {
         if (scriptsManager.callback(ON, 'OnFocus'))
             super.onFocus();
@@ -588,7 +589,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'OnFocus');
     }
 
-    override public function onFocusLost()
+    override function onFocusLost()
     {
         if (scriptsManager.callback(ON, 'OnFocusLost'))
             super.onFocusLost();
@@ -596,7 +597,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'OnFocusLost');
     }
 
-    override public function openSubState(substate:flixel.FlxSubState):Void
+    override function openSubState(substate:flixel.FlxSubState):Void
     {
         if (scriptsManager.callback(ON, 'OpenSubState', null, [substate]))
             super.openSubState(substate);
@@ -604,7 +605,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'OpenSubState', null, [substate]);
     }
 
-    override public function closeSubState():Void
+    override function closeSubState():Void
     {
         if (scriptsManager.callback(ON, 'CloseSubState'))
             super.closeSubState();
@@ -613,17 +614,17 @@ class PlayState extends ScriptedState
     }
     
 
-    public var characters:FlxTypedGroup<Character>;
+    var characters:FlxTypedGroup<Character>;
 
-    public var charactersArray:Array<Array<Character>> = [];
+    var charactersArray:Array<Array<Character>> = [];
 
-    public var playerCharacters:FlxTypedGroup<Character>;
-    public var opponentCharacters:FlxTypedGroup<Character>;
-    public var extraCharacters:FlxTypedGroup<Character>;
+    var playerCharacters:FlxTypedGroup<Character>;
+    var opponentCharacters:FlxTypedGroup<Character>;
+    var extraCharacters:FlxTypedGroup<Character>;
 
     var characterFactory:(String, CharacterType) -> Character = (char, type) -> new Character(char, type);
 
-    public function initCharacters()
+    function initCharacters()
     {
         if (scriptsManager.callback(ON, 'CharactersInit'))
         {
@@ -715,7 +716,7 @@ class PlayState extends ScriptedState
 
     var nextCharacterToChange:Character;
 
-    public function changeCharacter(char:Character, id:String)
+    function changeCharacter(char:Character, id:String)
     {
         nextCharacterToChange = char;
 
@@ -742,7 +743,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'CharacterChange');
     }
 
-    public function getCharacterCamera(character:Character):Point
+    function getCharacterCamera(character:Character):Point
     {
         final result:Point = {x: character.getMidpoint().x + character._castConfig.cameraOffset.x * (character.type == PLAYER ? -1 : 1), y: character.getMidpoint().y + character._castConfig.cameraOffset.y};
 
@@ -766,12 +767,12 @@ class PlayState extends ScriptedState
         return result;
     }
 
-    public var comboGroup:FlxTypedSpriteGroup<FlxSprite>;
+    var comboGroup:FlxTypedSpriteGroup<FlxSprite>;
 
-    public var ratingSprite:FunkinSprite;
-    public var comboNumbers:FlxTypedSpriteGroup<FunkinSprite>;
+    var ratingSprite:FunkinSprite;
+    var comboNumbers:FlxTypedSpriteGroup<FunkinSprite>;
 
-    public function initCombo()
+    function initCombo()
     {
         if (scriptsManager.callback(ON, 'CombosInit'))
         {
@@ -799,7 +800,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'CombosInit');
     }
 
-    public function displayCombo(rating:JsonHudRating)
+    function displayCombo(rating:JsonHudRating)
     {
         if (scriptsManager.callback(ON, 'ComboDisplay', [rating]))
         {
@@ -867,12 +868,12 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'ComboDisplay', [rating]);
     }
 
-    public var uiGroup:FlxGroup;
+    var uiGroup:FlxGroup;
 
-    public var healthBar:Bar;
-    public var scoreText:FlxText;
+    var healthBar:Bar;
+    var scoreText:FlxText;
 
-    public function initHud()
+    function initHud()
     {
         if (scriptsManager.callback(ON, 'HudInit'))
         {
@@ -897,7 +898,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'HudInit');
     }
 
-    public function updateScoreText()
+    function updateScoreText()
     {
         if (scriptsManager.callback(ON, 'ScoreTextUpdate'))
             scoreText.text = botplay ? 'BOTPLAY' : 'Score: ' + score + '    Misses: ' + misses + '    Accuracy: ' + CoolUtil.floorDecimal(get_accuracy(), 2) + '%';
@@ -905,7 +906,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'ScoreTextUpdate');
     }
 
-    public function updateHealth()
+    function updateHealth()
     {
         if (scriptsManager.callback(ON, 'HealthUpdate'))
         {
@@ -918,15 +919,15 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'HealthUpdate');
     }
 
-    public var icons:FlxTypedGroup<Icon>;
+    var icons:FlxTypedGroup<Icon>;
 
-    public var playerIcons:FlxTypedGroup<Icon>;
-    public var opponentIcons:FlxTypedGroup<Icon>;
-    public var extraIcons:FlxTypedGroup<Icon>;
+    var playerIcons:FlxTypedGroup<Icon>;
+    var opponentIcons:FlxTypedGroup<Icon>;
+    var extraIcons:FlxTypedGroup<Icon>;
 
     var iconFactory:(String, CharacterType) -> Icon = (icon, type) -> new Icon(icon, type);
 
-    public function initIcons()
+    function initIcons()
     {
         if (scriptsManager.callback(ON, 'IconsInit'))
         {
@@ -986,21 +987,21 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'IconChange', null, [nextIconToChange]);
     }
 
-    public var strumLines:FlxTypedGroup<StrumLine>;
+    var strumLines:FlxTypedGroup<StrumLine>;
 
-    public var playerStrumLines:FlxTypedGroup<StrumLine>;
-    public var opponentStrumLines:FlxTypedGroup<StrumLine>;
-    public var extraStrumLines:FlxTypedGroup<StrumLine>;
+    var playerStrumLines:FlxTypedGroup<StrumLine>;
+    var opponentStrumLines:FlxTypedGroup<StrumLine>;
+    var extraStrumLines:FlxTypedGroup<StrumLine>;
 
-    public var strums:FlxTypedGroup<Strum>;
+    var strums:FlxTypedGroup<Strum>;
 
-    public var playerStrums:FlxTypedGroup<Strum>;
-    public var opponentStrums:FlxTypedGroup<Strum>;
-    public var extraStrums:FlxTypedGroup<Strum>;
+    var playerStrums:FlxTypedGroup<Strum>;
+    var opponentStrums:FlxTypedGroup<Strum>;
+    var extraStrums:FlxTypedGroup<Strum>;
 
     var strumLineFactory:(String, CharacterType, Int, Array<Array<Dynamic>>, Note -> Bool) -> StrumLine = (id, type, index, notes, stack) -> new StrumLine(id, type, index, notes, stack);
 
-    public function initStrumLines()
+    function initStrumLines()
     {
         if (scriptsManager.callback(ON, 'StrumLinesInit'))
         {
@@ -1080,7 +1081,7 @@ class PlayState extends ScriptedState
 
     var nextNoteToStack:Note;
 
-    public function stackNote(note:Note):Bool
+    function stackNote(note:Note):Bool
     {
         nextNoteToStack = note;
 
@@ -1097,7 +1098,7 @@ class PlayState extends ScriptedState
 
     var nextNoteToSpawn:Note;
 
-    public function spawnNote(note:Note):Bool
+    function spawnNote(note:Note):Bool
     {
         nextNoteToSpawn = note;
 
@@ -1111,7 +1112,7 @@ class PlayState extends ScriptedState
     var nextNoteToHit:Note;
     var nextNoteToHitCharacter:Character;
 
-    public function hitNote(note:Note, timeDistance:Float, removeNote:Bool):Bool
+    function hitNote(note:Note, timeDistance:Float, removeNote:Bool):Bool
     {
         nextNoteToHit = note;
         nextNoteToHitCharacter = characterFromNote(nextNoteToHit);
@@ -1167,7 +1168,7 @@ class PlayState extends ScriptedState
     var nextNoteToMiss:Note;
     var nextNoteToMissCharacter:Character;
 
-    public function missNote(note:Note):Bool
+    function missNote(note:Note):Bool
     {
         nextNoteToMiss = note;
         nextNoteToMissCharacter = characterFromNote(nextNoteToMiss);
@@ -1200,7 +1201,7 @@ class PlayState extends ScriptedState
         return result;
     }
 
-    public function characterFromNote(note:Note)
+    function characterFromNote(note:Note)
         return charactersArray[note.character[0]][note.character[1]];
 
     var nextStrumLineToAdd:StrumLine;
@@ -1255,7 +1256,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'StrumAdd', null, [nextStrumToAdd]);
     }
 
-        public function initControls()
+        function initControls()
     {
         if (scriptsManager.callback(ON, 'ControlsInit'))
         {
@@ -1266,7 +1267,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'ControlsInit');
     }
 
-    public function justPressedKey(event:KeyboardEvent)
+    function justPressedKey(event:KeyboardEvent)
     {
         if (!updating)
             return;
@@ -1280,7 +1281,7 @@ class PlayState extends ScriptedState
         }
     }
 
-    public function justReleasedKey(event:KeyboardEvent)
+    function justReleasedKey(event:KeyboardEvent)
     {
         if (!updating)
             return;
@@ -1294,9 +1295,9 @@ class PlayState extends ScriptedState
         }
     }
 
-    public final soundsCache:Map<String, OpenFLSound> = new Map<String, OpenFLSound>();
+    final soundsCache:Map<String, OpenFLSound> = new Map<String, OpenFLSound>();
 
-    public function initSounds()
+    function initSounds()
     {
         if (scriptsManager.callback(ON, 'SoundsInit'))
         {
@@ -1322,9 +1323,9 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'SoundsInit');
     }
 
-    public var vocals:Array<Sound> = [];
+    var vocals:Array<Sound> = [];
 
-    public function addVocal(sound:Sound)
+    function addVocal(sound:Sound)
     {
         if (scriptsManager.callback(ON, 'VocalAdd', null, [sound], []))
         {
@@ -1342,7 +1343,7 @@ class PlayState extends ScriptedState
     }
 
 
-    public function initSong()
+    function initSong()
     {
         if (scriptsManager.callback(ON, 'SongInit'))
         {
@@ -1357,7 +1358,7 @@ class PlayState extends ScriptedState
 
     var countdownSprite:FunkinSprite;
 
-    public function startCountdown()
+    function startCountdown()
     {
         if (scriptsManager.callback(ON, 'CountdownStart'))
         {
@@ -1387,7 +1388,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'CountdownStart');
     }
 
-    public function tickCountdown(index:Int)
+    function tickCountdown(index:Int)
     {
         if (scriptsManager.callback(ON, 'CountdownTick', [index]))
         {
@@ -1430,7 +1431,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'CountdownTick', [index]);
     }
 
-    public function startSong()
+    function startSong()
     {
         if (scriptsManager.callback(ON, 'SongStart'))
         {
@@ -1525,13 +1526,13 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'SongStart');
     }
 
-    public var camOther:FXCamera;
+    var camOther:FXCamera;
 
-    public var allowCameraMoving:Bool = true;
+    var allowCameraMoving:Bool = true;
 
-    public var cameraTarget:Character;
+    var cameraTarget:Character;
 
-    public function moveCamera(?char:OneOfTwo<Character, Int>, ?force:Bool = false)
+    function moveCamera(?char:OneOfTwo<Character, Int>, ?force:Bool = false)
     {
         var character:Character = null;
 
@@ -1627,31 +1628,31 @@ class PlayState extends ScriptedState
         return value;
     }
     
-    public var boyfriend(get, never):Character;
+    var boyfriend(get, never):Character;
     function get_boyfriend():Character
         return bf;
 
-    public var bf(get, never):Character;
+    var bf(get, never):Character;
     function get_bf():Character
         return playerCharacters.members[0];
 
-    public var dad(get, never):Character;
+    var dad(get, never):Character;
     function get_dad():Character
         return opponentCharacters.members[0];
 
-    public var gf(get, never):Character;
+    var gf(get, never):Character;
     function get_gf():Character
         return extraCharacters.members[0];
 
-    public var iconP1(get, never):Icon;
+    var iconP1(get, never):Icon;
     function get_iconP1():Icon
         return playerIcons.members[0];
 
-    public var iconP2(get, never):Icon;
+    var iconP2(get, never):Icon;
     function get_iconP2():Icon
         return opponentIcons.members[0];
 
-    public var iconP3(get, never):Icon;
+    var iconP3(get, never):Icon;
     function get_iconP3():Icon
         return extraIcons.members[0];
 
@@ -1663,39 +1664,39 @@ class PlayState extends ScriptedState
     function get_strumLineNotes():FlxTypedGroup<Strum>
         return strums;
 
-    inline public function addBehindOpponents(obj:FlxBasic):FlxBasic
+    inline function addBehindOpponents(obj:FlxBasic):FlxBasic
         return addBehindGroup(opponentCharacters, obj);
 
-    inline public function addBehindPlayers(obj:FlxBasic):FlxBasic
+    inline function addBehindPlayers(obj:FlxBasic):FlxBasic
         return addBehindGroup(playerCharacters, obj);
 
-    inline public function addBehindExtras(obj:FlxBasic):FlxBasic
+    inline function addBehindExtras(obj:FlxBasic):FlxBasic
         return addBehindGroup(extraCharacters, obj);
 
-    inline public function addAheadOpponents(obj:FlxBasic):FlxBasic
+    inline function addAheadOpponents(obj:FlxBasic):FlxBasic
         return addAheadGroup(opponentCharacters, obj);
 
-    inline public function addAheadPlayers(obj:FlxBasic):FlxBasic
+    inline function addAheadPlayers(obj:FlxBasic):FlxBasic
         return addAheadGroup(playerCharacters, obj);
 
-    inline public function addAheadExtras(obj:FlxBasic):FlxBasic
+    inline function addAheadExtras(obj:FlxBasic):FlxBasic
         return addAheadGroup(extraCharacters, obj);
 
-    inline public function addBehindDad(obj:FlxBasic):FlxBasic
+    inline function addBehindDad(obj:FlxBasic):FlxBasic
         return addBehindOpponents(obj);
 
-    inline public function addBehindBF(obj:FlxBasic):FlxBasic
+    inline function addBehindBF(obj:FlxBasic):FlxBasic
         return addBehindPlayers(obj);
 
-    inline public function addBehindGF(obj:FlxBasic):FlxBasic
+    inline function addBehindGF(obj:FlxBasic):FlxBasic
         return addBehindExtras(obj);
 
-    inline public function addAheadDad(obj:FlxBasic):FlxBasic
+    inline function addAheadDad(obj:FlxBasic):FlxBasic
         return addAheadOpponents(obj);
 
-    inline public function addAheadBF(obj:FlxBasic):FlxBasic
+    inline function addAheadBF(obj:FlxBasic):FlxBasic
         return addAheadPlayers(obj);
 
-    inline public function addAheadGF(obj:FlxBasic):FlxBasic
+    inline function addAheadGF(obj:FlxBasic):FlxBasic
         return addAheadExtras(obj);
 }

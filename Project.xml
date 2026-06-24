@@ -23,6 +23,7 @@
 
 	<define name="ALLOW_VIDEOS" if="cpp"/>
 
+	<define name="ALLOW_LINUX_API" if="linux cpp"/>
 	<define name="ALLOW_WINDOWS_API" if="windows cpp"/>
 	
 	<define name="ALLOW_MOBILE_API" if="mobile cpp"/>
@@ -44,6 +45,8 @@
 	<haxelib name="flixel-addons"/>
 	<haxelib name="flixel-animate"/>
 	<haxelib name="flxsoundfilters"/>
+
+	<haxelib name="hxgamemode" if="ALLOW_LINUX_API"/>
 
 	<haxelib name="hxvlc" if="ALLOW_VIDEOS"/>
 
