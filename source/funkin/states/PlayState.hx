@@ -17,6 +17,7 @@ import funkin.visuals.game.*;
 import utils.cool.ReflectUtil;
 import utils.cool.StringUtil;
 import utils.Formatter;
+import utils.Score;
 
 import flixel.util.typeLimit.OneOfTwo;
 import flixel.graphics.FlxGraphic;
@@ -424,6 +425,8 @@ class PlayState extends ScriptedState
         {
             Conductor.pause();
 
+            saveScore();
+
             if (songIndex + 1 < playlist.length)
                 CoolUtil.switchState(new PlayState(type, playlist, difficulty, week, weekScore + score, songIndex + 1), true, true);
             else
@@ -457,6 +460,23 @@ class PlayState extends ScriptedState
         }
 
         scriptsManager.callback(POST, 'Exit');
+    }
+
+
+    function saveScore()
+    {
+        if (scriptsManager.callback(ON, 'ScoreSave'))
+        {
+            if (!botplay && !ClientPrefs.data.practice)
+            {
+                Score.saveSong(song, difficulty, score, accuracy);
+
+                if (type == STORY && songIndex >= playlist.length - 1)
+                    Score.saveWeek(week, difficulty, weekScore + score);
+            }
+        }
+
+        scriptsManager.callback(POST, 'ScoreSave');
     }
 
 

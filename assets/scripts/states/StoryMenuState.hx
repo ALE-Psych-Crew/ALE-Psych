@@ -22,6 +22,8 @@ var difficultySprite:FlxSprite;
 var leftArrow:FlxSprite;
 var rightArrow:FlxSprite;
 
+final weekNames:String = [];
+
 function onCreate()
 {
     if (Conductor.music == null)
@@ -78,8 +80,6 @@ function onCreate()
     for (obj in members)
         if (obj is FlxObject)
             obj.scrollFactor.set();
-
-    final weekNames:String = [];
 
     for (week in Paths.readDirectory('data/weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
     {
@@ -207,7 +207,7 @@ function onUpdate(elapsed:Float)
             {
                 final curWeek = weeks[selInt];
 
-                CoolUtil.switchState(new PlayState('story', [for (song in curWeek.songs) song.name], curWeek.difficulties[diffSelInt], curWeek.name));
+                CoolUtil.switchState(new PlayState('story', [for (song in curWeek.songs) song.name], curWeek.difficulties[diffSelInt], weekNames[selInt]));
 
                 canSelect = false;
             } catch(e:Exception) {
