@@ -9,6 +9,8 @@ import flixel.FlxBasic;
 import cpp.vm.Gc;
 #end
 
+import utils.Formatter;
+
 class State extends FlxState implements IState
 {
     public var camGame:Camera;
@@ -53,6 +55,8 @@ class State extends FlxState implements IState
 	override function destroy()
 	{
         Paths.clear(allowMemoryCleaning);
+
+        Formatter.clear();
 
         if (allowMemoryCleaning)
             cleanMemory();

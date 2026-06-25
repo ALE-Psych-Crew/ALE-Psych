@@ -274,8 +274,6 @@ class Paths
 
                         obj.cache.remove(id);
                     }
-
-                    result = null;
                 }
     }
     
