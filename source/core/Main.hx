@@ -15,7 +15,8 @@ import core.debug.HotReloading;
 import core.objects.SoundTray;
 import core.objects.DebugTray;
 
-import core.config.Save;
+import funkin.config.Score;
+import funkin.config.Save;
 
 import api.DesktopAPI;
 
@@ -25,7 +26,6 @@ import flixel.FlxGame;
 import haxe.CallStack;
 
 import utils.Formatter;
-import utils.Score;
 
 #if ALLOW_LINUX_API
 import hxgamemode.GamemodeClient;

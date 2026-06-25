@@ -13,11 +13,11 @@ import core.enums.SongType;
 import funkin.visuals.objects.Bar;
 import funkin.visuals.FXCamera;
 import funkin.visuals.game.*;
+import funkin.config.Score;
 
 import utils.cool.ReflectUtil;
 import utils.cool.StringUtil;
 import utils.Formatter;
-import utils.Score;
 
 import flixel.util.typeLimit.OneOfTwo;
 import flixel.graphics.FlxGraphic;

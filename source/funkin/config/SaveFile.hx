@@ -7,6 +7,8 @@ import haxe.io.Path;
 import sys.FileSystem;
 import sys.io.File;
 
+import utils.cool.ReflectUtil;
+
 class SaveFile
 {
     public final folderPath:String;
@@ -45,7 +47,7 @@ class SaveFile
     {
         original ??= data;
 
-        if (!CoolUtil.isObject(newData) || !CoolUtil.isObject(original))
+        if (!ReflectUtil.isObject(newData) || !ReflectUtil.isObject(original))
             return {};
 
         for (field in Reflect.fields(newData))
@@ -53,7 +55,7 @@ class SaveFile
             final originalRes:Dynamic = Reflect.field(original, field);
             final newRes:Dynamic = Reflect.field(newData, field);
 
-            if (CoolUtil.isObject(originalRes) && CoolUtil.isObject(newRes))
+            if (ReflectUtil.isObject(originalRes) && ReflectUtil.isObject(newRes))
                 merge(newRes, originalRes);
             else
                 Reflect.setField(original, field, newRes);

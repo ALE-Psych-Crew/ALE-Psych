@@ -17,7 +17,7 @@ class Save
 
     public static function load()
     {
-        function isCustom(res:Bool, ogRes:Bool):Bool
+        function isCustom(res:Dynamic, ogRes:Dynamic):Bool
             return res == null || ogRes == null || Type.typeof(res) != Type.typeof(ogRes);
 
         for (field in Reflect.fields(options.data))

@@ -1,4 +1,4 @@
-package utils;
+package funkin.config;
 
 class Score
 {
