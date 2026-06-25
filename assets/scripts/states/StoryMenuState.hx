@@ -1,3 +1,5 @@
+import funkin.config.Score;
+
 import flixel.FlxObject;
 
 using StringTools;
@@ -189,7 +191,7 @@ function changeDifficulty(?change:Int = 0)
     rightArrow.x = difficultySprite.x + difficultySprite.width + 20;
     rightArrow.y = difficultySprite.y + difficultySprite.height / 2 - rightArrow.height / 2;
 
-    scoreText.text = 'SCORE: 0';
+    scoreText.text = 'SCORE: ' + Score.getWeek(weekNames[selInt], difficulties[diffSelInt]);
     scoreText.y = bar.height / 2 - scoreText.height / 2;
 }
 

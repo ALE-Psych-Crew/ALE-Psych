@@ -63,6 +63,18 @@ class Score
 		};
 	}
 
+	public static function getWeek(name:String, difficulty:String):Float
+	{
+		name = CoolUtil.formatString(name);
+		difficulty = CoolUtil.formatString(difficulty);
+
+		if (weeks.exists(name))
+			if (weeks[name].exists(difficulty))
+				return weeks[name][difficulty];
+
+		return 0;
+	}
+
 	public static function destroy()
 	{
 		songs = null;
