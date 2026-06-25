@@ -1,6 +1,8 @@
 import funkin.visuals.objects.Alphabet;
 import funkin.visuals.game.Icon;
 
+import funkin.config.Score;
+
 import utils.Formatter;
 
 using StringTools;
@@ -164,7 +166,9 @@ function changeDifficulty(?change:Int = 0)
     if (diffSelInt > difficulties.length - 1)
         diffSelInt = 0;
 
-    scoreText.text = 'SCORE: 0';
+    final score:SongScore = Score.getSong(songs[selInt].name, difficulties[diffSelInt]);
+
+    scoreText.text = 'SCORE: ' + score.score + ' (' + CoolUtil.floorDecimal(score.accuracy, 2) + '%)';
     difficultyText.text = '< ' + difficulties[diffSelInt].trim().toUpperCase() + ' >';
 
     infoBG.scale.set(Math.max(scoreText.width, difficultyText.width) + 30, scoreText.height + difficultyText.height + 2 + 10);

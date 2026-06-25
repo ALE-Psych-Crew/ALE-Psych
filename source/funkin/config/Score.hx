@@ -1,8 +1,10 @@
 package funkin.config;
 
+import core.structures.SongScore;
+
 class Score
 {
-	public static var songs:Map<String, Map<String, {score:Float, accuracy:Float}>>;
+	public static var songs:Map<String, Map<String, SongScore>>;
 	public static var weeks:Map<String, Map<String, Float>>;
 
 	public static function init()
@@ -44,6 +46,21 @@ class Score
 
 		if (weeks[name][difficulty] < score)
 			weeks[name][difficulty] = score;
+	}
+
+	public static function getSong(name:String, difficulty:String):SongScore
+	{
+		name = CoolUtil.formatString(name);
+		difficulty = CoolUtil.formatString(difficulty);
+
+		if (songs.exists(name))
+			if (songs[name].exists(difficulty))
+				return songs[name][difficulty];
+
+		return {
+			score: 0,
+			accuracy: 0
+		};
 	}
 
 	public static function destroy()
