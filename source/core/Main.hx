@@ -23,6 +23,7 @@ import flixel.FlxGame;
 import haxe.CallStack;
 
 import utils.Formatter;
+import utils.Score;
 
 #if ALLOW_LINUX_API
 import hxgamemode.GamemodeClient;
@@ -130,6 +131,8 @@ class Main extends Sprite
 
 		Conductor.destroy();
 
+		Score.destroy();
+
 		game.soundTraySprite?.destroy();
 		game.soundTraySprite = null;
 
@@ -183,6 +186,8 @@ class Main extends Sprite
 		Conductor.init();
 
 		Formatter.init();
+
+		Score.init();
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
