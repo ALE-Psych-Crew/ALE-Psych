@@ -15,6 +15,8 @@ import core.debug.HotReloading;
 import core.objects.SoundTray;
 import core.objects.DebugTray;
 
+import core.config.Save;
+
 import api.DesktopAPI;
 
 import flixel.input.keyboard.FlxKey;
@@ -131,6 +133,8 @@ class Main extends Sprite
 
 		Conductor.destroy();
 
+		Save.destroy();
+
 		Score.destroy();
 
 		game.soundTraySprite?.destroy();
@@ -188,6 +192,8 @@ class Main extends Sprite
 		Formatter.init();
 
 		Score.init();
+
+		Save.init();
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
