@@ -201,6 +201,9 @@ class PlayState extends ScriptedState
         {
             super.update(elapsed);
 
+            if (Controls.RESET && !CoolVars.meta.developerMode && !ClientPrefs.data.noReset && !UIUtils.usingInputs)
+                health = 0;
+
             health = FlxMath.bound(health, 0, 100);
 
             if (_lastHealth != health)

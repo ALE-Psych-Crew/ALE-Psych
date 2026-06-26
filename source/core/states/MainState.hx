@@ -12,8 +12,6 @@ class MainState extends FlxState
 
 		Main.postResetConfig();
 
-		FlxSprite.defaultAntialiasing = true;
-
 		CoolUtil.switchState(new CustomState(CoolVars.meta.initialState), true, true);
 	}
 }

@@ -1,6 +1,7 @@
 package core.structures;
 
-@:structInit class SaveData
+@:structInit
+class SaveData
 {
     public var antialiasing:Bool = true;
     public var flashing:Bool = true;

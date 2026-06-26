@@ -32,6 +32,8 @@ class Save
 
         FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
 
+		FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
+
         for (field in Reflect.fields(controls.data))
         {
             final res = Reflect.field(controls.data, field);
