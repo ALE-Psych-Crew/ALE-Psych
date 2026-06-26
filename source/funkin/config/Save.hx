@@ -5,12 +5,14 @@ class Save
     public static var options:SaveFile;
     public static var controls:SaveFile;
     public static var score:SaveFile;
+    public static var custom:SaveFile;
 
     public static function init()
     {
         options = new SaveFile('options');
         controls = new SaveFile('controls');
         score = new SaveFile('score');
+        custom = new SaveFile('custom');
 
         load();
     }
@@ -85,6 +87,8 @@ class Save
         saveControls();
 
         saveScore();
+
+        saveCustom();
     }
 
     public static function savePreferences()
@@ -132,6 +136,9 @@ class Save
         score.save();
     }
 
+    public static function saveCustom()
+        custom.save();
+
     public static function destroy()
     {
         save();
@@ -139,5 +146,6 @@ class Save
         options = null;
         controls = null;
         score = null;
+        custom = null;
     }
 }

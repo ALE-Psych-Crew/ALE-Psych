@@ -82,7 +82,9 @@ function onCreate()
     changeOption();
 }
 
-var selInt:Int = 0;
+var selInt(default, set):Int = Save.custom.data.mainMenuSelInt ??= 0;
+function set_selInt(value:Int):Int
+    return selInt = Save.custom.data.mainMenuSelInt = value;
 
 function changeOption(?change:Int = 0)
 {

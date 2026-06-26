@@ -29,8 +29,13 @@ var bg:FlxSprite;
 
 var sprites:FlxTypedGroup<FlxTypedSpriteGroup<FlxSprite>>;
 
-var selInt:Int = 0;
-var diffSelInt:Int = 1;
+var selInt(default, set):Int = Save.custom.data.freeplaySelInt ??= 0;
+function set_selInt(value:Int):Int
+    return selInt = Save.custom.data.freeplaySelInt = value;
+
+var diffSelInt(default, set):Int = Save.custom.data.freeplayDiffSelInt ??= 1;
+function set_diffSelInt(value:Int):Int
+    return diffSelInt = Save.custom.data.freeplayDiffSelInt = value;
 
 var infoBG:FlxSprite;
 var scoreText:FlxText;
@@ -169,7 +174,10 @@ function changeDifficulty(?change:Int = 0)
     final score:SongScore = Score.getSong(songs[selInt].name, difficulties[diffSelInt]);
 
     scoreText.text = 'SCORE: ' + score.score + ' (' + CoolUtil.floorDecimal(score.accuracy, 2) + '%)';
-    difficultyText.text = '< ' + difficulties[diffSelInt].trim().toUpperCase() + ' >';
+
+    final diffText:String = difficulties[diffSelInt].trim().toUpperCase();
+
+    difficultyText.text = difficulties.length <= 1 ? diffText : '< ' + diffText + ' >';
 
     infoBG.scale.set(Math.max(scoreText.width, difficultyText.width) + 30, scoreText.height + difficultyText.height + 2 + 10);
     infoBG.updateHitbox();

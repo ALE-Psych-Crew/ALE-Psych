@@ -139,8 +139,13 @@ function onCreate()
     changeOption();
 }
 
-var selInt:Int = 0;
-var diffSelInt:Int = 1;
+var selInt(default, set):Int = Save.custom.data.storyMenuSelInt ??= 0;
+function set_selInt(value:Int):Int
+    return selInt = Save.custom.data.storyMenuSelInt = value;
+
+var diffSelInt(default, set):Int = Save.custom.data.storyMenuDiffSelInt ??= 1;
+function set_diffSelInt(value:Int):Int
+    return diffSelInt = Save.custom.data.storyMenuDiffSelInt = value;
 
 function changeOption(?change:Int = 0)
 {
@@ -187,9 +192,11 @@ function changeDifficulty(?change:Int = 0)
 
     leftArrow.x = difficultySprite.x - leftArrow.width - 20;
     leftArrow.y = difficultySprite.y + difficultySprite.height / 2 - leftArrow.height / 2;
+    leftArrow.visible = difficulties.length > 1;
 
     rightArrow.x = difficultySprite.x + difficultySprite.width + 20;
     rightArrow.y = difficultySprite.y + difficultySprite.height / 2 - rightArrow.height / 2;
+    rightArrow.visible = difficulties.length > 1;
 
     scoreText.text = 'SCORE: ' + Score.getWeek(weekNames[selInt], difficulties[diffSelInt]);
     scoreText.y = bar.height / 2 - scoreText.height / 2;

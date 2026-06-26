@@ -24,7 +24,7 @@ class MetaData
     public var transition:String = 'FadeTransition';
 
     public var loadDefaultWeeks:Bool = false;
-    public var bpm:Float = 100;
+    public var bpm:Float = 102;
 
     public var discordID:String = '1309982575368077416';
     public var discordButtons:Array<{label:Null<String>, url:Null<String>}> = [
