@@ -97,7 +97,7 @@ class SoundTray extends GameObject
             timer -= elapsed;
         }
         
-		x = Lib.current.stage.stageWidth / 2 - width / 2;
+		x = Lib.current.stage.stageWidth / 2 - width / 2 - FlxG.game.x;
     }
 
     /**

@@ -55,6 +55,7 @@ import funkin.states.PlayState;
 import funkin.substates.CustomSubState;
 
 import funkin.config.ClientPrefs;
+import funkin.config.Save;
 
 using StringTools;
 #end
