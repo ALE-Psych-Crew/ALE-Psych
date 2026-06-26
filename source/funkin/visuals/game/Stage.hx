@@ -130,6 +130,9 @@ class Stage
         alreadyCached.push(id);
     }
 
+    public function get(id:String):FlxSprite
+        return current == null ? null : current.objects.get(id).object;
+
     public function destroy()
     {
         for (stage in cached)
