@@ -118,7 +118,7 @@ class Character extends Bopper
 
     public function sing(?anim:String, ?force:Bool = true, ?applyTimer:Bool = true)
     {
-        if (blockSing || singTimer > 0 || anim == null)
+        if (blockSing || singTimer > 0)
             return;
 
         playTimedAnim(anim, force, applyTimer);
