@@ -191,6 +191,8 @@ class Main extends Sprite
 
 		Formatter.init();
 
+		ClientPrefs.init();
+
 		Score.init();
 
 		Save.init();

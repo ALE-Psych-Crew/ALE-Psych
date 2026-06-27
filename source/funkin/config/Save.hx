@@ -19,65 +19,76 @@ class Save
 
     public static function load()
     {
+        ClientPrefs.init();
+
         function isCustom(res:Dynamic, ogRes:Dynamic):Bool
             return res == null || ogRes == null || Type.typeof(res) != Type.typeof(ogRes);
 
-        for (field in Reflect.fields(options.data))
+        if (options != null)
         {
-            final res = Reflect.field(options.data, field);
-            final ogRes = Reflect.field(ClientPrefs.data, field);
+            for (field in Reflect.fields(options.data))
+            {
+                final res = Reflect.field(options.data, field);
+                final ogRes = Reflect.field(ClientPrefs.data, field);
 
-            Reflect.setField(isCustom(res, ogRes) ? ClientPrefs.custom : ClientPrefs.data, field, res);
+                Reflect.setField(isCustom(res, ogRes) ? ClientPrefs.custom : ClientPrefs.data, field, res);
+            }
+
+            FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
+
+            FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
         }
 
-        FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
-
-		FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
-
-        for (field in Reflect.fields(controls.data))
+        if (controls != null)
         {
-            final res = Reflect.field(controls.data, field);
-            final ogRes = Reflect.field(ClientPrefs.controls, field);
-
-            if (isCustom(res, ogRes))
-                Reflect.setField(ClientPrefs.customControls, field, {});
-
-            for (subField in Reflect.fields(res))
+            for (field in Reflect.fields(controls.data))
             {
-                final subRes = Reflect.field(res, subField);
-                final ogSubRes = Reflect.field(ogRes, subField);
+                final res = Reflect.field(controls.data, field);
+                final ogRes = Reflect.field(ClientPrefs.controls, field);
 
-                if (isCustom(subRes, ogSubRes))
+                if (isCustom(res, ogRes))
+                    Reflect.setField(ClientPrefs.customControls, field, {});
+
+                for (subField in Reflect.fields(res))
                 {
-                    if (Reflect.field(ClientPrefs.customControls, field) != null)
-                        Reflect.setField(ClientPrefs.customControls, field, {});
+                    final subRes = Reflect.field(res, subField);
+                    final ogSubRes = Reflect.field(ogRes, subField);
 
-                    Reflect.setField(Reflect.field(ClientPrefs.customControls, field), subField, subRes);
-                } else {
-                    Reflect.setField(ogRes, subField, subRes);
+                    if (isCustom(subRes, ogSubRes))
+                    {
+                        if (Reflect.field(ClientPrefs.customControls, field) != null)
+                            Reflect.setField(ClientPrefs.customControls, field, {});
+
+                        Reflect.setField(Reflect.field(ClientPrefs.customControls, field), subField, subRes);
+                    } else {
+                        Reflect.setField(ogRes, subField, subRes);
+                    }
                 }
             }
         }
 
-        if (score.data.songs != null)
+        if (score != null)
         {
-            for (song in Reflect.fields(score.data.songs))
+            if (score.data.songs != null)
             {
-                Score.songs[song] = new Map();
+                for (song in Reflect.fields(score.data.songs))
+                {
+                    Score.songs[song] = new Map();
 
-                for (diff in Reflect.fields(Reflect.field(score.data.songs, song)))
-                    Score.songs[song][diff] = Reflect.field(Reflect.field(score.data.songs, song), diff);
+                    for (diff in Reflect.fields(Reflect.field(score.data.songs, song)))
+                        Score.songs[song][diff] = Reflect.field(Reflect.field(score.data.songs, song), diff);
+                }
             }
-        }
 
-        if (score.data.weeks != null)
-        {
-            for (week in Reflect.fields(score.data.weeks))
+            if (score.data.weeks != null)
             {
-                Score.weeks[week] = new Map();
+                for (week in Reflect.fields(score.data.weeks))
+                {
+                    Score.weeks[week] = new Map();
 
-                for (diff in Reflect.fields(Reflect.field(score.data.weeks, week)))
-                    Score.weeks[week][diff] = Reflect.field(Reflect.field(score.data.weeks, week), diff);
+                    for (diff in Reflect.fields(Reflect.field(score.data.weeks, week)))
+                        Score.weeks[week][diff] = Reflect.field(Reflect.field(score.data.weeks, week), diff);
+                }
             }
         }
     }
@@ -95,6 +106,9 @@ class Save
 
     public static function savePreferences()
     {
+        if (options == null)
+            return;
+
         options.data = Reflect.copy(ClientPrefs.data);
         options.merge(ClientPrefs.custom);
         options.save();
@@ -102,6 +116,9 @@ class Save
 
     public static function saveControls()
     {
+        if (controls == null)
+            return;
+
         controls.data = Reflect.copy(ClientPrefs.controls);
         controls.merge(ClientPrefs.customControls);
         controls.save();
@@ -109,6 +126,9 @@ class Save
 
     public static function saveScore()
     {
+        if (score == null)
+            return;
+
         score.data.songs ??= {};
 
         for (song in Score.songs.keys())
@@ -139,7 +159,7 @@ class Save
     }
 
     public static function saveCustom()
-        custom.save();
+        custom?.save();
 
 
     public static function reset()
@@ -154,19 +174,19 @@ class Save
 
     public static function clear()
     {
-        options.clear();
-        controls.clear();
-        score.clear();
-        custom.clear();
+        options?.clear();
+        controls?.clear();
+        score?.clear();
+        custom?.clear();
     }
 
 
     public static function delete()
     {
-        options.delete();
-        controls.delete();
-        score.delete();
-        custom.delete();
+        options?.delete();
+        controls?.delete();
+        score?.delete();
+        custom?.delete();
     }
 
 

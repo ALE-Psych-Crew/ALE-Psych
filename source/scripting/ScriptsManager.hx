@@ -52,6 +52,9 @@ class ScriptsManager implements IFlxDestroyable
 
     function load(path:String, ?args:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
     {
+        if (destroyed)
+            return;
+
         #if ALLOW_HSCRIPT
         if (path.endsWith(RuleScriptGlobal.SCRIPT_EXTENSION))
         {
@@ -81,6 +84,9 @@ class ScriptsManager implements IFlxDestroyable
 
     function loadFolder(path:String, ?recursive:Bool = true, ?args:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
     {
+        if (destroyed)
+            return;
+
         for (file in Paths.readDirectory(path, MULTIPLE))
         {
             final fullPath:String = path + '/' + file;
@@ -93,14 +99,27 @@ class ScriptsManager implements IFlxDestroyable
     }
 
     function set(name:String, value:Dynamic)
+    {
+        if (destroyed)
+            return;
+
         for (script in members)
             script.set(name, value);
+    }
 
     function call(name:String, ?args:Array<Dynamic>):Array<Dynamic>
+    {
+        if (destroyed)
+            return [];
+
         return [for (script in members) script.call(name, args)];
+    }
 
     function callback(type:ScriptCallType, id:String, ?globalArgs:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end):Bool
     {
+        if (destroyed)
+            return true;
+
         if (members.length <= 0)
             return true;
 
@@ -121,6 +140,8 @@ class ScriptsManager implements IFlxDestroyable
         return result;
     }
 
+    var destroyed(default, null):Bool = false;
+
     function destroy()
     {
         members = null;
@@ -133,6 +154,8 @@ class ScriptsManager implements IFlxDestroyable
         #if ALLOW_LUA
         lua = null;
         #end
+
+        destroyed = true;
     }
 
     #if ALLOW_HSCRIPT
@@ -144,6 +167,9 @@ class ScriptsManager implements IFlxDestroyable
 
     function haxeLoad(path:String, ?args:Array<Dynamic>)
     {
+        if (destroyed)
+            return;
+
         final fullPath:String = path + RuleScriptGlobal.SCRIPT_EXTENSION;
 
         if (Paths.exists(fullPath))
@@ -165,11 +191,21 @@ class ScriptsManager implements IFlxDestroyable
     }
 
     function haxeSet(name:String, value:Dynamic):Void
+    {
+        if (destroyed)
+            return;
+
         for (script in haxe)
             script.set(name, value);
+    }
 
     function haxeCall(name:String, ?args:Array<Dynamic>):Array<Dynamic>
+    {
+        if (destroyed)
+            return [];
+
         return [for (script in haxe) script.call(name, args)];
+    }
     #end
 
     #if ALLOW_LUA
@@ -179,6 +215,9 @@ class ScriptsManager implements IFlxDestroyable
 
     function luaLoad(path:String, ?args:Array<Dynamic>)
     {
+        if (destroyed)
+            return;
+
         final fullPath:String = path + '.lua';
 
         if (Paths.exists(fullPath))
@@ -202,10 +241,20 @@ class ScriptsManager implements IFlxDestroyable
     }
 
     function luaSet(name:String, value:Dynamic):Void
+    {
+        if (destroyed)
+            return;
+
         for (script in lua)
             script.set(name, value);
+    }
 
     function luaCall(name:String, ?args:Array<Dynamic>):Array<Dynamic>
+    {
+        if (destroyed)
+            return [];
+
         return [for (script in lua) script.call(name, args)];
+    }
     #end
 }

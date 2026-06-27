@@ -308,9 +308,9 @@ function onUpdate(elapsed:Float)
             if (!Controls.SHIFT && current.metadata.get('scroll') && (Controls.CONTROL || (Controls.UI_RIGHT_P || Controls.UI_LEFT_P)))
                 current.metadata.get('callback')();
 
-        if (Controls.UI_DOWN_P || Controls.UI_UP_P)
+        if (Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL)
         {
-            changeOption(Controls.UI_DOWN_P ? 1 : -1);
+            changeOption(Controls.UI_DOWN_P || FlxG.mouse.wheel < 1 ? 1 : -1);
 
             CoolUtil.playSound('scroll');
         }

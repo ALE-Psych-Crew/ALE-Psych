@@ -13,6 +13,14 @@ class ClientPrefs
 
 	public static var customControls:Dynamic = {};
 	
+	public static function init()
+	{
+		data = {};
+		custom = {};
+		controls = {};
+		customControls = {};
+	}
+
 	public static function getPreference(id:String):Dynamic
 		return Reflect.field(data, id) ?? Reflect.field(custom, id);
 
