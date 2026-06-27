@@ -18,10 +18,10 @@ class ClientPrefs
 
 	public static function setPreference(id:String, value:Dynamic):Dynamic
 	{
-		if (Reflect.hasField(data, id))
-			Reflect.setField(data, id, value)
-		else
+		if (Reflect.field(data, id) == null)
 			Reflect.setField(custom, id, value);
+		else
+			Reflect.setField(data, id, value);
 
 		return value;
 	}
@@ -35,7 +35,7 @@ class ClientPrefs
 
 	public static function setControl(groupID:String, id:String, value:Array<Int>):Array<Int>
 	{
-		final group = Reflect.hasField(controls, groupID) ? Reflect.field(controls, groupID) : Reflect.field(customControls, groupID);
+		final group = Reflect.field(controls, groupID) == null ? Reflect.field(customControls, groupID) : Reflect.field(custom, groupID);
 
 		if (group != null)
 			Reflect.setField(group, id, value);
