@@ -1,0 +1,77 @@
+{
+	"directory": "options",
+	"bg": {
+		"images": [
+			"bg"
+		],
+		"type": "image",
+		"properties": {
+			"scrollFactor": {
+				"x": 0,
+				"y": 0
+			}
+		},
+		"color": "#241b3d"
+	},
+	"descriptionMargin": {
+		"x": 200,
+		"y": 30
+	},
+	"checkBox": {
+		"images": [
+			"checkBox"
+		],
+		"type": "sheet",
+		"properties": {
+			"scale": {
+				"x": 0.5,
+				"y": 0.5
+			},
+			"x": 0,
+			"y": -10
+		},
+		"animations": [
+			{
+				"offset": {
+					"x": 3,
+					"y": 12
+				},
+				"name": "idle"
+			},
+			{
+				"offset": {
+					"x": 37,
+					"y": 26
+				},
+				"name": "check"
+			},
+			{
+				"offset": {
+					"x": 27,
+					"y": 30
+				},
+				"name": "unCheck"
+			},
+			{
+				"offset": {
+					"x": 0,
+					"y": 2
+				},
+				"name": "unIdle"
+			}
+		]
+	},
+	"optionsSpacing": 100,
+	"cameraSpeed": 0.25,
+	"cameraOffset": {
+		"x": 0,
+		"y": -200
+	},
+	"circlesSelectionScale": 2,
+	"circlesSpacing": 30,
+	"circlesOffset": {
+		"x": 0,
+		"y": 30
+	},
+	"circlesSpeed": 0.25
+}
