@@ -16,8 +16,15 @@ class ClientPrefs
 	public static function getPreference(id:String):Dynamic
 		return Reflect.field(data, id) ?? Reflect.field(custom, id);
 
-	public static function setPreference(id:String, value:Dynamic):Void
-		return Reflect.hasField(data, id) ? Reflect.setField(data, id, value) : Reflect.setField(custom, id, value);
+	public static function setPreference(id:String, value:Dynamic):Dynamic
+	{
+		if (Reflect.hasField(data, id))
+			Reflect.setField(data, id, value)
+		else
+			Reflect.setField(custom, id, value);
+
+		return value;
+	}
 
 	public static function getControl(groupID:String, id:String):Null<Array<Int>>
 	{
@@ -26,11 +33,13 @@ class ClientPrefs
 		return group == null ? null : cast Reflect.field(group, id);
 	}
 
-	public static function setControl(groupID:String, id:String, value:Array<Int>):Void
+	public static function setControl(groupID:String, id:String, value:Array<Int>):Array<Int>
 	{
 		final group = Reflect.hasField(controls, groupID) ? Reflect.field(controls, groupID) : Reflect.field(customControls, groupID);
 
 		if (group != null)
 			Reflect.setField(group, id, value);
+
+		return value;
 	}
 }
