@@ -141,6 +141,35 @@ class Save
     public static function saveCustom()
         custom.save();
 
+
+    public static function reset()
+    {
+        clear();
+
+        delete();
+
+        load();
+    }
+
+
+    public static function clear()
+    {
+        options.clear();
+        controls.clear();
+        score.clear();
+        custom.clear();
+    }
+
+
+    public static function delete()
+    {
+        options.delete();
+        controls.delete();
+        score.delete();
+        custom.delete();
+    }
+
+
     public static function destroy()
     {
         save();

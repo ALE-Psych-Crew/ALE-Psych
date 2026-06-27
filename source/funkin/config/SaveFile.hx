@@ -43,6 +43,9 @@ class SaveFile
         if (FileSystem.exists(filePath))
             FileSystem.deleteFile(filePath);
 
+    public function clear()
+        @:bypassAccessor data = {};
+
     public function merge(newData:Dynamic, ?original:Dynamic):Dynamic
     {
         original ??= data;
