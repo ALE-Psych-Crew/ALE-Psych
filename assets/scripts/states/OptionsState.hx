@@ -57,32 +57,6 @@ function postCreate()
 
     add(categories = new FlxTypedGroup<FlxTypedSpriteGroup<FlxSpriteGroup>>());
 
-    add(descriptionBG = new FlxSprite().makeGraphic(FlxG.width, 1, FlxColor.BLACK));
-    descriptionBG.scrollFactor.set();
-    descriptionBG.alpha = 0.5;
-
-    add(descriptionText = new FlxText(0, 0, FlxG.width - config.descriptionMargin.x, '', 25));
-    descriptionText.x = FlxG.width / 2 - descriptionText.width / 2;
-    descriptionText.font = Paths.font('vcr.ttf');
-    descriptionText.alignment = 'center';
-    descriptionText.scrollFactor.set();
-
-    add(circles = new FlxSpriteGroup(config.circlesOffset.x, config.circlesOffset.y));
-    circles.scrollFactor.set();
-
-    for (i in 0...optionsConfig.length)
-    {
-        final circle:FlxShapeCircle = new FlxShapeCircle(i * config.circlesSpacing, 0, 5, {
-            color: FlxColor.BLACK,
-            thickness: 2
-        }, FlxColor.WHITE);
-        circle.antialiasing = false;
-
-        circles.add(circle);
-    }
-
-    circles.x = FlxG.width / 2 - circles.width / 2;
-
     for (categoryIndex => category in optionsConfig)
     {
         final title:Alphabet = new Alphabet(categoryIndex * FlxG.width, 0, (categoryIndex <= 0 ? '' : '< ') + category.name + (categoryIndex >= optionsConfig.length - 1 ? '' : ' >'));
@@ -225,6 +199,32 @@ function postCreate()
             categoryOffset += config.optionsSpacing;
         }
     }
+
+    add(descriptionBG = new FlxSprite().makeGraphic(FlxG.width, 1, FlxColor.BLACK));
+    descriptionBG.scrollFactor.set();
+    descriptionBG.alpha = 0.5;
+
+    add(descriptionText = new FlxText(0, 0, FlxG.width - config.descriptionMargin.x, '', 25));
+    descriptionText.x = FlxG.width / 2 - descriptionText.width / 2;
+    descriptionText.font = Paths.font('vcr.ttf');
+    descriptionText.alignment = 'center';
+    descriptionText.scrollFactor.set();
+
+    add(circles = new FlxSpriteGroup(config.circlesOffset.x, config.circlesOffset.y));
+    circles.scrollFactor.set();
+
+    for (i in 0...optionsConfig.length)
+    {
+        final circle:FlxShapeCircle = new FlxShapeCircle(i * config.circlesSpacing, 0, 5, {
+            color: FlxColor.BLACK,
+            thickness: 2
+        }, FlxColor.WHITE);
+        circle.antialiasing = false;
+
+        circles.add(circle);
+    }
+
+    circles.x = FlxG.width / 2 - circles.width / 2;
 
     changeCategory();
 }
