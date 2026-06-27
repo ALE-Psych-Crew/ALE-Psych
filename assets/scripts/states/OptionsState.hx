@@ -310,7 +310,7 @@ function onUpdate(elapsed:Float)
 
         if (Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL)
         {
-            changeOption(Controls.UI_DOWN_P || FlxG.mouse.wheel < 1 ? 1 : -1);
+            changeOption(Controls.UI_DOWN_P || FlxG.mouse.wheel == -1 ? 1 : -1);
 
             CoolUtil.playSound('scroll');
         }
