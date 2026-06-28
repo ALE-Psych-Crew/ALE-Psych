@@ -229,8 +229,6 @@ function postCreate()
     changeCategory();
 }
 
-HotReloading.add('data/options.json');
-
 function onDestroy()
 {
     Save.save();
