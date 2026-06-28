@@ -1142,7 +1142,7 @@ class PlayState extends ScriptedState
         
         final rating:JsonHudRating = note.type == ARROW ? judgeNote(timeDistance) : null;
 
-        final result:Bool = scriptsManager.callback(ON, 'NoteHit', null, [nextNoteToHit, nextNoteToHitCharacter, rating, timeDistance, removeNote], [rating, timeDistance, removeNote]);
+        final result:Bool = scriptsManager.callback(ON, 'NoteHit', null, [nextNoteToHit, nextNoteToHitCharacter, rating, timeDistance, removeNote] #if ALLOW_LUA , [rating, timeDistance, removeNote] #end);
 
         if (result)
         {
@@ -1169,7 +1169,7 @@ class PlayState extends ScriptedState
             }
         }
 
-        scriptsManager.callback(POST, 'NoteHit', null, [nextNoteToHit, nextNoteToHitCharacter, timeDistance, removeNote], [timeDistance, removeNote]);
+        scriptsManager.callback(POST, 'NoteHit', null, [nextNoteToHit, nextNoteToHitCharacter, timeDistance, removeNote] #if ALLOW_LUA , [rating, timeDistance, removeNote] #end);
 
         return result;
     }
@@ -1297,10 +1297,10 @@ class PlayState extends ScriptedState
 
         if (Controls.anyJustPressed([event.keyCode]))
         {
-            if (scriptsManager.callback(ON, 'KeyJustPressed', null, [event], [event.keyCode]))
+            if (scriptsManager.callback(ON, 'KeyJustPressed', null, [event] #if ALLOW_LUA , [event.keyCode] #end))
                 strumLines.forEachAlive(strl -> strl.justPressedKey(event.keyCode));
 
-            scriptsManager.callback(POST, 'KeyJustPressed', null, [event], [event.keyCode]);
+            scriptsManager.callback(POST, 'KeyJustPressed', null, [event] #if ALLOW_LUA , [event.keyCode] #end);
         }
     }
 
@@ -1311,10 +1311,10 @@ class PlayState extends ScriptedState
 
         if (Controls.anyJustReleased([event.keyCode]))
         {
-            if (scriptsManager.callback(ON, 'KeyJustReleased', null, [event], [event.keyCode]))
+            if (scriptsManager.callback(ON, 'KeyJustReleased', null, [event] #if ALLOW_LUA , [event.keyCode] #end))
                 strumLines.forEachAlive(strl -> strl.justReleasedKey(event.keyCode));
 
-            scriptsManager.callback(POST, 'KeyJustReleased', null, [event], [event.keyCode]);
+            scriptsManager.callback(POST, 'KeyJustReleased', null, [event] #if ALLOW_LUA , [event.keyCode] #end);
         }
     }
 
@@ -1350,7 +1350,7 @@ class PlayState extends ScriptedState
 
     function addVocal(sound:Sound)
     {
-        if (scriptsManager.callback(ON, 'VocalAdd', null, [sound], []))
+        if (scriptsManager.callback(ON, 'VocalAdd', null, [sound]))
         {
             if (sound != null)
             {
@@ -1362,7 +1362,7 @@ class PlayState extends ScriptedState
             }
         }
 
-        scriptsManager.callback(POST, 'VocalAdd', null, [sound], []);
+        scriptsManager.callback(POST, 'VocalAdd', null, [sound]);
     }
 
 

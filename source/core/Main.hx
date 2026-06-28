@@ -212,5 +212,7 @@ class Main extends Sprite
 		#if ALLOW_LINUX_API
 		GamemodeClient.request_end();
 		#end
+
+		Save.destroy();
 	}
 }

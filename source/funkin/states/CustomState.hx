@@ -8,7 +8,7 @@ class CustomState extends ScriptedState
 
     public function new(name:String, ?globalArgs:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArgs:Array<Dynamic> #end #if ALLOW_LUA , ?luaArgs:Array<Dynamic> #end)
     {
-        super(globalArgs, haxeArgs, luaArgs);
+        super(globalArgs, haxeArgs #if ALLOW_LUA , luaArgs #end);
 
         this.name = name;
     }

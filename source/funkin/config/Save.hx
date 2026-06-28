@@ -24,7 +24,7 @@ class Save
         ClientPrefs.init();
 
         function isCustom(res:Dynamic, ogRes:Dynamic):Bool
-            return res == null || ogRes == null || Type.typeof(res) != Type.typeof(ogRes);
+            return res == null || ogRes == null || Type.enumConstructor(Type.typeof(res)) != Type.enumConstructor(Type.typeof(ogRes));
 
         if (options != null)
         {
@@ -40,8 +40,12 @@ class Save
 
             for (category in jsonOptions)
                 for (option in category.options)
-                    if (Reflect.field(ClientPrefs.custom, option.variable) == null || isCustom(Reflect.field(ClientPrefs.custom, option.variable), option.initial))
+                    if (isCustom(Reflect.field(ClientPrefs.custom, option.variable), option.initial))
+                    {
                         Reflect.setField(ClientPrefs.custom, option.variable, option.initial);
+
+                        trace(option.variable);
+                    }
 
             FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
 
