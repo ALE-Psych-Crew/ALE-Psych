@@ -300,13 +300,13 @@ function onUpdate(elapsed:Float)
             CoolUtil.playSound('cancel');
         }
 
-        if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P)
-            if (Controls.SHIFT || !current.metadata.get('scroll'))
-                changeCategory(Controls.UI_LEFT_P ? -1 : 1);
-
         if (Controls.UI_LEFT || Controls.UI_RIGHT)
             if (!Controls.SHIFT && current.metadata.get('scroll') && (Controls.CONTROL || (Controls.UI_RIGHT_P || Controls.UI_LEFT_P)))
                 current.metadata.get('callback')();
+
+        if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P)
+            if (Controls.SHIFT || !current.metadata.get('scroll'))
+                changeCategory(Controls.UI_LEFT_P ? -1 : 1);
 
         if (Controls.UI_DOWN_P || Controls.UI_UP_P || Controls.MOUSE_WHEEL)
         {
