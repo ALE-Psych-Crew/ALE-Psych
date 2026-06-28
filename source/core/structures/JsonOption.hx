@@ -4,6 +4,7 @@ import core.enums.OptionType;
 
 typedef JsonOption = {
     name:String,
+    variable:String,
     description:String,
     type:OptionType,
     initial:Dynamic,

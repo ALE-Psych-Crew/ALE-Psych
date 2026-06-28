@@ -1,5 +1,7 @@
 package funkin.config;
 
+import core.structures.JsonOption;
+
 class Save
 {
     public static var options:SaveFile;
@@ -33,6 +35,13 @@ class Save
 
                 Reflect.setField(isCustom(res, ogRes) ? ClientPrefs.custom : ClientPrefs.data, field, res);
             }
+
+            final jsonOptions:Array<{name:String, options:Array<JsonOption>}> = Paths.exists('data/options.json') ? cast Paths.json('data/options').categories : [];
+
+            for (category in jsonOptions)
+                for (option in category.options)
+                    if (Reflect.field(ClientPrefs.custom, option.variable) == null || isCustom(Reflect.field(ClientPrefs.custom, option.variable), option.initial))
+                        Reflect.setField(ClientPrefs.custom, option.variable, option.initial);
 
             FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
 
