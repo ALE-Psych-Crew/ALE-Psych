@@ -1029,7 +1029,6 @@ class PlayState extends ScriptedState
         if (scriptsManager.callback(ON, 'StrumLinesInit'))
         {
             add(strumLines = new FlxTypedGroup<StrumLine>());
-            strumLines.camera = camHUD;
             
             playerStrumLines = new FlxTypedGroup<StrumLine>();
             opponentStrumLines = new FlxTypedGroup<StrumLine>();
@@ -1074,13 +1073,16 @@ class PlayState extends ScriptedState
             for (index => strl in chart.strumLines)
             {
                 final strumLine:StrumLine = strumLineFactory(strl.file, strl.type, index, notes[index], stackNote);
+
+                addStrumLine(strumLine);
+                
                 strumLine.noteSpawnCallback = spawnNote;
                 strumLine.noteHitCallback = hitNote;
                 strumLine.noteMissCallback = missNote;
                 strumLine.visible = strl.visible;
                 strumLine.missWindow = hud.ratings[hud.ratings.length - 1].time;
 
-                addStrumLine(strumLine);
+                strumLine.camera = camHUD;
 
                 var strumsOffsetX:Float = 0;
                 var strumsOffsetY:Float = 0;
