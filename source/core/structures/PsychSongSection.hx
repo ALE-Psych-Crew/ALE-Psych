@@ -2,7 +2,7 @@ package core.structures;
 
 typedef PsychSongSection = {
 	var sectionNotes:Array<Dynamic>;
-	var sectionBeats:Float;
+	var sectionBeats:Int;
 	var mustHitSection:Bool;
 	var gfSection:Bool;
 	var bpm:Float;

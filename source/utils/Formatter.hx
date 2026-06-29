@@ -667,6 +667,9 @@ class Formatter
                     notes: [],
                     camera: onlyGF ? [section.mustHitSection ? 1 : 0] : [section.gfSection ? 0 : section.mustHitSection ? 2 : 1, 0],
                     bpm: section.changeBPM == true ? section.bpm : psychSong.bpm,
+                    stepsPerBeat: 4,
+                    beatsPerSection: section.sectionBeats,
+                    changeTimeSignature: section.sectionBeats != 4,
                     changeBPM: section.changeBPM ?? false
                 };
 
