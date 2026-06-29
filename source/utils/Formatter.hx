@@ -661,6 +661,8 @@ class Formatter
                 stage: psychSong.stage
             };
 
+            var shouldChangeTimeSignature:Bool = false;
+
             for (section in psychSong.notes)
             {
                 var curSection:ALESongSection = {
@@ -669,9 +671,14 @@ class Formatter
                     bpm: section.changeBPM == true ? section.bpm : psychSong.bpm,
                     stepsPerBeat: 4,
                     beatsPerSection: section.sectionBeats,
-                    changeTimeSignature: section.sectionBeats != 4,
+                    changeTimeSignature: section.sectionBeats != 4 || shouldChangeTimeSignature,
                     changeBPM: section.changeBPM ?? false
                 };
+
+                if (section.sectionBeats != 4)
+                    shouldChangeTimeSignature = true;
+                else if (shouldChangeTimeSignature)
+                    shouldChangeTimeSignature = false;
 
                 if (section.sectionNotes != null)
                 {
