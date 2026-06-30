@@ -142,6 +142,8 @@ class PlayState extends ScriptedState
         Conductor.stop();
         Conductor.reset(chart.bpm, chart.stepsPerBeat, chart.beatsPerSection);
 
+        Conductor.loadEvents(chart);
+
         scriptsManager.loadFolder('scripts/global');
         scriptsManager.loadFolder('scripts/songs');
         scriptsManager.loadFolder(songRoute + '/scripts');

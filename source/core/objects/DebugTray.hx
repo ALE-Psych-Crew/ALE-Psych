@@ -99,7 +99,7 @@ class DebugTray extends GameObject
                 '\nStep: ' + Conductor.curStep +
                 '\nBeat: ' + Conductor.curBeat +
                 '\nSection: ' + Conductor.curSection +
-                '\nTime Signature: ' + Conductor.beatsPerSection + ' | ' + Conductor.stepsPerBeat;
+                '\nTime Signature: ' + Conductor.beatsPerSection + ' / ' + Conductor.stepsPerBeat;
         });
 
         addField(() -> {

@@ -47,7 +47,7 @@ function checkLocked(week:JsonWeek)
 function onCreate()
 {
     if (Conductor.music == null)
-        Conductor.play(Paths.music('freakyMenu'), CoolVars.meta.bpm);
+        Conductor.play(Paths.music('freakyMenu'), CoolVars.meta.bpm, CoolVars.meta.stepsPerBeat, CoolVars.meta.beatsPerSection);
         
     bg = CoolUtil.spriteFromJson(null, config.bg, 'menus/' + config.directory + '/');
     add(bg);

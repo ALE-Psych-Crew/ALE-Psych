@@ -622,7 +622,7 @@ class Paths
             {
                 result = result.concat(FileSystem.readDirectory(finalPath));
 
-                if (type == 'unique')
+                if (type == UNIQUE && result.length > 0)
                     break;
             }
         }

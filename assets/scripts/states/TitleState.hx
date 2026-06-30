@@ -85,7 +85,7 @@ function onCreate()
 
     if (Conductor.music == null)
     {
-        Conductor.play(Paths.music('freakyMenu'), CoolVars.meta.bpm);
+        Conductor.play(Paths.music('freakyMenu'), CoolVars.meta.bpm, CoolVars.meta.stepsPerBeat, CoolVars.meta.beatsPerSection);
 
         onSafeBeatHit(0);
     } else {

@@ -2,6 +2,9 @@ package core.audio;
 
 import openfl.media.Sound as OpenFLSound;
 
+import core.structures.ConductorEvent;
+import core.structures.ALESong;
+
 /**
  * Handles the game's music and some related callbacks
  */
@@ -92,8 +95,8 @@ class Conductor
     @:dox(hide)
     public static function init()
     {
-        reset();
-
+        reset(CoolVars.data.bpm, CoolVars.meta.stepsPerBeat, CoolVars.meta.beatsPerSection, true);
+        
         synchronizedSounds = [];
 
 		stepHit = new FlxTypedSignal<Int -> Void>();
@@ -162,9 +165,10 @@ class Conductor
         musicResync = null;
     }
 
-    @:dox(hide)
-    @:unreflective
-    public static var allowMusicUpdating:Bool = true;
+    /**
+     * This allows the music data belonging to Conductor to be updated
+     */
+    public static var allowUpdating:Bool = true;
 
     /**
      * Plays a song, with the option to configure some additional fields
@@ -253,6 +257,8 @@ class Conductor
             }
 
         musicStop?.dispatch();
+
+        reset(CoolVars.data.bpm, CoolVars.meta.stepsPerBeat, CoolVars.meta.beatsPerSection, true);
     }
 
     /**
@@ -262,7 +268,7 @@ class Conductor
      * @param stepsPerBeat Steps per Beat in the song
      * @param beatsPerSection Beats per section in the song
      */
-    public static function reset(?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int)
+    public static function reset(?bpm:Float, ?stepsPerBeat:Int, ?beatsPerSection:Int, ?clearEvents:Bool = false)
     {
         if (bpm != null)
             Conductor.bpm = bpm;
@@ -274,6 +280,17 @@ class Conductor
             Conductor.beatsPerSection = beatsPerSection;
 
         time = curStep = safeStep = curBeat = safeBeat = curSection = safeSection = 0;
+        
+        allowUpdating = true;
+
+        allowRewind = false;
+
+        if (clearEvents)
+        {
+            eventIndex = 0;
+
+            events = null;
+        }
     }
 
     public static var curStep:Int = 0;
@@ -345,10 +362,96 @@ class Conductor
 	 */
     public static var musicResync:FlxTypedSignal<Void -> Void>;
 
+    public static var allowRewind:Bool = false;
+
+    /**
+     * This corresponds to the index of the current event
+     */
+    static var eventIndex:Int = 0;
+
+    /**
+     * This refers to the list of events involving BPM Changes and Time Signature changes
+     */
+    static var events:Null<Array<ConductorEvent>>;
+
+    /**
+     * This corresponds to the current event
+     */
+    static var curEvent(get, never):Null<ConductorEvent>;
+    @:dox(hide)
+    static function get_curEvent():Null<ConductorEvent>
+        return events == null ? null : events[eventIndex];
+
+    /**
+     * Retrieves the events that will occur based on a Chart
+     * @param chart Chart to Analyze
+     */
+    public static function loadEvents(?chart:ALESong)
+    {
+        eventIndex = 0;
+
+        if (chart == null)
+        {
+            events = null;
+
+            return;
+        }
+
+        bpm = chart.bpm;
+        stepsPerBeat = chart.stepsPerBeat;
+        beatsPerSection = chart.beatsPerSection;
+
+        var curTime:Float = 0;
+
+        var curStep:Int = 0;
+        var curBeat:Int = 0;
+        var curSection:Int = 0;
+
+        events = [];
+
+        for (section in chart.sections)
+        {
+            if (section.changeBPM || section.changeTimeSignature)
+            {
+                if (section.changeBPM)
+                    bpm = section.bpm;
+
+                if (section.changeTimeSignature)
+                {
+                    stepsPerBeat = section.stepsPerBeat;
+                    beatsPerSection = section.beatsPerSection;
+                }
+
+                events.push({
+                    bpm: bpm,
+                    time: curTime,
+                    step: curStep,
+                    beat: curBeat,
+                    section: curSection,
+
+                    stepsPerBeat: stepsPerBeat,
+                    beatsPerSection: beatsPerSection
+                });
+            }
+
+            curTime += sectionCrochet;
+
+            curBeat += beatsPerSection;
+            curStep += stepsPerBeat * beatsPerSection;
+
+            curSection++;
+        }
+
+        bpm = chart.bpm;
+
+        stepsPerBeat = chart.stepsPerBeat;
+        beatsPerSection = chart.beatsPerSection;
+    }
+
     @:dox(hide)
     public static function update()
     {
-        if (music == null || !allowMusicUpdating)
+        if (music == null || !allowUpdating)
             return;
 
         if (music.playing)
@@ -358,9 +461,33 @@ class Conductor
             if (Math.abs(music.time - time) >= 25)
                 synchronize();
 
-            final newStep:Int = Math.floor(time / stepCrochet);
+            var newStep:Int = 0;
 
-            if (newStep > curStep)
+            if (events == null || events.length <= 0)
+            {
+                newStep = Math.floor(time / stepCrochet);
+            } else {
+                while (eventIndex + 1 < events.length && time >= events[eventIndex + 1].time)
+                    eventIndex++;
+
+                while (eventIndex > 0 && time < events[eventIndex].time)
+                    eventIndex--;
+
+                final event:ConductorEvent = curEvent;
+
+                if (bpm != event.bpm)
+                    bpm = event.bpm;
+
+                if (stepsPerBeat != event.stepsPerBeat)
+                    stepsPerBeat = event.stepsPerBeat;
+
+                if (beatsPerSection != event.beatsPerSection)
+                    beatsPerSection = event.beatsPerSection;
+
+                newStep = event.step + Math.floor((time - event.time) / stepCrochet);
+            }
+
+            if (allowRewind ? newStep != curStep : newStep > curStep)
             {
                 curStep = newStep;
 
@@ -412,9 +539,9 @@ class Conductor
         while (safeStep < curStep)
             safeStepHit?.dispatch(++safeStep);
 
-        final newBeat:Int = Math.floor(curStep / stepsPerBeat);
+        final newBeat:Int = curEvent == null ? Math.floor(curStep / stepsPerBeat) : curEvent.beat + Math.floor((curStep - curEvent.step) / curEvent.stepsPerBeat);
 
-        if (newBeat > curBeat)
+        if (newBeat != curBeat)
         {
             curBeat = newBeat;
 
@@ -434,9 +561,9 @@ class Conductor
             safeBeatHit?.dispatch(safeBeat);
         }
 
-        final newSection:Int = Math.floor(curBeat / beatsPerSection);
+        final newSection:Int = curEvent == null ? Math.floor(curBeat / beatsPerSection) : curEvent.section + Math.floor((curBeat - curEvent.beat) / curEvent.beatsPerSection);
 
-        if (newSection > curSection)
+        if (newSection != curSection)
         {
             curSection = newSection;
 
@@ -457,13 +584,11 @@ class Conductor
         }
     }
 
-    @:deprecated
+    @:deprecated('Use `time` instead')
     public static var songPosition(get, set):Float;
-
     @:dox(hide)
     static function get_songPosition():Float
         return time;
-
     @:dox(hide)
     static function set_songPosition(value:Float)
         return time = value;
