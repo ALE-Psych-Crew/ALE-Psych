@@ -136,6 +136,8 @@ class PlayState extends ScriptedState
     override function create()
     {
         instance = this;
+        
+        allowCamerasConfig = false;
 
         super.create();
 
@@ -152,6 +154,8 @@ class PlayState extends ScriptedState
 
         if (scriptsManager.callback(ON, 'Create'))
         {
+            initCameras();
+
             initEvents();
 
             initCharacters();

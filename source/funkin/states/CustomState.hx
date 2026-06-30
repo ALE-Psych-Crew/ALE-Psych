@@ -25,9 +25,8 @@ class CustomState extends ScriptedState
         scriptsManager.loadFolder('scripts/global');
         scriptsManager.loadFolder('scripts/states/' + name);
         
-        scriptsManager.callback(ON, 'Create');
-
-        initCameras();
+        if (scriptsManager.callback(ON, 'Create'))
+            initCameras();
         
         scriptsManager.callback(POST, 'Create');
     }

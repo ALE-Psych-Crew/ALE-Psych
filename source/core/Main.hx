@@ -12,6 +12,7 @@ import core.plugins.PluginsHandler;
 
 import core.debug.HotReloading;
 
+import core.objects.GameObject;
 import core.objects.SoundTray;
 import core.objects.DebugTray;
 
@@ -137,10 +138,14 @@ class Main extends Sprite
 
 		Score.destroy();
 
-		game.soundTraySprite?.destroy();
+		if (game.soundTraySprite is GameObject)
+			cast(game.soundTraySprite, GameObject)?.destroy();
+
 		game.soundTraySprite = null;
 
-		game.debugTray?.destroy();
+		if (game.debugTray is GameObject)
+			cast(game.debugTray, GameObject)?.destroy();
+
 		game.debugTray = null;
 	}
 

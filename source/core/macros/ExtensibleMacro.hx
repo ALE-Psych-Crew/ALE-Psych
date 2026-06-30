@@ -36,6 +36,8 @@ class ExtensibleMacro
             'openfl.display.Sprite',
             'openfl.text.TextField',
 
+            // 'core.objects.GameObject',
+
             'funkin.visuals.shaders.RuntimeShader',
             'funkin.visuals.shaders.FXShader',
             'funkin.visuals.game.Character',
@@ -84,9 +86,6 @@ class ExtensibleMacro
                     {
                         case TClassDecl(ref):
                             final cls = ref.get();
-
-                            if (cls.name == 'openfl.display.Sprite')
-                                trace(cls);
 
                             if (cls.isPrivate || cls.isFinal || cls.constructor == null)
                                 null;

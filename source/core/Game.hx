@@ -5,16 +5,16 @@ import flixel.FlxGame;
 
 import funkin.substates.ModsMenuSubState;
 
-import core.states.MainState;
+import openfl.display.Sprite;
 
-import core.objects.GameObject;
+import core.states.MainState;
 
 import api.DesktopAPI;
 
 class Game extends FlxGame
 {
-	public var soundTraySprite:GameObject;
-	public var debugTray:GameObject;
+	public var soundTraySprite:Sprite;
+	public var debugTray:Sprite;
 
 	override public function new()
 		super(1280, 720, MainState, 120, 120, true, false);
