@@ -96,13 +96,6 @@ class Formatter
                         return result;
                     }
                 ],
-                fileCheck: (json) -> {
-                    for (image in cast(json.images, Array<Dynamic>))
-                        if (Paths.exists('images/' + config[CHARACTER].path + '/' + image + '.png'))
-                            return true;
-
-                    return false;
-                },
                 example: {
                     images: ['bf'],
                     type: 'sheet',
@@ -552,12 +545,12 @@ class Formatter
     {
         for (prop in Reflect.fields(example))
         {
-            final dataProp = Reflect.field(data, prop);
+            final dataProp = Reflect.getProperty(data, prop);
 
-            final exampleProp = Reflect.field(example, prop);
+            final exampleProp = Reflect.getProperty(example, prop);
             
             if (dataProp == null)
-                Reflect.setField(data, prop, exampleProp);
+                Reflect.setProperty(data, prop, exampleProp);
             else if (Reflect.isObject(dataProp))
                 fix(exampleProp, dataProp);
         }
@@ -574,7 +567,7 @@ class Formatter
 
         final rawJson:Dynamic = Paths.json('data/' + data.path + '/' + file, false, false);
 
-        final example = Json.copy(data.example);
+        final example = Reflect.copy(data.example);
 
         var result:Dynamic = null;
 
@@ -596,7 +589,9 @@ class Formatter
 
                             break;
                         }
-                    } catch(e:Dynamic) {}
+                    } catch(e:Dynamic) {
+                        debugTrace(e, ERROR);
+                    }
                 }
             }
         }

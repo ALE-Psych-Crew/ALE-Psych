@@ -476,7 +476,7 @@ class Paths
      * @return Parsed JSON
      */
     public static function json(file:String, ?permanent:Bool, ?missingPrint:Bool):Dynamic
-        return Json.copy(get(file, FileType.JSON, permanent, missingPrint));
+        return Reflect.copy(get(file, FileType.JSON, permanent, missingPrint));
 
     /**
      * This retrieves a function located in an *ndll*
