@@ -31,13 +31,16 @@ class FunkinSprite extends FlxAnimate
 
     public function playAnim(name:Null<String>, ?force:Bool = true)
     {
-        if (anim == null || name == null || !anim.getNameList().contains(name) || (anim.curAnim == null ? false : anim.name == name && anim.curAnim.looped))
+        if (!shouldPlayAnim(name))
             return;
 
         anim.play(name, force ?? true);
 
         applyOffset(getAnimOffset());
     }
+
+    public function shouldPlayAnim(name:Null<String>):Bool
+        return anim != null && name != null && anim.getNameList().contains(name) && !(anim.curAnim != null && anim.name == name && anim.curAnim.looped);
 
     public function getAnimOffset():Point
         return offsets.get(anim.name) ?? {x: null, y: null};

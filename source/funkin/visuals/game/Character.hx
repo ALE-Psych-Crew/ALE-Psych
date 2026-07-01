@@ -80,7 +80,8 @@ class Character extends Bopper
     {
         super.playAnim(anim, force);
 
-        resetBlockers();
+        if (shouldPlayAnim(anim))
+            resetBlockers();
     }
 
     public function playSpecialAnim(anim:String, ?force:Bool, ?blockBop:Bool = true, ?bopTimer:Float, ?blockSing:Bool = false, ?singTimer:Float, ?blockMiss:Bool = false, ?missTimer:Float)
