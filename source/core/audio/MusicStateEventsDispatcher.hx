@@ -77,6 +77,13 @@ class MusicStateEventsDispatcher implements IFlxDestroyable
 
                 return;
             }
+
+            if (obj is FlxTypedSpriteGroup)
+            {
+                cast(obj, FlxTypedSpriteGroup<Dynamic>).forEachAlive(dispatch);
+
+                return;
+            }
         }
 
         parent.forEachAlive(dispatch);

@@ -897,7 +897,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'ComboDisplay', [rating]);
     }
 
-    var uiGroup:FlxGroup;
+    var uiGroup:FlxTypedGroup<FlxSprite>;
 
     var healthBar:Bar;
     var scoreText:FlxText;
@@ -906,7 +906,7 @@ class PlayState extends ScriptedState
     {
         if (scriptsManager.callback(ON, 'HudInit'))
         {
-            add(uiGroup = new FlxGroup());
+            add(uiGroup = new FlxTypedGroup<FlxSprite>());
             uiGroup.camera = camHUD;
 
             healthBar = new Bar(hudRoute + '/' + hud.bar, hudRoute + '/' + hud.barFilling, false, health);
@@ -948,7 +948,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'HealthUpdate');
     }
 
-    var icons:FlxTypedGroup<Icon>;
+    var icons:FlxTypedSpriteGroup<Icon>;
 
     var playerIcons:FlxTypedGroup<Icon>;
     var opponentIcons:FlxTypedGroup<Icon>;
@@ -960,7 +960,7 @@ class PlayState extends ScriptedState
     {
         if (scriptsManager.callback(ON, 'IconsInit'))
         {
-            uiGroup.insert(uiGroup.members.indexOf(scoreText), icons = new FlxTypedGroup<Icon>());
+            uiGroup.insert(uiGroup.members.indexOf(scoreText), icons = new FlxTypedSpriteGroup<Icon>());
 
             playerIcons = new FlxTypedGroup<Icon>();
             opponentIcons = new FlxTypedGroup<Icon>();
