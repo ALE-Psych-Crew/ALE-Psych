@@ -10,5 +10,9 @@ typedef ConductorEvent = {
     section:Int,
 
     stepsPerBeat:Int,
-    beatsPerSection:Int
+    beatsPerSection:Int,
+
+    crochet:Float,
+    stepCrochet:Float,
+    sectionCrochet:Float
 }

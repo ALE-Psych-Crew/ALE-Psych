@@ -424,13 +424,19 @@ class Conductor
 
                 events.push({
                     bpm: bpm,
+
                     time: curTime,
+
                     step: curStep,
                     beat: curBeat,
                     section: curSection,
 
                     stepsPerBeat: stepsPerBeat,
-                    beatsPerSection: beatsPerSection
+                    beatsPerSection: beatsPerSection,
+
+                    crochet: crochet,
+                    stepCrochet: stepCrochet,
+                    sectionCrochet: sectionCrochet
                 });
             }
 
@@ -448,6 +454,50 @@ class Conductor
         beatsPerSection = chart.beatsPerSection;
     }
 
+    @:dox(hide)
+    static inline function resolveTime(index:Int, fallback:Float, getIndex:ConductorEvent -> Int, getCrochet:ConductorEvent -> Float):Float
+    {
+        if (events == null || events.length == 0)
+            return fallback;
+
+        var event = events[0];
+
+        for (next in events)
+        {
+            if (getIndex(next) > index)
+                break;
+
+            event = next;
+        }
+
+        return event.time + (index - getIndex(event)) * getCrochet(event);
+    }
+
+    /**
+     * This converts the step you specify into its equivalent in milliseconds
+     * @param step Step to Convert
+     * @return Equivalent in milliseconds
+     */
+    public static inline function stepToTime(step:Int):Float
+        return resolveTime(step, step * stepCrochet, e -> e.step, e -> e.stepCrochet);
+
+    /**
+     * This converts the beat you specify into its equivalent in milliseconds
+     * @param beat Beat to Convert
+     * @return Equivalent in milliseconds
+     */
+    public static inline function beatToTime(beat:Int):Float
+        return resolveTime(beat, beat * crochet, e -> e.beat, e -> e.crochet);
+
+    /**
+     * This converts the section you specify into its equivalent in milliseconds
+     * @param section Section to Convert
+     * @return Equivalent in milliseconds
+     */
+    public static inline function sectionToTime(section:Int):Float
+        return resolveTime(section, section * sectionCrochet, e -> e.section, e -> e.sectionCrochet);
+
+    
     @:dox(hide)
     public static function update()
     {
