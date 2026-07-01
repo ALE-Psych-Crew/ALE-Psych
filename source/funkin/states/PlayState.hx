@@ -767,6 +767,8 @@ class PlayState extends ScriptedState
                     if (iconP3 != null)
                         changeIcon(iconP3, nextCharacterToChange._castConfig.icon);
             }
+
+            resetCharacterPosition(char);
         }
 
         scriptsManager.callback(POST, 'CharacterChange');
