@@ -66,6 +66,10 @@ class PlayState extends ScriptedState
 
     var stage:Stage;
 
+    var stageRoute(get, never):String;
+    function get_stageRoute():String
+        return 'stages/' + stage.config.spritesConfig.directory;
+
     var accuracy(get, never):Float;
     function get_accuracy():Float
         return totalNotes == 0 ? 100 : accuracyMod / totalNotes;
