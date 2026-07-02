@@ -248,7 +248,7 @@ var options:FlxTypedSpriteGroup<FlxSpriteGroup>;
 
 function changeCategory(?change:Int = 0)
 {
-    catSelInt = FlxMath.bound(catSelInt + change, 0, categories.members.length - 1);
+    catSelInt = FlxMath.wrap(catSelInt + change, 0, categories.members.length - 1);
     
     options = categories.members[catSelInt];
 
@@ -261,13 +261,7 @@ var current:FlxSpriteGroup;
 
 function changeOption(?change:Int = 0)
 {
-    selInt += change;
-
-    if (selInt < 0)
-        selInt = options.members.length - 1;
-
-    if (selInt > options.members.length - 1)
-        selInt = 0;
+    selInt = FlxMath.wrap(selInt + change, 0, options.members.length - 1);
 
     for (index => opt in options.members)
     {

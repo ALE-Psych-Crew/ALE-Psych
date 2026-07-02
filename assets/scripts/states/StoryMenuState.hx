@@ -149,13 +149,7 @@ function set_diffSelInt(value:Int):Int
 
 function changeOption(?change:Int = 0)
 {
-    selInt += change;
-
-    if (selInt < 0)
-        selInt = weeks.length - 1;
-
-    if (selInt > weeks.length - 1)
-        selInt = 0;
+    selInt = FlxMath.wrap(selInt + change, 0, weeks.length - 1);
 
     for (index => spr in sprites)
         spr.alpha = index == selInt ? 1 : 0.25;
@@ -178,13 +172,7 @@ function changeDifficulty(?change:Int = 0)
 {
     final difficulties:Array<String> = weeks[selInt].difficulties;
 
-    diffSelInt += change;
-
-    if (diffSelInt < 0)
-        diffSelInt = difficulties.length - 1;
-
-    if (diffSelInt > difficulties.length - 1)
-        diffSelInt = 0;
+    diffSelInt = FlxMath.wrap(diffSelInt + change, 0, difficulties.length - 1);
 
     difficultySprite.loadGraphic(Paths.image('menus/story/difficulties/' + CoolUtil.formatString(difficulties[diffSelInt])));
     difficultySprite.x = 1040 - difficultySprite.width / 2;

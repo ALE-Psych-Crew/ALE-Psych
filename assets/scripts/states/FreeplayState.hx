@@ -132,13 +132,7 @@ function onCreate()
 
 function changeOption(?change:Int = 0)
 {
-    selInt += change;
-
-    if (selInt < 0)
-        selInt = songs.length - 1;
-
-    if (selInt > songs.length - 1)
-        selInt = 0;
+    selInt = FlxMath.wrap(selInt + change, 0, songs.length - 1);
 
     for (index => obj in sprites.members)
     {
@@ -163,13 +157,7 @@ function changeDifficulty(?change:Int = 0)
 {
     final difficulties:Array<String> = songs[selInt].difficulties;
 
-    diffSelInt += change;
-
-    if (diffSelInt < 0)
-        diffSelInt = difficulties.length - 1;
-
-    if (diffSelInt > difficulties.length - 1)
-        diffSelInt = 0;
+    diffSelInt = FlxMath.wrap(diffSelInt + change, 0, difficulties.length - 1);
 
     final score:SongScore = Score.getSong(songs[selInt].name, difficulties[diffSelInt]);
 
