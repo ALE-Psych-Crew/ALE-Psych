@@ -19,8 +19,6 @@ class SaveData
 	
 	public var discordRPC:Bool = true;
 
-	public var offset:Int = 0;
-
 	public var botplay:Bool = false;
 
 	public var practice:Bool = false;
