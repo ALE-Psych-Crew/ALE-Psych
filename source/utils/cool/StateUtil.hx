@@ -11,7 +11,7 @@ import ale.rulescript.RuleScriptGlobal;
 
 class StateUtil
 {
-	public static function switchState(st:OneOfThree<String, Class<FlxState>, FlxState>, ?skipTransIn:Bool, ?skipTransOut:Bool, ?posInfos:haxe.PosInfos)
+	public static function switchState(st:OneOfThree<String, Class<FlxState>, FlxState>, ?skipTransIn:Bool, ?skipTransOut:Bool)
 	{
 		var state:FlxState = null;
 
