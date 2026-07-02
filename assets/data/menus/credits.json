@@ -1,0 +1,24 @@
+{
+	"cameraOffset": -300,
+	"bg": {
+		"images": [
+			"bg"
+		],
+		"type": "image",
+		"color": "0xFF302060",
+		"properties": {
+			"scrollFactor": {
+				"x": 0,
+				"y": 0
+			}
+		}
+	},
+	"directory": "credits",
+	"cameraSpeed": 0.25,
+	"developersSpacing": 100,
+	"descriptionMargin": {
+		"x": 200,
+		"y": 30
+	},
+	"groupsSpacing": 120
+}

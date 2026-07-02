@@ -252,7 +252,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(new CustomState(CoolVars.data.mainMenuState));
+            CoolUtil.switchState(CoolVars.data.mainMenuState);
 
             CoolUtil.playSound('cancel');
         }

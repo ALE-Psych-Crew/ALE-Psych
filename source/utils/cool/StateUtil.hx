@@ -1,5 +1,7 @@
 package utils.cool;
 
+import flixel.util.typeLimit.OneOfThree;
+
 import flixel.FlxSubState;
 import flixel.FlxState;
 
@@ -9,8 +11,19 @@ import ale.rulescript.RuleScriptGlobal;
 
 class StateUtil
 {
-	public static function switchState(state:FlxState, ?skipTransIn:Bool, ?skipTransOut:Bool)
+	public static function switchState(st:OneOfThree<String, Class<FlxState>, FlxState>, ?skipTransIn:Bool, ?skipTransOut:Bool, ?posInfos:haxe.PosInfos)
 	{
+		var state:FlxState = null;
+
+		if (st is String)
+			state = new CustomState(st);
+
+		if (st is Class)
+			state = Type.createInstance(st, []);
+
+		if (st is FlxState)
+			state = st;
+
 		if (state == null)
 			return;
 
@@ -27,7 +40,7 @@ class StateUtil
 		}
 	}
 
-	public static function transitionSwitch(state:FlxState, ?skipTransIn:Bool, ?skipTransOut:Bool)
+	static function transitionSwitch(state:FlxState, ?skipTransIn:Bool, ?skipTransOut:Bool)
 	{
 		if (skipTransIn != null)
 			CoolVars.skipTransIn = skipTransIn;
@@ -48,8 +61,19 @@ class StateUtil
 		}
 	}
 
-	public static function openSubState(subState:FlxSubState = null)
+	public static function openSubState(sub:OneOfThree<String, Class<FlxSubState>, FlxSubState> = null)
 	{
+		var subState:FlxSubState = null;
+
+		if (sub is String)
+			subState = new CustomSubState(sub);
+
+		if (sub is Class)
+			subState = Type.createInstance(sub, []);
+
+		if (sub is FlxSubState)
+			subState = sub;
+
 		if (subState == null)
 			return;
 

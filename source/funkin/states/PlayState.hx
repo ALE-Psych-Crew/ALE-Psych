@@ -405,7 +405,7 @@ class PlayState extends ScriptedState
 
                 toggleTweensAndTimers(false);
 
-                CoolUtil.openSubState(new CustomSubState(CoolVars.meta.pauseSubState));
+                CoolUtil.openSubState(CoolVars.meta.pauseSubState);
             }
         }
 
@@ -455,7 +455,7 @@ class PlayState extends ScriptedState
         {
             Conductor.pause();
 
-            CoolUtil.openSubState(new CustomSubState(CoolVars.data.gameOverSubState));
+            CoolUtil.openSubState(CoolVars.data.gameOverSubState);
         }
 
         scriptsManager.callback(POST, 'GameOver');

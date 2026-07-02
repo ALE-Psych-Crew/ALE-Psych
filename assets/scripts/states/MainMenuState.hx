@@ -128,7 +128,7 @@ function onUpdate(elapsed:Float)
                     if (nextState.startsWith('meta:'))
                         nextState = Reflect.getProperty(CoolVars.meta, nextState.substr(5));
 
-                    FlxTimer.wait(1, () -> CoolUtil.switchState(new CustomState(nextState)));
+                    FlxTimer.wait(1, () -> CoolUtil.switchState(nextState));
 
                     CoolUtil.playSound('confirm');
                 } else {
@@ -141,7 +141,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(new CustomState(CoolVars.data.titleState));
+            CoolUtil.switchState(CoolVars.data.titleState);
 
             CoolUtil.playSound('cancel');
         }

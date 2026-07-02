@@ -174,7 +174,6 @@ function postCreate()
                                 else
                                     res = Type.createInstance(res, []);
 
-
                                 CoolUtil.switchState(res);
                             } else {
                                 if (res == null || !extends(res, FlxSubState))
@@ -287,7 +286,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(new CustomState(CoolVars.data.mainMenuState));
+            CoolUtil.switchState(CoolVars.data.mainMenuState);
 
             CoolUtil.playSound('cancel');
         }

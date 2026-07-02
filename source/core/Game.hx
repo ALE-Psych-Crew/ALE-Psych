@@ -41,7 +41,7 @@ class Game extends FlxGame
 				if (FlxG.state.subState != null)
 					FlxG.state.subState.close();
 
-				CoolUtil.openSubState(new ModsMenuSubState());
+				CoolUtil.openSubState(ModsMenuSubState);
 			}
 		}
 
