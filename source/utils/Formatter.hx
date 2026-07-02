@@ -451,7 +451,7 @@ class Formatter
                     combo: {
                         properties: {
                             x: 175,
-                            y: 575
+                            y: 550
                         },
                         rating: {
                             ease: 'circInOut',
@@ -478,12 +478,12 @@ class Formatter
                             ease: 'circInOut',
                             duration: 0.75,
                             start: {
-                                x: 50,
+                                x: 0,
                                 y: 60,
                                 alpha: 1
                             },
                             end: {
-                                x: 50,
+                                x: 0,
                                 y: 30,
                                 alpha: 0
                             },
