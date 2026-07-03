@@ -12,25 +12,25 @@ import utils.cool.MathUtil;
 
 class FXCamera extends Camera
 {
-	public var speed(default, set):Float = 0;
+	public var speed(default, set):Float;
 	function set_speed(value:Float):Float
 	{
 		speed = value;
 
-		followLerp = speed * 0.04;
+		followLerp = speed * 0.05;
 
 		return speed;
 	}
 
 	public var bopModulo:Int = Conductor.beatsPerSection;
 
-	public var bopZoom:Float = 1;
+	public var bopZoom:Float;
 
-	public var zoomSpeed:Float = 0;
-	public var targetZoom:Float = 1;
+	public var zoomSpeed:Float;
+	public var targetZoom:Float;
 
-	public var angleSpeed:Float = 0;
-	public var targetAngle:Float = 0;
+	public var angleSpeed:Float;
+	public var targetAngle:Float;
 
 	public var offset:FlxCallbackPoint;
 	public var position:FlxCallbackPoint;
@@ -54,6 +54,7 @@ class FXCamera extends Camera
 		bopModulo = Conductor.beatsPerSection;
 		bopZoom = 1;
 		
+		angleSpeed = 1;
 		angle = targetAngle = 0;
 
 		zoomSpeed = 1;
@@ -95,7 +96,7 @@ class FXCamera extends Camera
 			zoom = MathUtil.fpsLerp(zoom, targetZoom, 0.05 * zoomSpeed);
 
 		if (_angleTween == null && angleSpeed > 0)
-			angle = MathUtil.fpsLerp(angle, targetAngle, angleSpeed);
+			angle = MathUtil.fpsLerp(angle, targetAngle, 0.05 * angleSpeed);
 	}
 
 	public function updateTarget(_:FlxPoint)
