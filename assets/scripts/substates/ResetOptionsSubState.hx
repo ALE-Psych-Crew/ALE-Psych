@@ -6,11 +6,13 @@ var options:FlxSpriteGroup;
 
 function postCreate()
 {
-    final bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-    bg.alpha = 0;
-    add(bg);
+    subCamera.alpha = 0;
 
-    FlxTween.tween(bg, {alpha: 0.5}, 0.5, {ease: FlxEase.cubeOut});
+    FlxTween.tween(subCamera, {alpha: 1}, 0.5, {ease: FlxEase.cubeOut});
+
+    final bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+    bg.alpha = 0.75;
+    add(bg);
 
     final title:Alphabet = new Alphabet(0, FlxG.height * 0.3, 'Reset Options?');
     title.x = FlxG.width / 2 - title.width / 2;
@@ -34,7 +36,15 @@ function postCreate()
     alternOption();
 }
 
-var sel:Bool = false;
+var sel(default, set):Bool = Save.custom.data.resetOptionsSel ??= false;
+function set_sel(value:Bool):Bool
+{
+    sel = value;
+
+    Save.custom.data.resetOptionsSel = !sel;
+
+    return sel;
+}
 
 function alternOption()
 {
@@ -46,7 +56,7 @@ function alternOption()
 
 function onUpdate(elapsed:Float)
 {
-    if (Controls.CANCEL)
+    if (Controls.BACK)
         close();
 
     if (Controls.UI_LEFT_P || Controls.UI_RIGHT_P)
@@ -64,3 +74,6 @@ function onUpdate(elapsed:Float)
         close();
     }
 }
+
+function onDestroy()
+    FlxTween.cancelTweensOf(subCamera);

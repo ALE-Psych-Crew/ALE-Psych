@@ -1,5 +1,8 @@
 package funkin.config;
 
+import flixel.input.keyboard.FlxKey;
+
+import core.structures.JsonControl;
 import core.structures.JsonOption;
 
 class Save
@@ -41,11 +44,7 @@ class Save
             for (category in jsonOptions)
                 for (option in category.options)
                     if (isCustom(Reflect.field(ClientPrefs.custom, option.variable), option.initial))
-                    {
                         Reflect.setField(ClientPrefs.custom, option.variable, option.initial);
-
-                        trace(option.variable);
-                    }
 
             FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
 
@@ -77,6 +76,20 @@ class Save
                         Reflect.setField(ogRes, subField, subRes);
                     }
                 }
+            }
+
+            final jsonControls:Array<{name:String, variable:String, options:Array<JsonControl>}> = Paths.exists('data/controls.json') ? cast Paths.json('data/controls').groups : [];
+
+            for (group in jsonControls)
+            {
+                if (Reflect.field(ClientPrefs.customControls, group.variable) == null)
+                    Reflect.setField(ClientPrefs.customControls, group.variable, {});
+
+                final customGroup = Reflect.field(ClientPrefs.customControls, group.variable);
+
+                for (ctrl in group.options)
+                    if (Reflect.field(customGroup, ctrl.variable) == null)
+                        Reflect.setField(customGroup, ctrl.variable, [for (init in ctrl.initial) FlxKey.fromString(init)]);
             }
         }
 
