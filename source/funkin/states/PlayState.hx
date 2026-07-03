@@ -1,5 +1,9 @@
 package funkin.states;
 
+#if ALLOW_LUA
+import scripting.lua.callbacks.LuaPlayState;
+#end
+
 import core.structures.JsonHudRating;
 import core.structures.ALEEventList;
 import core.structures.ALEEvent;
@@ -150,11 +154,16 @@ class PlayState extends ScriptedState
 
         Conductor.loadEvents(chart);
 
+        #if ALLOW_LUA
+        scriptsManager.luaPresets.push(LuaPlayState);
+        #end
+
         scriptsManager.loadFolder('scripts/global');
         scriptsManager.loadFolder('scripts/songs');
         scriptsManager.loadFolder(songRoute + '/scripts');
 
         scriptsManager.load('scripts/stages/' + chart.stage);
+        scriptsManager.load('scripts/huds/' + stage.config.hud);
 
         if (scriptsManager.callback(ON, 'Create'))
         {

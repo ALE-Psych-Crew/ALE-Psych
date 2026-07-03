@@ -56,10 +56,5 @@ class LuaPlayState extends LuaPresetBase
         {
             setTag(tag, playState.stage.get(key));
         });
-
-        set('createMobileHitboxes', function(strl:Int)
-        {
-            playState.createMobileHitboxes(playState.strumLines.members[strl]);
-        });
     }
 }

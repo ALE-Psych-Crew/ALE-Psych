@@ -40,7 +40,7 @@ class LuaScript implements IScript
 
     public var nextIndex:Int = 1;
 
-    public function new(name:String, ?args:Array<Dynamic>, type:ScriptType, ?customCallbacks:Array<Class<LuaPresetBase>>)
+    public function new(name:String, ?args:Array<Dynamic>, type:ScriptType, ?presets:Array<Class<LuaPresetBase>>)
     {
         variables.set('this', this);
 
@@ -66,8 +66,8 @@ class LuaScript implements IScript
         for (def in ScriptConfig.TYPEDEFS.keys())
             LuaImport.importClass(Type.getClassName(ScriptConfig.TYPEDEFS.get(def)), def);
 
-        for (callbacks in (customCallbacks ?? []))
-            Type.createInstance(callbacks, [this]);
+        for (pre in presets ?? [])
+            Type.createInstance(pre, [this]);
 
         LuaL.openlibs(state);
 

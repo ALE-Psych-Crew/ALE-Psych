@@ -37,21 +37,21 @@ class LuaKeyManager extends LuaPresetBase
         set('keyJustPressed', function(group:String, name:String)
         {
             return FlxG.keys.anyJustPressed(
-                CoolUtil.getControl(group, name)
+                ClientPrefs.getControl(group, name)
             );
         });
 
         set('keyPressed', function(group:String, name:String)
         {
             return FlxG.keys.anyPressed(
-                CoolUtil.getControl(group, name)
+                ClientPrefs.getControl(group, name)
             );
         });
 
         set('keyReleased', function(group:String, name:String)
         {
             return FlxG.keys.anyJustReleased(
-                CoolUtil.getControl(group, name)
+                ClientPrefs.getControl(group, name)
             );
         });
     }

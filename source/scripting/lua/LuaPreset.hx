@@ -40,9 +40,9 @@ class LuaPreset
 
         new LuaShader(lua);
 
-        // new LuaKeyManager(lua);
+        new LuaKeyManager(lua);
 
-        // new LuaSave(lua);
+        new LuaSave(lua);
         
         new LuaDebug(lua);
 

@@ -11,6 +11,7 @@ import core.interfaces.IScript;
 import core.debug.HotReloading;
 
 #if ALLOW_HSCRIPT
+import scripting.haxe.HScriptPresetBase;
 import scripting.haxe.HScript;
 
 import ale.rulescript.RuleScriptGlobal;
@@ -19,6 +20,7 @@ import rulescript.Context;
 #end
 
 #if ALLOW_LUA
+import scripting.lua.LuaPresetBase;
 import scripting.lua.LuaScript;
 #end
 
@@ -163,6 +165,8 @@ class ScriptsManager implements IFlxDestroyable
 
     var haxeContext:Context = new Context();
 
+    var haxePresets:Array<Class<HScriptPresetBase>> = [];
+
     final haxeArguments:Array<Dynamic>;
 
     function haxeLoad(path:String, ?args:Array<Dynamic>)
@@ -174,7 +178,7 @@ class ScriptsManager implements IFlxDestroyable
 
         if (Paths.exists(fullPath))
         {
-            final script:HScript = new HScript(path, haxeContext, args ?? haxeArguments ?? globalArguments, type);
+            final script:HScript = new HScript(path, haxeContext, args ?? haxeArguments ?? globalArguments, type, haxePresets);
 
             if (allowHotReloading)
                 HotReloading.add(fullPath);
@@ -213,6 +217,8 @@ class ScriptsManager implements IFlxDestroyable
 
     final luaArguments:Array<Dynamic>;
 
+    var luaPresets:Array<Class<LuaPresetBase>> = [];
+
     function luaLoad(path:String, ?args:Array<Dynamic>)
     {
         if (destroyed)
@@ -227,7 +233,7 @@ class ScriptsManager implements IFlxDestroyable
 
             try
             {
-                final script:LuaScript = new LuaScript(path, args ?? luaArguments ?? globalArguments, type);
+                final script:LuaScript = new LuaScript(path, args ?? luaArguments ?? globalArguments, type, luaPresets);
 
                 lua.push(script);
 
