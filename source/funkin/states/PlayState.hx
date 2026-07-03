@@ -525,12 +525,7 @@ class PlayState extends ScriptedState
     override function beatHit(curBeat:Int)
     {
         if (scriptsManager.callback(ON, 'BeatHit', [curBeat]))
-        {
             super.beatHit(curBeat);
-
-            for (cam in [camGame, camHUD])
-                cast(cam, FXCamera).bop(curBeat);
-        }
 
         scriptsManager.callback(POST, 'BeatHit', [curBeat]);
     }
@@ -554,7 +549,12 @@ class PlayState extends ScriptedState
     override function safeBeatHit(safeBeat:Int)
     {
         if (scriptsManager.callback(ON, 'SafeBeatHit', [safeBeat]))
+        {
             super.safeBeatHit(safeBeat);
+
+            for (cam in [camGame, camHUD])
+                cast(cam, FXCamera).bop(safeBeat);
+        }
 
         scriptsManager.callback(POST, 'SafeBeatHit', [safeBeat]);
     }
