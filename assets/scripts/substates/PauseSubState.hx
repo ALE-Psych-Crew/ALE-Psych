@@ -10,13 +10,18 @@ import funkin.visuals.objects.Alphabet;
 	var infoCorner:String;
 };
 
+final play:PlayState = PlayState.instance;
+
+final music:Sound = new Sound().loadEmbedded(Paths.music(play.hudRoute + '/pause', true), true);
+music.play();
+music.fadeIn(5, 0, 0.5);
+
+FlxG.sound.list.add(music);
+
 final config:JsonPause = Paths.json('data/menus/pause');
 
 var options:FlxTypedGroup<Alphabet>;
 
-var music:Sound;
-
-final play:PlayState = PlayState.instance;
 
 function postCreate()
 {
@@ -29,14 +34,13 @@ function postCreate()
 
 	add(options = new FlxTypedGroup<Alphabet>());
 
-	for (index => opt in ['resume', 'restart', 'exit'])
+	for (index => opt in ['resume', 'restart', 'options', 'exit'])
 	{
 		final text:Alphabet = new Alphabet(0, 0, opt);
 		options.add(text);
 
 		FlxTween.tween(text, {x: index * config.optionsSpacing.x, y: index * config.optionsSpacing.y}, config.cameraSpeed, {ease: FlxEase.cubeOut});
 	}
-
 
 	for (index => txt in ['Song: ' + play.song, 'Difficulty: ' + play.difficulty, play.type == 'story' ? 'Story Mode' : 'Freeplay'])
 	{
@@ -92,6 +96,9 @@ function onUpdate(elapsed:Float)
 			case 'restart':
 				play.restart();
 
+			case 'options':
+				CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, [play.type, play.playlist, play.difficulty, play.week, play.weekScore, play.songIndex]));
+
 			case 'exit':
 				play.exit();
 
@@ -102,3 +109,6 @@ function onUpdate(elapsed:Float)
 		close();
 	}
 }
+
+function onDestroy()
+	music.stop();

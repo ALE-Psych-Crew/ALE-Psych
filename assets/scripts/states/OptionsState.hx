@@ -278,6 +278,23 @@ function changeOption(?change:Int = 0)
     descriptionBG.y = FlxG.height - descriptionBG.height;
 }
 
+final songType:String;
+final playlist:Array<String>;
+final difficulty:String;
+final week:String;
+final weekScore:Float;
+final songIndex:Int;
+
+function new(?newSongType:String, ?newPlayList:Array<String>, ?newDifficulty:String, ?newWeek:String, ?newWeekScore:Float, ?newSongIndex:Int)
+{
+    songType = newSongType;
+    playlist = newPlayList;
+    difficulty = newDifficulty;
+    week = newWeek;
+    weekScore = newWeekScore;
+    songIndex = newSongIndex;
+}
+
 function onUpdate(elapsed:Float)
 {
     if (canSelect)
@@ -286,7 +303,10 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(CoolVars.data.mainMenuState);
+            if (songType != null || playlist != null || difficulty != null || week != null || weekScore != null || songIndex != null)
+                CoolUtil.switchState(new PlayState(songType, playlist, difficulty, week, weekScore, songIndex));
+            else
+                CoolUtil.switchState(CoolVars.data.mainMenuState);
 
             CoolUtil.playSound('cancel');
         }
