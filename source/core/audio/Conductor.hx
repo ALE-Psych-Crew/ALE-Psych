@@ -508,9 +508,6 @@ class Conductor
         {
             time += FlxG.elapsed * 1000;
 
-            if (Math.abs(music.time - time) >= 25)
-                synchronize();
-
             var newStep:Int = 0;
 
             if (events == null || events.length <= 0)
