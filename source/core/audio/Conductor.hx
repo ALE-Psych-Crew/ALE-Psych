@@ -409,9 +409,9 @@ class Conductor
 
         events = [];
 
-        for (section in chart.sections)
+        for (index => section in chart.sections)
         {
-            if (section.changeBPM || section.changeTimeSignature)
+            if (section.changeBPM || section.changeTimeSignature || index == 0)
             {
                 if (section.changeBPM)
                     bpm = section.bpm;
