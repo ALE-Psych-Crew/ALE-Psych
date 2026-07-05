@@ -88,6 +88,9 @@ class Stage
         if (json.spritesConfig != null)
             for (object in json.spritesConfig.sprites)
             {
+                object.images ??= [object.id];
+                object.type ??= IMAGE;
+
                 final obj:FlxSprite = CoolUtil.spriteFromJson(Type.createInstance(Type.resolveClass(object.classPath ?? Type.getClassName(Bopper)), object.classArguments ?? []), object, 'stages/' + json.spritesConfig.directory + '/');
 
                 if (obj is Bopper)
