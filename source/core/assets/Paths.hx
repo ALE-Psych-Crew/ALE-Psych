@@ -56,24 +56,39 @@ class Paths
      */
     public static var assets(get, never):String;
     @:dox(hide)
-    public static function get_assets()
-        return 'assets';
+    public static function get_assets() {
+		#if switch
+		return 'romfs:/assets';
+		#else
+		return 'assets';
+		#end
+    }
 
     /**
      * Location of the mods folder
      */
     public static var mods(get, never):String;
     @:dox(hide)
-    public static function get_mods()
-        return 'mods';
+    public static function get_mods() {
+		#if switch
+		return 'sdmc:/switch/ALE-PSYCH/mods';
+		#else
+		return 'mods';
+		#end
+    }
 
     /**
      * Location of the folder containing additional assets
      */
     public static var content(get, never):String;
     @:dox(hide)
-    public static function get_content()
-        return 'content';
+    public static function get_content() {
+		#if switch
+		return 'sdmc:/switch/ALE-PSYCH/content';
+		#else
+		return 'content';
+		#end
+    }
 
     /**
      * Current mod
@@ -123,7 +138,7 @@ class Paths
     @:access(openfl.display.BitmapData)
     public static function init()
     {
-        Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null ? null : mods + '/' + mod, content, #if switch 'romfs:/' + #end assets]) if (root != null) root]));
+        Assets.registerLibrary('default', new RootsLibrary([for (root in [mod == null ? null : mods + '/' + mod, content, assets]) if (root != null) root]));
 
         config = [
             FileType.CONTENT => {

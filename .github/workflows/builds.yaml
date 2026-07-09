@@ -114,3 +114,105 @@ jobs:
           name: ${{ matrix.platform }} Build
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error
+
+  buildSwitch:
+    name: Build Switch
+    permissions: write-all
+    runs-on: ubuntu-latest
+    container: devkitpro/devkita64:latest
+
+    steps:
+      - name: Pull the New Commit
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Haxe
+        run: |
+          apt-get update
+          apt-get install -y wget git neko libgc-dev
+
+          echo === DOWNLOADING HAXE FROM GITHUB ===
+          wget https://github.com/HaxeFoundation/haxe/releases/download/4.3.7/haxe-4.3.7-linux64.tar.gz
+          mkdir haxe_temp
+          tar -xf haxe-4.3.7-linux64.tar.gz -C haxe_temp
+          cp -r haxe_temp/haxe_*/* /usr/local/bin/
+          echo =========
+          echo === UPDATING HAXELIB ===
+          mkdir -p ~/haxelib
+          haxelib --always --quiet setup ~/haxelib
+          haxelib --global --always --quiet update haxelib
+          haxelib --global fixrepo
+          echo =========
+
+          echo === HAXE VERSION ===
+          haxe --version
+          echo =========
+
+      - name: Install Main Libraries
+        run: |
+          haxelib --global git hmm https://github.com/ALE-Psych-Crew/hmm
+          haxelib --global run hmm setup
+          haxelib --global run hmm install
+
+      - name: Install Extra Libraries
+        run: |
+          apt-get update
+          apt-get install -y libgl1-mesa-dev libglu1-mesa-dev g++-multilib gcc-multilib libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libpulse-dev libmbedtls-dev libpng-dev libturbojpeg-dev libuv1-dev libvorbis-dev libvulkan-dev
+
+          echo === SYNCING DEVKITPRO REPOS ===
+          dkp-pacman -Sy --noconfirm || echo "::warning:: The devkitPro repositories could not be synchronized (possible rate limit). Attempting to install using the existing cache..."
+
+          echo === INSTALLING SWITCH LIBRARIES ===
+          dkp-pacman -S --needed --noconfirm \
+            switch-bzip2 switch-cmake switch-curl switch-flac \
+            switch-freetype switch-glad switch-glm switch-harfbuzz \
+            switch-libdrm_nouveau switch-libjpeg-turbo switch-libmodplug \
+            switch-libogg switch-libopus switch-libpng switch-libvorbis \
+            switch-libvorbisidec switch-libwebp switch-mesa switch-mpg123 \
+            switch-openal-soft switch-opusfile switch-pkg-config switch-sdl2 \
+            switch-sdl2_gfx switch-sdl2_image switch-sdl2_mixer \
+            switch-sdl2_net switch-sdl2_ttf switch-tools switch-zlib \
+            switch-liblua51
+
+      - name: Pre-Build Commands
+        run: |
+          echo === REMOVING HMM-INSTALLED LIME/HXCPP ===
+          haxelib remove lime
+          haxelib remove hxcpp
+
+          echo === INSTALLING SWITCH-SPECIFIC FORKS ===
+          haxelib --always --quiet install format
+          haxelib --always --quiet install hxp
+          haxelib --always --quiet git hxcpp https://github.com/Slushi-Github/hxcpp-nx.git
+
+          echo === SETUP CUSTOM HXCPP ===
+          cd ~/haxelib/hxcpp/git/tools/hxcpp
+          haxe compile.hxml
+          cd -
+          echo =========
+
+          haxelib --always --quiet git lime https://github.com/Slushi-Github/lime-nx.git lime-9778682
+          haxelib --always --quiet git flixel-switch https://github.com/Slushi-Github/flixel-switch.git
+          haxelib --always --quiet git hx_libnx https://github.com/Slushi-Github/hx_libnx.git
+          haxelib list
+
+          echo === REBUILDING LIME FOR SWITCH ===
+          haxelib run lime rebuild switch
+          echo =========
+
+      - name: Build for Switch
+        run: |
+          haxelib run lime build switch --app-version="4.0.0-${{ github.run_id}}"
+
+      - name: Verify Build Success
+        run: |
+          if ! ls export/release/switch/bin/*.nro 1> /dev/null 2>&1; then
+            echo "::error::.nro file not found."
+            exit 1
+          fi
+
+      - name: Upload Game
+        uses: actions/upload-artifact@v4
+        with:
+          name: Switch Build
+          path: export/release/switch/bin/*.nro
+          if-no-files-found: error

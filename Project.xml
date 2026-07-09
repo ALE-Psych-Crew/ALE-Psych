@@ -21,9 +21,9 @@
 
 	<define name="ALLOW_CRASH_HANDLER"/>
 
-	<define name="ALLOW_VIDEOS" if="cpp"/>
+	<define name="ALLOW_VIDEOS" if="cpp" unless="switch"/>
 
-	<define name="ALLOW_LINUX_API" if="linux cpp"/>
+	<define name="ALLOW_LINUX_API" if="linux cpp" unless="switch"/>
 	<define name="ALLOW_WINDOWS_API" if="windows cpp"/>
 	
 	<define name="ALLOW_MOBILE_API" if="mobile cpp"/>
@@ -120,4 +120,23 @@
 	<config:android permission="android.permission.ACCESS_NETWORK_STATE"/>
 
 	<certificate path="key.keystore" password="aleenginepass" alias="ale-engine" alias-password="aleenginepass" if="android"/>
+
+	<!-- Switch -->
+
+	<section if="switch">
+		<!-- Required for Switch for use the correct renderer -->
+		<haxedef name="lime-opengl"/>
+		<haxedef name="lime-cairo" value="false"/>
+		<set name="LIME_CAIRO" value="0"/>
+		<set name="LIME_OPENGL" value="1"/>
+
+		<!-- CHANGE THIS TO YOUR SWITCH IP -->
+		<config:switch ip="192.168.1.140"/>
+
+		<haxelib name="hx_libnx" />
+		<haxelib name="flixel-switch" />
+
+		<!-- Needs to be after defined ALLOW_LUA and the Lua lib -->
+		<config:switch libs="lua5.1" if="ALLOW_LUA" />
+	</section>
 </project>

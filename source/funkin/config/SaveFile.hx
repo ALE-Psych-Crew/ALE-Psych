@@ -1,69 +1,68 @@
 package funkin.config;
 
 import lime.system.System;
-
 import haxe.io.Path;
-
 import sys.FileSystem;
 import sys.io.File;
-
 import utils.cool.ReflectUtil;
 
-class SaveFile
-{
-    public final folderPath:String;
-    public final filePath:String;
+class SaveFile {
 
-    public var data(default, set):Dynamic = {};
-    function set_data(value:Dynamic):Dynamic
-        return merge(value);
+	public final folderPath:String;
+	public final filePath:String;
 
-    public function new(id:String, ?ignoreMod:Bool = false)
-    {
-        folderPath = Path.join([System.applicationStorageDirectory, ignoreMod ? null : Paths.mod]);
+	private static final SWITCH_SAVE_PATH:String = "sdmc:/switch/ALE-Psych/saves";
+    
+	public var data(default, set):Dynamic = {};
+	function set_data(value:Dynamic):Dynamic
+		return merge(value);
 
-        filePath = Path.join([folderPath, id + '.json']);
+	public function new(id:String, ?ignoreMod:Bool = false) {
+		#if switch
+		folderPath = Path.join([SWITCH_SAVE_PATH, ignoreMod ? null : Paths.mod]);
+		#else
+		folderPath = Path.join([System.applicationStorageDirectory, ignoreMod ? null : Paths.mod]);
+		#end
 
-        load();
-    }
+		filePath = Path.join([folderPath, id + '.json']);
 
-    public function load()
-        if (FileSystem.exists(filePath))
-            data = Json.parse(File.getContent(filePath));
+		load();
+	}
 
-    public function save()
-    {
-        if (!FileSystem.exists(folderPath))
-            FileSystem.createDirectory(folderPath);
+	public function load()
+		if (FileSystem.exists(filePath))
+			data = Json.parse(File.getContent(filePath));
 
-        File.saveContent(filePath, Json.stringify(data));
-    }
+	public function save() {
+		if (!FileSystem.exists(folderPath))
+			FileSystem.createDirectory(folderPath);
 
-    public function delete()
-        if (FileSystem.exists(filePath))
-            FileSystem.deleteFile(filePath);
+		File.saveContent(filePath, Json.stringify(data));
+	}
 
-    public function clear()
-        @:bypassAccessor data = {};
+	public function delete()
+		if (FileSystem.exists(filePath))
+			FileSystem.deleteFile(filePath);
 
-    public function merge(newData:Dynamic, ?original:Dynamic):Dynamic
-    {
-        original ??= data;
+	public function clear()
+		@:bypassAccessor data = {};
 
-        if (!ReflectUtil.isObject(newData) || !ReflectUtil.isObject(original))
-            return {};
+	public function merge(newData:Dynamic, ?original:Dynamic):Dynamic {
+		original ??= data;
 
-        for (field in Reflect.fields(newData))
-        {
-            final originalRes:Dynamic = Reflect.field(original, field);
-            final newRes:Dynamic = Reflect.field(newData, field);
+		if (!ReflectUtil.isObject(newData) || !ReflectUtil.isObject(original))
+			return {};
 
-            if (ReflectUtil.isObject(originalRes) && ReflectUtil.isObject(newRes))
-                merge(newRes, originalRes);
-            else
-                Reflect.setField(original, field, newRes);
-        }
+		for (field in Reflect.fields(newData)) {
+			final originalRes:Dynamic = Reflect.field(original, field);
+			final newRes:Dynamic = Reflect.field(newData, field);
 
-        return original;
-    }
+			if (ReflectUtil.isObject(originalRes) && ReflectUtil.isObject(newRes))
+				merge(newRes, originalRes);
+			else
+				Reflect.setField(original, field, newRes);
+		}
+
+		return original;
+	}
 }

@@ -83,6 +83,8 @@ class Logs
 
         #if ALLOW_WINDOWS_API
         DesktopAPI.showMessageBox(message, title, icon);
+        #elseif switch
+        flixel.nx.FlxSwitch.showErrorMessage(0, '$title\n\n$message', null);
         #else
         FlxG.stage.window.alert(message, title);
         #end
