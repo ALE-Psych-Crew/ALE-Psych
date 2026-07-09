@@ -635,7 +635,7 @@ class Paths
 
             if (FileSystem.exists(finalPath) && FileSystem.isDirectory(finalPath))
             {
-                result = result.concat(FileSystem.readDirectory(finalPath));
+                result = result.concat(FileUtil.readDirectory(finalPath));
 
                 if (type == UNIQUE && result.length > 0)
                     break;

@@ -7,6 +7,15 @@ import Type;
 
 class FileUtil
 {
+    public static function readDirectory(path:String):Array<String>
+    {
+        final result:Array<String> = FileSystem.readDirectory(path);
+        
+        result.sort((a, b) -> return Reflect.compare(a, b));
+
+        return result;
+    }
+
     public static function searchComplexFile(path:String, missingPrint:Bool = true)
     {
         var parts = path.split('/');
@@ -40,7 +49,7 @@ class FileUtil
             var path:String = folder + '/' + parent;
 
             if (FileSystem.exists(path) && FileSystem.isDirectory(path))
-                for (searchAsset in FileSystem.readDirectory(path))
+                for (searchAsset in readDirectory(path))
                     if (StringUtil.formatString(searchAsset) == StringUtil.formatString(file))
                         return parent + (parent.length > 0 ? '/' : '') + searchAsset;
         }
@@ -48,22 +57,13 @@ class FileUtil
         return null;
     }
 
-	inline public static function openFolder(folder:String, absolute:Bool = false)
+	inline public static function openFolder(folder:String)
     {
-        if (!absolute)
-            folder = Sys.getCwd() + '$folder';
-
         folder = folder.replace('/', '\\');
 
         if (folder.endsWith('/'))
-            folder.substr(0, folder.length - 1);
+            folder = folder.substr(0, folder.length - 1);
 
-        #if linux
-        var command:String = '/usr/bin/xdg-open';
-        #else
-        var command:String = 'explorer.exe';
-        #end
-
-        Sys.command(command, [folder]);
+        Sys.command(#if linux '/usr/bin/xdg-open' #else 'explorer.exe' #end, [folder]);
 	}
 }

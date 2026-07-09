@@ -8,6 +8,8 @@ import flixel.addons.display.FlxBackdrop;
 
 import flixel.math.FlxPoint;
 
+import utils.cool.FileUtil;
+
 import ale.ui.UIUtils;
 
 import sys.FileSystem;
@@ -37,7 +39,7 @@ class ModsMenuSubState extends SubState
         list = new FlxTypedGroup<Alphabet>();
         add(list);
 
-        for (index => folder in FileSystem.readDirectory(Paths.mods).concat([NO_MODS]))
+        for (index => folder in FileUtil.readDirectory(Paths.mods).concat([NO_MODS]))
         {
             if ((!FileSystem.isDirectory(Paths.mods + '/' + folder) || folder == '.git') && folder != NO_MODS)
                 continue;

@@ -45,9 +45,9 @@ class LuaCoolUtil extends LuaPresetBase
             return CoolUtil.searchFile(parent, file);
         });
 
-        set('openFolder', function(folder:String, ?absolute:Bool)
+        set('openFolder', function(folder:String)
         {
-            CoolUtil.openFolder(folder, absolute);
+            CoolUtil.openFolder(folder);
         });
 
         set('floorDecimal', function(num:Float, decimals:Int):Float
