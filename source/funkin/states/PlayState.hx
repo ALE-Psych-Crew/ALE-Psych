@@ -1609,7 +1609,7 @@ class PlayState extends ScriptedState
                 character = charactersArray[songSection.camera[0]][songSection.camera[1]];
         }
 
-        if (character != null)
+        if (character != null && (allowCameraMoving || force))
             cameraTarget = character;
 
         if (scriptsManager.callback(ON, 'CameraMove', null, [cameraTarget]))
