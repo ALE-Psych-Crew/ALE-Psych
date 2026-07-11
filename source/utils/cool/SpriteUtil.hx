@@ -61,6 +61,28 @@ class SpriteUtil
         }
     }
 
+
+    public static function cacheJsonSprite(json:JsonSprite, ?directory:String)
+    {
+        final images:Array<String> = ArrayUtil.setArrayPrefix(json.images, directory);
+
+        switch (json.type)
+        {
+            case IMAGE:
+                Paths.image(images[0]);
+
+            case SHEET:
+                Paths.getMultiAtlas(images);
+
+            case MAP:
+                Paths.getAnimateAtlas(images[0]);
+
+            default:
+                Paths.image(images[0]);
+        }
+    }
+
+
     static var framesCache:Map<String, FlxFrame> = new Map();
 
     public static function addSpriteAnim(sprite:FlxSprite, type:SpriteType, animData:JsonSpriteAnimation)

@@ -12,6 +12,7 @@ import core.structures.JsonHud;
 import core.structures.Point;
 
 import core.enums.CharacterType;
+import core.enums.FormatterType;
 import core.enums.SongType;
 
 import funkin.visuals.objects.Bar;
@@ -20,6 +21,7 @@ import funkin.visuals.game.*;
 import funkin.config.Score;
 
 import utils.cool.ReflectUtil;
+import utils.cool.SpriteUtil;
 import utils.cool.StringUtil;
 import utils.Formatter;
 
@@ -693,6 +695,9 @@ class PlayState extends ScriptedState
 
         scriptsManager.callback(POST, 'CharactersInit');
     }
+
+    function cacheCharacter(id:String)
+        return SpriteUtil.cacheJsonSprite(Formatter.getCharacter(id, EXTRA), Formatter.config[FormatterType.CHARACTER].path + '/');
 
     var nextCharacterToAdd:Character;
 

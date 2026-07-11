@@ -1,27 +1,27 @@
 # TODO
 
-- [ ] PlayState
-  - [ ] Character
-  - [ ] Icon
-  - [ ] Bar
-  - [ ] StrumLine
-  - [ ] Strum
-  - [ ] Note
-  - [ ] Factories
+- [x] PlayState
+  - [x] Character
+  - [x] Icon
+  - [x] Bar
+  - [x] StrumLine
+  - [x] Strum
+  - [x] Note
+  - [x] Factories
   - [ ] Chart Format
-  - [ ] HUD
+  - [x] HUD
 
-- [ ] Menus
+- [x] Menus
   - [x] TitleState
   - [x] StoryMenuState
   - [x] FreeplayState
   - [x] MainMenuState
-  - [ ] OptionsState
-  - [ ] MasterState
+  - [x] OptionsState
+  - [x] MasterState
 
-- [ ] Sub-Menus
-  - [ ] PauseSubState
-  - [ ] GameOverSubState
+- [x] Sub-Menus
+  - [x] PauseSubState
+  - [x] GameOverSubState
   - [x] FadeTransition
 
 - [ ] Discord Rich Precense
@@ -35,9 +35,9 @@
   - [x] MusicBeatState
   - [x] MusicBeatSubState
 
-- [ ] Scripting
+- [x] Scripting
   - [x] HScript
-  - [ ] Lua
+  - [x] Lua
   - [x] ScriptedState
   - [x] ScriptedSubState
   - [x] CustomState
@@ -54,15 +54,15 @@
   - [ ] ChartEditorState
   - [ ] CharacterEditorState
 
-- [ ] Config
+- [x] Config
   - [x] Meta
   - [x] Debug
-  - [ ] Options
-  - [ ] Controls
+  - [x] Options
+  - [x] Controls
   - [x] Defines
   - [x] Arguments
 
-- [ ] Input
+- [ ] Inputs
   - [x] Keyboard
   - [ ] Mobile
   - [ ] Gamepad
@@ -74,7 +74,8 @@
 
 - [ ] Preferences
   - [x] ClientPrefs
-  - [ ] Save
+  - [x] SaveFile
+  - [x] Save
 
 - [ ] Native API
   - [x] Desktop
