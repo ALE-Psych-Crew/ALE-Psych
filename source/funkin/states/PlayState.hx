@@ -1037,6 +1037,18 @@ class PlayState extends ScriptedState
     var opponentStrumLines:FlxTypedGroup<StrumLine>;
     var extraStrumLines:FlxTypedGroup<StrumLine>;
 
+    var bfStrumLine(get, never):StrumLine;
+    function get_bfStrumLine():StrumLine
+        return playerStrumLines.members[0];
+
+    var dadStrumLine(get, never):StrumLine;
+    function get_dadStrumLine():StrumLine
+        return opponentStrumLines.members[0];
+
+    var gfStrumLine(get, never):StrumLine;
+    function get_gfStrumLine():StrumLine
+        return extraStrumLines.members[0];
+
     var strums:FlxTypedGroup<Strum>;
 
     var playerStrums:FlxTypedGroup<Strum>;
@@ -1690,17 +1702,29 @@ class PlayState extends ScriptedState
     function get_gf():Character
         return extraCharacters.members[0];
 
+    var bfIcon(get, never):Icon;
+    function get_bfIcon():Icon
+        return playerIcons.members[0];
+
+    var dadIcon(get, never):Icon;
+    function get_dadIcon():Icon
+        return opponentIcons.members[0];
+        
+    var gfIcon(get, never):Icon;
+    function get_gfIcon():Icon
+        return extraIcons.members[0];
+
     var iconP1(get, never):Icon;
     function get_iconP1():Icon
-        return playerIcons.members[0];
+        return bfIcon;
 
     var iconP2(get, never):Icon;
     function get_iconP2():Icon
-        return opponentIcons.members[0];
+        return dadIcon;
 
     var iconP3(get, never):Icon;
     function get_iconP3():Icon
-        return extraIcons.members[0];
+        return gfIcon;
 
     var scoreTxt(get, never):FlxText;
     function get_scoreTxt():FlxText
