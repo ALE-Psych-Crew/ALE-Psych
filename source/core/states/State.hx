@@ -57,22 +57,22 @@ class State extends FlxState implements IState
 
 	override function destroy()
 	{
+		super.destroy();
+        
         Paths.clear(allowMemoryCleaning);
 
         Formatter.clear();
 
-        #if cpp
-        Gc.run(true);
-        Gc.compact();
-        #end
-
         if (allowMemoryCleaning)
         {
+            #if cpp
+            Gc.run(true);
+            Gc.compact();
+            #end
+
             FlxG.bitmap.clearUnused();
             FlxG.bitmap.clearCache();
         }
-        
-		super.destroy();
 	}
 
     
