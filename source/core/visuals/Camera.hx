@@ -12,7 +12,7 @@ import openfl.display.BlendMode;
 
 class Camera extends FlxCamera
 {
-	public function new(x:Float = 0, y:Float = 0, width:Int = 0, height:Int = 0, zoom:Float = 0)
+	public function new(?x:Float, ?y:Float, ?width:Int, ?height:Int, ?zoom:Float)
 	{
 		super(x, y, width, height, zoom);
 

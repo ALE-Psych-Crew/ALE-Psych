@@ -73,9 +73,9 @@ class FXCamera extends Camera
 		cancelSpeedTween();
 	}
 
-	public function new(?speed:Float)
+	public function new(?x:Float, ?y:Float, ?width:Int, ?height:Int, ?zoom:Float)
 	{
-		super();
+		super(x, y, width, height, zoom);
 
 		follow(new FlxObject(width / 2, height / 2));
 
