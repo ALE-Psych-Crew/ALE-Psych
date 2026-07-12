@@ -292,8 +292,6 @@ class PlayState extends ScriptedState
 
     override function destroy()
     {
-        super.destroy();
-
         if (scriptsManager.callback(ON, 'Destroy'))
         {
             Conductor.stop();
@@ -326,6 +324,8 @@ class PlayState extends ScriptedState
         }
 
         scriptsManager.callback(POST, 'Destroy');
+
+        super.destroy();
 
         instance = null;
     }

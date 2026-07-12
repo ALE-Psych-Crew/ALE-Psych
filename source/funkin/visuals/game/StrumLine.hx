@@ -29,7 +29,9 @@ class StrumLine extends FlxSpriteGroup
 
     final notesShader:Array<RGBShader> = [];
 
-    final noteStack:GenericStack<Note>;
+    final notesStack:GenericStack<Note>;
+
+    final destroyedNotesStack:GenericStack<Note>;
 
     public function new(id:String, type:CharacterType, strumLineIndex:Int, chartNotes:Array<Array<Dynamic>>, ?noteStackCallback:Note -> Bool)
     {
@@ -146,13 +148,15 @@ class StrumLine extends FlxSpriteGroup
             return a.time > b.time ? -1 : 1;
         });
 
-        noteStack = new GenericStack<Note>();
+        notesStack = new GenericStack<Note>();
 
         noteStackCallback ??= _ -> true;
 
         for (note in tempNotes)
             if (noteStackCallback(note))
-                noteStack.add(note);
+                notesStack.add(note);
+
+        destroyedNotesStack = new GenericStack<Note>();
     }
 
     public var spawnWindow:Float = 2000;
@@ -169,9 +173,9 @@ class StrumLine extends FlxSpriteGroup
     {
         super.update(elapsed);
 
-        while (!noteStack.isEmpty() && noteStack.first().time < Conductor.songPosition + spawnWindow / speed)
+        while (!notesStack.isEmpty() && notesStack.first().time < Conductor.songPosition + spawnWindow / speed)
         {
-            final note:Note = noteStack.pop();
+            final note:Note = notesStack.pop();
 
             if (noteSpawnCallback(note))
                 addNote(note);
@@ -220,6 +224,17 @@ class StrumLine extends FlxSpriteGroup
 
             noteIndex++;
         }
+    }
+
+    override function destroy()
+    {
+        while (!notesStack.isEmpty())
+            notesStack.pop().destroy();
+
+        while (!destroyedNotesStack.isEmpty())
+            destroyedNotesStack.pop().destroy();
+        
+        super.destroy();
     }
 
     var keyPressed:Array<Bool> = [];
@@ -315,6 +330,6 @@ class StrumLine extends FlxSpriteGroup
 
         notes.remove(note, true);
 
-        note.destroy();
+        destroyedNotesStack.add(note);
     }
 }

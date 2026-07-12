@@ -52,14 +52,25 @@ class State extends FlxState implements IState
 		FlxG.cameras.add(camHUD, false);
     }
 
+
+    public var allowMemoryCleaning:Bool = true;
+
 	override function destroy()
 	{
         Paths.clear(allowMemoryCleaning);
 
         Formatter.clear();
 
+        #if cpp
+        Gc.run(true);
+        Gc.compact();
+        #end
+
         if (allowMemoryCleaning)
-            cleanMemory();
+        {
+            FlxG.bitmap.clearUnused();
+            FlxG.bitmap.clearCache();
+        }
         
 		super.destroy();
 	}
@@ -91,18 +102,5 @@ class State extends FlxState implements IState
         allowMemoryCleaning = false;
 
         FlxG.resetState();
-    }
-
-    public var allowMemoryCleaning:Bool = true;
-
-    function cleanMemory()
-    {
-        #if cpp
-        Gc.run(true);
-        Gc.compact();
-        #end
-
-        FlxG.bitmap.clearUnused();
-        FlxG.bitmap.clearCache();
     }
 }
