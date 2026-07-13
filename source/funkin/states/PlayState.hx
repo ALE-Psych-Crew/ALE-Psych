@@ -4,6 +4,8 @@ package funkin.states;
 import scripting.lua.callbacks.LuaPlayState;
 #end
 
+import core.plugins.PluginsHandler;
+
 import core.structures.JsonHudRating;
 import core.structures.ALEEventList;
 import core.structures.ALEEvent;
@@ -26,6 +28,7 @@ import utils.cool.StringUtil;
 import utils.Formatter;
 
 import flixel.util.typeLimit.OneOfTwo;
+import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
 import flixel.FlxBasic;
@@ -36,6 +39,8 @@ import openfl.events.KeyboardEvent;
 import haxe.ds.GenericStack;
 
 import ale.ui.UIUtils;
+
+import core.Main;
 
 @:publicFields
 class PlayState extends ScriptedState
@@ -143,6 +148,9 @@ class PlayState extends ScriptedState
     var totalNoteTypes:Array<String> = [];
     var totalEvents:Array<String> = [];
 
+    @:unreflective
+    var hitboxes:Array<Hitbox> = [];
+
     override function create()
     {
         instance = this;
@@ -199,6 +207,8 @@ class PlayState extends ScriptedState
 
             camGame.snapToTarget();
 
+            createHitboxes(bfStrumLine);
+
             CoolUtil.createTouchButtons([
                 { label: 'P', keys: ClientPrefs.controls.ui.pause }
             ], 100, 100);
@@ -212,6 +222,7 @@ class PlayState extends ScriptedState
 
         scriptsManager.callback(POST, 'Create');
     }
+
 
     var _lastHealth:Float = -1;
 
@@ -305,6 +316,8 @@ class PlayState extends ScriptedState
 
             for (vocal in vocals.copy())
                 Conductor.synchronizedSounds?.remove(vocal);
+            
+            clearHitboxes();
 
             characters?.destroy();
 
@@ -332,6 +345,43 @@ class PlayState extends ScriptedState
         super.destroy();
 
         instance = null;
+    }
+
+
+    function createHitboxes(strl:StrumLine)
+    {
+        if (!CoolVars.touch)
+            return;
+
+        clearHitboxes();
+
+        for (index => strum in strl.config.config)
+        {
+            final keys:Array<FlxKey> = Controls.getKeybind(strum.keyBind.group, strum.keyBind.id).filter(k -> (k : Null<FlxKey>) != null && (k : Int) > 0);
+
+            final hitbox:Hitbox = new Hitbox(keys, index, strl.config.config.length);
+
+            Main.touchPlugin.add(hitbox);
+
+            Main.touchPlugin.state.push(hitbox);
+
+            hitboxes.push(hitbox);
+        }
+    }
+
+    function clearHitboxes()
+    {
+        if (!CoolVars.touch)
+            return;
+
+        for (hitbox in hitboxes.copy())
+        {
+            Main.touchPlugin.remove(hitbox);
+
+            hitboxes.remove(hitbox);
+
+            hitbox.destroy();
+        }
     }
 
 

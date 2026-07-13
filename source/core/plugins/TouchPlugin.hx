@@ -6,8 +6,8 @@ import flixel.input.keyboard.FlxKey;
 
 class TouchPlugin extends FlxTypedSpriteGroup<TouchButton>
 {
-    final state:Array<TouchButton> = [];
-    final subState:Array<TouchButton> = [];
+    public final state:Array<TouchButton> = [];
+    public final subState:Array<TouchButton> = [];
 
     public function createButtons(buttonsData:Array<{label:String, keys:Array<FlxKey>}>, ?x:Float = 0, ?y:Float = 0, ?angle:Float = 0, ?radius:Float = 100)
     {

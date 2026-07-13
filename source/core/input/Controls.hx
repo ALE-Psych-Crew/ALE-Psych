@@ -161,11 +161,11 @@ class Controls
 
     public static var CONTROL(get, never):Bool;
     static function get_CONTROL():Bool
-        return FlxG.keys.pressed.CONTROL;
+        return anyPressed([FlxKey.CONTROL]);
 
     public static var SHIFT(get, never):Bool;
     static function get_SHIFT():Bool
-        return FlxG.keys.pressed.SHIFT;
+        return anyPressed([FlxKey.SHIFT]);
 
     public static var MOUSE_WHEEL(get, never):Bool;
     static function get_MOUSE_WHEEL():Bool

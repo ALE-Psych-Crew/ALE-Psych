@@ -30,7 +30,7 @@
 
 	<define name="ALLOW_ALL_CLASSES"/>
 
-	<define name="FORCE_TOUCH" if="mobile switch"/>
+	<define name="FORCE_TOUCH" if="mobile || switch"/>
 
 	<!-- Assets -->
 
@@ -82,7 +82,7 @@
 
 	<haxedef name='lime_disable_assets_version'/>	
 	
-	<haxedef name="FLX_NO_TOUCH" if="desktop" />
+	<haxedef name="FLX_NO_TOUCH" if="desktop"/>
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
 	<haxedef name="FLX_NO_SOUND_TRAY"/>
 	<haxedef name="FLX_NO_HEALTH"/>

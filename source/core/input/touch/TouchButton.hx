@@ -4,12 +4,15 @@ import flixel.addons.display.shapes.FlxShapeCircle;
 
 import flixel.input.touch.FlxTouch;
 
-class TouchButton extends flixel.group.FlxSpriteGroup
+class TouchButton extends FlxSpriteGroup
 {
 	final keys:Vector<FlxKey>;
 
-    public var bg:FlxShapeCircle;
+    public var bg:FlxSprite;
     public var label:FlxText;
+
+	var idleAlpha:Float = 0.5;
+	var pressedAlpha:Float = 0.75;
 
 	public function new(keys:Array<FlxKey>, labelText:String, ?x:Float, ?y:Float, ?radius:Int = 50)
 	{
@@ -22,7 +25,14 @@ class TouchButton extends flixel.group.FlxSpriteGroup
 		for (i => key in keys)
 			this.keys[i] = key;
 
-        bg = cast add(new FlxShapeCircle(0, 0, radius, {thickness: 3, color: 0xFF404040}, FlxColor.GRAY));
+		initObjects(labelText, radius);
+
+		alpha = idleAlpha;
+	}
+
+	function initObjects(labelText:String, radius:Float)
+	{
+        bg = add(new FlxShapeCircle(0, 0, radius, {thickness: 3, color: 0xFF404040}, FlxColor.GRAY));
         bg.active = false;
 
         label = cast add(new FlxText(0, 0, 0, labelText, Std.int(radius * 1.25)));
@@ -31,8 +41,6 @@ class TouchButton extends flixel.group.FlxSpriteGroup
         label.y = bg.y + bg.height / 2 - label.height / 2;
         label.color = FlxColor.BLACK;
         label.active = false;
-
-		alpha = 0.5;
 	}
 
 	var justReleased:Bool = false;
@@ -60,7 +68,7 @@ class TouchButton extends flixel.group.FlxSpriteGroup
 
 			pressed = true;
 
-			alpha = 0.75;
+			alpha = pressedAlpha;
 		}
 
 		if (checkReleased())
@@ -76,7 +84,7 @@ class TouchButton extends flixel.group.FlxSpriteGroup
 
 			pressed = false;
 
-			alpha = 0.5;
+			alpha = idleAlpha;
 		}
 	}
 
@@ -119,7 +127,7 @@ class TouchButton extends flixel.group.FlxSpriteGroup
 
 	function checkPressed():Bool
 	{
-		if (justReleased)
+		if (justReleased || pressed)
 			return false;
 
 		#if FLX_NO_TOUCH
@@ -141,7 +149,7 @@ class TouchButton extends flixel.group.FlxSpriteGroup
 
 	function checkReleased():Bool
 	{
-		if (!pressed)
+		if (!pressed || justPressed)
 			return false;
 
 		#if FLX_NO_TOUCH
@@ -165,7 +173,7 @@ class TouchButton extends flixel.group.FlxSpriteGroup
 		disableJustReleased();
 		disablePressed();
 
-		alpha = 0.5;
+		alpha = idleAlpha;
 	}
 
 

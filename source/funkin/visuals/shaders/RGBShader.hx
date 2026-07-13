@@ -38,7 +38,7 @@ class RGBShader extends FXShader
     
     public function new(r:FlxColor = 0xFFFF0000, g:FlxColor = 0xFF00FF00, b:FlxColor = 0xFF0000FF, multiplier:Float = 1)
     {
-        super('default/rgb');
+        super('default/rgb', true);
 
         this.r = r;
         this.g = g;
