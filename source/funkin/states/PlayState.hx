@@ -199,6 +199,10 @@ class PlayState extends ScriptedState
 
             camGame.snapToTarget();
 
+            CoolUtil.createTouchButtons([
+                { label: 'P', keys: ClientPrefs.controls.ui.pause }
+            ], 100, 100);
+
             for (noteType in totalNoteTypes)
                 scriptsManager.load('scripts/noteTypes/' + noteType);
 
