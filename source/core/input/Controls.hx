@@ -1,10 +1,10 @@
-package utils;
+package core.input;
 
 import core.structures.EngineControls;
 import core.structures.NotesControls;
 import core.structures.UIControls;
 
-import flixel.input.keyboard.FlxKey;
+import core.input.touch.TouchControls;
 
 class Controls
 {
@@ -56,7 +56,6 @@ class Controls
     static function get_NOTE_RIGHT_R():Bool
         return anyJustReleased(ClientPrefs.controls.notes.right);
 
-    @:unreflective static var ui:UIControls = ClientPrefs.controls.ui;
 
     public static var UI_LEFT(get, never):Bool;
     static function get_UI_LEFT():Bool
@@ -134,6 +133,7 @@ class Controls
     static function get_VOLUME_DOWN():Bool
         return anyJustPressed(ClientPrefs.controls.ui.volume_down);
 
+
     public static var CHART(get, never):Bool;
     static function get_CHART():Bool
         return anyJustPressed(ClientPrefs.controls.engine.chart);
@@ -157,6 +157,7 @@ class Controls
     public static var FPS_COUNTER(get, never):Bool;
     static function get_FPS_COUNTER():Bool
         return anyJustPressed(ClientPrefs.controls.engine.fps_counter);
+
 
     public static var CONTROL(get, never):Bool;
     static function get_CONTROL():Bool
@@ -190,14 +191,16 @@ class Controls
     static function get_MOUSE_R():Bool
         return FlxG.mouse.justReleased;
 
+
     public static function anyPressed(keys:Array<FlxKey>)
-        return FlxG.keys.anyPressed(keys);
+        return TouchControls.anyPressed(keys) || FlxG.keys.anyPressed(keys);
     
     public static function anyJustPressed(keys:Array<FlxKey>)
-        return FlxG.keys.anyJustPressed(keys);
+        return TouchControls.anyJustPressed(keys) || FlxG.keys.anyJustPressed(keys);
     
     public static function anyJustReleased(keys:Array<FlxKey>)
-        return FlxG.keys.anyJustReleased(keys);
+        return TouchControls.anyJustReleased(keys) || FlxG.keys.anyJustReleased(keys);
+
 
 	public static function getKeybind(groupID:String, id:String):Null<Array<Int>>
 	{

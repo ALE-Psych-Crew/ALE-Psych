@@ -28,9 +28,10 @@ class ScriptConfig
         flixel.FlxCamera,
         flixel.FlxG,
 
+        core.input.Controls,
+
         utils.CoolUtil,
         utils.CoolVars,
-        utils.Controls,
         utils.Defines,
         utils.Json,
 

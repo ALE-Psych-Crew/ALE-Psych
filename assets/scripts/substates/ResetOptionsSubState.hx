@@ -77,3 +77,12 @@ function onUpdate(elapsed:Float)
 
 function onDestroy()
     FlxTween.cancelTweensOf(subCamera);
+
+CoolUtil.createTouchButtons([
+    { label: 'L', keys: ClientPrefs.controls.ui.left },
+    { label: 'R', keys: ClientPrefs.controls.ui.right }
+], 200, FlxG.height - 170);
+
+CoolUtil.createTouchButtons([
+    { label: 'A', keys: ClientPrefs.controls.ui.accept }
+], FlxG.width - 200, FlxG.height - 170);

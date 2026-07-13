@@ -9,6 +9,8 @@ import flixel.FlxBasic;
 import cpp.vm.Gc;
 #end
 
+import core.Main;
+
 import utils.Formatter;
 
 class State extends FlxState implements IState
@@ -73,6 +75,8 @@ class State extends FlxState implements IState
             FlxG.bitmap.clearUnused();
             FlxG.bitmap.clearCache();
         }
+
+        Main.touchPlugin?.destroyState();
 	}
 
     

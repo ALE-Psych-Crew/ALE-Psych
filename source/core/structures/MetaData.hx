@@ -4,7 +4,7 @@
 class MetaData
 {
     public var developerMode:Bool = false;
-    public var mobileMode:Bool = false;
+    public var touchDebug:Bool = false;
     public var hotReloading:Bool = true;
     public var debugPrint:Bool = true;
     public var verbose:Bool = false;

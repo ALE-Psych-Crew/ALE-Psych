@@ -94,3 +94,8 @@ function postUpdate(elapsed:Float)
 		}
 	}
 }
+
+CoolUtil.createTouchButtons([
+    { label: 'A', keys: ClientPrefs.controls.ui.accept },
+    { label: 'B', keys: ClientPrefs.controls.ui.back }
+], FlxG.width - 200, FlxG.height - 170);

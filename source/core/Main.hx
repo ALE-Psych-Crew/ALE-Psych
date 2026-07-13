@@ -7,14 +7,14 @@ import openfl.Lib;
 
 import scripting.haxe.HScriptConfig;
 
-import core.plugins.DebugPrintPlugin;
-import core.plugins.PluginsHandler;
-
 import core.debug.HotReloading;
 
 import core.objects.GameObject;
 import core.objects.SoundTray;
+
 import core.objects.DebugTray;
+
+import core.input.touch.TouchControls;
 
 import funkin.config.Score;
 import funkin.config.Save;
@@ -31,6 +31,8 @@ import utils.Formatter;
 #if ALLOW_LINUX_API
 import hxgamemode.GamemodeClient;
 #end
+
+import core.plugins.*;
 
 @:unreflective
 class Main extends Sprite
@@ -170,6 +172,8 @@ class Main extends Sprite
 
 	public static var debugPrintPlugin:DebugPrintPlugin;
 
+	public static var touchPlugin:TouchPlugin;
+
 	public static var onlineVersion(default, null):String = '';
 
 	@:allow(core.states.MainState)
@@ -221,8 +225,13 @@ class Main extends Sprite
 
 		Save.init();
 
+		TouchControls.init();
+
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
+
+		if (CoolVars.touch)
+			PluginsHandler.add(touchPlugin = new TouchPlugin());
 
 		game.addChild(game.soundTraySprite = new SoundTray());
 

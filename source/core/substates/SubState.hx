@@ -5,6 +5,8 @@ import core.interfaces.IState;
 import flixel.FlxSubState;
 import flixel.FlxBasic;
 
+import core.Main;
+
 class SubState extends FlxSubState implements IState
 {
     public var subCamera:Camera;
@@ -20,6 +22,8 @@ class SubState extends FlxSubState implements IState
     override function create()
     {
         super.create();
+
+        Main.touchPlugin?.initSubState();
 
         if (allowCamerasConfig)
             initCameras();
@@ -45,5 +49,7 @@ class SubState extends FlxSubState implements IState
         FlxG.cameras.remove(subCamera, true);
         
 		super.destroy();
+
+        Main.touchPlugin?.destroySubState();
 	}
 }

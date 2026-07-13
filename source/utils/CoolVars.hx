@@ -22,6 +22,7 @@ class CoolVars
 	static function get_data():MetaData
 		return meta;
 
+
 	public static var BUILD_TARGET(get, never):String;
 	static function get_BUILD_TARGET():String
 		return #if windows 'windows' #elseif linux 'linux' #elseif mac 'mac' #elseif ios 'ios' #elseif android 'android' #else 'unknown' #end;
@@ -39,8 +40,14 @@ class CoolVars
 		return '##_ALE_PSYCH_LUA_FUNCTION_CONTINUE_##';
 
     public static var engineVersion(get, never):String;
-	public static function get_engineVersion():String
+	static function get_engineVersion():String
 		return Lib.application?.meta?.get('version') ?? '';
+
+
+	public static var touch(get, never):Bool;
+	static function get_touch():Bool
+		return #if FORCE_TOUCH true #else meta == null ? false : meta.touchDebug && meta.developerMode #end ;
+
 
 	public static var globalVars:Map<String, Dynamic> = null;
 

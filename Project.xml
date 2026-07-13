@@ -30,6 +30,8 @@
 
 	<define name="ALLOW_ALL_CLASSES"/>
 
+	<define name="FORCE_TOUCH" if="mobile switch"/>
+
 	<!-- Assets -->
 
 	<source path="source"/>
@@ -79,7 +81,8 @@
 	<haxedef name="hscriptPos"/>
 
 	<haxedef name='lime_disable_assets_version'/>	
-
+	
+	<haxedef name="FLX_NO_TOUCH" if="desktop" />
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
 	<haxedef name="FLX_NO_SOUND_TRAY"/>
 	<haxedef name="FLX_NO_HEALTH"/>
@@ -124,19 +127,17 @@
 	<!-- Switch -->
 
 	<section if="switch">
-		<!-- Required for Switch for use the correct renderer -->
 		<haxedef name="lime-opengl"/>
 		<haxedef name="lime-cairo" value="false"/>
+
 		<set name="LIME_CAIRO" value="0"/>
 		<set name="LIME_OPENGL" value="1"/>
 
-		<!-- CHANGE THIS TO YOUR SWITCH IP -->
 		<config:switch ip="192.168.1.140"/>
 
 		<haxelib name="hx_libnx" />
 		<haxelib name="flixel-switch" />
 
-		<!-- Needs to be after defined ALLOW_LUA and the Lua lib -->
 		<config:switch libs="lua5.1" if="ALLOW_LUA" />
 	</section>
 </project>

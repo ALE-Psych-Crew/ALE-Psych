@@ -97,6 +97,8 @@ class ImportsMacro
 
             'utils',
 
+            'core.input.touch',
+
             'funkin.visuals.objects',
             'funkin.visuals.shaders',
             'funkin.visuals.game',

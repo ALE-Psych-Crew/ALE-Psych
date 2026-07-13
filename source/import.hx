@@ -21,9 +21,10 @@ import flixel.FlxSprite;
 import flixel.FlxCamera;
 import flixel.FlxG;
 
+import core.input.Controls;
+
 import utils.CoolUtil;
 import utils.CoolVars;
-import utils.Controls;
 import utils.Defines;
 import utils.Json;
 
