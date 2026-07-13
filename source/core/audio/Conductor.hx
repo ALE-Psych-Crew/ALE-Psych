@@ -411,15 +411,18 @@ class Conductor
 
         for (index => section in chart.sections)
         {
-            if (section.changeBPM || section.changeTimeSignature || index == 0)
+            if ((section.changeBPM && section.bpm > 0 && section.bpm != bpm) || (section.changeTimeSignature && ((section.stepsPerBeat > 0 && section.stepsPerBeat != stepsPerBeat) || (section.beatsPerSection > 0 && section.beatsPerSection != beatsPerSection))) || index == 0)
             {
-                if (section.changeBPM)
+                if (section.changeBPM && section.bpm > 0 && section.bpm != bpm)
                     bpm = section.bpm;
 
                 if (section.changeTimeSignature)
                 {
-                    stepsPerBeat = section.stepsPerBeat;
-                    beatsPerSection = section.beatsPerSection;
+                    if (section.stepsPerBeat > 0 && section.stepsPerBeat != stepsPerBeat)
+                        stepsPerBeat = section.stepsPerBeat;
+
+                    if (section.beatsPerSection > 0 && section.beatsPerSection != beatsPerSection)
+                        beatsPerSection = section.beatsPerSection;
                 }
 
                 events.push({
