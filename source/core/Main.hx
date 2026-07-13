@@ -16,6 +16,8 @@ import core.objects.DebugTray;
 
 import core.input.touch.TouchControls;
 
+import core.plugins.*;
+
 import funkin.config.Score;
 import funkin.config.Save;
 
@@ -28,11 +30,28 @@ import haxe.CallStack;
 
 import utils.Formatter;
 
+import lime.system.System;
+
+#if android
+import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
+import extension.androidtools.os.Environment as AndroidEnvironment;
+import extension.androidtools.os.Build.VERSION as AndroidVersion;
+import extension.androidtools.Permissions as AndroidPermissions;
+import extension.androidtools.Settings as AndroidSettings;
+
+import openfl.utils.Assets;
+import openfl.utils.ByteArray;
+
+import sys.FileSystem;
+import sys.io.File;
+
+import haxe.Exception;
+import haxe.io.Path;
+#end
+
 #if ALLOW_LINUX_API
 import hxgamemode.GamemodeClient;
 #end
-
-import core.plugins.*;
 
 @:unreflective
 class Main extends Sprite
@@ -59,6 +78,25 @@ class Main extends Sprite
 
 	static function preConfig()
 	{
+		#if android
+		if (AndroidVersion.SDK_INT >= AndroidVersionCode.M)
+		{
+			if (!AndroidEnvironment.isExternalStorageManager())
+			{
+				AndroidSettings.requestSetting('MANAGE_APP_ALL_FILES_ACCESS_PERMISSION');
+				
+				while (!AndroidEnvironment.isExternalStorageManager()) {}
+			}
+		}
+
+		final androidPath:String = AndroidEnvironment.getExternalStorageDirectory() + '/.' + Lib.application?.meta?.get('file');
+
+		if (!FileSystem.exists(androidPath))
+			FileSystem.createDirectory(androidPath);
+
+		Sys.setCwd(Path.addTrailingSlash(androidPath));
+		#end
+
 		#if ALLOW_LINUX_API
 		GamemodeClient.request_start();
 		#end
@@ -100,7 +138,7 @@ class Main extends Sprite
 
 			destroy();
 
-			Sys.exit(1);
+			System.exit(1);
 		});
 		#end
 		
@@ -176,9 +214,43 @@ class Main extends Sprite
 
 	public static var onlineVersion(default, null):String = '';
 
+	@:unreflective static var allowMobileConfig:Bool = true;
+
 	@:allow(core.states.MainState)
 	static function postResetConfig()
 	{
+		if (allowMobileConfig)
+		{
+			#if mobile
+			final textExtensions:Array<String> = ['ini', 'txt', 'xml', 'hx', 'lua', 'json', 'frag', 'vert'];
+
+			final localFiles:Array<String> = Assets.list().filter(file -> !FileSystem.exists(file));
+
+			for (file in localFiles)
+			{
+				final directory:String = Path.directory(file);
+
+				try
+				{
+					if (Assets.exists(file))
+					{
+						if (!FileSystem.exists(directory))
+							FileSystem.createDirectory(directory);
+
+						if (textExtensions.contains(Path.extension(file)))
+							File.saveContent(file, Assets.getText(file));
+						else
+							File.saveBytes(file, ['otf', 'ttf'].contains(Path.extension(file)) ? ByteArray.fromFile(file) : Assets.getBytes(file));
+					} else {
+						debugTrace(file, MISSING_FILE);
+					}
+				} catch (e:Exception) {}
+			}
+			#end
+
+			allowMobileConfig = false;
+		}
+		
 		Lib.application.window.resizable = true;
 
 		FlxG.fixedTimestep = false;
@@ -188,8 +260,6 @@ class Main extends Sprite
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
 		#end
-		
-		FlxG.keys.preventDefaultKeys = [TAB];
 
 		FlxG.sound.muteKeys = FlxG.sound.volumeDownKeys = FlxG.sound.volumeUpKeys = [];
 

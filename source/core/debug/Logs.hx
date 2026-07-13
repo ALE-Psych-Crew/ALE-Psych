@@ -29,6 +29,9 @@ class Logs
      */
     public static function debugTrace(text:Dynamic, ?type:String = PrintType.TRACE, ?allowTrace:Bool = true, ?allowPrint:Bool = true, ?pos:PosInfos)
     {
+        if (config == null)
+            return;
+
         final data:PrintConfig = config.get(type);
 
         if (data == null || (data.verbose && !CoolVars.meta.verbose))

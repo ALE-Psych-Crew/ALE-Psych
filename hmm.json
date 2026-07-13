@@ -79,6 +79,16 @@
 			"version": "9.5.2"
 		},
 		{
+			"name": "extension-androidtools",
+			"type": "haxelib",
+			"version": "2.2.2"
+		},
+		{
+			"name": "extension-orientation",
+			"type": "git",
+			"url": "https://github.com/ALE-Psych-Crew/extension-orientation"
+		},
+		{
 			"name": "rulescript",
 			"type": "git",
 			"dir": null,

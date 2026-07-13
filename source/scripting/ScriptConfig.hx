@@ -56,7 +56,10 @@ class ScriptConfig
         funkin.substates.CustomSubState,
 
         funkin.config.ClientPrefs,
-        funkin.config.Save
+        funkin.config.Save,
+
+        api.DesktopAPI,
+        api.MobileAPI
     ];
 
     public static final ABSTRACTS:Array<String> = [

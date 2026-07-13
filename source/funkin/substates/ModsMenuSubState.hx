@@ -57,6 +57,15 @@ class ModsMenuSubState extends SubState
         }
 
         changeOption();
+
+        CoolUtil.createTouchButtons([
+            { label: 'D', keys: ClientPrefs.controls.ui.down },
+            { label: 'U', keys: ClientPrefs.controls.ui.up }
+        ], 150, FlxG.height - 170, 90);
+
+        CoolUtil.createTouchButtons([
+            { label: 'A', keys: ClientPrefs.controls.ui.accept }
+        ], FlxG.width - 150, FlxG.height - 170);
     }
 
     override function update(elapsed:Float)
