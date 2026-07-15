@@ -543,8 +543,7 @@ class Conductor
 
                 stepHandler();
 
-                if (needsResync())
-                    synchronize();
+                synchronize();
             }
         }
     }
@@ -552,33 +551,16 @@ class Conductor
     /**
      * This synchronizes this class and the audio files to be synchronized with the music
      */
-    public static function synchronize()
+    static function synchronize()
     {
-        if (music == null)
-            return;
+        final window:Float = 20;
 
-        time = music.time;
+        if (Math.abs(time - music.time) >= window)
+            time = music.time;
 
         for (sound in synchronizedSounds)
-            sound.time = time;
-
-        musicResync?.dispatch();
-    }
-
-    /**
-     * This simply checks to see if any of the audio tracks linked to Conductor are out of sync so that they can be resynchronized
-     * @return This determines whether or not the audio should be resynchronized
-     */
-    static function needsResync():Bool
-    {
-        if (Math.abs(music.time - time) >= 20)
-            return true;
-
-        for (sound in synchronizedSounds)
-            if (sound != null && Math.abs(sound.time - time) >= 20)
-                return true;
-
-        return false;
+            if (sound != null && Math.abs(sound.time - music.time) >= window)
+                sound.time = music.time;
     }
 
     @:dox(hide)
