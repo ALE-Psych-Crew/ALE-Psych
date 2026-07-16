@@ -78,7 +78,7 @@ class Character extends Bopper
 
     override function playAnim(anim:String, ?force:Bool = true)
     {
-        if (!shouldPlayAnim(anim))
+        if (!shouldPlayAnim(getAnimationName(anim)))
             return;
 
         super.playAnim(anim, force);

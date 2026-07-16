@@ -29,8 +29,13 @@ class FunkinSprite extends FlxAnimate
             applyOffset();
     }
 
+    public var animationPrefix:String = '';
+    public var animationSuffix:String = '';
+
     public function playAnim(name:Null<String>, ?force:Bool = true)
     {
+        name = getAnimationName(name);
+
         if (!shouldPlayAnim(name))
             return;
 
@@ -38,6 +43,9 @@ class FunkinSprite extends FlxAnimate
 
         applyOffset(getAnimOffset());
     }
+
+    function getAnimationName(name:Null<String>)
+        return name == null ? null : animationPrefix + name + animationSuffix;
 
     public function shouldPlayAnim(name:Null<String>):Bool
         return anim != null && name != null && anim.getNameList().contains(name) && !(anim.curAnim != null && anim.name == name && anim.curAnim.looped);
