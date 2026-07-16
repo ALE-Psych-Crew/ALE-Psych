@@ -553,6 +553,9 @@ class Conductor
      */
     static function synchronize()
     {
+        if (music == null)
+            return;
+        
         final window:Float = 20;
 
         if (Math.abs(time - music.time) >= window)
