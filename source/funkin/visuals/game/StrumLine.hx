@@ -23,6 +23,8 @@ class StrumLine extends FlxSpriteGroup
 
     public var strums:FlxTypedSpriteGroup<Strum>;
     public var notes:FlxTypedSpriteGroup<Note>;
+    public var sustains:FlxTypedSpriteGroup<Note>;
+    public var arrows:FlxTypedSpriteGroup<Note>;
     public var splashes:FlxTypedSpriteGroup<Splash>;
 
     public var downScroll:Bool = ClientPrefs.data.downScroll;
@@ -48,7 +50,11 @@ class StrumLine extends FlxSpriteGroup
         inputMap = new Map<Int, Array<Int>>();
 
         add(strums = new FlxTypedSpriteGroup<Strum>());
-        add(notes = new FlxTypedSpriteGroup<Note>());
+
+        notes = new FlxTypedSpriteGroup<Note>();
+        add(sustains = new FlxTypedSpriteGroup<Note>());
+        add(arrows = new FlxTypedSpriteGroup<Note>());
+
         add(splashes = new FlxTypedSpriteGroup<Splash>());
 
         for (index => data in config.config)
@@ -132,7 +138,6 @@ class StrumLine extends FlxSpriteGroup
                     sustain.parent = parent;
                     sustain.alphaMultiplier = 0.5;
                     sustain.character = [strumLineIndex, character];
-                    sustain.flipY = downScroll;
 
                     tempNotes.push(sustain);
 
@@ -233,6 +238,8 @@ class StrumLine extends FlxSpriteGroup
 
         while (!destroyedNotesStack.isEmpty())
             destroyedNotesStack.pop().destroy();
+
+        notes.destroy();
         
         super.destroy();
     }
@@ -254,9 +261,9 @@ class StrumLine extends FlxSpriteGroup
 
                 var noteToHit:Null<Note> = null;
 
-                for (note in notes)
+                for (note in arrows)
                 {
-                    if (note == null || note.type != ARROW || note.data != strumIndex || note.timeDistance < -missWindow)
+                    if (note == null || note.data != strumIndex || note.timeDistance < -missWindow)
                         continue;
 
                     if (note.timeDistance > missWindow)
@@ -294,7 +301,15 @@ class StrumLine extends FlxSpriteGroup
 
     function addNote(note:Note)
     {
+        if (note.type == SUSTAIN)
+            note.flipY = downScroll;
+
         notes.add(note);
+
+        if (note.type == ARROW)
+            arrows.add(note);
+        else
+            sustains.add(note);
 
         note.strum.children.push(note);
     }
@@ -329,6 +344,11 @@ class StrumLine extends FlxSpriteGroup
         note.strum.children.remove(note);
 
         notes.remove(note, true);
+
+        if (note.type == ARROW)
+            arrows.remove(note, true);
+        else
+            sustains.remove(note, true);
 
         destroyedNotesStack.add(note);
     }
