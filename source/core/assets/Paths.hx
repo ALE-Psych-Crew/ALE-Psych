@@ -22,6 +22,8 @@ import core.enums.ReadDirectoryType;
 import core.enums.AtlasType;
 import core.enums.FileType;
 
+import core.debug.HotReloading;
+
 import utils.cool.FileUtil;
 
 import lime.utils.Bytes;
@@ -254,8 +256,13 @@ class Paths
             },
             FileType.JSON => {
                 postfix: '.json',
-                get: (id, _, permanent, missingPrint) -> Json.parse(getContent(id, permanent, missingPrint)),
-                forceCleaning: true
+                get: (id, _, permanent, missingPrint) -> {
+                    HotReloading.add(id);
+
+                    Json.parse(getContent(id, permanent, missingPrint));
+                },
+                forceCleaning: true,
+                clearMethod: (id, _) -> HotReloading.remove(id)
             }
         ];
     }
@@ -276,6 +283,9 @@ class Paths
                 for (id in obj.cache.keys())
                 {
                     var result:Dynamic = obj.cache[id];
+
+                    if (obj.clearMethod != null)
+                        obj.clearMethod(id, result.content);
 
                     if (!result.permanent || permanent)
                     {

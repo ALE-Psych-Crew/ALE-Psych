@@ -69,7 +69,7 @@ class HotReloading
      * @param file 
      */
     public static function add(file:String):Void
-        if (Paths.exists(file))
+        if (CoolVars.meta != null && CoolVars.meta.developerMode && Paths.exists(file))
             files.push(file);
 
     /**
