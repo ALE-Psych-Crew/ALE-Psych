@@ -292,6 +292,7 @@ class Formatter
                         }
                     ],
                     spacing: 112,
+                    allowShader: true,
                     format: "ale-strumline-v0.1"
                 }
             },
