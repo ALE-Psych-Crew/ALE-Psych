@@ -301,15 +301,16 @@ class StrumLine extends FlxSpriteGroup
 
     function addNote(note:Note)
     {
-        if (note.type == SUSTAIN)
-            note.flipY = downScroll;
-
         notes.add(note);
 
         if (note.type == ARROW)
+        {
             arrows.add(note);
-        else
+        } else {
             sustains.add(note);
+            
+            note.flipY = downScroll;
+        }
 
         note.strum.children.push(note);
     }
