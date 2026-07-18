@@ -45,13 +45,13 @@ class Note extends StrumLineObject
     public var singHealth:Float;
     public var missHealth:Float;
 
-    public function new(id:String, strlData:JsonStrumLineConfig, type:NoteType, data:Int, rgb:RGBShader)
+    public function new(id:String, strlData:JsonStrumLineConfig, allowShader:Bool, type:NoteType, data:Int, rgb:RGBShader)
     {
         allowOffset = false;
 
         pathPrefix = 'notes/';
 
-        super(id, strlData, data, rgb);
+        super(id, strlData, allowShader, data, rgb);
 
         this.type = type;
 

@@ -10,13 +10,13 @@ class Strum extends StrumLineObject
 
     public var direction:Float = 0;
 
-    public function new(id:String, strlData:JsonStrumLineConfig, data:Int)
+    public function new(id:String, strlData:JsonStrumLineConfig, allowShader:Bool, data:Int)
     {
         allowOffset = false;
 
         pathPrefix = 'notes/';
 
-        super(id, strlData, data);
+        super(id, strlData, allowShader, data);
 
         playAnim(strumLineConfig.idle);
     }

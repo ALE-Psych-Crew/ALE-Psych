@@ -7,5 +7,6 @@ typedef JsonStrumLine = {
     notes:String,
     splashes:String,
     config:Array<JsonStrumLineConfig>,
-    properties:Any
+    properties:Any,
+    allowShader:Bool
 }

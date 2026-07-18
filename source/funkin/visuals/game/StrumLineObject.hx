@@ -15,7 +15,7 @@ class StrumLineObject extends FunkinSprite
     function get__castShader():RGBShader
         return cast shader;
 
-    public function new(id:String, strlData:JsonStrumLineConfig, data:Int, ?rgb:RGBShader)
+    public function new(id:String, strlData:JsonStrumLineConfig, allowShader:Bool, data:Int, ?rgb:RGBShader)
     {
         super();
 
@@ -27,7 +27,7 @@ class StrumLineObject extends FunkinSprite
 
         shader = rgb ?? new RGBShader();
 
-        if (strlData.shader != null)
+        if (strlData.shader != null && allowShader)
         {
             final castShader:RGBShader = cast shader;
 
