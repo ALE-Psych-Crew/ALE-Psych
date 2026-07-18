@@ -7,5 +7,9 @@ typedef JsonSpriteAnimation = {
     ?loop:Bool,
     ?offset:Point,
     ?prefix:String,
-    ?indices:Array<Int>
+    ?indices:Array<Int>,
+    ?timeline:String,
+    ?symbol:String,
+    ?flipX:Bool,
+    ?flipY:Bool
 }

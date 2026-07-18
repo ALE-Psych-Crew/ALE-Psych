@@ -100,20 +100,33 @@ class SpriteUtil
                 
             case SHEET:
                 if (animData.indices == null || animData.indices.length <= 0)
-                    sprite.animation.addByPrefix(animData.name, animData.prefix, animData.frameRate, animData.loop);
+                    sprite.animation.addByPrefix(animData.name, animData.prefix, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
                 else
-                    sprite.animation.addByIndices(animData.name, animData.prefix, animData.indices, '', animData.frameRate, animData.loop);
+                    sprite.animation.addByIndices(animData.name, animData.prefix, animData.indices, '', animData.frameRate, animData.loop, animData.flipX, animData.flipY);
             case FRAMES:
-                sprite.animation.add(animData.name, animData.indices, animData.frameRate, animData.loop);
+                sprite.animation.add(animData.name, animData.indices, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
             case MAP:
                 if (sprite is FlxAnimate)
                 {
                     final animateSprite:FlxAnimate = cast sprite;
 
-                    if (animData.indices == null || animData.indices.length <= 0)
-                        animateSprite.anim.addByFrameLabel(animData.name, animData.prefix, animData.frameRate, animData.loop);
-                    else
-                        animateSprite.anim.addByFrameLabelIndices(animData.name, animData.prefix, animData.indices, animData.frameRate, animData.loop);
+                    if (animData.timeline != null)
+                    {
+                        if (animData.indices == null || animData.indices.length <= 0)
+                            animateSprite.anim.addByTimeline(animData.timeline, animateSprite.library.timeline, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
+                        else
+                            animateSprite.anim.addByTimelineIndices(animData.timeline, animateSprite.library.timeline, animData.indices, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
+                    } else if (animData.symbol != null) {
+                        if (animData.indices == null || animData.indices.length <= 0)
+                            animateSprite.anim.addBySymbol(animData.name, animData.symbol, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
+                        else
+                            animateSprite.anim.addBySymbolIndices(animData.name, animData.symbol, animData.indices, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
+                    } else {
+                        if (animData.indices == null || animData.indices.length <= 0)
+                            animateSprite.anim.addByFrameLabel(animData.name, animData.prefix, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
+                        else
+                            animateSprite.anim.addByFrameLabelIndices(animData.name, animData.prefix, animData.indices, animData.frameRate, animData.loop, animData.flipX, animData.flipY);
+                    }
                 }
         }
 
