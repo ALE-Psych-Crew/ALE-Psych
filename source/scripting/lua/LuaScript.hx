@@ -16,7 +16,7 @@ import scripting.ScriptConfig;
 
 import haxe.ds.StringMap;
 
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 import core.interfaces.IScript;
 
@@ -26,7 +26,7 @@ class LuaScript implements IScript
 
     public var state:LuaStatePointer;
 
-    public final type:ScriptType;
+    public final type:StateType;
 
     public var name:String;
 
@@ -40,7 +40,7 @@ class LuaScript implements IScript
 
     public var nextIndex:Int = 1;
 
-    public function new(name:String, ?args:Array<Dynamic>, type:ScriptType, ?presets:Array<Class<LuaPresetBase>>)
+    public function new(name:String, ?args:Array<Dynamic>, type:StateType, ?presets:Array<Class<LuaPresetBase>>)
     {
         variables.set('this', this);
 

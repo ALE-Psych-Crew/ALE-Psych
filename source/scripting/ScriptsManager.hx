@@ -3,7 +3,7 @@ package scripting;
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
 
 import core.enums.ScriptCallType;
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 import core.interfaces.IScriptedState;
 import core.interfaces.IScript;
@@ -29,11 +29,11 @@ class ScriptsManager implements IFlxDestroyable
 {
     var allowHotReloading:Bool = false;
 
-    var type:ScriptType;
+    var type:StateType;
 
     var members:Array<IScript> = [];
 
-    public function new(type:ScriptType, ?globalArguments:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArguments:Array<Dynamic> #end #if ALLOW_LUA , ?luaArguments:Array<Dynamic> #end , ?allowHotReloading:Bool = false)
+    public function new(type:StateType, ?globalArguments:Array<Dynamic> #if ALLOW_HSCRIPT , ?haxeArguments:Array<Dynamic> #end #if ALLOW_LUA , ?luaArguments:Array<Dynamic> #end , ?allowHotReloading:Bool = false)
     {
         this.type = type;
 

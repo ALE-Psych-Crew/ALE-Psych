@@ -7,4 +7,4 @@
  * without having to reconfigure most of the game
  */
 
-CoolUtil.switchState(CoolVars.meta.titleState, true, true);
+CoolUtil.switchState('TitleState', true, true);

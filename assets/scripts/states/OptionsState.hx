@@ -306,7 +306,7 @@ function onUpdate(elapsed:Float)
             if (songType != null || playlist != null || difficulty != null || week != null || weekScore != null || songIndex != null)
                 CoolUtil.switchState(new PlayState(songType, playlist, difficulty, week, weekScore, songIndex));
             else
-                CoolUtil.switchState(CoolVars.data.mainMenuState);
+                CoolUtil.switchState('MainMenuState');
 
             CoolUtil.playSound('cancel');
         }

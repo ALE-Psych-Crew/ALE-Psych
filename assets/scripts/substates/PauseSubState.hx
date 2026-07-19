@@ -97,7 +97,7 @@ function onUpdate(elapsed:Float)
 				play.restart();
 
 			case 'options':
-				CoolUtil.switchState(new CustomState(CoolVars.data.optionsState, [play.type, play.playlist, play.difficulty, play.week, play.weekScore, play.songIndex]));
+				CoolUtil.switchState(new CustomState('OptionsState', [play.type, play.playlist, play.difficulty, play.week, play.weekScore, play.songIndex]));
 
 			case 'exit':
 				play.exit();

@@ -1,10 +1,10 @@
 package core.interfaces;
 
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 interface IScript
 {
-    public final type:ScriptType;
+    public final type:StateType;
 
     public function set(name:String, value:Dynamic):Void;
 

@@ -1,5 +1,7 @@
 package funkin.substates;
 
+import utils.cool.StateUtil;
+
 import ale.ui.UIUtils;
 
 class CustomSubState extends ScriptedSubState
@@ -10,7 +12,7 @@ class CustomSubState extends ScriptedSubState
     {
         super(globalArgs, haxeArgs #if ALLOW_LUA , luaArgs #end);
 
-        this.name = name;
+        this.name = StateUtil.resolveState(name, SUBSTATE);
     }
 
     override public function create()

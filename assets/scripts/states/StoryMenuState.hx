@@ -83,7 +83,7 @@ function onCreate()
         if (obj is FlxObject)
             obj.scrollFactor.set();
 
-    for (week in Paths.readDirectory('data/weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
+    for (week in Paths.readDirectory('data/weeks', CoolVars.meta.loadDefaultWeeks ? 'multiple' : 'unique'))
     {
         if (!week.endsWith('.json'))
             continue;
@@ -252,7 +252,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(CoolVars.data.mainMenuState);
+            CoolUtil.switchState('MainMenuState');
 
             CoolUtil.playSound('cancel');
         }

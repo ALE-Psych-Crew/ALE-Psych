@@ -35,7 +35,7 @@
 					"name": "selected"
 				}
 			],
-			"state": "meta:storyMenuState"
+			"state": "StoryMenuState"
 		},
 		{
 			"images": [
@@ -52,7 +52,7 @@
 					"name": "selected"
 				}
 			],
-			"state": "meta:freeplayState"
+			"state": "FreeplayState"
 		},
 		{
 			"images": [
@@ -69,7 +69,7 @@
 					"name": "selected"
 				}
 			],
-			"state": "meta:creditsState"
+			"state": "CreditsState"
 		},
 		{
 			"images": [
@@ -86,7 +86,7 @@
 					"name": "selected"
 				}
 			],
-			"state": "meta:optionsState"
+			"state": "OptionsState"
 		}
 	],
 	"optionsOffset": {

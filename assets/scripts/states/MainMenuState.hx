@@ -65,7 +65,7 @@ function onCreate()
 
     final splitCorner:String = config.textCorner.split('_');
 
-    text = new FlxText(0, 0, FlxG.width - config.textMargin.x * 2, 'ALE Psych ' + CoolVars.engineVersion + '\n' + (CoolVars.mobileControls ? '' : 'Press [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu' + '\n') + config.text);
+    text = new FlxText(0, 0, FlxG.width - config.textMargin.x * 2, 'ALE Psych ' + CoolVars.engineVersion + '\n' + (CoolVars.touch ? '' : 'Press [Ctrl + Shift + ${[for (key in ClientPrefs.controls.engine.switch_mod) if (key == null || key == 0) continue; else FlxKey.toStringMap.get(key)].join(' / ')}] to open the Mods Menu' + '\n') + config.text);
     text.setFormat(Paths.font('vcr.ttf'), 17, FlxColor.WHITE, splitCorner[1].toLowerCase(), FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
     text.x = FlxG.width / 2 - text.width / 2;
     text.scrollFactor.set();
@@ -123,12 +123,7 @@ function onUpdate(elapsed:Float)
                 {
                     FlxFlicker.flicker(option, 0, ClientPrefs.data.flashing ? 0.075 : 0.125);
 
-                    final nextState:String = option.config.state;
-
-                    if (nextState.startsWith('meta:'))
-                        nextState = Reflect.getProperty(CoolVars.meta, nextState.substr(5));
-
-                    FlxTimer.wait(1, () -> CoolUtil.switchState(nextState));
+                    FlxTimer.wait(1, () -> CoolUtil.switchState(option.config.state));
 
                     CoolUtil.playSound('confirm');
                 } else {
@@ -141,7 +136,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(CoolVars.data.titleState);
+            CoolUtil.switchState('TitleState');
 
             CoolUtil.playSound('cancel');
         }

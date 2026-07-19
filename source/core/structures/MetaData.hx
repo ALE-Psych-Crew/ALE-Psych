@@ -9,19 +9,8 @@ class MetaData
     public var debugPrint:Bool = true;
     public var verbose:Bool = false;
 
-    public var initialState:String = 'InitialState';
-
-    public var titleState:String = 'TitleState';
-    public var storyMenuState:String = 'StoryMenuState';
-    public var freeplayState:String = 'FreeplayState';
-    public var mainMenuState:String = 'MainMenuState';
-    public var creditsState:String = 'CreditsState';
-    public var optionsState:String = 'OptionsState';
-    public var masterState:String = 'MasterState';
-    
-    public var pauseSubState:String = 'PauseSubState';
-    public var gameOverSubState:String = 'GameOverSubState';
-    public var transition:String = 'FadeTransition';
+    public var states:Any = {};
+    public var substates:Any = {};
 
     public var loadDefaultWeeks:Bool = false;
     

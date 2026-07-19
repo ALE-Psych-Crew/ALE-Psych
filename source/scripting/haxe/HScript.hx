@@ -1,7 +1,7 @@
 package scripting.haxe;
 
 import core.interfaces.IScript;
-import core.enums.ScriptType;
+import core.enums.StateType;
 
 import ale.rulescript.RuleScript;
 
@@ -9,9 +9,9 @@ import rulescript.Context;
 
 class HScript extends RuleScript implements IScript
 {
-    public final type:ScriptType;
+    public final type:StateType;
 
-	override public function new(scriptName:String, context:Context, ?args:Array<Dynamic>, type:ScriptType, ?presets:Array<Class<HScriptPresetBase>>)
+	override public function new(scriptName:String, context:Context, ?args:Array<Dynamic>, type:StateType, ?presets:Array<Class<HScriptPresetBase>>)
 	{
 		this.type = type;
 

@@ -1,5 +1,7 @@
 package utils.cool;
 
+import core.enums.StateType;
+
 import flixel.util.typeLimit.OneOfThree;
 
 import flixel.FlxSubState;
@@ -55,7 +57,7 @@ class StateUtil
 			FlxG.switchState(state);
 		} else {
 			openSubState(new CustomSubState(
-				CoolVars.data.transition,
+				'FadeTransition',
                 [true, () -> FlxG.switchState(state)]
 			));
 		}
@@ -88,5 +90,25 @@ class StateUtil
         } else {
 			FlxG.state.openSubState(subState);
 		}
+	}
+
+	public static function resolveState(name:String, type:StateType):String
+	{
+		if (CoolVars.meta != null)
+		{
+			final group:Any = switch (type)
+			{
+				case STATE:
+					CoolVars.meta.states;
+
+				case SUBSTATE:
+					CoolVars.meta.substates;
+			}
+
+			if (group != null)
+				name = Reflect.field(group, name) ?? name;
+		}
+
+		return name;
 	}
 }

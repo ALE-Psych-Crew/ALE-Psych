@@ -1,5 +1,7 @@
 package funkin.states;
 
+import utils.cool.StateUtil;
+
 import ale.ui.UIUtils;
 
 class CustomState extends ScriptedState
@@ -10,7 +12,7 @@ class CustomState extends ScriptedState
     {
         super(globalArgs, haxeArgs #if ALLOW_LUA , luaArgs #end);
 
-        this.name = name;
+        this.name = StateUtil.resolveState(name, STATE);
     }
 
     override function create()

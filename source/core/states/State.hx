@@ -36,7 +36,7 @@ class State extends FlxState implements IState
             CoolVars.skipTransOut = false;
         } else {
             CoolUtil.openSubState(new CustomSubState(
-                CoolVars.meta.transition,
+                'FadeTransition',
                 [false, null]
             ));
         }

@@ -470,7 +470,7 @@ class PlayState extends ScriptedState
 
                 toggleTweensAndTimers(false);
 
-                CoolUtil.openSubState(CoolVars.meta.pauseSubState);
+                CoolUtil.openSubState('PauseSubState');
             }
         }
 
@@ -520,7 +520,7 @@ class PlayState extends ScriptedState
         {
             Conductor.pause();
 
-            CoolUtil.openSubState(CoolVars.data.gameOverSubState);
+            CoolUtil.openSubState('GameOverSubState');
         }
 
         scriptsManager.callback(POST, 'GameOver');
@@ -534,7 +534,7 @@ class PlayState extends ScriptedState
 
             toggleTweensAndTimers(false);
 
-            CoolUtil.switchState(new CustomState(type == STORY ? CoolVars.meta.storyMenuState : CoolVars.meta.freeplayState));
+            CoolUtil.switchState(new CustomState(type == STORY ? 'StoryMenuState' : 'FreeplayState'));
         }
 
         scriptsManager.callback(POST, 'Exit');

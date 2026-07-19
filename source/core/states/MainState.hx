@@ -18,7 +18,7 @@ class MainState extends FlxState
 
 		if (showedModMenu)
 		{
-			CoolUtil.switchState(CoolVars.meta.initialState, true, true);
+			CoolUtil.switchState('InitialState', true, true);
 		} else {
 			showedModMenu = true;
 

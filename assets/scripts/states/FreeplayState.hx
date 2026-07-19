@@ -56,7 +56,7 @@ function onCreate()
 
     final weeks:Array<JsonWeek> = [];
 
-    for (week in Paths.readDirectory('data/weeks', CoolVars.data.loadDefaultWeeks ? 'multiple' : 'unique'))
+    for (week in Paths.readDirectory('data/weeks', CoolVars.meta.loadDefaultWeeks ? 'multiple' : 'unique'))
     {
         if (!week.endsWith('.json'))
             continue;
@@ -238,7 +238,7 @@ function onUpdate(elapsed:Float)
         {
             canSelect = false;
 
-            CoolUtil.switchState(CoolVars.meta.mainMenuState);
+            CoolUtil.switchState('MainMenuState');
 
             CoolUtil.playSound('cancel');
         }
