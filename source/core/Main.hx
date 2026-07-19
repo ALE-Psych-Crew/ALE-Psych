@@ -28,6 +28,8 @@ import flixel.FlxGame;
 
 import haxe.CallStack;
 
+import utils.cool.ColorUtil;
+import utils.cool.AppUtil;
 import utils.Formatter;
 
 import lime.system.System;
@@ -250,8 +252,6 @@ class Main extends Sprite
 
 			allowMobileConfig = false;
 		}
-		
-		Lib.application.window.resizable = true;
 
 		FlxG.fixedTimestep = false;
 		FlxG.game.focusLostFramerate = 60;
@@ -305,7 +305,19 @@ class Main extends Sprite
 
 		game.addChild(game.soundTraySprite = new SoundTray());
 
-		FlxG.stage.addChild(game.debugTray = new DebugTray());	
+		FlxG.stage.addChild(game.debugTray = new DebugTray());
+		
+		Lib.application.window.setIcon(Paths.library.getImage(CoolVars.meta.icon + '.png'));
+		Lib.application.window.title = CoolVars.meta.title;
+		Lib.application.window.resizable = true;
+
+		DesktopAPI.setWindowTitle();
+		
+		final windowColor:FlxColor = ColorUtil.colorFromString(CoolVars.meta.color);
+
+		DesktopAPI.setWindowBorderColor(windowColor.red, windowColor.green, windowColor.blue);
+
+		AppUtil.resizeGame(CoolVars.meta.width, CoolVars.meta.height);
 	}
 
 	static function destroy()

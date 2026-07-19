@@ -38,7 +38,9 @@ class MetaData
     ];
 
     public var title:String = 'Friday Night Funkin\': ALE Psych';
-    public var windowColor:String = '0xFF212121';
+    public var icon:String = 'icon';
+
+    public var color:String = '0xFF212121';
     public var width:Int = 1280;
     public var height:Int = 720;
 

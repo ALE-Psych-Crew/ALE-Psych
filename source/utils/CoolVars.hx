@@ -5,9 +5,6 @@ import api.DesktopAPI;
 import core.structures.MetaData;
 import core.Main;
 
-import utils.cool.ColorUtil;
-import utils.cool.AppUtil;
-
 import openfl.Lib;
 
 class CoolVars
@@ -65,15 +62,5 @@ class CoolVars
 				if (Reflect.field(meta, field) != null)
 					Reflect.setProperty(meta, field, Reflect.field(json, field));
 		}
-
-		Lib.application.window.title = meta.title;
-
-		DesktopAPI.setWindowTitle();
-		
-		final windowColor:FlxColor = ColorUtil.colorFromString(meta.windowColor);
-
-		DesktopAPI.setWindowBorderColor(windowColor.red, windowColor.green, windowColor.blue);
-
-		AppUtil.resizeGame(meta.width, meta.height);
 	}
 }
