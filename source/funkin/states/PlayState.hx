@@ -1139,7 +1139,7 @@ class PlayState extends ScriptedState
             opponentStrums = new FlxTypedGroup<Strum>();
             extraStrums = new FlxTypedGroup<Strum>();
 
-            final notes = [];
+            final notes:Array<Array<Array<Dynamic>>> = [];
 
             if (spawnNotes)
             {

@@ -659,6 +659,15 @@ class Formatter
 
             var shouldChangeTimeSignature:Bool = false;
 
+            final defaultNoteTypes:Array<String> = [
+                '',
+                'Alt Animation',
+                'Hey!',
+                'Hurt Note',
+                'GF Sing',
+                'No Animation'
+            ];
+
             for (section in psychSong.notes)
             {
                 var curSection:ALESongSection = {
@@ -680,6 +689,9 @@ class Formatter
                 {
                     for (note in section.sectionNotes)
                     {
+                        if (!Std.isOfType(note[3], String))
+                            note[3] = defaultNoteTypes[note[3]];
+
                         var arrayNote:Array<Dynamic> = [
                             note[0],
                             note[1] % 4,
