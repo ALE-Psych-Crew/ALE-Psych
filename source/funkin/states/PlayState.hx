@@ -1431,14 +1431,14 @@ class PlayState extends ScriptedState
 
                 if (audio != null)
                     soundsCache.set('::' + (postfix == null ? 'VOICES' : postfix.toUpperCase()), audio);
+            }
+            
+            for (char in characters)
+            {
+                final audio:OpenFLSound = Paths.voices(songRoute, char.id, false, false);
 
-                for (char in characters)
-                {
-                    final audio:OpenFLSound = Paths.voices(songRoute, char.id, false, false);
-
-                    if (audio != null)
-                        soundsCache.set(char.id, audio);
-                }
+                if (audio != null)
+                    soundsCache.set(char.id, audio);
             }
         }
 
