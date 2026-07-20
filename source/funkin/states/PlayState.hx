@@ -324,6 +324,8 @@ class PlayState extends ScriptedState
             
             clearHitboxes();
 
+            soundsCache?.clear();
+
             characters?.destroy();
 
             playerCharacters?.destroy();
