@@ -55,6 +55,7 @@ class ExtensibleMacro
 
         final ignore:Array<String> = [
             'flixel.group.FlxSpriteContainer',
+            'flixel.system.FlxAutoVersion',
             'flixel.FlxGame',
 
             'animate.FlxAnimateAssets',

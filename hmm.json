@@ -18,12 +18,12 @@
 		{
 			"name": "flixel",
 			"type": "haxelib",
-			"version": "6.1.2"
+			"version": "6.2.0"
 		},
 		{
 			"name": "flixel-addons",
 			"type": "haxelib",
-			"version": "3.3.2"
+			"version": "4.0.1"
 		},
 		{
 			"name": "flixel-animate",

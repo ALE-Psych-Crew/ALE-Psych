@@ -37,7 +37,6 @@ class ImportsMacro
             'flixel.addons.ui',
             'flixel.addons.plugin',
             'flixel.addons.text',
-            'flixel.addons.tile',
             'flixel.addons.transition',
             'flixel.addons.util',
             'flixel.addons.editors.ogmo',
