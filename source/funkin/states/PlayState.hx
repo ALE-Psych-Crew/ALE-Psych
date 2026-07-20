@@ -69,6 +69,8 @@ class PlayState extends ScriptedState
     final type:SongType;
     var weekScore:Float = 0;
 
+    var restarted:Bool = false;
+
     var score:Float = 0;
     var totalNotes:Int = 0;
     var accuracyMod:Float = 0;
@@ -114,7 +116,7 @@ class PlayState extends ScriptedState
     function set_health(value:Float)
         return health = FlxMath.bound(value, 0, 100);
 
-    function new(?newType:SongType, ?newPlaylist:Array<String>, ?newDifficulty:String, ?newWeek:String, ?newWeekScore:Float, ?newSongIndex:Int)
+    function new(?newType:SongType, ?newPlaylist:Array<String>, ?newDifficulty:String, ?newWeek:String, ?newWeekScore:Float, ?newSongIndex:Int, ?newRestarted:Bool)
     {
         super();
 
@@ -123,6 +125,7 @@ class PlayState extends ScriptedState
         newDifficulty ??= 'normal';
         newWeekScore ??= 0;
         newSongIndex ??= 0;
+        newRestarted ??= false;
 
         type = newType;
 
@@ -133,6 +136,8 @@ class PlayState extends ScriptedState
 
         week = newWeek;
         weekScore = newWeekScore;
+
+        restarted = newRestarted;
 
         songRoute = CoolUtil.searchComplexFile('songs/' + song);
 
@@ -302,7 +307,7 @@ class PlayState extends ScriptedState
     {
         allowMemoryCleaning = false;
 
-        CoolUtil.switchState(new PlayState(type, playlist, difficulty, week, weekScore, songIndex), true, true);
+        CoolUtil.switchState(new PlayState(type, playlist, difficulty, week, weekScore, songIndex, true), true, true);
     }
 
     override function destroy()
