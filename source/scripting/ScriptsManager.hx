@@ -14,9 +14,12 @@ import core.debug.HotReloading;
 import scripting.haxe.HScriptPresetBase;
 import scripting.haxe.HScript;
 
+#if ALE_HSCRIPT
+import ale.hscript.Config;
+#else
 import ale.rulescript.RuleScriptGlobal;
-
 import rulescript.Context;
+#end
 #end
 
 #if ALLOW_LUA
@@ -58,7 +61,7 @@ class ScriptsManager implements IFlxDestroyable
             return;
 
         #if ALLOW_HSCRIPT
-        if (path.endsWith(RuleScriptGlobal.SCRIPT_EXTENSION))
+        if (path.endsWith(#if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end))
         {
             haxeLoad(CoolUtil.removeExtension(path), haxeArgs ?? args);
             
@@ -95,7 +98,7 @@ class ScriptsManager implements IFlxDestroyable
 
             if (Paths.isDirectory(fullPath) && recursive)
                 loadFolder(fullPath, recursive, args #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
-            else if (file.endsWith('.lua') || file.endsWith(RuleScriptGlobal.SCRIPT_EXTENSION))
+            else if (file.endsWith('.lua') || file.endsWith(#if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end))
                 load(fullPath, args #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
         }
     }
@@ -163,7 +166,7 @@ class ScriptsManager implements IFlxDestroyable
     #if ALLOW_HSCRIPT
     var haxe:Array<HScript> = [];
 
-    var haxeContext:Context = new Context();
+    var haxeContext: #if ALE_HSCRIPT Dynamic = null #else Context = new Context() #end;
 
     var haxePresets:Array<Class<HScriptPresetBase>> = [];
 
@@ -174,7 +177,7 @@ class ScriptsManager implements IFlxDestroyable
         if (destroyed)
             return;
 
-        final fullPath:String = path + RuleScriptGlobal.SCRIPT_EXTENSION;
+        final fullPath:String = path + #if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end;
 
         if (Paths.exists(fullPath))
         {

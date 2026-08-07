@@ -6,7 +6,7 @@ import haxe.macro.Expr;
 
 class FieldsMacro
 {
-    macro public static function init():Void
+    public static function init()
     {
         for (cls in [
             'utils.CoolVars',

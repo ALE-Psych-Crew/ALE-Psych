@@ -14,7 +14,7 @@ typedef PackageData = {
 
 class ExtensibleMacro
 {
-    macro public static function init()
+    public static function init()
     {
         final packs:Array<String> = [
             'flixel.group',
@@ -159,7 +159,5 @@ class ExtensibleMacro
                 }
             }
         });
-
-        return macro null;
     }
 }

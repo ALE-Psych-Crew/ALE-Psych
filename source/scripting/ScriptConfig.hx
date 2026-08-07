@@ -68,7 +68,7 @@ class ScriptConfig
     ];
 
     public static final TYPEDEFS:Map<String, Class<Dynamic>> = [
-        'Reflect' => rulescript.types.ScriptedReflect
+        'Reflect' => #if ALE_HSCRIPT Reflect #else rulescript.types.ScriptedReflect #end
     ];
 
     public static final VARIABLES:Map<String, Dynamic> = [

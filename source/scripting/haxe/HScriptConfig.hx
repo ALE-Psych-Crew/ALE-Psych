@@ -2,36 +2,57 @@ package scripting.haxe;
 
 import scripting.ScriptConfig;
 
-#if ALLOW_HSCRIPT
-import ale.rulescript.RuleScriptGlobal;
-#end
+using utils.cool.MapUtil;
 
 import haxe.Exception;
 
-using utils.cool.MapUtil;
+#if ALLOW_HSCRIPT
+#if ALE_HSCRIPT
+import ale.hscript.errors.Error;
+#end
+
+typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end;
+#end
 
 class HScriptConfig
 {
 	public static function init()
 	{
         #if ALLOW_HSCRIPT
-        RuleScriptGlobal.reset();
+        Config.reset();
 
-        RuleScriptGlobal.FILE_CHECKER = (id:String) -> Paths.exists(id);
-        RuleScriptGlobal.FILE_READER = (id:String) -> Paths.getContent(id);
+        Config.FILE_CHECKER = (id:String) -> Paths.exists(id);
+        Config.FILE_READER = (id:String) -> Paths.getContent(id);
 
-        RuleScriptGlobal.IMPORTS = RuleScriptGlobal.IMPORTS.concat(ScriptConfig.CLASSES);
-        RuleScriptGlobal.ABSTRACTS = RuleScriptGlobal.ABSTRACTS.concat(ScriptConfig.ABSTRACTS);
-        RuleScriptGlobal.TYPEDEFS = cast RuleScriptGlobal.TYPEDEFS.mapConcat(ScriptConfig.TYPEDEFS);
-        RuleScriptGlobal.VARIABLES = cast RuleScriptGlobal.VARIABLES.mapConcat(ScriptConfig.VARIABLES);
+        Config.IMPORTS = Config.IMPORTS.concat(ScriptConfig.CLASSES);
+        Config.ABSTRACTS = Config.ABSTRACTS.concat(ScriptConfig.ABSTRACTS);
+        Config.TYPEDEFS = cast Config.TYPEDEFS.mapConcat(ScriptConfig.TYPEDEFS);
+        Config.VARIABLES = cast Config.VARIABLES.mapConcat(ScriptConfig.VARIABLES);
 
-        RuleScriptGlobal.VARIABLES.set('window', openfl.Lib.application.window);
+        Config.VARIABLES.set('window', openfl.Lib.application.window);
 
-        RuleScriptGlobal.SCRIPT_PATH = '';
+        Config.SCRIPT_PATH = '';
 
-        RuleScriptGlobal.ERROR_HANDLER = (error:String) -> debugTrace(error, ERROR);
+        #if ALE_HSCRIPT
+        Config.ERROR_HANDLER = (error, name) -> {
+            final msg:StringBuf = new StringBuf();
 
-        RuleScriptGlobal.apply();
+            msg.add(name + ': ');
+
+            if (error is Error)
+                msg.add(error.toString());
+            else if (error is Exception)
+                msg.add(error.message);
+            else
+                msg.add(Std.string(error));
+
+            debugTrace(msg.toString(), ERROR, null, null, null);
+        };        
+        #else
+        Config.ERROR_HANDLER = (error:String) -> debugTrace(error, ERROR);
+
+        Config.apply();
+        #end
 		#end
 	}
 }

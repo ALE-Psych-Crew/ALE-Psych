@@ -54,7 +54,10 @@
 
 	<haxelib name="sl-windows-api"/>
 
-	<haxelib name="rulescript" if="ALLOW_HSCRIPT"/>
+	<haxelib name="rulescript" if="ALLOW_HSCRIPT" unless="ALE_HSCRIPT"/>
+	<haxelib name="ale-rulescript-wrapper" if="ALLOW_HSCRIPT" unless="ALE_HSCRIPT"/>
+
+	<haxelib name="ale-hscript" if="ALLOW_HSCRIPT ALE_HSCRIPT"/>
 
 	<haxelib name="hxluajit" if="ALLOW_LUA"/>
 	<haxelib name="hxluajit-wrapper" if="ALLOW_LUA"/>
@@ -62,7 +65,6 @@
 	<haxelib name="jsonmod"/>
 
 	<haxelib name="ale-ui"/>
-	<haxelib name="ale-rulescript-wrapper" if="ALLOW_HSCRIPT"/>
 
 	<haxelib name="extension-androidtools" if="android"/>
 	<haxelib name="extension-orientation" if="mobile"/>
@@ -103,10 +105,12 @@
 	
 	<!-- _________________________________ Macros ________________________________ -->
 	
-	<haxeflag name="--macro" value="core.macros.FieldsMacro.init()"/>
-	<haxeflag name="--macro" value="core.macros.ImportsMacro.init()"/>
-	<haxeflag name="--macro" value="core.macros.TypedefsMacro.init()"/>
-	<haxeflag name="--macro" value="core.macros.ExtensibleMacro.init()"/>
+	<haxeflag name="--macro" value="core.macros.Macros.init()"/>
+
+	<!-- haxeflag name="--macro" value="core.macros.FieldsMacro.init()"/-->
+	<!-- haxeflag name="--macro" value="core.macros.ImportsMacro.init()"/-->
+	<!-- haxeflag name="--macro" value="core.macros.TypedefsMacro.init()"/-->
+	<!-- haxeflag name="--macro" value="core.macros.ExtensibleMacro.init()"/-->
 
 	<!-- Android -->
 
