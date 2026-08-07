@@ -18,7 +18,7 @@ class HScript extends #if ALE_HSCRIPT Script #else RuleScript #end implements IS
 	{
 		this.type = type;
 
-		super(scriptName, null, type == STATE ? FlxG.state : FlxG.state.subState, context);
+		super(scriptName, #if ALE_HSCRIPT null #end , type == STATE ? FlxG.state : FlxG.state.subState, context);
 
         for (pre in presets ?? [])
             Type.createInstance(pre, [this]);
