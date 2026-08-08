@@ -34,20 +34,7 @@ class HScriptConfig
         Config.SCRIPT_PATH = '';
 
         #if ALE_HSCRIPT
-        Config.ERROR_HANDLER = (error, name) -> {
-            final msg:StringBuf = new StringBuf();
-
-            msg.add(name + ': ');
-
-            if (error is Error)
-                msg.add(error.toString());
-            else if (error is Exception)
-                msg.add(error.message);
-            else
-                msg.add(Std.string(error));
-
-            debugTrace(msg.toString(), ERROR, null, null, null);
-        };        
+        Config.ERROR_HANDLER = (error, name) -> debugTrace(name + ': ' + error.toString(), ERROR, null, null, null);
         #else
         Config.ERROR_HANDLER = (error:String) -> debugTrace(error, ERROR);
 

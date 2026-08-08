@@ -23,7 +23,7 @@ class HScript extends #if ALE_HSCRIPT Script #else RuleScript #end implements IS
         for (pre in presets ?? [])
             Type.createInstance(pre, [this]);
 
-		set('game', #if ALE_HSCRIPT interp.variables.superInstance #else superInstance #end);
+		set('game', #if ALE_HSCRIPT interp.superInstance #else superInstance #end);
 
 		#if ALE_HSCRIPT
 		safeExecute();
