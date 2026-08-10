@@ -63,7 +63,7 @@ class ScriptConfig
     ];
 
     public static final ABSTRACTS:Array<String> = [
-        'flixel.tweens.FlxTween.FlxTweenType',
+        #if ALE_HSCRIPT 'flixel.tweens.FlxTweenType' #else 'flixel.tweens.FlxTween.FlxTweenType' #end,
         'flixel.util.FlxColor'
     ];
 

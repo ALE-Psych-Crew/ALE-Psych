@@ -6,6 +6,5 @@ flixel.input.keyboard.FlxKey
 flixel.util.FlxColor
 flixel.math.FlxPoint
 flixel.util.FlxAxes
-
 openfl.net.URLLoaderDataFormat
 openfl.display.BlendMode
