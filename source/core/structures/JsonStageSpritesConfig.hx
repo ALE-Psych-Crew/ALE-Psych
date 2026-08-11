@@ -4,5 +4,6 @@ typedef JsonStageSpritesConfig = {
     > JsonBase,
     directory:String,
     properties:Dynamic,
-    sprites:Array<JsonStageObject>
+    sprites:Array<JsonStageSprite>,
+    groups:Array<JsonStageGroup>
 }
