@@ -12,6 +12,12 @@ import core.enums.SpriteType;
 
 class SpriteUtil
 {
+    public static function fitGraphicSize(sprite:FlxSprite, width:Float, height:Float)
+    {
+        sprite.scale.x = sprite.scale.y = Math.min(width / sprite.frameWidth, height / sprite.frameHeight);
+        sprite.updateHitbox();
+    }
+
     public static function spriteFromJson(?sprite:FlxSprite, json:JsonSprite, ?imageDirectory:String = ''):FlxSprite
     {
         json = Reflect.copy(json);
