@@ -4,6 +4,7 @@ flixel.text.FlxText.FlxTextAlign
 flixel.util.FlxDirectionFlags
 flixel.input.keyboard.FlxKey
 flixel.util.FlxColor
+flixel.FlxBasic.FlxType
 flixel.math.FlxPoint
 flixel.util.FlxAxes
 openfl.net.URLLoaderDataFormat
