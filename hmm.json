@@ -51,7 +51,7 @@
 			"type": "git",
 			"dir": null,
 			"ref": null,
-			"url": "https://github.com/ALE-Psych-Crew/hxcpp"
+			"url": "https://github.com/ALE-Foundation/hxcpp"
 		},
 		{
 			"name": "hxluajit",
@@ -86,7 +86,7 @@
 		{
 			"name": "extension-orientation",
 			"type": "git",
-			"url": "https://github.com/ALE-Psych-Crew/extension-orientation"
+			"url": "https://github.com/ALE-Foundation/extension-orientation"
 		},
 		{
 			"name": "rulescript",
