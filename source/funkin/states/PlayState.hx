@@ -828,7 +828,7 @@ class PlayState extends ScriptedState
     {
         nextCharacterToChange = char;
 
-        if (scriptsManager.callback(ON, 'CharacterChange'))
+        if (scriptsManager.callback(ON, 'CharacterChange', null, [char, id], [id]))
         {
             nextCharacterToChange?.change(id);
 
@@ -850,7 +850,7 @@ class PlayState extends ScriptedState
             resetCharacterPosition(char);
         }
 
-        scriptsManager.callback(POST, 'CharacterChange');
+        scriptsManager.callback(POST, 'CharacterChange', null, [char, id], [id]);
     }
 
     function getCharacterCamera(character:Character):Point
