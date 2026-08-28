@@ -13,6 +13,8 @@ import flixel.group.FlxSpriteGroup;
 
     var developersSpacing:Float;
 
+    var changeBGColor:Bool;
+
     var cameraOffset:Float;
     var cameraSpeed:Float;
 }
@@ -49,6 +51,7 @@ function postCreate()
         for (dev in group.developers)
         {
             final sprs:FlxSpriteGroup = new FlxSpriteGroup(0, offset);
+            sprs.metadata.set('color', CoolUtil.colorFromString(dev.color));
             sprs.metadata.set('description', dev.description);
             sprs.metadata.set('url', dev.url);
             developers.add(sprs);
@@ -105,6 +108,9 @@ function changeOption(?change:Int = 0)
         {
             current = opt;
 
+            FlxTween.cancelTweensOf(bg);
+            FlxTween.color(bg, 2, bg.color ?? FlxColor.WHITE, opt.metadata.get('color'), {ease: FlxEase.cubeOut});
+            
             descriptionText.text = opt.metadata.get('description');
             descriptionText.y = FlxG.height - descriptionText.height - config.descriptionMargin.y;
 

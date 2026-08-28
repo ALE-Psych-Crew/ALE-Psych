@@ -20,5 +20,6 @@
 		"x": 200,
 		"y": 30
 	},
+	"changeBGColor": true,
 	"groupsSpacing": 120
 }

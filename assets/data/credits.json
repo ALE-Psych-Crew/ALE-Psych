@@ -34,6 +34,18 @@
             ]
         },
         {
+            "name": "Former Engine Members",
+            "developers": [
+                {
+                    "name": "Nezumieepy",
+                    "icon": "nezumieepy",
+                    "url": "https://github.com/Nezumieepy",
+                    "description": "He created the sprites for note splashes and the sound tray",
+                    "color": "814B1F"
+                }
+            ]
+        },
+        {
             "name": "Special Thanks",
             "developers": [
                 {
