@@ -12,6 +12,8 @@ import lime.text.Font;
 import sys.FileSystem;
 import sys.io.File;
 
+import haxe.io.Path;
+
 /**
  * A utility that overrides the OpenFL/Lime Asset Library so that it uses `sys.io.File` and `sys.FileSystem` instead
  * 
@@ -31,7 +33,7 @@ class RootsLibrary extends AssetLibrary
      */
     public function new(roots:Array<String>)
     {
-        this.roots = roots;
+        this.roots = roots.concat([null]);
 
         super();
 
@@ -45,7 +47,7 @@ class RootsLibrary extends AssetLibrary
     {
         for (root in roots)
         {
-            final path:String = root + '/' + id;
+            final path:String = Path.join([root, id]);
 
             if (FileSystem.exists(path))
                 return path;
