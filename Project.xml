@@ -47,6 +47,8 @@
 	<haxelib name="flixel-addons"/>
 	<haxelib name="flixel-animate"/>
 	<haxelib name="flxsoundfilters"/>
+	
+	<haxelib name="foxlite"/>
 
 	<haxelib name="hxgamemode" if="ALLOW_LINUX_API"/>
 

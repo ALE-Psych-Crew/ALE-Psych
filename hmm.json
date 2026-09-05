@@ -84,6 +84,11 @@
 			"version": "2.2.2"
 		},
 		{
+			"name": "foxlite",
+			"type": "haxelib",
+			"version": "0.1.1"
+		},
+		{
 			"name": "extension-orientation",
 			"type": "git",
 			"url": "https://github.com/ALE-Foundation/extension-orientation"
