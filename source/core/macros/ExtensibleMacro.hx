@@ -47,6 +47,19 @@ class ExtensibleMacro
             'funkin.visuals.objects',
             'funkin.visuals',
 
+            'foxlite',
+            'foxlite.color',
+            'foxlite.culling',
+            'foxlite.environment',
+            'foxlite.extras',
+            'foxlite.polyfill',
+            'foxlite.post',
+            'foxlite.renderer',
+            'foxlite.sky',
+            'foxlite.texture',
+            'foxlite.flixel.FoxFlxSprite',
+            'foxlite.flixel.FlxDirectionalSound',
+
             'scripting.lua.LuaPresetBase',
 
             'ale.ui.MouseSprite',
@@ -59,6 +72,12 @@ class ExtensibleMacro
             'flixel.FlxGame',
 
             'animate.FlxAnimateAssets',
+
+            'foxlite.flixel.FlxTypedSignalImpl',
+            'foxlite.sky.FoxPanoramaSky',
+            'foxlite.renderer.FoxRenderPass',
+            'foxlite.texture.FoxTextureCubemap',
+            'foxlite.post.FoxPostProcess',
 
             'funkin.visuals.objects.Alphabet',
             'funkin.visuals.objects.Letter',
