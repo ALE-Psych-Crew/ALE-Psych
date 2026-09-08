@@ -35,7 +35,7 @@ class RootsLibrary extends AssetLibrary
      */
     public function new(roots:Array<String>)
     {
-        this.roots = roots.concat([null]);
+        this.roots = roots.filter(r -> r != null);
 
         super();
 

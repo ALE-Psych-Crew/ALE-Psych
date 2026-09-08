@@ -27,7 +27,7 @@ class FileUtil
 
         for (root in Paths.library.roots)
         {
-            if (root == null || !FileSystem.exists(root))
+            if (!FileSystem.exists(root))
                 continue;
 
             var currentPath:String = root;
@@ -39,6 +39,7 @@ class FileUtil
                 if (!FileSystem.isDirectory(currentPath))
                 {
                     matchFound = false;
+                    
                     break;
                 }
 
