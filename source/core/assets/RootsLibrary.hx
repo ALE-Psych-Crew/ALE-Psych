@@ -12,6 +12,8 @@ import lime.text.Font;
 import sys.FileSystem;
 import sys.io.File;
 
+import utils.cool.FileUtil;
+
 import haxe.io.Path;
 
 /**
@@ -43,17 +45,19 @@ class RootsLibrary extends AssetLibrary
     override public function exists(id:String, type:String):Bool
         return getPath(id) != null;
 
-    override public function getPath(id:String):String
+    override public function getPath(uPath:String):String
     {
         for (root in roots)
         {
-            final path:String = Path.join([root, id]);
+            final path:String = Path.join([root, uPath]);
 
             if (FileSystem.exists(path))
                 return path;
         }
 
         return null;
+
+        return FileUtil.resolvePath(uPath);
     }
 
     override public function getBytes(id:String):Bytes

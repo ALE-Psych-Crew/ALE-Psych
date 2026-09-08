@@ -35,15 +35,11 @@ class LuaCoolUtil extends LuaPresetBase
         });
 
 
-        set('searchComplexFile', function(path:String, ?missingPrint:Bool):String
+        set('resolvePath', function(path:String):String
         {
-            return CoolUtil.searchComplexFile(path, missingPrint);
+            return CoolUtil.resolvePath(path);
         });
 
-        set('searchFile', function(parent:String, file:String):String
-        {
-            return CoolUtil.searchFile(parent, file);
-        });
 
         set('openFolder', function(folder:String)
         {

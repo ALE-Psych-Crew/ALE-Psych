@@ -3,6 +3,8 @@ package utils.cool;
 import sys.FileSystem;
 import sys.io.File;
 
+import haxe.io.Path;
+
 import Type;
 
 class FileUtil
@@ -16,46 +18,59 @@ class FileUtil
         return result;
     }
 
-    public static function searchComplexFile(path:String, missingPrint:Bool = true)
+    public static function resolvePath(uPath:String, ?keepRoot:Bool = true):String
     {
-        var parts = path.split('/');
+        final route:Array<String> = Path.normalize(uPath).split('/').filter(s -> s.length > 0);
 
-        var parent = '';
+        if (route.length == 0)
+            return null;
 
-        var result:String = null;
-
-        for (part in parts)
+        for (root in Paths.library.roots)
         {
-            result = searchFile(parent, part);
+            if (root == null || !FileSystem.exists(root))
+                continue;
 
-            if (result == null)
+            var currentPath:String = root;
+
+            var matchFound:Bool = true;
+
+            for (index => dir in route)
             {
-                if (missingPrint ?? true)
-                    debugTrace(parent + (parent.length > 0 ? '/' : '') + part, MISSING_FILE);
+                if (!FileSystem.isDirectory(currentPath))
+                {
+                    matchFound = false;
+                    break;
+                }
 
-                return null;
+                final targetSanitized:String = StringUtil.formatString(dir);
+
+                var nextSegment:String = null;
+
+                for (entry in FileSystem.readDirectory(currentPath))
+                    if (StringUtil.formatString(entry) == targetSanitized)
+                    {
+                        nextSegment = entry;
+
+                        break;
+                    }
+
+                if (nextSegment == null)
+                {
+                    matchFound = false;
+
+                    break;
+                }
+
+                currentPath = Path.join([currentPath, nextSegment]);
             }
 
-            parent = result;
+            if (matchFound && FileSystem.exists(currentPath))
+                return keepRoot ? currentPath : Path.join(route);
         }
 
-        return result;
-    }
-
-    public static function searchFile(parent:String, file:String)
-    {
-        for (folder in Paths.library.roots)
-        {
-            var path:String = folder + '/' + parent;
-
-            if (FileSystem.exists(path) && FileSystem.isDirectory(path))
-                for (searchAsset in readDirectory(path))
-                    if (StringUtil.formatString(searchAsset) == StringUtil.formatString(file))
-                        return parent + (parent.length > 0 ? '/' : '') + searchAsset;
-        }
-        
         return null;
     }
+
 
 	inline public static function openFolder(folder:String)
     {

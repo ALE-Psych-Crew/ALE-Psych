@@ -139,7 +139,7 @@ class PlayState extends ScriptedState
 
         restarted = newRestarted;
 
-        songRoute = CoolUtil.searchComplexFile('songs/' + song);
+        songRoute = CoolUtil.resolvePath('songs/' + song, false);
 
         chart = Formatter.getChart(song, difficulty);
 

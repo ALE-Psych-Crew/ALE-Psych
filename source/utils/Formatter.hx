@@ -5,7 +5,6 @@ import core.enums.CharacterType;
 
 import utils.cool.StringUtil;
 import utils.cool.ColorUtil;
-import utils.cool.FileUtil;
 
 import core.structures.*;
 
@@ -610,11 +609,7 @@ class Formatter
 
     public static function getChart(name:String, difficulty:String):ALESong
     {
-        final path:String = 'songs/' + name + '/charts/' + difficulty + '.json';
-
-        final complexPath:String = FileUtil.searchComplexFile(path);
-
-        var json:Dynamic = Paths.json(complexPath.substring(0, path.length - 5));
+        var json:Dynamic = Paths.json('songs/' + name + '/charts/' + difficulty);
 
         var result:ALESong = null;
 
