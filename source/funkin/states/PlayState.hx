@@ -256,7 +256,7 @@ class PlayState extends ScriptedState
 
             while (!eventsListStack.isEmpty() && eventsListStack.first().time <= Conductor.songPosition)
                 for (event in eventsListStack.pop().events)
-                    eventHit(event);
+                    hitEvent(event);
 
             if (Controls.PAUSE && allowPausing)
                 pause();
@@ -437,11 +437,12 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'EventListStack', [eventList]);
     }
 
-    function eventHit(event:ALEEvent)
-    {
-        final args:Array<Dynamic> = cast([event.id], Array<Dynamic>).concat(event.values);
+    function hitEvent(event:ALEEvent)
+        triggerEvent(cast([event.id], Array<Dynamic>).concat(event.values));
 
-        scriptsManager.callback(ON, 'EventHit', args);
+    function triggerEvent(...args:Dynamic)
+    {
+        if (scriptsManager.callback(ON, 'EventHit', args)) {}
 
         scriptsManager.callback(POST, 'EventHit', args);
     }
