@@ -55,8 +55,6 @@ class RootsLibrary extends AssetLibrary
                 return path;
         }
 
-        return null;
-
         return FileUtil.resolvePath(uPath);
     }
 
