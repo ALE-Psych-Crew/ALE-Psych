@@ -3,6 +3,8 @@ package core.debug;
 import sys.thread.Thread;
 import sys.thread.Mutex;
 
+import haxe.io.Path;
+
 /**
  * Utility that detects whether any of the specified files have been modified; if so, it will reset the current state
  */
@@ -65,16 +67,35 @@ class HotReloading
 
     /**
      * This adds a file so that it can be detected
-     * 
      * @param file 
      */
     public static function add(file:String):Void
-        if (CoolVars.meta != null && CoolVars.meta.developerMode && Paths.exists(file))
+        if (check(file))
             files.push(file);
 
     /**
+     * This adds all the files in a folder so they can be detected
+     * @param folder 
+     * @param recursive 
+     */
+    public static function addFolder(folder:String, ?recursive:Bool = false):Void
+    {
+        if (!check(folder))
+            return;
+
+        for (nextPath in Paths.readDirectory(folder))
+        {
+            final path:String = Path.join([folder, nextPath]);
+
+            if (Paths.isDirectory(path) && recursive)
+                addFolder(path, true);
+            else
+                add(path);
+        }
+    }
+
+    /**
      * This removes a file so that it is no longer detected
-     * 
      * @param file 
      */
     public static function remove(file:String):Void
@@ -85,4 +106,12 @@ class HotReloading
      */
     static function reset():Void
         files = [];
+
+    /**
+     * This checks whether the file path, along with other conditions, allows hot reloading to take effect
+     * @param path 
+     * @return Bool
+     */
+    static function check(path:String):Bool
+        return CoolVars.meta != null && CoolVars.meta.developerMode && Paths.exists(path);
 }

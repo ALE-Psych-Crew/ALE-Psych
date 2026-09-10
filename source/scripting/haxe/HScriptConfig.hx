@@ -6,9 +6,13 @@ using utils.cool.MapUtil;
 
 import haxe.Exception;
 
+import core.debug.HotReloading;
+
 #if ALLOW_HSCRIPT
 #if ALE_HSCRIPT
 import ale.hscript.errors.Error;
+#else
+import ale.rulescript.HxParser;
 #end
 
 typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end;
@@ -36,6 +40,26 @@ class HScriptConfig
         #if ALE_HSCRIPT
         Config.ERROR_HANDLER = (error, name) -> debugTrace(name + ': ' + error.toString(), ERROR, null, null, null);
         #else
+        Config.MODULE_RESOLVER = (name) -> {
+            final path:Array<String> = name.split('.');
+
+            final pack:Array<String> = [];
+
+            while (path[0].charAt(0) == path[0].charAt(0).toLowerCase())
+                pack.push(path.shift());
+
+            final moduleName:String = path.length > 1 ? path.shift() : null;
+
+            final filePath:String = Config.MODULE_PATH + (pack.length >= 1 ? pack.join('.') + '.' + (moduleName ?? path[0]) : path[0]).replace('.', '/') + Config.MODULE_EXTENSION;
+
+            if (!Config.FILE_CHECKER(filePath))
+                return null;
+
+            HotReloading.add(filePath);
+
+            return new HxParser(name, MODULE).parseModule(Config.FILE_READER(filePath));
+        };
+
         Config.ERROR_HANDLER = (error:String) -> debugTrace(error, ERROR);
 
         Config.apply();
