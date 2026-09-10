@@ -9,3 +9,4 @@ flixel.math.FlxPoint
 flixel.util.FlxAxes
 openfl.net.URLLoaderDataFormat
 openfl.display.BlendMode
+openfl.display.GradientType
