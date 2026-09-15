@@ -110,6 +110,7 @@ class ImportsMacro
 
             'ale.ui',
             'ale.foxlite',
+            'ale.foxlite.flixel',
 
             'haxe.crypto',
             'haxe.display',
