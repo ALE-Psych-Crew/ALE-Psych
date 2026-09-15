@@ -34,6 +34,8 @@ import utils.Formatter;
 
 import lime.system.System;
 
+import foxlite.loaders.FoxLoaderUtil;
+
 #if android
 import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
 import extension.androidtools.os.Environment as AndroidEnvironment;
@@ -268,6 +270,8 @@ class Main extends Sprite
 		FlxG.mouse.unload();
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true;
+
+		FoxLoaderUtil.PathsClass = { getPath: p -> p };
 
 		Defines.init();
 		
