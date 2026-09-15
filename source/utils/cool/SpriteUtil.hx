@@ -5,6 +5,8 @@ import flixel.graphics.FlxGraphic;
 
 import animate.FlxAnimate;
 
+import openfl.display.BlendMode;
+
 import core.structures.JsonSpriteAnimation;
 import core.structures.JsonSprite;
 
@@ -43,6 +45,9 @@ class SpriteUtil
 
         if (json.color != null)
             sprite.color = ColorUtil.colorFromString(json.color);
+
+        if (json.blend != null)
+            sprite.blend = @:privateAccess BlendMode.fromString(json.blend);
 
         sprite.updateHitbox();
 
