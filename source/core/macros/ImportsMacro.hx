@@ -109,6 +109,7 @@ class ImportsMacro
             'away3d.tools.helpers',
 
             'ale.ui',
+            'ale.foxlite',
 
             'haxe.crypto',
             'haxe.display',
