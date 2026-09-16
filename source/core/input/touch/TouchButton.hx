@@ -130,10 +130,7 @@ class TouchButton extends FlxSpriteGroup
 		if (justReleased || pressed)
 			return false;
 
-		#if FLX_NO_TOUCH
-		if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(this, camera))
-			return true;
-		#else
+		#if FLX_NO_MOUSE
 		if (touch == null)
 			for (t in FlxG.touches.list)
 				if (t.justPressed && t.overlaps(this, camera))
@@ -142,6 +139,9 @@ class TouchButton extends FlxSpriteGroup
 
 					return true;
 				}
+		#else
+		if (FlxG.mouse.justPressed && FlxG.mouse.overlaps(this, camera))
+			return true;
 		#end
 
 		return false;
@@ -152,16 +152,16 @@ class TouchButton extends FlxSpriteGroup
 		if (!pressed || justPressed)
 			return false;
 
-		#if FLX_NO_TOUCH
-		if (FlxG.mouse.justReleased)
-			return true;
-		#else
+		#if FLX_NO_MOUSE
 		if (touch != null && touch.justReleased)
 		{
 			touch = null;
 
 			return true;
 		}
+		#else
+		if (FlxG.mouse.justReleased)
+			return true;
 		#end
 
 		return false;

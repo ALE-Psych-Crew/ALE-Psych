@@ -8,14 +8,14 @@ import core.enums.ScreenOrientation;
 
 class MobileAPI
 {
-    public static var orientation(default, null):ScreenOrientation = LANDSCAPE;
+    public static var orientation(default, set):ScreenOrientation = LANDSCAPE;
 
-    public static function setOrientation(type:ScreenOrientation)
+    static function set_orientation(type:ScreenOrientation)
     {
         #if mobile
         EsOrientation.setScreenOrientation(type.toEsOrientation());
         #end
 
-        orientation = type;
+        return orientation = type;
     }
 }
