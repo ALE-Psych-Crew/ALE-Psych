@@ -21,7 +21,7 @@
 
 	<define name="ALLOW_CRASH_HANDLER"/>
 
-	<define name="ALLOW_DISCORD"/>
+	<define name="ALLOW_DISCORD" if="desktop"/>
 
 	<define name="ALLOW_VIDEOS" if="cpp" unless="switch"/>
 
