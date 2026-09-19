@@ -101,6 +101,12 @@ jobs:
         if: ${{ matrix.extra_libs }}
         run: ${{ matrix.extra_libs }}
 
+      - name: Build hxcpp
+        run:
+          cd ./.haxelib/hxcpp/git/tools/hxcpp
+          haxe compile.hxml
+          cd -
+
       - name: Pre-Build Commands
         if: ${{ matrix.pre_build_commands }}
         run: ${{ matrix.pre_build_commands }}
@@ -130,22 +136,17 @@ jobs:
           apt-get update
           apt-get install -y wget git neko libgc-dev
 
-          echo === DOWNLOADING HAXE FROM GITHUB ===
           wget https://github.com/HaxeFoundation/haxe/releases/download/4.3.7/haxe-4.3.7-linux64.tar.gz
           mkdir haxe_temp
           tar -xf haxe-4.3.7-linux64.tar.gz -C haxe_temp
           cp -r haxe_temp/haxe_*/* /usr/local/bin/
-          echo =========
-          echo === UPDATING HAXELIB ===
+
           mkdir -p ~/haxelib
           haxelib --always --quiet setup ~/haxelib
           haxelib --global --always --quiet update haxelib
           haxelib --global fixrepo
-          echo =========
 
-          echo === HAXE VERSION ===
           haxe --version
-          echo =========
 
       - name: Install Main Libraries
         run: |
@@ -158,10 +159,8 @@ jobs:
           apt-get update
           apt-get install -y libgl1-mesa-dev libglu1-mesa-dev g++-multilib gcc-multilib libasound2-dev libx11-dev libxext-dev libxi-dev libxrandr-dev libxinerama-dev libpulse-dev libmbedtls-dev libpng-dev libturbojpeg-dev libuv1-dev libvorbis-dev libvulkan-dev
 
-          echo === SYNCING DEVKITPRO REPOS ===
           dkp-pacman -Sy --noconfirm || echo "::warning:: The devkitPro repositories could not be synchronized (possible rate limit). Attempting to install using the existing cache..."
 
-          echo === INSTALLING SWITCH LIBRARIES ===
           dkp-pacman -S --needed --noconfirm \
             switch-bzip2 switch-cmake switch-curl switch-flac \
             switch-freetype switch-glad switch-glm switch-harfbuzz \
@@ -175,29 +174,19 @@ jobs:
 
       - name: Pre-Build Commands
         run: |
-          echo === REMOVING HMM-INSTALLED LIME/HXCPP ===
           haxelib remove lime
           haxelib remove hxcpp
 
-          echo === INSTALLING SWITCH-SPECIFIC FORKS ===
           haxelib --always --quiet install format
           haxelib --always --quiet install hxp
           haxelib --always --quiet git hxcpp https://github.com/Slushi-Github/hxcpp-nx.git
-
-          echo === SETUP CUSTOM HXCPP ===
-          cd ./.haxelib/hxcpp/git/tools/hxcpp
-          haxe compile.hxml
-          cd -
-          echo =========
 
           haxelib --always --quiet git lime https://github.com/Slushi-Github/lime-nx.git lime-9778682
           haxelib --always --quiet git flixel-switch https://github.com/Slushi-Github/flixel-switch.git
           haxelib --always --quiet git hx_libnx https://github.com/Slushi-Github/hx_libnx.git
           haxelib list
 
-          echo === REBUILDING LIME FOR SWITCH ===
           haxelib run lime rebuild switch
-          echo =========
 
       - name: Build for Switch
         run: |

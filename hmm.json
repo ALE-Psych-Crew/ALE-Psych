@@ -57,8 +57,8 @@
 			"name": "hxcpp",
 			"type": "git",
 			"dir": null,
-			"ref": null,
-			"url": "https://github.com/ALE-Foundation/hxcpp"
+			"ref": "06d571e296284bc69cbfb1cad48891fdee82772e",
+			"url": "https://github.com/HaxeFoundation/hxcpp"
 		},
 		{
 			"name": "hxluajit",
