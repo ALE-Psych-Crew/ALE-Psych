@@ -102,7 +102,7 @@ jobs:
         run: ${{ matrix.extra_libs }}
 
       - name: Build hxcpp
-        run:
+        run: |
           cd ./.haxelib/hxcpp/git/tools/hxcpp
           haxe compile.hxml
           cd -
