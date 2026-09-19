@@ -68,6 +68,8 @@ class ImportsMacro
             'foxlite.system',
             'foxlite.texture',
 
+            'hxdiscord_rpc',
+
             'flixel.sound.filters',
             'flixel.sound.filters.effects',
 
