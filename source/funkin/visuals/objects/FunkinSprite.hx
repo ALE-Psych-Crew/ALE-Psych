@@ -277,4 +277,15 @@ class FunkinSprite extends FlxAnimate
 
         return this;
     }
+
+    public function stringColorOffset(color:String)
+        setColorOffset(CoolUtil.colorFromString(color));
+
+    public function setColorOffset(color:FlxColor)
+    {
+        colorTransform.redOffset = color.red;
+        colorTransform.greenOffset = color.green;
+        colorTransform.blueOffset = color.blue;
+        colorTransform.alphaOffset = color.alpha;
+    }
 }
