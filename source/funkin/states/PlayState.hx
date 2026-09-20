@@ -1687,6 +1687,20 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'CameraMove', null, [cameraTarget]);
     }
 
+    function centerCamera(?a:Character, ?b:Character, ?lock:Bool = true)
+    {
+        a ??= dad;
+        b ??= bf;
+
+        final aCam = getCharacterCamera(a);
+        final bCam = getCharacterCamera(b);
+
+        cast(camGame, FXCamera).position.set((aCam.x + bCam.x) / 2, (aCam.y + bCam.y) / 2);
+        
+        if (lock)
+            allowCameraMoving = false;
+    }
+
 
     var bopModulo(never, set):Int;
     function set_bopModulo(value:Int):Int
