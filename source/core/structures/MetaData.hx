@@ -18,13 +18,13 @@ class MetaData
     public var stepsPerBeat:Int = 4;
     public var beatsPerSection:Int = 4;
 
-    public var discordID:String = '1309982575368077416';
-    public var discordButtons:Array<{label:Null<String>, url:Null<String>}> = [
-        {
+    public var discord:MetaDataDiscord = {
+        id: '1309982575368077416',
+        firstButton: {
             label: 'ALE Psych Website',
             url: 'https://ale-psych-crew.github.io/ALE-Psych-Site/'
         }
-    ];
+    };
 
     public var title:String = 'Friday Night Funkin\': ALE Psych';
     public var icon:String = 'icon';

@@ -21,7 +21,7 @@
 
 	<define name="ALLOW_CRASH_HANDLER"/>
 
-	<define name="ALLOW_DISCORD" if="desktop"/>
+	<define name="ALLOW_DISCORD" if="windows || linux || macos"/>
 
 	<define name="ALLOW_VIDEOS" if="cpp" unless="switch"/>
 
@@ -33,7 +33,7 @@
 	<define name="ALLOW_ALL_CLASSES"/>
 
 	<define name="FORCE_TOUCH" if="mobile || switch"/>
-
+	
 	<!-- Assets -->
 
 	<source path="source"/>
@@ -91,10 +91,12 @@
 	
 	<define name="HX_WINDOWS" if="ALLOW_WINDOWS_API"/>
 
+	<haxedef name="DISCORD_DISABLE_IO_THREAD" if="hxdiscord_rpc" />
+
 	<haxedef name="hscriptPos"/>
 
-	<haxedef name='lime_disable_assets_version'/>	
-	
+	<haxedef name='lime_disable_assets_version'/>
+
 	<haxedef name="FLX_NO_TOUCH" if="desktop"/>
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN"/>
 	<haxedef name="FLX_NO_SOUND_TRAY"/>

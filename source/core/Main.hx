@@ -57,6 +57,8 @@ import haxe.io.Path;
 import hxgamemode.GamemodeClient;
 #end
 
+import core.discord.Discord;
+
 @:unreflective
 class Main extends Sprite
 {
@@ -201,6 +203,8 @@ class Main extends Sprite
 
 		Score.destroy();
 
+		Discord.destroy();
+
 		if (game.soundTraySprite is GameObject)
 			cast(game.soundTraySprite, GameObject)?.destroy();
 
@@ -301,6 +305,8 @@ class Main extends Sprite
 
 		TouchControls.init();
 
+		Discord.init();
+
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());
 
@@ -331,6 +337,8 @@ class Main extends Sprite
 		#if ALLOW_LINUX_API
 		GamemodeClient.request_end();
 		#end
+
+		Discord.destroy();
 
 		Save.destroy();
 	}

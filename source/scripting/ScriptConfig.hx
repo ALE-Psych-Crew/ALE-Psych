@@ -44,6 +44,8 @@ class ScriptConfig
 
         core.assets.Paths,
 
+        core.discord.Discord,
+
         core.states.ScriptedState,
         core.states.State,
 

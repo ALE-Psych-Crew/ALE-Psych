@@ -979,7 +979,7 @@ class PlayState extends ScriptedState
         scriptsManager.callback(POST, 'ComboDisplay', [rating]);
     }
 
-    var uiGroup:FlxTypedGroup<FlxSprite>;
+    var uiGroup:FlxSpriteGroup;
 
     var healthBar:Bar;
     var scoreText:FlxText;
@@ -988,7 +988,7 @@ class PlayState extends ScriptedState
     {
         if (scriptsManager.callback(ON, 'HudInit'))
         {
-            add(uiGroup = new FlxTypedGroup<FlxSprite>());
+            add(uiGroup = new FlxSpriteGroup());
             uiGroup.camera = camHUD;
 
             healthBar = new Bar(hudRoute + '/' + hud.bar, hudRoute + '/' + hud.barFilling, false, health);
