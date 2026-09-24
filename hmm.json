@@ -9,7 +9,7 @@
 			"name": "ale-foxlite-wrapper",
 			"type": "git",
 			"dir": null,
-			"ref": "e59f20a025a6fcfb247b11b908b246743c5a7a75",
+			"ref": "89950e539a5cc6a09223a8ee7832b8c59faa621b",
 			"url": "https://github.com/ALE-Foundation/ALE-Foxlite-Wrapper"
 		},
 		{
@@ -92,8 +92,10 @@
 		},
 		{
 			"name": "foxlite",
-			"type": "haxelib",
-			"version": "0.1.1"
+			"type": "git",
+			"dir": null,
+			"ref": "0c113247ea3580613cfc8f2362ea08822d8448f7",
+			"url": "https://github.com/dwdvIl/foxlite/"
 		},
 		{
 			"name": "hxdiscord_rpc",
