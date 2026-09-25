@@ -9,6 +9,8 @@ class MetaData
     public var debugPrint:Bool = true;
     public var verbose:Bool = false;
 
+    public var initialState:String = 'TitleState';
+
     public var states:Any = {};
     public var substates:Any = {};
 
