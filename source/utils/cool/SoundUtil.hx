@@ -9,6 +9,7 @@ class SoundUtil
 		sound.loadEmbedded(Paths.sound(name), looped);
 
 		FlxG.sound.defaultSoundGroup.add(sound);
+		FlxG.sound.list.add(sound);
 
 		sound.play();
 
