@@ -105,31 +105,50 @@ class FieldsMacro
             case 'flixel.FlxSprite':
                 for (f in fields)
                 {
-                    if (f.name != 'checkEmptyFrame')
-                        continue;
+                    switch (f.name)
+                    {
+                        case 'checkEmptyFrame':
+                            f.kind = FFun({
+                                args: [],
+                                ret: macro:Void,
+                                expr: macro {
+                                    if (_frame == null)
+                                    {
+                                        loadGraphic('flixel/NO_IMAGE.png');
+                                    } else if (graphic != null && graphic.isDestroyed) {
+                                        final width = this.width;
+                                        final height = this.height;
 
-                    f.kind = FFun({
-                        args: [],
-                        ret: macro:Void,
-                        expr: macro {
-                            if (_frame == null)
-                            {
-                                loadGraphic('flixel/NO_IMAGE.png');
-                            } else if (graphic != null && graphic.isDestroyed) {
-                                final width = this.width;
-                                final height = this.height;
+                                        flixel.FlxG.log.error('Cannot render a destroyed graphic, the placeholder image will be used instead');
 
-                                flixel.FlxG.log.error('Cannot render a destroyed graphic, the placeholder image will be used instead');
+                                        loadGraphic('flixel/NO_IMAGE.png');
 
-                                loadGraphic('flixel/NO_IMAGE.png');
+                                        this.width = width;
+                                        this.height = height;
+                                    }
+                                }
+                            });
 
-                                this.width = width;
-                                this.height = height;
-                            }
-                        }
-                    });
+                        case 'set_angle':
+                            f.kind = FFun({
+                                args: [{name: 'value', type: macro:Float}],
+                                ret: macro:Float,
+                                expr: macro {
+                                    final newAngle:Bool = angle != value;
 
-                    break;
+                                    final res:Float = super.set_angle(value);
+
+                                    if (newAngle)
+                                    {
+                                        _angleChanged = true;
+
+                                        animation?.update(0);
+                                    }
+
+                                    return res;
+                                }
+                            });
+                    }
                 }
 
             case 'rulescript.types.Typedefs':
