@@ -125,6 +125,23 @@
 			"name": "hxgamemode",
 			"type": "haxelib",
 			"version": "1.0.1"
+		},
+		{
+			"name": "tink_core",
+			"type": "haxelib",
+			"version": "1.26.0"
+		},
+		{
+			"name": "grig.audio",
+			"type": "git",
+			"url": "https://github.com/FunkinCrew/grig.audio",
+			"ref": "6409f3c6d1b4c52176813d3ede86c0d34e8af2c1"
+		},
+		{
+			"name": "funkin.vis",
+			"type": "git",
+			"url": "https://github.com/FunkinCrew/funkVis",
+			"ref": "02bada154b474c2554709b9d12aef0cbf0da3ec9"
 		}
 	]
 }

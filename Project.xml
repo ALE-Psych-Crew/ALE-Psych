@@ -49,6 +49,10 @@
 	<haxelib name="flixel-addons"/>
 	<haxelib name="flixel-animate"/>
 	<haxelib name="flxsoundfilters"/>
+
+	<haxelib name="tink_core"/>
+	<haxelib name="grig.audio"/>
+	<haxelib name="funkin.vis"/>
 	
 	<haxelib name="foxlite"/>
 	

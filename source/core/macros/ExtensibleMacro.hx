@@ -81,6 +81,10 @@ class ExtensibleMacro
 
             'funkin.visuals.objects.Alphabet',
             'funkin.visuals.objects.Letter',
+            'funkin.visuals.objects.MeshRender',
+            'funkin.visuals.objects.PolygonSpectogram',
+            'funkin.visuals.objects.SpectogramSprite',
+            'funkin.visuals.objects.Visualizer',
             'funkin.visuals.objects.Bar'
         ];
 
