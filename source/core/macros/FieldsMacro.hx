@@ -13,7 +13,8 @@ class FieldsMacro
             'flixel.FlxBasic',
             'flixel.FlxState',
             'flixel.FlxSprite',
-            'rulescript.types.Typedefs'
+            'rulescript.types.Typedefs',
+            'funkin.vis.audioclip.frontends.LimeAudioClip'
         ])
             Compiler.addGlobalMetadata(cls, '@:build(core.macros.FieldsMacro.build())', true);
     }
@@ -149,6 +150,28 @@ class FieldsMacro
                                 }
                             });
                     }
+                }
+
+            case 'funkin.vis.audioclip.frontends.LimeAudioClip':
+                for (f in fields)
+                {
+                    if (f.name != 'get_currentFrame')
+                        continue;
+
+                    f.kind = FFun({
+                        args: [],
+                        ret: macro:Int,
+                        expr: macro {
+                            if (FlxG.sound.music == null)
+                                return -1;
+
+                            final value = Std.int(FlxMath.remapToRange(FlxG.sound.music.time, 0, FlxG.sound.music.length, 0, audioBuffer.data.length));
+
+                            return value < 0 ? -1 : value;
+                        }
+                    });
+
+                    break;
                 }
 
             case 'rulescript.types.Typedefs':
