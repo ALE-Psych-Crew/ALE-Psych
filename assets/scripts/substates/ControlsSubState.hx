@@ -97,7 +97,11 @@ function postCreate()
                 } else {
                     FlxFlicker.stopFlickering(sel ? right : left);
 
-                    ClientPrefs.getControl(group.variable, ctrl.variable)[sel ? 1 : 0] = FlxG.keys.firstJustPressed();
+                    final data = ClientPrefs.getControl(group.variable, ctrl.variable);
+
+                    data[sel ? 1 : 0] = FlxG.keys.firstJustPressed();
+
+                    ClientPrefs.setControl(group.variable, ctrl.variable, data);
 
                     regen();
                 }

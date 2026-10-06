@@ -1,25 +1,23 @@
 package core.structures;
 
-@:structInit
-class SaveData
-{
-    public var antialiasing:Bool = true;
-    public var flashing:Bool = true;
-	public var lowQuality:Bool = false;
-	public var shaders:Bool = true;
+typedef SaveData = {
+    antialiasing:Bool,
+    flashing:Bool,
+	lowQuality:Bool,
+	shaders:Bool,
 	
-	public var downScroll:Bool = false;
-	public var ghostTapping:Bool = true;
-	public var noReset:Bool = false;
+	downScroll:Bool,
+	ghostTapping:Bool,
+	noReset:Bool,
 
-	public var cacheOnGPU:Bool = true;
-	public var framerate:Int = 120;
+	cacheOnGPU:Bool,
+	framerate:Int,
 
-	public var checkForUpdates:Bool = true;
+	checkForUpdates:Bool,
 	
-	public var discordRPC:Bool = true;
+	discordRPC:Bool,
 
-	public var botplay:Bool = false;
+	botplay:Bool,
 
-	public var practice:Bool = false;
+	practice:Bool
 }

@@ -68,7 +68,7 @@ class Save
 
                     if (isCustom(subRes, ogSubRes))
                     {
-                        if (Reflect.field(ClientPrefs.customControls, field) != null)
+                        if (Reflect.field(ClientPrefs.customControls, field) == null)
                             Reflect.setField(ClientPrefs.customControls, field, {});
 
                         Reflect.setField(Reflect.field(ClientPrefs.customControls, field), subField, subRes);
@@ -159,7 +159,7 @@ class Save
 
         for (song in Score.songs.keys())
         {
-            if (Reflect.field(score.data.songs, song) != null)
+            if (Reflect.field(score.data.songs, song) == null)
                 Reflect.setField(score.data.songs, song, {});
 
             final curSong = Score.songs[song];
@@ -172,7 +172,7 @@ class Save
 
         for (week in Score.weeks.keys())
         {
-            if (Reflect.field(score.data.weeks, week) != null)
+            if (Reflect.field(score.data.weeks, week) == null)
                 Reflect.setField(score.data.weeks, week, {});
 
             final curWeek = Score.weeks[week];
