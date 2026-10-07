@@ -59,6 +59,8 @@ import hxgamemode.GamemodeClient;
 
 import core.discord.Discord;
 
+import ale.ui.Config;
+
 @:unreflective
 class Main extends Sprite
 {
@@ -306,6 +308,9 @@ class Main extends Sprite
 		TouchControls.init();
 
 		Discord.init();
+
+		Config.reset();
+		Config.FONT = Paths.font('montserrat.ttf');
 
 		if (CoolVars.meta.debugPrint && CoolVars.meta.developerMode)
 			PluginsHandler.add(debugPrintPlugin = new DebugPrintPlugin());

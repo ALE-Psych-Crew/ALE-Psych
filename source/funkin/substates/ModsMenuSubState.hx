@@ -10,8 +10,6 @@ import flixel.math.FlxPoint;
 
 import utils.cool.FileUtil;
 
-import ale.ui.UIUtils;
-
 import sys.FileSystem;
 
 class ModsMenuSubState extends SubState

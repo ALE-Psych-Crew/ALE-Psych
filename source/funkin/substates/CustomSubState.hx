@@ -2,7 +2,7 @@ package funkin.substates;
 
 import utils.cool.StateUtil;
 
-import ale.ui.UIUtils;
+import ale.ui.objects.InputText;
 
 class CustomSubState extends ScriptedSubState
 {
@@ -59,7 +59,7 @@ class CustomSubState extends ScriptedSubState
         if (scriptsManager.callback(ON, 'Update', [elapsed]))
             super.update(elapsed);
 
-        if (Controls.BACK && CoolVars.meta.developerMode && !UIUtils.usingInputs)
+        if (Controls.BACK && CoolVars.meta.developerMode && @:privateAccess InputText.typingCount <= 0)
             close();
 
         scriptsManager.callback(POST, 'Update', [elapsed]);
