@@ -38,7 +38,7 @@ import openfl.events.KeyboardEvent;
 
 import haxe.ds.GenericStack;
 
-import ale.ui.objects.InputText;
+import ale.ui.Utils;
 
 import core.Main;
 
@@ -235,14 +235,14 @@ class PlayState extends ScriptedState
 
     override function update(elapsed:Float)
     {
-        if (Controls.RESET && CoolVars.meta.developerMode && @:privateAccess InputText.typingCount <= 0)
+        if (Controls.RESET && CoolVars.meta.developerMode && !Utils.usingInputs)
             reset();
 
         if (scriptsManager.callback(ON, 'Update', [elapsed]))
         {
             super.update(elapsed);
 
-            if (Controls.RESET && !CoolVars.meta.developerMode && !ClientPrefs.data.noReset && @:privateAccess InputText.typingCount <= 0)
+            if (Controls.RESET && !CoolVars.meta.developerMode && !ClientPrefs.data.noReset && !Utils.usingInputs)
                 health = 0;
 
             health = FlxMath.bound(health, 0, 100);

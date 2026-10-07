@@ -2,7 +2,7 @@ package funkin.states;
 
 import utils.cool.StateUtil;
 
-import ale.ui.objects.InputText;
+import ale.ui.Utils;
 
 class CustomState extends ScriptedState
 {
@@ -46,7 +46,7 @@ class CustomState extends ScriptedState
         if (scriptsManager.callback(ON, 'Update', [elapsed]))
             super.update(elapsed);
 
-        if (Controls.RESET && CoolVars.meta.developerMode && @:privateAccess InputText.typingCount <= 0)
+        if (Controls.RESET && CoolVars.meta.developerMode && !Utils.usingInputs)
             reset();
 
         scriptsManager.callback(POST, 'Update', [elapsed]);
