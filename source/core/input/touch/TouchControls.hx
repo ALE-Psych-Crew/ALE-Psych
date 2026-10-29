@@ -12,7 +12,7 @@ class TouchControls
 	{
 		for (key in keys)
 		{
-			if (key == null || (key : Int) <= 0)
+			if (key == null || (key : Int) <= 0 || map == null || (map[key] : Null<Int>) == null)
 				continue;
 			
 			if (map[key] > 0)
