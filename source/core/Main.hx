@@ -164,20 +164,22 @@ class Main extends Sprite
 	{
 		function resetSpriteCache(sprite:Sprite)
 		{
+			if (sprite == null)
+				return;
+
 			@:privateAccess {
-		        sprite.__cacheBitmap = null;
-				sprite.__cacheBitmapData = null;
+				sprite.__cacheBitmap = null;
+				sprite.__cacheBitmapData = sprite.__cacheBitmapData2 = sprite.__cacheBitmapData3 = null;
+				sprite.__cacheBitmapColorTransform = null;
 			}
 		}
 		
 		FlxG.signals.gameResized.add((w, h) -> {
-		     if (FlxG.cameras != null)
-				for (cam in FlxG.cameras.list)
-					if (cam != null && cam.filters != null)
-						resetSpriteCache(cam.flashSprite);
+			resetSpriteCache(FlxG.game);
 
-			if (FlxG.game != null)
-				resetSpriteCache(FlxG.game);
+			for (cam in FlxG.cameras.list)
+				if (cam?.filters != null)
+					resetSpriteCache(cam.flashSprite);
 		});
 	}
 
