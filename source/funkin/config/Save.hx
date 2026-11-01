@@ -5,6 +5,8 @@ import flixel.input.keyboard.FlxKey;
 import core.structures.JsonControl;
 import core.structures.JsonOption;
 
+import utils.cool.AppUtil;
+
 class Save
 {
     public static var options:SaveFile;
@@ -46,7 +48,7 @@ class Save
                     if (isCustom(Reflect.field(ClientPrefs.custom, option.variable), option.initial))
                         Reflect.setField(ClientPrefs.custom, option.variable, option.initial);
 
-            FlxG.updateFramerate = FlxG.drawFramerate = ClientPrefs.data.framerate;
+            AppUtil.setFramerate(ClientPrefs.data.framerate);
 
             FlxSprite.defaultAntialiasing = ClientPrefs.data.antialiasing;
         }

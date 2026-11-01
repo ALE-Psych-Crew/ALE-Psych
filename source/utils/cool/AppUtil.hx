@@ -17,6 +17,9 @@ class AppUtil
 		FlxG.resetGame();
 	}
 
+	public static function setFramerate(rate:Int):Int
+		return FlxG.updateFramerate = FlxG.drawFramerate = rate;
+
 	public static function createSafeThread(func:Void -> Void):Thread
 	{
 		return Thread.create(function()
