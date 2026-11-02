@@ -148,7 +148,7 @@ class ExtensibleMacro
             {
                 for (data in packages[pack])
                 {
-                    final scriptedName:String = 'Scripted_' + data.name;
+                    final scriptedName:String = data.name + '_Scripted';
 
                     if (created.contains(scriptedName))
                         continue;
