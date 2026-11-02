@@ -62,8 +62,8 @@ class ExtensibleMacro
 
             'scripting.lua.LuaPresetBase',
 
-            'ale.ui.MouseSprite',
-            'ale.ui.UISprite'
+            'ale.foxlite.flixel',
+            'ale.foxlite'
         ];
 
         final ignore:Array<String> = [
