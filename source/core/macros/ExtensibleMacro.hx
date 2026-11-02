@@ -148,21 +148,23 @@ class ExtensibleMacro
             {
                 for (data in packages[pack])
                 {
-                    final scriptedName:String = 'Scripted' + data.name;
+                    final scriptedName:String = 'Scripted_' + data.name;
 
                     if (created.contains(scriptedName))
                         continue;
 
+                    final packArr:Array<String> = pack.split('.');
+
                     created.push(scriptedName);
 
                     final typeDef:TypeDefinition = {
-                        pack: ['scripting', 'haxe'],
+                        pack: packArr,
                         name: scriptedName,
                         pos: Context.currentPos(),
                         fields: [],
                         kind: TDClass(
                             {
-                                pack: pack.split('.'),
+                                pack: packArr,
                                 name: data.name
                             },
                             [{
