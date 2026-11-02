@@ -92,12 +92,17 @@ class FXCamera extends Camera
 	{
 		super.update(elapsed);
 
+		updateZoom(elapsed);
+		updateAngle(elapsed);
+	}
+
+	function updateZoom(_:Float)
 		if (_zoomTween == null && zoomSpeed > 0)
 			zoom = MathUtil.fpsLerp(zoom, targetZoom, 0.05 * zoomSpeed);
 
+	function updateAngle(_:Float)
 		if (_angleTween == null && angleSpeed > 0)
 			angle = MathUtil.fpsLerp(angle, targetAngle, 0.05 * angleSpeed);
-	}
 
 	public function updateTarget(_:FlxPoint)
 	{
