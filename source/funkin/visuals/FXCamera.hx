@@ -24,28 +24,28 @@ class FXCamera extends Camera
 
 	public var bopModulo:Int = Conductor.beatsPerSection;
 
-	public var bopZoom:Float;
+	public var bopZoom:Float = 0;
 
-	public var zoomSpeed:Float;
-	public var targetZoom:Float;
+	public var zoomSpeed:Float = 0;
+	public var targetZoom:Float = 0;
 
-	public var angleSpeed:Float;
-	public var targetAngle:Float;
+	public var angleSpeed:Float = 0;
+	public var targetAngle:Float = 0;
 
-	public var offset:FlxCallbackPoint;
-	public var position:FlxCallbackPoint;
+	public var offset:FlxCallbackPoint = null;
+	public var position:FlxCallbackPoint = null;
 
-	var _positionTween:FlxTween;
+	var _positionTween:FlxTween = null;
 
-	var _zoomSpeedTween:FlxTween;
+	var _zoomSpeedTween:FlxTween = null;
 
-	var _offsetTween:FlxTween;
+	var _offsetTween:FlxTween = null;
 
-	var _angleTween:FlxTween;
+	var _angleTween:FlxTween = null;
 
-	var _zoomTween:FlxTween;
+	var _zoomTween:FlxTween = null;
 
-	var _speedTween:FlxTween;
+	var _speedTween:FlxTween = null;
 
 	public function reset()
 	{
@@ -111,40 +111,30 @@ class FXCamera extends Camera
 	}
 
 	public function bop(curBeat:Int)
-	{
 		if (_zoomTween == null && bopModulo > 0 && curBeat % bopModulo == 0)
-			zoom += 0.015 * bopZoom;
-	}
+			zoom += 0.015 * bopZoom * zoom;
 
 	public function tweenPosition(x:Float, y:Float, ?duration:Float, ?options:TweenOptions)
-	{
 		_positionTween = safePointTween(_positionTween, position, x, y, () -> { _positionTween = null; }, duration, options);
-	}
 
 	public function cancelPositionTween()
-	{
 		if (_positionTween != null)
 		{
 			_positionTween.cancel();
 
 			_positionTween = null;
 		}
-	}
 
 	public function tweenOffset(x:Float, y:Float, ?duration:Float, ?options:TweenOptions)
-	{
 		_offsetTween = safePointTween(_offsetTween, offset, x, y, () -> { _offsetTween = null; }, duration, options);
-	}
 
 	public function cancelOffsetTween()
-	{
 		if (_offsetTween != null)
 		{
 			_offsetTween.cancel();
 
 			_offsetTween = null;
 		}
-	}
 
 	inline function safePointTween(initTween:Null<FlxTween>, point:FlxPoint, x:Float, y:Float, endFunc:Void -> Void, ?duration:Float, ?options:TweenOptions):FlxTween
 	{
@@ -155,14 +145,12 @@ class FXCamera extends Camera
 	}
 
 	public function tweenAngle(newAngle:Float, ?duration:Float, ?options:TweenOptions, ?permanent:Bool)
-	{
 		_angleTween = safeUniqueTween(_angleTween, angle, newAngle, (val) -> {
 			if (permanent ?? true)
 				targetAngle = val;
 
 			angle = val;
 		}, () -> { _angleTween = null; }, duration, options);
-	}
 
 	public function cancelAngleTween()
 	{
@@ -175,29 +163,23 @@ class FXCamera extends Camera
 	}
 
 	public function tweenZoom(newZoom:Float, ?duration:Float, ?options:TweenOptions, ?permanent:Bool)
-	{
 		_zoomTween = safeUniqueTween(_zoomTween, zoom, newZoom, (val) -> {
 			if (permanent ?? true)
 				targetZoom = val;
 
 			zoom = val;
 		}, () -> { _zoomTween = null; }, duration, options);
-	}
 
 	public function cancelZoomTween()
-	{
 		if (_zoomTween != null)
 		{
 			_zoomTween.cancel();
 
 			_zoomTween = null;
 		}
-	}
 
 	public function tweenSpeed(newSpeed:Float, ?duration:Float, ?options:TweenOptions)
-	{
 		_speedTween = safeUniqueTween(_speedTween, speed, newSpeed, (val) -> { speed = val; }, () -> { _speedTween = null; }, duration, options);
-	}
 
 	public function cancelSpeedTween()
 	{
