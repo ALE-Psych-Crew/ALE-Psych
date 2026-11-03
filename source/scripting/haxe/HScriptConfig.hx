@@ -60,7 +60,7 @@ class HScriptConfig
             return new HxParser(name, MODULE).parseModule(Config.FILE_READER(filePath));
         };
 
-        Config.ERROR_HANDLER = (error:String) -> debugTrace(error, ERROR);
+        Config.ERROR_HANDLER = error -> debugTrace(error, ERROR);
 
         Config.apply();
         #end
