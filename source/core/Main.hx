@@ -35,6 +35,7 @@ import utils.Formatter;
 import lime.system.System;
 
 import foxlite.loaders.FoxLoaderUtil;
+import foxlite.renderer.FoxRenderer;
 
 #if android
 import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
@@ -158,6 +159,8 @@ class Main extends Sprite
 		}, false, 1);
 		
 		DesktopAPI.setDPIAware();
+
+		FoxRenderer.initLibs();
 	}
 
 	static function postConfig()
