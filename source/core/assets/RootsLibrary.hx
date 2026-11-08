@@ -90,21 +90,24 @@ class RootsLibrary extends AssetLibrary
 
     public function getMusic(id:String):Sound
     {
+        var res:Sound = null;
+
         #if native
-        final path = getPath(id);
+        if (ClientPrefs.data.streamedSounds)
+        {
+            final path = getPath(id);
 
-        if (path == null)
-            return null;
+            if (path != null)
+            {
+                final file = VorbisFile.fromFile(path);
 
-        final file = VorbisFile.fromFile(path);
-
-        if (file == null)
-            return null;
-
-        return Sound.fromAudioBuffer(AudioBuffer.fromVorbisFile(file));
-        #else
-        return getSound(id);
+                if (file != null)
+                    res = Sound.fromAudioBuffer(AudioBuffer.fromVorbisFile(file));
+            }
+        }
         #end
+
+        return res ?? getSound(id);
     }
 
     override public function getImage(id:String):Image

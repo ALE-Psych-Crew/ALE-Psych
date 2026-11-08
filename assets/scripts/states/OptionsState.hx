@@ -403,6 +403,18 @@ static final optionsConfig:Array<{name:String, options:Array<JsonOption>}> = [
         ]
     },
     {
+        name: 'Audio',
+        options: [
+            {
+                name: 'Streamed Sounds',
+                description: 'Sets whether streamed sounds should be enabled or not (Experimental)',
+                variable: 'streamedSounds',
+                type: 'bool',
+                initial: false
+            }
+        ]
+    },
+    {
         name: 'Visuals and UI',
         options: [
             {

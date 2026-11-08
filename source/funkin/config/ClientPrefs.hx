@@ -22,6 +22,8 @@ class ClientPrefs
 			flashing: true,
 			lowQuality: false,
 			shaders: true,
+
+			streamedSounds: false,
 			
 			downScroll: false,
 			ghostTapping: true,

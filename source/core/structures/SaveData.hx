@@ -5,6 +5,8 @@ typedef SaveData = {
     flashing:Bool,
 	lowQuality:Bool,
 	shaders:Bool,
+
+	streamedSounds:Bool,
 	
 	downScroll:Bool,
 	ghostTapping:Bool,
