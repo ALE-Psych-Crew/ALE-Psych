@@ -96,16 +96,11 @@ jobs:
           haxelib --global git hmm https://github.com/ALE-Psych-Crew/hmm
           haxelib --global run hmm setup
           haxelib --global run hmm install
+          haxelib run libhxcpp setup
 
       - name: Install Extra Libraries
         if: ${{ matrix.extra_libs }}
         run: ${{ matrix.extra_libs }}
-
-      - name: Build hxcpp
-        run: |
-          cd ./.haxelib/hxcpp/git/tools/hxcpp
-          haxe compile.hxml
-          cd -
 
       - name: Pre-Build Commands
         if: ${{ matrix.pre_build_commands }}

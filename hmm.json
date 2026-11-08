@@ -54,11 +54,9 @@
 			"url": "https://github.com/HaxeFoundation/hscript"
 		},
 		{
-			"name": "hxcpp",
-			"type": "git",
-			"dir": null,
-			"ref": "06d571e296284bc69cbfb1cad48891fdee82772e",
-			"url": "https://github.com/HaxeFoundation/hxcpp"
+			"name": "libhxcpp",
+			"type": "haxelib",
+			"version": "6.0.0-rc.1"
 		},
 		{
 			"name": "hxluajit",
