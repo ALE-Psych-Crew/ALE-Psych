@@ -170,7 +170,6 @@ jobs:
       - name: Pre-Build Commands
         run: |
           haxelib remove lime
-          haxelib remove hxcpp
 
           haxelib --always --quiet install format
           haxelib --always --quiet install hxp
