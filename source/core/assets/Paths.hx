@@ -177,7 +177,11 @@ class Paths
             },
             FileType.AUDIO => {
                 postfix: '.ogg',
-                get: (id, _, _, _) -> Sound.fromAudioBuffer(library.getAudioBuffer(id))
+                get: (id, _, _, _) -> library.getSound(id)
+            },
+            FileType.STREAMED_AUDIO => {
+                postfix: '.ogg',
+                get: (id, _, _, _) -> library.getMusic(id)
             },
             FileType.ATLAS => {
                 get: (id, arg, permanent, missingPrint) -> {
@@ -451,6 +455,16 @@ class Paths
         return get(file, FileType.AUDIO, permanent, missingPrint);
 
     /**
+     * This partially loads an audio file while playing it as a `Sound`
+     * @param file File path
+     * @param permanent This determines whether your cache should be persistent
+     * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
+     * @return Resulting `Sound`
+     */
+    public static function streamedAudio(file:String, ?permanent:Bool, ?missingPrint:Bool):Sound
+        return get(file, FileType.STREAMED_AUDIO, permanent, missingPrint);
+
+    /**
      * This retrieves an audio file located in `music/` and converts it into a `Sound`
      * @param file File path
      * @param permanent This determines whether your cache should be persistent
@@ -458,7 +472,7 @@ class Paths
      * @return Resulting `Sound`
      */
     public static function music(file:String, ?permanent:Bool, ?missingPrint:Bool):Sound
-        return audio('music/' + file, permanent, missingPrint);
+        return streamedAudio('music/' + file, permanent, missingPrint);
 
     /**
      * This retrieves an audio file located in `sounds/` and converts it into a `Sound`
@@ -478,7 +492,7 @@ class Paths
 	 * @return Resulting `Sound`
 	 */
 	public static function inst(route:String, ?permanent:Bool, ?missingPrint:Bool):Sound
-		return audio(route + '/audios/Inst', permanent, missingPrint);
+		return streamedAudio(route + '/audios/Inst', permanent, missingPrint);
 
 	/**
 	 * This retrieves the vocal from a song and converts it into a `Sound`
@@ -489,7 +503,7 @@ class Paths
 	 * @return Resulting `Sound`
 	 */
 	public static function voices(route:String, ?postfix:String, ?permanent:Bool, ?missingPrint:Bool):Sound
-		return audio(route + '/audios/Voices' + (postfix == null ? '' : '-' + postfix), permanent, missingPrint);
+		return streamedAudio(route + '/audios/Voices' + (postfix == null ? '' : '-' + postfix), permanent, missingPrint);
 
     // Data
 

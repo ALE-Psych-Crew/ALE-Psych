@@ -3,6 +3,7 @@ package funkin.visuals.objects;
 import flixel.util.typeLimit.OneOfTwo;
 
 import funkin.vis.dsp.SpectralAnalyzer;
+import funkin.vis.dsp.Bar;
 
 import lime.media.AudioSource;
 
@@ -40,7 +41,7 @@ class Visualizer extends FlxSpriteGroup
 
     override function draw()
     {
-        @:privateAccess var levels = analyzer.audioSource == null ? [for (i in 0...members.length) {value: 0.0, peak: 0.0}] : analyzer.getLevels();
+        @:privateAccess var levels:Array<Bar> = analyzer.audioSource == null ? [for (i in 0...members.length) {value: 0.0, peak: 0.0}] : analyzer.getLevels();
 
         for (i in 0...min(members.length, levels.length))
             members[i].scale.y = levels[i].value;

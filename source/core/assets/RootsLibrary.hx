@@ -3,7 +3,9 @@ package core.assets;
 import openfl.utils.AssetManifest;
 import openfl.utils.AssetLibrary;
 import openfl.utils.AssetType;
+import openfl.media.Sound;
 
+import lime.media.vorbis.VorbisFile;
 import lime.media.AudioBuffer;
 import lime.graphics.Image;
 import lime.utils.Bytes;
@@ -82,6 +84,28 @@ class RootsLibrary extends AssetLibrary
 
     override public function getAudioBuffer(id:String):AudioBuffer
         return resolve(id, AudioBuffer.fromBytes);
+
+    public function getSound(id:String):Sound
+        return Sound.fromAudioBuffer(getAudioBuffer(id));
+
+    public function getMusic(id:String):Sound
+    {
+        #if native
+        final path = getPath(id);
+
+        if (path == null)
+            return null;
+
+        final file = VorbisFile.fromFile(path);
+
+        if (file == null)
+            return null;
+
+        return Sound.fromAudioBuffer(AudioBuffer.fromVorbisFile(file));
+        #else
+        return getSound(id);
+        #end
+    }
 
     override public function getImage(id:String):Image
         return resolve(id, Image.fromBytes);
