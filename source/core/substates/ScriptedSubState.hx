@@ -2,6 +2,8 @@ package core.substates;
 
 import core.interfaces.IScriptedState;
 
+import utils.cool.StateUtil;
+
 import scripting.ScriptsManager;
 
 class ScriptedSubState extends MusicBeatSubState implements IScriptedState
@@ -35,6 +37,6 @@ class ScriptedSubState extends MusicBeatSubState implements IScriptedState
     {
         close();
 
-        CoolUtil.openSubState(new ScriptedSubState(scriptsManager.globalArguments #if ALLOW_HSCRIPT , scriptsManager.haxeArguments #end #if ALLOW_LUA , scriptsManager.luaArguments #end));
+        StateUtil.openSubState(new ScriptedSubState(scriptsManager.globalArguments #if ALLOW_HSCRIPT , scriptsManager.haxeArguments #end #if ALLOW_LUA , scriptsManager.luaArguments #end));
     }
 }

@@ -16,6 +16,8 @@ class HotReloading
 
     @:unreflective static var thread:Thread;
 
+    @:unreflective static var reload:Bool = false;
+
     static var times:Map<String, Float> = null;
 
     @:dox(hide)
@@ -32,26 +34,30 @@ class HotReloading
             {
                 if (CoolVars.meta != null && CoolVars.meta.hotReloading && CoolVars.meta.developerMode && FlxG.state is ScriptedState)
                 {
-                    for (file in files)
+                    mutex.acquire();
+
+                    final localFiles:Array<String> = files.copy();
+
+                    mutex.release();
+
+                    var changed:Bool = false;
+
+                    for (file in localFiles)
                     {
                         final lastTime:Float = Paths.exists(file) ? Paths.stat(file).mtime.getTime() : -1;
 
+                        mutex.acquire();
+
                         if (times.exists(file) && times[file] != lastTime)
-                        {
-                            times[file] = lastTime;
+                            changed = true;
 
-                            mutex.acquire();
+                        times[file] = lastTime;
 
-                            if (FlxG.state.subState == null)
-                                cast(FlxG.state, ScriptedState).reset();
-                            else if (FlxG.state.subState is ScriptedSubState)
-                                cast(FlxG.state.subState, ScriptedSubState).reset();
-
-                            mutex.release();
-                        } else {
-                            times[file] = lastTime;
-                        }
+                        mutex.release();
                     }
+
+                    if (changed)
+                        reload = true;
                 }
 
                 Sys.sleep(0.1);
@@ -59,11 +65,29 @@ class HotReloading
         });
 
         FlxG.signals.preStateSwitch.add(reset);
+        FlxG.signals.preUpdate.add(update);
+    }
+
+    @:dox(hide)
+    static function update()
+    {
+        if (!reload)
+            return;
+
+        reload = false;
+
+        if (FlxG.state.subState == null && FlxG.state is ScriptedState)
+            cast(FlxG.state, ScriptedState).reset();
+        else if (FlxG.state.subState is ScriptedSubState)
+            cast(FlxG.state.subState, ScriptedSubState).reset();
     }
 
     @:dox(hide)
     public static function destroy()
+    {
         FlxG.signals.preStateSwitch.remove(reset);
+        FlxG.signals.preUpdate.remove(update);
+    }
 
     /**
      * This adds a file so that it can be detected
@@ -99,13 +123,27 @@ class HotReloading
      * @param file 
      */
     public static function remove(file:String):Void
+    {
+        mutex.acquire();
+
         files.remove(file);
+
+        mutex.release();
+    }
 
     /**
      * This removes all files to be detected
      */
     static function reset():Void
+    {
+        mutex.acquire();
+
         files = [];
+
+        mutex.release();
+
+        reload = false;
+    }
 
     /**
      * This checks whether the file path, along with other conditions, allows hot reloading to take effect
