@@ -23,7 +23,7 @@ class ClientPrefs
 			lowQuality: false,
 			shaders: true,
 
-			streamedSounds: false,
+			streamedSounds: true,
 			
 			downScroll: false,
 			ghostTapping: true,

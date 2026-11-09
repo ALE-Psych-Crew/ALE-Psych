@@ -410,7 +410,7 @@ static final optionsConfig:Array<{name:String, options:Array<JsonOption>}> = [
                 description: 'Sets whether streamed sounds should be enabled or not (Experimental)',
                 variable: 'streamedSounds',
                 type: 'bool',
-                initial: false
+                initial: true
             }
         ]
     },
