@@ -31,10 +31,10 @@ jobs:
             os: windows-latest
             container:
             haxe_setup:
-            build_cmd: haxelib run lime build windows
+            build_cmd: haxelib run lime build windows -D ALE_HSCRIPT
             extra_libs:
             pre_build_commands:
-            artifact_path: export/release/windows/bin -D ALE_HSCRIPT
+            artifact_path: export/release/windows/bin
 
           - platform: Windows x32
             os: windows-latest
