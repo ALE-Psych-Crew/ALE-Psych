@@ -8,11 +8,7 @@ import flixel.FlxSubState;
 import flixel.FlxState;
 
 #if ALLOW_HSCRIPT
-#if ALE_HSCRIPT
-import ale.hscript.Config;
-#else
-import ale.rulescript.RuleScriptGlobal;
-#end
+typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end ;
 #end
 
 class StateUtil
@@ -37,7 +33,7 @@ class StateUtil
 		{
             final custom:String = cast(state, CustomState).name;
 			
-            if (Paths.exists('scripts/states/' + custom + #if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end) || Paths.exists('scripts/states/' + custom + '.lua') || Paths.isDirectory('scripts/states/' + custom))
+            if (Paths.exists('scripts/states/' + custom + Config.SCRIPT_EXTENSION) || Paths.exists('scripts/states/' + custom + '.lua') || Paths.isDirectory('scripts/states/' + custom))
                 transitionSwitch(state, skipTransIn, skipTransOut);
             else
                 debugTrace('Custom State called "' + custom + '" doesn\'t Exist', MISSING_FILE);
@@ -87,7 +83,7 @@ class StateUtil
         {
             final custom:String = cast(subState, CustomSubState).name;
             
-            if (Paths.exists('scripts/substates/' + custom + #if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end) || Paths.exists('scripts/substates/' + custom + '.lua') || Paths.isDirectory('scripts/substates/' + custom))
+            if (Paths.exists('scripts/substates/' + custom + Config.SCRIPT_EXTENSION) || Paths.exists('scripts/substates/' + custom + '.lua') || Paths.isDirectory('scripts/substates/' + custom))
                 FlxG.state.openSubState(subState);
             else
                 debugTrace('Custom SubState called "' + custom + '" doesn\'t Exist', MISSING_FILE);

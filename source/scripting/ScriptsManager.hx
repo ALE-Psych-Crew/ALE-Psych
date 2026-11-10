@@ -10,21 +10,20 @@ import core.interfaces.IScript;
 
 import core.debug.HotReloading;
 
+#if ALLOW_LUA
+import scripting.lua.LuaPresetBase;
+import scripting.lua.LuaScript;
+#end
+
 #if ALLOW_HSCRIPT
 import scripting.haxe.HScriptPresetBase;
 import scripting.haxe.HScript;
 
-#if ALE_HSCRIPT
-import ale.hscript.Config;
-#else
-import ale.rulescript.RuleScriptGlobal;
+#if !ALE_HSCRIPT
 import rulescript.Context;
 #end
-#end
 
-#if ALLOW_LUA
-import scripting.lua.LuaPresetBase;
-import scripting.lua.LuaScript;
+typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end ;
 #end
 
 @:publicFields
@@ -61,7 +60,7 @@ class ScriptsManager implements IFlxDestroyable
             return;
 
         #if ALLOW_HSCRIPT
-        if (path.endsWith(#if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end))
+        if (path.endsWith(Config.SCRIPT_EXTENSION))
         {
             haxeLoad(CoolUtil.removeExtension(path), haxeArgs ?? args);
             
@@ -98,7 +97,7 @@ class ScriptsManager implements IFlxDestroyable
 
             if (Paths.isDirectory(fullPath) && recursive)
                 loadFolder(fullPath, recursive, args #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
-            else if (file.endsWith('.lua') || file.endsWith(#if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end))
+            else if (file.endsWith('.lua') || file.endsWith(Config.SCRIPT_EXTENSION))
                 load(fullPath, args #if ALLOW_HSCRIPT , haxeArgs #end #if ALLOW_LUA , luaArgs #end);
         }
     }
@@ -177,7 +176,7 @@ class ScriptsManager implements IFlxDestroyable
         if (destroyed)
             return;
 
-        final fullPath:String = path + #if ALE_HSCRIPT Config.EXTENSION #else RuleScriptGlobal.SCRIPT_EXTENSION #end;
+        final fullPath:String = path + Config.SCRIPT_EXTENSION;
 
         if (Paths.exists(fullPath))
         {

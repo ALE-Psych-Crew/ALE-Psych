@@ -13,6 +13,12 @@
 			"url": "https://github.com/ALE-Foundation/ALE-Foxlite-Wrapper"
 		},
 		{
+			"name": "ale-hscript",
+			"type": "git",
+			"dir": null,
+			"url": "https://github.com/ALE-Foundation/ALE-HScript"
+		},
+		{
 			"name": "ale-ui",
 			"type": "haxelib",
 			"version": "2.0.1"

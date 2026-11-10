@@ -26,7 +26,7 @@ class HScript extends #if ALE_HSCRIPT Script #else RuleScript #end implements IS
 		set('game', #if ALE_HSCRIPT interp.superInstance #else superInstance #end);
 
 		#if ALE_HSCRIPT
-		safeExecute();
+		execute();
 		#else
 		run();
 		#end

@@ -27,6 +27,15 @@ jobs:
             pre_build_commands:
             artifact_path: export/release/windows/bin
 
+          - platform: Windows (ALE HScript)
+            os: windows-latest
+            container:
+            haxe_setup:
+            build_cmd: haxelib run lime build windows
+            extra_libs:
+            pre_build_commands:
+            artifact_path: export/release/windows/bin -D ALE_HSCRIPT
+
           - platform: Windows x32
             os: windows-latest
             container:
@@ -48,6 +57,18 @@ jobs:
             pre_build_commands:
             artifact_path: export/release/linux/bin
 
+          - platform: Linux (ALE HScript)
+            os: ubuntu-22.04
+            container:
+            haxe_setup:
+            build_cmd: haxelib run lime build linux -D ALE_HSCRIPT
+            extra_libs: |
+              sudo apt-get update
+              sudo apt-get install -y libvlc-dev libvlccore-dev dpkg-dev file desktop-file-utils gtk-update-icon-cache
+              sudo apt install libxcb1-dev libx11-xcb-dev
+            pre_build_commands:
+            artifact_path: export/release/linux/bin
+            
           - platform: Android
             os: ubuntu-latest
             container:

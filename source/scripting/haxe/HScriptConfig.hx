@@ -25,8 +25,8 @@ class HScriptConfig
         #if ALLOW_HSCRIPT
         Config.reset();
 
-        Config.FILE_CHECKER = (id:String) -> Paths.exists(id);
-        Config.FILE_READER = (id:String) -> Paths.getContent(id);
+        Config.FILE_CHECKER = id -> Paths.exists(id);
+        Config.FILE_READER = id -> Paths.getContent(id);
 
         Config.IMPORTS = Config.IMPORTS.concat(ScriptConfig.CLASSES);
         Config.ABSTRACTS = Config.ABSTRACTS.concat(ScriptConfig.ABSTRACTS);
@@ -38,7 +38,7 @@ class HScriptConfig
         Config.SCRIPT_PATH = '';
 
         #if ALE_HSCRIPT
-        Config.ERROR_HANDLER = (error, name) -> debugTrace(name + ': ' + error.toString(), ERROR, null, null, null);
+        Config.ERROR_HANDLER = (name, error) -> debugTrace(name + ': ' + error?.toString() ?? error, ERROR, null, null, null);
         #else
         Config.MODULE_RESOLVER = (name) -> {
             final path:Array<String> = name.split('.');
