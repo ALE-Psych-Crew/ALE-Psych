@@ -3,3 +3,4 @@ export/*
 .haxelib/*
 docs.xml
 /.megamemory
+dump/*

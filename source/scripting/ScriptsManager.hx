@@ -19,9 +19,7 @@ import scripting.lua.LuaScript;
 import scripting.haxe.HScriptPresetBase;
 import scripting.haxe.HScript;
 
-#if !ALE_HSCRIPT
-import rulescript.Context;
-#end
+typedef Context = #if ALE_HSCRIPT ale.hscript.interp.Scope #else rulescript.Context #end ;
 
 typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end ;
 #end
@@ -165,7 +163,7 @@ class ScriptsManager implements IFlxDestroyable
     #if ALLOW_HSCRIPT
     var haxe:Array<HScript> = [];
 
-    var haxeContext: #if ALE_HSCRIPT Dynamic = null #else Context = new Context() #end;
+    var haxeContext:Context = new Context();
 
     var haxePresets:Array<Class<HScriptPresetBase>> = [];
 
