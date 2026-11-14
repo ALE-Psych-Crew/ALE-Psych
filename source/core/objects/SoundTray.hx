@@ -1,6 +1,10 @@
 package core.objects;
 
+import openfl.geom.ColorTransform;
+import openfl.geom.Rectangle;
+
 import openfl.display.Bitmap;
+
 import openfl.Lib;
 
 /**
@@ -8,53 +12,40 @@ import openfl.Lib;
  */
 class SoundTray extends GameObject
 {
-    /**
-     * Volume bars
-     */
-    final bars:Array<Bitmap> = [];
+    public var bg:Bitmap;
+    public var fillingBack:Bitmap;
+    public var fillingFront:Bitmap;
+    public var border:Bitmap;
+    public var thumb:Bitmap;
+    public var text:Bitmap;
 
-    /**
-     * This creates the volume tray
-     */
     public function new()
     {
         super();
 
-        final bg = createBitmap('soundTray/bg');
-        add(bg);
+        add(bg = createBitmap('soundTray/bg'));
 
-        final text = createBitmap('soundTray/text');
+        add(fillingBack = createBitmap('soundTray/filling'));
+        fillingBack.x = bg.width / 2 - fillingBack.width / 2;
+        fillingBack.y = bg.height / 2 - fillingBack.height / 2;
+        fillingBack.transform.colorTransform = new ColorTransform(0.3, 0.3, 0.3);
+
+        add(fillingFront = createBitmap('soundTray/filling'));
+        fillingFront.x = bg.width / 2 - fillingFront.width / 2;
+        fillingFront.y = bg.height / 2 - fillingFront.height / 2;
+        fillingFront.scrollRect = new Rectangle(0, 0, fillingFront.width * FlxG.sound.volume, fillingFront.height);
+
+        add(border = createBitmap('soundTray/border'));
+        border.x = fillingFront.x + fillingFront.width / 2 - fillingFront.width / 2;
+        border.y = fillingFront.y + fillingFront.height / 2 - fillingFront.height / 2;
+
+        add(thumb = createBitmap('soundTray/thumb'));
+        thumb.x = fillingFront.x + fillingFront.scrollRect.width - thumb.width / 2;
+        thumb.y = border.y + border.height / 2 - thumb.height / 2;
+        
+        add(text = createBitmap('soundTray/text'));
         text.x = bg.width / 2 - text.width / 2;
         text.y = bg.height + 5;
-        add(text);
-
-        var offset:Float = 0;
-
-        var longest:Bitmap = null;
-
-        for (i in 0...10)
-        {
-            final bar = createBitmap('soundTray/' + i);
-            bar.x = offset;
-
-            offset += bar.width;
-
-            if (longest == null || bar.height > longest.height)
-                longest = bar;
-
-            bars.push(bar);
-
-            add(bar);
-        }
-
-        for (bar in bars)
-        {
-            bar.x += bg.width / 2 - offset / 2;
-
-            bar.y = longest.height - bar.height + bg.height / 2 - longest.height / 2;
-        }
-
-        scaleX = scaleY = 0.55;
 
         y = -height;
         alpha = 0;
@@ -91,13 +82,25 @@ class SoundTray extends GameObject
             y = CoolUtil.fpsLerp(y, -height, 0.2);
             alpha = CoolUtil.fpsLerp(alpha, 0, 0.2);
         } else {
-            y = CoolUtil.fpsLerp(y, 5, 0.2);
+            y = CoolUtil.fpsLerp(y, 15, 0.2);
             alpha = CoolUtil.fpsLerp(alpha, 1, 0.2);
 
             timer -= elapsed;
         }
-        
-		x = Lib.current.stage.stageWidth / 2 - width / 2 - FlxG.game.x;
+
+        if (Math.round(alpha) > 0)
+        {
+            thumb.rotation = CoolUtil.fpsLerp(thumb.rotation, 0, 0.25);
+
+            final rect:Rectangle = fillingFront.scrollRect;
+            rect.width = CoolUtil.fpsLerp(rect.width, fillingFront.width * FlxG.sound.volume, 0.25);
+
+            fillingFront.scrollRect = rect;
+
+            thumb.x = fillingFront.x + rect.width - thumb.width / 2;
+        }
+
+		x = Lib.current.stage.stageWidth / 2 - bg.width / 2 - FlxG.game.x;
     }
 
     /**
@@ -105,20 +108,15 @@ class SoundTray extends GameObject
      */
     function display()
     {
-        final funcVal:Int = FlxG.sound.muted ? 0 : Math.round(FlxG.sound.volume * 10);
-
-        for (index => bar in bars)
-            bar.alpha = (index + 1) <= funcVal ? 1 : 0.5;
-
         timer = 1;
 
-        CoolUtil.playSound('volume');
+        final factor:Float = FlxG.sound.muted ? 0.3 : 1;
 
-		if (FlxG.save.isBound)
-		{
-			FlxG.save.data.mute = FlxG.sound.muted;
-			FlxG.save.data.volume = FlxG.sound.volume;
-			FlxG.save.flush();
-		}
+        transform.colorTransform = new ColorTransform(factor, factor, factor);
+
+        if (!FlxG.sound.muted)
+            thumb.rotation = 5;
+
+        CoolUtil.playSound('volume');
     }
 }
