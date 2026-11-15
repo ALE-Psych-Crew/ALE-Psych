@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   build:
-    name: Build ${{ matrix.platform }}
+    name: Build ${{ matrix.platform }} ${{ matrix.build_type }}
     permissions: write-all
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
