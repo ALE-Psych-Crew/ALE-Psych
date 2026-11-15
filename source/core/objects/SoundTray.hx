@@ -118,5 +118,12 @@ class SoundTray extends GameObject
             thumb.rotation = 5;
 
         CoolUtil.playSound('volume');
+
+		if (FlxG.save.isBound)
+		{
+			FlxG.save.data.mute = FlxG.sound.muted;
+			FlxG.save.data.volume = FlxG.sound.volume;
+			FlxG.save.flush();
+		}
     }
 }

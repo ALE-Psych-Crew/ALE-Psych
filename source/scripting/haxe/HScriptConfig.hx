@@ -38,7 +38,11 @@ class HScriptConfig
         Config.SCRIPT_PATH = '';
 
         #if ALE_HSCRIPT
+        Config.MODULE_PATH = 'scripts/classes/';
+
         Config.ERROR_HANDLER = (name, error) -> debugTrace(name + ': ' + error?.toString() ?? error, ERROR, null, null, null);
+
+        Config.MODULE_IMPORT_CALLBACK = path -> HotReloading.add(path);
         #else
         Config.MODULE_RESOLVER = (name) -> {
             final path:Array<String> = name.split('.');
