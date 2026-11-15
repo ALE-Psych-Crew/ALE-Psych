@@ -17,6 +17,7 @@ jobs:
 
     strategy:
       matrix:
+      build_type: [RuleScript, ALE]
         include:
           - platform: Windows
             os: windows-latest
@@ -106,8 +107,8 @@ jobs:
         if: ${{ matrix.pre_build_commands }}
         run: ${{ matrix.pre_build_commands }}
 
-      - name: Build for ${{ matrix.platform }}
-        run: ${{ matrix.build_cmd }}
+      - name: Build for ${{ matrix.platform }} (${{ matrix.build_type }})
+        run: ${{ matrix.build_cmd }} ${{ matrix.build_type == 'ALE' && '-D ALE_HSCRIPT' || '' }}
 
       - name: Upload Game
         uses: actions/upload-artifact@v4

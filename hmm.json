@@ -62,7 +62,7 @@
 		{
 			"name": "libhxcpp",
 			"type": "haxelib",
-			"version": "6.0.0-rc.1"
+			"version": "6.0.0-rc.2"
 		},
 		{
 			"name": "hxluajit",
@@ -122,7 +122,7 @@
 			"name": "sl-windows-api",
 			"type": "git",
 			"dir": null,
-			"ref": "2deeb71a07801fcedd55712356f0044c7cfbf2a0",
+			"ref": "cfcb7ac767709f58c9b780e3197a513ac5a2ca53",
 			"url": "https://github.com/Slushi-Github/SL-Windows-API"
 		},
 		{
