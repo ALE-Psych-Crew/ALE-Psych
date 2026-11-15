@@ -18,6 +18,7 @@ jobs:
     strategy:
       matrix:
         build_type: [RuleScript, ALE]
+        platform: [Windows, Windows x32, Linux, Android, MacOS, MacOS x64]
         include:
           - platform: Windows
             os: windows-latest
