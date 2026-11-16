@@ -5,24 +5,24 @@ import flixel.group.FlxSpriteGroup;
 import flixel.FlxSubState;
 import flixel.FlxState;
 
-@:typedef JsonOptions = {
-    var directory:String;
+typedef JsonOptions = {
+    directory:String,
 
-    var bg:JsonSprite;
-    var checkBox:JsonSprite;
+    bg:JsonSprite,
+    checkBox:JsonSprite,
 
-    var optionsSpacing:Float;
+    optionsSpacing:Float,
 
-    var cameraOffset:Point;
-    var cameraSpeed:Float;
+    cameraOffset:Point,
+    cameraSpeed:Float,
 
-    var descriptionMargin:Point;
+    descriptionMargin:Point,
 
-    var circlesSelectionScale:Float;
-    var circlesSpacing:Float;
-    var circlesOffset:Point;
-    var circlesSpeed:Float;
-};
+    circlesSelectionScale:Float,
+    circlesSpacing:Float,
+    circlesOffset:Point,
+    circlesSpeed:Float
+}
 
 final config:JsonOptions = Paths.json('data/menus/options');
 
@@ -30,7 +30,7 @@ var categories:FlxTypedGroup<FlxTypedSpriteGroup<FlxSpriteGroup>>;
 
 var canSelect:Bool = true;
 
-function extends(cls:Class<Dynamic>, par:Class<Dynamic>)
+function _extends(cls:Class<Dynamic>, par:Class<Dynamic>)
 {
     while (cls != null)
     {
@@ -145,7 +145,7 @@ function postCreate()
                                 if (option.type == 'int')
                                     option.change = Std.int(option.change);
                                 
-                                final value:Float = FlxMath.bound(ClientPrefs.getPreference(option.variable) + option.change * (Controls.UI_LEFT ? -1 : 1), option.min, option.max);
+                                var value:Float = FlxMath.bound(ClientPrefs.getPreference(option.variable) + option.change * (Controls.UI_LEFT ? -1 : 1), option.min, option.max);
 
                                 if (option.type == 'int')
                                     value = Math.round(value);
@@ -169,14 +169,14 @@ function postCreate()
                             {
                                 canSelect = false;
 
-                                if (res == null || !extends(res, FlxState) || extends(res, FlxSubState))
+                                if (res == null || !_extends(res, FlxState) || _extends(res, FlxSubState))
                                     res = new CustomState(option.path);
                                 else
                                     res = Type.createInstance(res, []);
 
                                 CoolUtil.switchState(res);
                             } else {
-                                if (res == null || !extends(res, FlxSubState))
+                                if (res == null || !_extends(res, FlxSubState))
                                     res = new CustomSubState(option.path);
                                 else
                                     res = Type.createInstance(res, []);
@@ -338,7 +338,7 @@ function onUpdate(elapsed:Float)
     camGame.scroll.y = CoolUtil.fpsLerp(camGame.scroll.y, selInt * config.optionsSpacing + config.cameraOffset.y, config.cameraSpeed);
 }
 
-static final optionsConfig:Array<{name:String, options:Array<JsonOption>}> = [
+final optionsConfig:Array<{name:String, options:Array<JsonOption>}> = [
     {
         name: 'Miscellaneous',
         options: [

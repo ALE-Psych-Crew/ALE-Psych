@@ -182,7 +182,7 @@ function onUpdate(elapsed:Float)
 function onDestroy()
     FlxTween.cancelTweensOf(subCamera);
 
-static final controlsConfig:Array<{name:String, options:Array<JsonControl>}> = [
+final controlsConfig:Array<{name:String, options:Array<JsonControl>}> = [
     {
         name: 'Notes',
         variable: 'notes',

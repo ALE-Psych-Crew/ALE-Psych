@@ -65,13 +65,11 @@ class ScriptConfig
     ];
 
     public static final ABSTRACTS:Array<String> = [
-        #if ALE_HSCRIPT 'flixel.tweens.FlxTweenType' #else 'flixel.tweens.FlxTween.FlxTweenType' #end,
+        'flixel.tweens.FlxTweenType',
         'flixel.util.FlxColor'
     ];
 
-    public static final TYPEDEFS:Map<String, Class<Dynamic>> = [
-        'Reflect' => #if ALE_HSCRIPT Reflect #else rulescript.types.ScriptedReflect #end
-    ];
+    public static final TYPEDEFS:Map<String, Class<Dynamic>> = [];
 
     public static final VARIABLES:Map<String, Dynamic> = [
         'Function_Continue' => CoolVars.Function_Continue,

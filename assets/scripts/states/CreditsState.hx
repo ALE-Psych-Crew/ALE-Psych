@@ -2,21 +2,21 @@ import funkin.visuals.objects.Alphabet;
 
 import flixel.group.FlxSpriteGroup;
 
-@:typedef JsonCredits = {
-    var directory:String;
+typedef JsonCredits = {
+    directory:String,
 
-    var bg:JsonSprite;
+    bg:JsonSprite,
 
-    var descriptionMargin:Point;
+    descriptionMargin:Point,
 
-    var groupsSpacing:Float;
+    groupsSpacing:Float,
 
-    var developersSpacing:Float;
+    developersSpacing:Float,
 
-    var changeBGColor:Bool;
+    changeBGColor:Bool,
 
-    var cameraOffset:Float;
-    var cameraSpeed:Float;
+    cameraOffset:Float,
+    cameraSpeed:Float
 }
 
 final config:JsonCredits = Paths.json('data/menus/credits');

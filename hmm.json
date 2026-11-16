@@ -1,11 +1,6 @@
 {
 	"dependencies": [
 		{
-			"name": "ale-rulescript-wrapper",
-			"type": "haxelib",
-			"version": "1.0.3"
-		},
-		{
 			"name": "ale-foxlite-wrapper",
 			"type": "git",
 			"dir": null,
@@ -51,13 +46,6 @@
 			"dir": null,
 			"ref": "a89bb537684111a6ff85737981f4b2d8ef4b4f68",
 			"url": "https://github.com/TheZoroForce240/FlxSoundFilters"
-		},
-		{
-			"name": "hscript",
-			"type": "git",
-			"dir": null,
-			"ref": "dbe1b4908a71f186a07a706d18c23fb5fea9d51e",
-			"url": "https://github.com/HaxeFoundation/hscript"
 		},
 		{
 			"name": "libhxcpp",
@@ -110,13 +98,6 @@
 			"name": "extension-orientation",
 			"type": "git",
 			"url": "https://github.com/ALE-Foundation/extension-orientation"
-		},
-		{
-			"name": "rulescript",
-			"type": "git",
-			"dir": null,
-			"ref": "e0911611c760f03b9191d8be8fdf00a34552069e",
-			"url": "https://github.com/Kriptel/RuleScript/"
 		},
 		{
 			"name": "sl-windows-api",

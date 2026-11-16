@@ -10,15 +10,13 @@ concurrency:
 
 jobs:
   build:
-    name: Build ${{ matrix.platform }} ${{ matrix.build_type }}
+    name: Build ${{ matrix.platform }}
     permissions: write-all
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
 
     strategy:
       matrix:
-        build_type: [RuleScript, ALE]
-        platform: [Windows, Windows x32, Linux, Android, MacOS, MacOS x64]
         include:
           - platform: Windows
             os: windows-latest
@@ -108,13 +106,13 @@ jobs:
         if: ${{ matrix.pre_build_commands }}
         run: ${{ matrix.pre_build_commands }}
 
-      - name: Build for ${{ matrix.platform }} (${{ matrix.build_type }})
-        run: ${{ matrix.build_cmd }} ${{ matrix.build_type == 'ALE' && '-D ALE_HSCRIPT' || '' }}
+      - name: Build for ${{ matrix.platform }}
+        run: ${{ matrix.build_cmd }}
 
       - name: Upload Game
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform }} Build (${{ matrix.build_type }})
+          name: ${{ matrix.platform }} Build
           path: ${{ matrix.artifact_path }}
           if-no-files-found: error
 

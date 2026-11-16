@@ -64,12 +64,9 @@
 
 	<haxelib name="sl-windows-api"/>
 
-	<haxelib name="rulescript" if="ALLOW_HSCRIPT" unless="ALE_HSCRIPT"/>
+	<haxelib name="ale-hscript" if="ALLOW_HSCRIPT"/>
 
-	<haxelib name="ale-rulescript-wrapper" if="ALLOW_HSCRIPT" unless="ALE_HSCRIPT"/>
 	<haxelib name="ale-foxlite-wrapper"/>
-
-	<haxelib name="ale-hscript" if="ALLOW_HSCRIPT ALE_HSCRIPT"/>
 
 	<haxelib name="hxluajit" if="ALLOW_LUA"/>
 	<haxelib name="hxluajit-wrapper" if="ALLOW_LUA"/>

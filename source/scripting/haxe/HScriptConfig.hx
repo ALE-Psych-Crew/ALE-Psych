@@ -9,13 +9,9 @@ import haxe.Exception;
 import core.debug.HotReloading;
 
 #if ALLOW_HSCRIPT
-#if ALE_HSCRIPT
-import ale.hscript.errors.Error;
-#else
-import ale.rulescript.HxParser;
-#end
+import ale.hscript.module.Module;
 
-typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end;
+import ale.hscript.Config;
 #end
 
 class HScriptConfig
@@ -25,8 +21,13 @@ class HScriptConfig
         #if ALLOW_HSCRIPT
         Config.reset();
 
+        Config.FILE_TIME = id -> Paths.stat(id).mtime.getTime();
         Config.FILE_CHECKER = id -> Paths.exists(id);
         Config.FILE_READER = id -> Paths.getContent(id);
+
+        Config.MODULE_IMPORT_CALLBACK = path -> HotReloading.add(path);
+
+        Config.MODULE_PATH = 'scripts/classes/';
 
         Config.IMPORTS = Config.IMPORTS.concat(ScriptConfig.CLASSES);
         Config.ABSTRACTS = Config.ABSTRACTS.concat(ScriptConfig.ABSTRACTS);
@@ -35,39 +36,11 @@ class HScriptConfig
 
         Config.VARIABLES.set('window', openfl.Lib.application.window);
 
-        Config.SCRIPT_PATH = '';
-
-        #if ALE_HSCRIPT
-        Config.MODULE_PATH = 'scripts/classes/';
-
         Config.ERROR_HANDLER = (name, error) -> debugTrace(name + ': ' + error?.toString() ?? error, ERROR, null, null, null);
 
-        Config.MODULE_IMPORT_CALLBACK = path -> HotReloading.add(path);
-        #else
-        Config.MODULE_RESOLVER = (name) -> {
-            final path:Array<String> = name.split('.');
+        Config.SCRIPT_PATH = '';
 
-            final pack:Array<String> = [];
-
-            while (path[0].charAt(0) == path[0].charAt(0).toLowerCase())
-                pack.push(path.shift());
-
-            final moduleName:String = path.length > 1 ? path.shift() : null;
-
-            final filePath:String = Config.MODULE_PATH + (pack.length >= 1 ? pack.join('.') + '.' + (moduleName ?? path[0]) : path[0]).replace('.', '/') + Config.MODULE_EXTENSION;
-
-            if (!Config.FILE_CHECKER(filePath))
-                return null;
-
-            HotReloading.add(filePath);
-
-            return new HxParser(name, MODULE).parseModule(Config.FILE_READER(filePath));
-        };
-
-        Config.ERROR_HANDLER = error -> debugTrace(error, ERROR);
-
-        Config.apply();
-        #end
+        Module.reset();
 		#end
 	}
 }

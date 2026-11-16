@@ -3,27 +3,22 @@ import funkin.visuals.objects.Bopper;
 
 using StringTools;
 
-@:typedef JsonTitle = {
-    var directory:String;
-    
-    var logo:JsonSprite;
-    var gf:JsonSprite;
-    var enter:JsonSprite;
-
-    var enterPressAnimation:String;
-
-    var texts:Dynamic;
-    var textsOffset:Float;
-
-    var randomTexts:Array<String>;
-
-    var introDuration:Int;
+typedef JsonTitle = {
+    directory:String,
+    logo:JsonSprite,
+    gf:JsonSprite,
+    enter:JsonSprite,
+    enterPressAnimation:String,
+    texts:Dynamic,
+    textsOffset:Float,
+    randomTexts:Array<String>,
+    introDuration:Int
 }
 
-@:typedef TextData = {
-    @:optional var text:Null<String>;
-    @:optional var offset:Float;
-};
+typedef TextData = {
+    ?text:Null<String>,
+    ?offset:Float
+}
 
 final config:JsonTitle = Paths.json('data/menus/title');
 

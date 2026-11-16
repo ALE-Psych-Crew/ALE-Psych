@@ -54,10 +54,6 @@ class LuaPreset
 
         new LuaJson(lua);
 
-        #if HSCRIPT_ALLOWED
-        new LuaRuleScript(lua);
-        #end
-
         new LuaDesktopAPI(lua);
 
         #if VIDEOS_ALLOWED

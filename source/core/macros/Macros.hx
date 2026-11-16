@@ -4,12 +4,7 @@ class Macros
 {
     public static function init()
     {
-        FieldsMacro.init();
+        OverridesMacro.init();
         ImportsMacro.init();
-        TypedefsMacro.init();
-
-        #if !ALE_HSCRIPT
-        ExtensibleMacro.init();
-        #end
     }
 }

@@ -1,14 +1,14 @@
 import funkin.visuals.objects.Alphabet;
 
-@:typedef JsonPause = {
-	var cameraOffset:Point;
+typedef JsonPause = {
+	cameraOffset:Point,
 	
-	var optionsSpacing:Point;
+	optionsSpacing:Point,
 
-	var cameraSpeed:Float;
+	cameraSpeed:Float,
 	
-	var infoCorner:String;
-};
+	infoCorner:String
+}
 
 final play:PlayState = PlayState.instance;
 

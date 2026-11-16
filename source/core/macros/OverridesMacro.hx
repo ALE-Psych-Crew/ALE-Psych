@@ -4,20 +4,17 @@ import haxe.macro.Compiler;
 import haxe.macro.Context;
 import haxe.macro.Expr;
 
-class FieldsMacro
+class OverridesMacro
 {
     public static function init()
-    {
         for (cls in [
             'utils.CoolVars',
             'flixel.FlxBasic',
             'flixel.FlxState',
             'flixel.FlxSprite',
-            'rulescript.types.Typedefs',
             'funkin.vis.audioclip.frontends.LimeAudioClip'
         ])
-            Compiler.addGlobalMetadata(cls, '@:build(core.macros.FieldsMacro.build())', true);
-    }
+            Compiler.addGlobalMetadata(cls, '@:build(core.macros.OverridesMacro.build())', true);
 
     macro public static function build():Array<Field>
     {
@@ -151,28 +148,6 @@ class FieldsMacro
                             });
                     }
                 }
-
-            case 'rulescript.types.Typedefs':
-                fields = fields.filter(f -> f.name != 'typedefs');
-
-                fields.push({
-                    name: 'get_typedefs',
-                    access: [APrivate, AStatic, AInline],
-                    kind: FFun({
-                        args: [],
-                        ret: macro:Map<String, Dynamic>,
-                        expr: macro return core.macros.TypedefsMacro.list
-                    }),
-                    pos: Context.currentPos()
-                });
-
-                fields.push({
-                    name: 'typedefs',
-                    access: [APrivate, AStatic],
-                    meta: [{ name: ':unreflective', pos: Context.currentPos() }],
-                    kind: FProp('get', 'never', macro:Map<String, Dynamic>, null),
-                    pos: Context.currentPos()
-                });
         }
 
         return fields;

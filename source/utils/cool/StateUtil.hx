@@ -8,7 +8,7 @@ import flixel.FlxSubState;
 import flixel.FlxState;
 
 #if ALLOW_HSCRIPT
-typedef Config = #if ALE_HSCRIPT ale.hscript.Config #else ale.rulescript.RuleScriptGlobal #end ;
+import ale.hscript.Config;
 #end
 
 class StateUtil

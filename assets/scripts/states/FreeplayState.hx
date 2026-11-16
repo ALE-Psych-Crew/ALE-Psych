@@ -7,19 +7,19 @@ import utils.Formatter;
 
 using StringTools;
 
-@:typedef JsonFreeplay = {
-    var directory:String;
+typedef JsonFreeplay = {
+    directory:String,
 
-    var bg:JsonSprite;
+    bg:JsonSprite,
 
-    var cameraOffset:Point;
-    var songsSpacing:Point;
+    cameraOffset:Point,
+    songsSpacing:Point,
 
-    var cameraSpeed:Float;
-    var changeBGColor:Bool;
+    cameraSpeed:Float,
+    changeBGColor:Bool,
 
-    var infoCorner:String;
-};
+    infoCorner:String
+}
 
 final config:JsonFreeplay = Paths.json('data/menus/freeplay');
 
