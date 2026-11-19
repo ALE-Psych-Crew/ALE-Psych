@@ -4,6 +4,7 @@ package core.discord;
 import hxdiscord_rpc.Types.DiscordButton;
 #end
 
+@:ALE_HS_IGNORE
 class Button
 {
     public function new(?label:String, ?url:String)

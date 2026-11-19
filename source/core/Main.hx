@@ -1,41 +1,41 @@
 package core;
 
+import foxlite.loaders.FoxLoaderUtil;
+import foxlite.renderer.FoxRenderer;
+
+import flixel.input.keyboard.FlxKey;
+import flixel.FlxGame;
+
 import openfl.events.UncaughtErrorEvent;
+import openfl.events.KeyboardEvent;
 import openfl.display.Sprite;
 import openfl.ui.Mouse;
 import openfl.Lib;
 
-import scripting.haxe.HScriptConfig;
-
+import core.input.touch.TouchControls;
 import core.debug.HotReloading;
-
 import core.objects.GameObject;
 import core.objects.SoundTray;
-
 import core.objects.DebugTray;
-
-import core.input.touch.TouchControls;
-
+import core.discord.Discord;
 import core.plugins.*;
 
 import funkin.config.Score;
 import funkin.config.Save;
 
-import api.DesktopAPI;
-
-import flixel.input.keyboard.FlxKey;
-import flixel.FlxGame;
-
-import haxe.CallStack;
-
 import utils.cool.ColorUtil;
 import utils.cool.AppUtil;
 import utils.Formatter;
 
+import scripting.haxe.HScriptConfig;
+
 import lime.system.System;
 
-import foxlite.loaders.FoxLoaderUtil;
-import foxlite.renderer.FoxRenderer;
+import api.DesktopAPI;
+
+import ale.ui.Config;
+
+import haxe.CallStack;
 
 #if android
 import extension.androidtools.os.Build.VERSION_CODES as AndroidVersionCode;
@@ -57,10 +57,6 @@ import haxe.io.Path;
 #if ALLOW_LINUX_API
 import hxgamemode.GamemodeClient;
 #end
-
-import core.discord.Discord;
-
-import ale.ui.Config;
 
 @:unreflective
 class Main extends Sprite
@@ -153,8 +149,8 @@ class Main extends Sprite
 		
 		Lib.application.window.onClose.add(() -> destroy());
 
-		FlxG.stage.addEventListener('keyDown', (event) -> {
-			if (event.altKey && event.keyCode == FlxKey.ENTER)
+		FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, event -> {
+			if ((event.altKey && event.keyCode == FlxKey.ENTER))
 				event.stopImmediatePropagation();
 		}, false, 1);
 		

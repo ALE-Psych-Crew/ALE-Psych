@@ -6,6 +6,7 @@ import hxdiscord_rpc.Types;
 import cpp.RawPointer;
 #end
 
+@:ALE_HS_IGNORE
 class Presence
 {
     public function new()

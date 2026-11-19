@@ -13,6 +13,7 @@ import core.structures.DiscordPresenceData;
 
 import sys.thread.Thread;
 
+@:ALE_HS_IGNORE
 class Discord
 {
     @:unreflective

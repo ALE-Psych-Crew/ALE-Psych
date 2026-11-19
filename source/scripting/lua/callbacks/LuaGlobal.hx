@@ -191,8 +191,7 @@ class LuaGlobal extends LuaPresetBase
             return;
 
         for (script in game.scriptsManager.haxe)
-            if (!script.interp.variables.exists(tag))
-                script.set(tag, object);
+            script.interp.variables.define(tag, object);
     }
     #end
 }
