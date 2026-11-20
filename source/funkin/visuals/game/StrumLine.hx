@@ -243,6 +243,16 @@ class StrumLine extends FlxSpriteGroup
         super.destroy();
     }
 
+    public var ghostTapCallback:Int -> Strum -> Bool = (_:Int, _:Strum) -> true;
+    
+    function ghostTap(strumIndex:Int)
+    {
+        final strum:Strum = strums.members[strumIndex];
+
+        if (ghostTapCallback(strumIndex, strum))
+            strum.playAnim(strum.strumLineConfig.press);
+    }
+
     var keyPressed:Array<Bool> = [];
 
     public function justPressedKey(key:Int)
@@ -272,10 +282,10 @@ class StrumLine extends FlxSpriteGroup
                         noteToHit = note;
                 }
 
-                if (noteToHit != null)
-                    hitNote(noteToHit);
+                if (noteToHit == null)
+                    ghostTap(strumIndex);
                 else
-                    strums.members[strumIndex].playAnim(config.config[strumIndex].press);
+                    hitNote(noteToHit);
             }
         }
     }

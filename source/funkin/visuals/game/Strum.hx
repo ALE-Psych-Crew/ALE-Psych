@@ -10,6 +10,9 @@ class Strum extends StrumLineObject
 
     public var direction:Float = 0;
 
+    public var ghostTapHealth:Float = 2.5;
+    public var ghostTapScore:Float = 10;
+
     public function new(id:String, strlData:JsonStrumLineConfig, allowShader:Bool, data:Int)
     {
         allowOffset = false;

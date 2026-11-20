@@ -44,6 +44,7 @@ class Note extends StrumLineObject
 
     public var singHealth:Float;
     public var missHealth:Float;
+    public var missScore:Float = 10;
 
     public function new(id:String, strlData:JsonStrumLineConfig, allowShader:Bool, type:NoteType, data:Int, rgb:RGBShader)
     {

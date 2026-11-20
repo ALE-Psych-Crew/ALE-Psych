@@ -72,7 +72,7 @@ class PlayState extends ScriptedState
     var restarted:Bool = false;
 
     var score:Float = 0;
-    var totalNotes:Int = 0;
+    var accuracyNotes:Int = 0;
     var accuracyMod:Float = 0;
     var misses:Int = 0;
     var combo:Int = 0;
@@ -85,7 +85,7 @@ class PlayState extends ScriptedState
 
     var accuracy(get, never):Float;
     function get_accuracy():Float
-        return totalNotes == 0 ? 100 : accuracyMod / totalNotes;
+        return accuracyNotes == 0 ? 100 : accuracyMod / accuracyNotes;
 
     var botplay(default, set):Bool;
     function set_botplay(value:Bool):Bool
@@ -1177,6 +1177,7 @@ class PlayState extends ScriptedState
                 addStrumLine(strumLine);
                 
                 strumLine.noteSpawnCallback = spawnNote;
+                strumLine.ghostTapCallback = ghostTap;
                 strumLine.noteHitCallback = hitNote;
                 strumLine.noteMissCallback = missNote;
                 strumLine.visible = strl.visible;
@@ -1248,20 +1249,20 @@ class PlayState extends ScriptedState
 
         if (result)
         {
-            nextNoteToHitCharacter?.sing(note.type != ARROW && !nextNoteToHitCharacter._castConfig.sustainAnimation ? null : note.strumLineConfig.sing);
+            nextNoteToHitCharacter?.sing(nextNoteToHit.type != ARROW && !nextNoteToHitCharacter._castConfig.sustainAnimation ? null : nextNoteToHit.strumLineConfig.sing);
 
-            if (rating != null && note.strumLine.type == PLAYER)
+            if (rating != null && nextNoteToHit.strumLine.type == PLAYER)
             {
-                if (rating.splash && !note.strumLine.botplay)
-                    note.splash?.splash();
+                if (rating.splash && !nextNoteToHit.strumLine.botplay)
+                    nextNoteToHit.splash?.splash();
 
                 score += rating.score;
 
                 accuracyMod += rating.accuracy;
 
-                totalNotes++;
+                accuracyNotes++;
 
-                health += note.singHealth;
+                health += nextNoteToHit.singHealth;
 
                 combo++;
 
@@ -1302,19 +1303,21 @@ class PlayState extends ScriptedState
 
         if (result)
         {
-            nextNoteToMissCharacter?.miss(note.type != ARROW && !nextNoteToMissCharacter._castConfig.sustainAnimation ? null : note.strumLineConfig.miss);
+            nextNoteToMissCharacter?.miss(nextNoteToMiss.type != ARROW && !nextNoteToMissCharacter._castConfig.sustainAnimation ? null : nextNoteToMiss.strumLineConfig.miss);
 
             if (nextNoteToMissCharacter.type == PLAYER)
             {
-                if (note.type == ARROW)
+                if (nextNoteToMiss.type == ARROW)
                 {
-                    health -= note.missHealth;
+                    score -= nextNoteToMiss.missScore;
+
+                    health -= nextNoteToMiss.missHealth;
                     
                     combo = 0;
 
                     misses++;
 
-                    totalNotes++;
+                    accuracyNotes++;
 
                     updateScoreText();
                 }
@@ -1322,6 +1325,39 @@ class PlayState extends ScriptedState
         }
 
         scriptsManager.callback(POST, 'NoteMiss', null, [nextNoteToMiss, nextNoteToMissCharacter]);
+
+        return result;
+    }
+
+    var nextStrumGhostTap:Strum;
+    var nextCharactersGhostTap:Null<Array<Character>>;
+
+    function ghostTap(index:Int, strum:Strum)
+    {
+        nextStrumGhostTap = strum;
+        nextCharactersGhostTap = charactersArray[strum.strumLine.strumLineIndex];
+
+        final result:Bool = scriptsManager.callback(ON, 'GhostTap', null, [index, nextStrumGhostTap, nextCharactersGhostTap] #if ALLOW_LUA , [index] #end );
+
+        if (result && !ClientPrefs.data.ghostTapping)
+        {
+            for (char in nextCharactersGhostTap ?? [])
+                char?.miss(nextStrumGhostTap.strumLineConfig.miss);
+
+            score -= nextStrumGhostTap.ghostTapScore;
+
+            health -= nextStrumGhostTap.ghostTapHealth;
+
+            combo = 0;
+
+            misses++;
+
+            accuracyNotes++;
+
+            updateScoreText();
+        }
+
+        scriptsManager.callback(POST, 'GhostTap', null, [index, nextStrumGhostTap, nextCharactersGhostTap] #if ALLOW_LUA , [index] #end );
 
         return result;
     }

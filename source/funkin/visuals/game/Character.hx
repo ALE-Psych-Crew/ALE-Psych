@@ -133,10 +133,8 @@ class Character extends Bopper
 
     public function miss(?anim:String, ?force:Bool = true, ?applyTimer:Bool = true)
     {
-        if (blockMiss || missTimer > 0 || anim == null)
-            return;
-
-        playTimedAnim(anim, force, applyTimer);
+        if (!blockMiss && missTimer <= 0 && anim != null)
+            playTimedAnim(anim, force, applyTimer);
 
         for (vocal in vocals)
             if (vocal != null)
