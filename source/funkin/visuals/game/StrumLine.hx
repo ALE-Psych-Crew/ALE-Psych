@@ -73,13 +73,13 @@ class StrumLine extends FlxSpriteGroup
                 list.push(index);
             }
 
-            final strum:Strum = new Strum(config.strums, data, config.allowShader, index);
+            final strum:Strum = new Strum(config.strums, data, config.shader.strum, index);
             strum.strumLine = this;
             strum.x = index * config.spacing;
 
             strums.add(strum);
 
-            final splash:Splash = new Splash(config.splashes, data, config.allowShader, index);
+            final splash:Splash = new Splash(config.splashes, data, config.shader.splash, index);
             splash.strumLine = this;
             splash.strum = strum;
 
@@ -103,7 +103,7 @@ class StrumLine extends FlxSpriteGroup
             final strumLineConfig:JsonStrumLineConfig = config.config[data];
             final rgb:RGBShader = notesShader[data];
 
-            final note:Note = new Note(config.notes, strumLineConfig, config.allowShader, ARROW, data, rgb);
+            final note:Note = new Note(config.notes, strumLineConfig, config.shader.note, ARROW, data, rgb);
             note.strumLine = this;
             note.crochet = crochet;
             note.strum = strum;
@@ -125,7 +125,7 @@ class StrumLine extends FlxSpriteGroup
 
                 for (i in 0...floorLength)
                 {
-                    final sustain:Note = new Note(config.notes, strumLineConfig, config.allowShader, i == floorLength - 1 ? END : SUSTAIN, data, rgb);
+                    final sustain:Note = new Note(config.notes, strumLineConfig, config.shader.note, i == floorLength - 1 ? END : SUSTAIN, data, rgb);
                     sustain.strumLine = this;
                     sustain.crochet = crochet;
                     sustain.strum = strum;

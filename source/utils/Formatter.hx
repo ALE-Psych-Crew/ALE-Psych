@@ -193,106 +193,110 @@ class Formatter
                     return true;
                 },
                 example: {
-                    splashes: "default",
-                    notes: "default",
-                    strums: "default",
+                    splashes: 'default',
+                    notes: 'default',
+                    strums: 'default',
                     config: [
                         {
-                            note: "note left idle",
-                            hit: "strum left hit",
-                            end: "note left end",
-                            press: "strum left press",
-                            sustain: "note left sustain",
-                            miss: "singLEFTmiss",
+                            note: 'note left idle',
+                            hit: 'strum left hit',
+                            end: 'note left end',
+                            press: 'strum left press',
+                            sustain: 'note left sustain',
+                            miss: 'singLEFTmiss',
                             keyBind: {
-                                id: "left",
-                                group: "notes"
+                                id: 'left',
+                                group: 'notes'
                             },
-                            idle: "strum left idle",
+                            idle: 'strum left idle',
                             shader: [
-                                0xFFC24B99,
-                                0xFFFFFFFF,
-                                0xFF3C1F56
+                                '0xFFC24B99',
+                                '0xFFFFFFFF',
+                                '0xFF3C1F56'
                             ],
-                            sing: "singLEFT",
+                            sing: 'singLEFT',
                             splash: [
-                                "splash1",
-                                "splash2"
+                                'splash1',
+                                'splash2'
                             ]
                         },
                         {
-                            note: "note down idle",
-                            hit: "strum down hit",
-                            end: "note down end",
-                            press: "strum down press",
-                            sustain: "note down sustain",
-                            miss: "singDOWNmiss",
+                            note: 'note down idle',
+                            hit: 'strum down hit',
+                            end: 'note down end',
+                            press: 'strum down press',
+                            sustain: 'note down sustain',
+                            miss: 'singDOWNmiss',
                             keyBind: {
-                                id: "down",
-                                group: "notes"
+                                id: 'down',
+                                group: 'notes'
                             },
-                            idle: "strum down idle",
+                            idle: 'strum down idle',
                             shader: [
-                                0xFF00FFFF,
-                                0xFFFFFFFF,
-                                0xFF1542B7
+                                '0xFF00FFFF',
+                                '0xFFFFFFFF',
+                                '0xFF1542B7'
                             ],
-                            sing: "singDOWN",
+                            sing: 'singDOWN',
                             splash: [
-                                "splash1",
-                                "splash2"
+                                'splash1',
+                                'splash2'
                             ]
                         },
                         {
-                            note: "note up idle",
-                            hit: "strum up hit",
-                            end: "note up end",
-                            press: "strum up press",
-                            sustain: "note up sustain",
-                            miss: "singUPmiss",
+                            note: 'note up idle',
+                            hit: 'strum up hit',
+                            end: 'note up end',
+                            press: 'strum up press',
+                            sustain: 'note up sustain',
+                            miss: 'singUPmiss',
                             keyBind: {
-                                id: "up",
-                                group: "notes"
+                                id: 'up',
+                                group: 'notes'
                             },
-                            idle: "strum up idle",
+                            idle: 'strum up idle',
                             shader: [
-                                0xFF00FF00,
-                                0xFFFFFFFF,
-                                0xFF003300
+                                '0xFF00FF00',
+                                '0xFFFFFFFF',
+                                '0xFF003300'
                             ],
-                            sing: "singUP",
+                            sing: 'singUP',
                             splash: [
-                                "splash1",
-                                "splash2"
+                                'splash1',
+                                'splash2'
                             ]
                         },
                         {
-                            note: "note right idle",
-                            hit: "strum right hit",
-                            end: "note right end",
-                            press: "strum right press",
-                            sustain: "note right sustain",
-                            miss: "singRIGHTmiss",
+                            note: 'note right idle',
+                            hit: 'strum right hit',
+                            end: 'note right end',
+                            press: 'strum right press',
+                            sustain: 'note right sustain',
+                            miss: 'singRIGHTmiss',
                             keyBind: {
-                                id: "right",
-                                group: "notes"
+                                id: 'right',
+                                group: 'notes'
                             },
-                            idle: "strum right idle",
+                            idle: 'strum right idle',
                             shader: [
-                                0xFFF9393F,
-                                0xFFFFFFFF,
-                                0xFF651038
+                                '0xFFF9393F',
+                                '0xFFFFFFFF',
+                                '0xFF651038'
                             ],
-                            sing: "singRIGHT",
+                            sing: 'singRIGHT',
                             splash: [
-                                "splash1",
-                                "splash2"
+                                'splash1',
+                                'splash2'
                             ]
                         }
                     ],
                     spacing: 112,
-                    allowShader: true,
-                    format: "ale-strumline-v0.1"
+                    shader: {
+                        strum: true,
+                        note: true,
+                        splash: true
+                    },
+                    format: 'ale-strumline-v0.1'
                 }
             },
             ICON => {

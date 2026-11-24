@@ -8,5 +8,5 @@ typedef JsonStrumLine = {
     splashes:String,
     config:Array<JsonStrumLineConfig>,
     properties:Any,
-    allowShader:Bool
+    shader:JsonStrumLineShader
 }
