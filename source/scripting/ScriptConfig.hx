@@ -66,7 +66,8 @@ class ScriptConfig
 
     public static final ABSTRACTS:Array<String> = [
         'flixel.tweens.FlxTweenType',
-        'flixel.util.FlxColor'
+        'flixel.util.FlxColor',
+        'flixel.util.FlxAxes'
     ];
 
     public static final TYPEDEFS:Map<String, Class<Dynamic>> = [];

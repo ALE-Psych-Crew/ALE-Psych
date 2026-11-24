@@ -4,6 +4,8 @@ import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 
+import core.enums.Orientation;
+
 class Bar extends FlxSpriteGroup
 {
     public final border:FlxSprite;
@@ -20,6 +22,14 @@ class Bar extends FlxSpriteGroup
         return leftToRight;
     }
 
+    public var orientation(default, set):Orientation;
+    function set_orientation(val:Orientation):Orientation
+    {
+        percent = percent;
+
+        return orientation = val;
+    }
+
     public var percent(default, set):Float;
     function set_percent(value:Float):Float
     {
@@ -27,14 +37,21 @@ class Bar extends FlxSpriteGroup
 
         fillingFront.clipRect ??= FlxRect.get();
 
-        final factor:Float = fillingFront.width * (value / 100);
+        if (orientation == HORIZONTAL)
+        {
+            final factor:Float = fillingFront.width * (value / 100);
 
-        fillingFront.clipRect.set(leftToRight ? 0 : fillingFront.width - factor, 0, leftToRight ? factor : fillingFront.width, fillingFront.height);
+            fillingFront.clipRect.set(leftToRight ? 0 : fillingFront.width - factor, 0, leftToRight ? factor : fillingFront.width, fillingFront.height);
+        } else {
+            final factor:Float = fillingFront.height * (value / 100);
+
+            fillingFront.clipRect.set(0, leftToRight ? factor : 0, fillingFront.width, leftToRight ? fillingFront.height : factor);
+        }
 
         return percent = value;
     }
 
-    public function new(main:String, filling:String, ?leftToRight:Bool, ?percent:Float)
+    public function new(main:String, filling:String, ?leftToRight:Bool, ?percent:Float, ?orientation:Orientation)
     {
         super();
 
@@ -58,8 +75,12 @@ class Bar extends FlxSpriteGroup
         this.leftToRight = leftToRight ?? true;
 
         this.percent = percent ?? 50;
+        this.orientation = orientation ?? Orientation.HORIZONTAL;
     }
 
     public function getMiddle():FlxPoint
-        return FlxPoint.get(fillingFront.x + (leftToRight ? fillingFront.clipRect.width : fillingFront.clipRect.x), fillingFront.y + fillingFront.height / 2);
+        if (orientation == HORIZONTAL)
+            return FlxPoint.get(fillingFront.x + (leftToRight ? fillingFront.clipRect.width : fillingFront.clipRect.x), fillingFront.y + fillingFront.height / 2);
+        else
+            return FlxPoint.get(fillingFront.x + fillingFront.width / 2, fillingFront.y + (leftToRight ? fillingFront.clipRect.y : fillingFront.clipRect.height));
 }

@@ -81,7 +81,7 @@ class Icon extends Bopper
                 update(0);
             }
         };
-
+        
         updatePosition = elapsed -> {
             if (bar == null)
                 return;
@@ -90,8 +90,14 @@ class Icon extends Bopper
 
             final barMiddle:FlxPoint = bar.getMiddle();
 
-            x = isRight ? barMiddle.x - getAnimOffset().x : barMiddle.x - width + getAnimOffset().x;
-            y = barMiddle.y - height / 2 - getAnimOffset().y;
+            if (bar.orientation == HORIZONTAL)
+            {
+                x = isRight ? barMiddle.x - getAnimOffset().x : barMiddle.x - width + getAnimOffset().x;
+                y = barMiddle.y - height / 2 - getAnimOffset().y;
+            } else {
+                x = barMiddle.x - width / 2 - getAnimOffset().x;
+                y = isRight ? barMiddle.y - height - getAnimOffset().y : barMiddle.y + getAnimOffset().y;
+            }
         };
 
         updateScale = elapsed -> {
@@ -108,7 +114,7 @@ class Icon extends Bopper
             if (bar == null)
                 return;
 
-            flipX = ((type != 'player') == _castConfig.properties.flipX) == !bar.leftToRight;
+            flipX = bar.orientation == VERTICAL ? _castConfig.properties.flipX : ((type != 'player') == _castConfig.properties.flipX) == !bar.leftToRight;
 
             final percent:Float = type == 'player' ? bar.percent : (100 - bar.percent);
 
