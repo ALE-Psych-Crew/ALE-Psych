@@ -31,13 +31,14 @@ class Bar extends FlxSpriteGroup
     }
 
     public var percent(default, set):Float;
+    
     function set_percent(value:Float):Float
     {
         value = FlxMath.bound(value, 0, 100);
 
         fillingFront.clipRect ??= FlxRect.get();
 
-        if (orientation == HORIZONTAL)
+        if (orientation == Orientation.HORIZONTAL)
         {
             final factor:Float = fillingFront.width * (value / 100);
 
@@ -45,7 +46,7 @@ class Bar extends FlxSpriteGroup
         } else {
             final factor:Float = fillingFront.height * (value / 100);
 
-            fillingFront.clipRect.set(0, leftToRight ? factor : 0, fillingFront.width, leftToRight ? fillingFront.height : factor);
+            fillingFront.clipRect.set(0, leftToRight ? 0 : fillingFront.height - factor, fillingFront.width, leftToRight ? factor : fillingFront.height);
         }
 
         return percent = value;
@@ -79,8 +80,8 @@ class Bar extends FlxSpriteGroup
     }
 
     public function getMiddle():FlxPoint
-        if (orientation == HORIZONTAL)
+        if (orientation == Orientation.HORIZONTAL)
             return FlxPoint.get(fillingFront.x + (leftToRight ? fillingFront.clipRect.width : fillingFront.clipRect.x), fillingFront.y + fillingFront.height / 2);
         else
-            return FlxPoint.get(fillingFront.x + fillingFront.width / 2, fillingFront.y + (leftToRight ? fillingFront.clipRect.y : fillingFront.clipRect.height));
+            return FlxPoint.get(fillingFront.x + fillingFront.width / 2, fillingFront.y + (leftToRight ? fillingFront.clipRect.height : fillingFront.clipRect.y));
 }

@@ -984,6 +984,8 @@ class PlayState extends ScriptedState
     var healthBar:Bar;
     var scoreText:FlxText;
 
+    var barFactory:(String, String, Bool, Float) -> Bar = (main, filling, leftToRight, percent) -> new Bar(main, filling, leftToRight, percent);
+
     function initHud()
     {
         if (scriptsManager.callback(ON, 'HudInit'))
@@ -991,7 +993,7 @@ class PlayState extends ScriptedState
             add(uiGroup = new FlxSpriteGroup());
             uiGroup.camera = camHUD;
 
-            healthBar = new Bar(hudRoute + '/' + hud.bar, hudRoute + '/' + hud.barFilling, false, health);
+            healthBar = barFactory(hudRoute + '/' + hud.bar, hudRoute + '/' + hud.barFilling, false, health);
             healthBar.x = FlxG.width / 2 - healthBar.width / 2;
             healthBar.y = FlxG.height * (ClientPrefs.data.downScroll ? 0.1 : 0.9);
             healthBar.fillingBack.color = CoolUtil.colorFromString((dad ?? gf ?? bf)._castConfig.barColor);

@@ -4,6 +4,7 @@ import funkin.visuals.objects.Bar;
 
 import core.structures.JsonIcon;
 import core.enums.CharacterType;
+import core.enums.Orientation;
 
 import utils.cool.MathUtil;
 import utils.Formatter;
@@ -90,13 +91,13 @@ class Icon extends Bopper
 
             final barMiddle:FlxPoint = bar.getMiddle();
 
-            if (bar.orientation == HORIZONTAL)
+            if (bar.orientation == Orientation.HORIZONTAL)
             {
                 x = isRight ? barMiddle.x - getAnimOffset().x : barMiddle.x - width + getAnimOffset().x;
                 y = barMiddle.y - height / 2 - getAnimOffset().y;
             } else {
                 x = barMiddle.x - width / 2 - getAnimOffset().x;
-                y = isRight ? barMiddle.y - height - getAnimOffset().y : barMiddle.y + getAnimOffset().y;
+                y = isRight ? barMiddle.y - getAnimOffset().y : barMiddle.y - height + getAnimOffset().y;
             }
         };
 
