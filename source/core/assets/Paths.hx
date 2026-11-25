@@ -32,6 +32,13 @@ import lime.system.CFFI;
 
 import funkin.config.SaveFile;
 
+import core.visuals.GifDecoder;
+
+import openfl.utils.ByteArray;
+import openfl.utils.Assets;
+
+import com.yagp.Gif;
+
 /**
  * It is responsible for resolving, locating, and caching game resources
  * 
@@ -151,7 +158,7 @@ class Paths
             },
             FileType.IMAGE => {
                 prefix: 'images/',
-                postfix: '.png',
+                suffix: '.png',
                 get: (id, _, _, _) -> {
                     final bitmap:BitmapData = BitmapData.fromImage(library.getImage(id));
 
@@ -175,12 +182,17 @@ class Paths
                     return graphic;
                 }
             },
+            FileType.GIF => {
+                prefix: 'gifs/',
+                suffix: '.gif',
+                get: (id, _, _, _) -> GifDecoder.parseBytes(Assets.getBytes(id))
+            },
             FileType.AUDIO => {
-                postfix: '.ogg',
+                suffix: '.ogg',
                 get: (id, _, _, _) -> library.getSound(id)
             },
             FileType.STREAMED_AUDIO => {
-                postfix: '.ogg',
+                suffix: '.ogg',
                 get: (id, _, _, _) -> library.getMusic(id)
             },
             FileType.ATLAS => {
@@ -259,7 +271,7 @@ class Paths
                 checkExistence: false
             },
             FileType.JSON => {
-                postfix: '.json',
+                suffix: '.json',
                 get: (id, _, permanent, missingPrint) -> {
                     HotReloading.add(id);
 
@@ -339,6 +351,16 @@ class Paths
      */
     public static function image(file:String, ?permanent:Bool, ?missingPrint:Bool):FlxGraphic
         return get(file, FileType.IMAGE, permanent, missingPrint);
+
+    /**
+     * Retrieves a gif and returns it as a `Gif`
+     * @param file File path
+     * @param permanent This determines whether your cache should be persistent
+     * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
+     * @return Resulting `Gif`
+     */
+    public static function gif(file:String, ?permanent:Bool, ?missingPrint:Bool):Gif
+        return get(file, FileType.GIF, permanent, missingPrint);
 
     /**
      * Retrieves a Sparrow-type sprite sheet and returns it as `FlxAtlasFrames`
@@ -497,13 +519,13 @@ class Paths
 	/**
 	 * This retrieves the vocal from a song and converts it into a `Sound`
 	 * @param route Location of the song
-	 * @param postfix Vocal Suffix
+	 * @param suffix Vocal Suffix
      * @param permanent This determines whether your cache should be persistent
      * @param missingPrint This determines whether an error message should be displayed if the file cannot be found
 	 * @return Resulting `Sound`
 	 */
-	public static function voices(route:String, ?postfix:String, ?permanent:Bool, ?missingPrint:Bool):Sound
-		return streamedAudio(route + '/audios/Voices' + (postfix == null ? '' : '-' + postfix), permanent, missingPrint);
+	public static function voices(route:String, ?suffix:String, ?permanent:Bool, ?missingPrint:Bool):Sound
+		return streamedAudio(route + '/audios/Voices' + (suffix == null ? '' : '-' + suffix), permanent, missingPrint);
 
     // Data
 
@@ -584,7 +606,7 @@ class Paths
         if (data == null)
             return null;
 
-        final path:String = data.prefix + file + data.postfix;
+        final path:String = data.prefix + file + data.suffix;
 
         if (data.cache.exists(path))
             return data.cache[path].content;

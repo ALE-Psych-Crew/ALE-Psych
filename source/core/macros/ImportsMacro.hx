@@ -41,6 +41,8 @@ class ImportsMacro
             'flixel.addons.util',
             'flixel.addons.editors.ogmo',
 
+            'com.yagp',
+
             'foxlite',
             'foxlite.animation',
             'foxlite.animation.data',

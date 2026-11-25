@@ -50,6 +50,8 @@
 	<haxelib name="flixel-animate"/>
 	<haxelib name="flxsoundfilters"/>
 
+	<haxelib name="yagp"/>
+
 	<haxelib name="tink_core"/>
 	<haxelib name="grig.audio"/>
 	<haxelib name="funkin.vis"/>
